@@ -4,12 +4,16 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
       
-		<head>
+		<h:head>
 		<title><ui:insert name="pageTitle">Page Title</ui:insert></title>
 		<style type="text/css">
 			body {
 				  font-family: Verdana, Arial, Helvetica, sans-serif;
 				  font-size: 14px;
+			}
+			.quietLink {
+				text-decoration: none;
+				color: black;
 			}
 			.header {
 				  font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -22,11 +26,20 @@
 				  vertical-align: middle;
 				  color: #8E969D;
 			}
+			.selectedDay {
+				  font-family: Verdana, Arial, Helvetica, sans-serif;
+				  font-size: 14px;
+				  color: black;
+				  background-color: #EEEEA0; 
+			}
 			.greyedDay {
 				  font-family: Verdana, Arial, Helvetica, sans-serif;
 				  font-size: 14px;
 				  color: #505050;
 				  background-color: #C0C0C0; 
+			}
+			.greyedDay:HOVER {
+				  background-color: #CCFFCC; 
 			}
 			.centered {
 				  text-align: center;
@@ -37,17 +50,35 @@
 				  color: #000000;
 				  background-color: #E0E0E0; 
 			}
+			.notPlayDay:HOVER {
+				  background-color: #CCFFCC; 
+			}
 			.emptyDay {
 				  font-family: Verdana, Arial, Helvetica, sans-serif;
 				  font-size: 14px;
 				  color: #000000;
 				  background-color: #FFFFFF; 
 			}
+			.emptyDay:HOVER {
+				  background-color: #CCFFCC; 
+			}
+			.calendarDayCell {
+				  font-family: Verdana, Arial, Helvetica, sans-serif;
+				  font-size: 14px;
+				  text-decoration: none;
+				  border-top: 1px solid black; 
+				  border-bottom: 1px solid black; 
+			}
+			.dayDetailsPanel {
+				border: 1px solid black;
+				background-color: grey;
+				display: none;
+			}
 		</style>
-		</head>
+		</h:head>
 
 <body bgcolor="#ffffff">
-<table style="border:1px solid #CAD6E0"  align="center" cellpadding="0" cellspacing="0" border="0" width="400">
+<table style="border:1px solid #CAD6E0"  align="center" cellpadding="0" cellspacing="0" border="0" width="900">
 <tbody>
 
 	<tr>

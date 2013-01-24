@@ -13,7 +13,7 @@ public class Day {
 
 	private Calendar date = Calendar.getInstance();
 	
-	private List<String> events = new ArrayList<String>();
+	private List<Game> games = new ArrayList<Game>();
 	
 	private static final List<Integer> PLAY_DAYS = Arrays.asList(Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY);
 
@@ -25,20 +25,16 @@ public class Day {
 		this.date.setTime(date);
 	}
 
-	public List<String> getEvents() {
-		return events;
+	public void addGame(Game game) {
+		this.games.add(game);
+	}
+	
+	public List<Game> getGames() {
+		return games;
 	}
 
-	public void setEvents(List<String> events) {
-		this.events = events;
-	}
-	
-	public void addEvent(String event) {
-		this.events.add(event);
-	}
-	
 	public String getDayLetter(Locale locale) {
-		return date.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, locale).substring(0,  1);
+		return date.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, locale).substring(0,  1).toUpperCase();
 	}
 	
 	public String getDayLetter() {
@@ -47,6 +43,10 @@ public class Day {
 	
 	public int getDayNumber() {
 		return date.get(Calendar.DAY_OF_MONTH);
+	}
+	
+	public int getMonthNumber() {
+		return date.get(Calendar.MONTH);
 	}
 	
 	public boolean isPlayDay() {

@@ -102,7 +102,8 @@ public class CalendarDisplay {
 		Day currentDay = null;
 		while (iter.hasNext()) {
 			currentDay = iter.next();
-			if (currentDay.getDate().before(startDate)) styleClass = "greyedDay"; 
+			if (currentDay.getDate().equals(currentDate)) styleClass = "selectedDay";
+			else if (currentDay.getDate().before(startDate)) styleClass = "greyedDay"; 
 			else if (currentDay.isPlayDay()) styleClass = "emptyDay";
 			else styleClass = "notPlayDay";
 			builder.append(styleClass);

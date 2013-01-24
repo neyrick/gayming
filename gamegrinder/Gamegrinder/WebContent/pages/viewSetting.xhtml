@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:composition template="/templates/common.xhtml">
+			<ui:define name="pageTitle">Test title</ui:define>
+			<ui:define name="pageHeader">
+				<table width="100%" cellspacing="10" cellpadding="0" border="1">
+					<tr>
+						<td onclick="document.location.href='viewCalendar.jsf';return true;">Par Date</td>
+						<td bgcolor="#FFFFFF">Par Chronique</td>
+					</tr>
+				</table>
+			</ui:define>
+			<ui:define name="body">
+			  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+			    <tr>
+			      <td>
+			        <table border="1" cellpadding="0" cellspacing="0">
+						<tr>
+							<ui:repeat var="month" value="#{calendarDisplay.monthsList}">
+								<td style="vertical-align:top">
+									<h:dataTable border="0" var="day" value="#{calendarDisplay.months.get(month)}"
+									 cellpadding="0" cellspacing="0" columnClasses="centered,centered," rowClasses="#{calendarDisplay.getMonthStyleClasses(month)}">
+									 	<f:facet name="header">
+											<h:outputFormat value="#{month}" >
+												<f:convertDateTime pattern="MMMM"/>
+											</h:outputFormat>
+									 	</f:facet>
+									 	<h:column>
+									 	  <h:commandLink action="" value="" >
+									 	  </h:commandLink>
+									 	</h:column>
+										<h:column>&nbsp;#{day.dayLetter}&nbsp;</h:column>
+										<h:column>&nbsp;#{day.dayNumber}&nbsp;</h:column>					
+										<h:column >Test !</h:column>					
+									</h:dataTable>
+								</td>
+							</ui:repeat>
+						</tr>
+					</table>
+				  </td>
+			      <td id="editPanelParent">
+			      	
+			      </td>
+			    </tr>
+			  </table>
+			</ui:define>
+	</ui:composition>
+</html>
