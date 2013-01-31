@@ -6,13 +6,17 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
-public abstract class MetaCharacter {
+public class MetaCharacter {
 
 	@Id
 	@GeneratedValue
@@ -22,10 +26,14 @@ public abstract class MetaCharacter {
 	
 	private String playerName;
 	
+	@ManyToOne
 	private Game game;
 	
+	@OneToMany(mappedBy="character", fetch=FetchType.LAZY)
+	@OrderBy("editDate")
 	private List<CharacterEdit> edits = new ArrayList<CharacterEdit>();
 	
+	@OneToMany(mappedBy="character")
 	private Set<ExperienceGain> experienceGains;
 
 	private Date creationDate;
@@ -98,8 +106,8 @@ public abstract class MetaCharacter {
 		if (edits == null) return null;
 		Date result = null;
 		for(CharacterEdit edit : edits) {
-			if (result == null) result = edit.getDate();
-			else if (result.before(edit.getDate())) result = edit.getDate();
+			if (result == null) result = edit.getEditDate();
+			else if (result.before(edit.getEditDate())) result = edit.getEditDate();
 		}
 		return result;
 	}

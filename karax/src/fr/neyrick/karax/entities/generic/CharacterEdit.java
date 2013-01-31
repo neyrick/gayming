@@ -7,6 +7,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -19,6 +20,9 @@ public class CharacterEdit {
 	@GeneratedValue
 	private Long id;
 
+	@ManyToOne
+	private MetaCharacter character;
+	
 	@Enumerated(EnumType.ORDINAL)
 	private ExpenseType expenseType;
 	
@@ -30,7 +34,7 @@ public class CharacterEdit {
 	
 	private int spentAmount;
 	
-	private Date date;	
+	private Date editDate;	
 	
 	public Long getId() {
 		return id;
@@ -38,6 +42,14 @@ public class CharacterEdit {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public MetaCharacter getCharacter() {
+		return character;
+	}
+
+	public void setCharacter(MetaCharacter character) {
+		this.character = character;
 	}
 
 	public ExpenseType getExpenseType() {
@@ -72,12 +84,12 @@ public class CharacterEdit {
 		this.spentAmount = amount;
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getEditDate() {
+		return editDate;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setEditDate(Date date) {
+		this.editDate = date;
 	}
 
 	public String getValue() {

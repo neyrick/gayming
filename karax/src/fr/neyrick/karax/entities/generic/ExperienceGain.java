@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -15,6 +16,7 @@ public class ExperienceGain {
 	@GeneratedValue
 	private Long id;
 	
+	@ManyToOne
 	private MetaCharacter character;
 	
 	private int amount;
