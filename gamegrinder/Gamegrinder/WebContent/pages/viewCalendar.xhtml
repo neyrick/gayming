@@ -4,6 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
 
+	<f:event type="preRenderView" listener="#{calendarDisplay.loadGames}"/>
 	<ui:composition template="/templates/common.xhtml">
 			<ui:define name="pageTitle">Test title</ui:define>
 			<ui:define name="pageHeader">
@@ -53,13 +54,15 @@
 											</h:outputFormat>
 									 	</f:facet>
 									 	<h:column>
-									 	  <h:commandLink action="#{calendarDisplay.startEditDay(day.date)}" styleClass="quietLink">
+									 	  <h:commandLink action="#{calendarDisplay.startEditDay}" styleClass="quietLink">
+									 	  	<f:setPropertyActionListener target="#{calendarDisplay.currentDate}" value="#{day.date}"/>
 									 	  	<f:ajax render="@form"/>
 									 	    <table border="0" cellpadding="0" cellspacing="0" width="100%"
 									 	    onmouseover="displayDateDetails(#{day.dayNumber}, #{day.monthNumber});" onmouseout="closeDetails();">
 									 	    	<tr>
 									 	    		<td class="calendarDayCell" width="30">#{day.dayLetter}</td>
 									 	    		<td class="calendarDayCell" width="30">#{day.dayNumber}</td>
+									 	    		<td class="calendarDayCell" width="100"><h:outputText value="#{day.date}" /></td>
 									 	    		<td class="calendarDayCell">
 									 	    			<ui:repeat var="game" value="#{day.games}">
 									 	    			  <p>Partie: #{game.setting}</p>
@@ -93,8 +96,8 @@
 					</ui:repeat>
 					<h:panelGroup id="editPanelParent">
 						<h:panelGroup id="editPanel" rendered="#{calendarDisplay.editDayMode}">
- 	    					Date: <h:outputText value="#{day.date}" >
-	 	    						<f:convertDateTime pattern="E dd MMMM yyyy"/>
+ 	    					Date: <h:outputText value="#{calendarDisplay.currentDate}" >
+	 	    						<f:convertDateTime pattern="E dd MMMM yyyy zzzz"/>
 	 	    					</h:outputText><br/>
 							Panneau d'édition
 							<h:commandButton action="#{calendarDisplay.saveDay()}" value="Valider" >

@@ -1,5 +1,6 @@
 package fr.neyrick.gamegrinder.jsf;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -10,16 +11,25 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
+import javax.inject.Named;
 
+import fr.neyrick.gamegrinder.dao.GameManager;
 import fr.neyrick.gamegrinder.entities.Day;
+import fr.neyrick.gamegrinder.entities.Game;
 
-@ManagedBean(name="calendarDisplay")
+@Named("calendarDisplay")
 @SessionScoped
-public class CalendarDisplay {
+public class CalendarDisplay implements Serializable {
 
-	static private final int DEFAULT_WIDTH = 2;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	static private final int DEFAULT_WIDTH = 3;
 	
 	private Map<Date, List<Day>> months = new HashMap<Date, List<Day>>();
 
@@ -30,6 +40,9 @@ public class CalendarDisplay {
 	private boolean editMode = false;
 	
 	private Date currentDate = null;
+	
+	@Inject
+	private Instance<GameManager> gameManagerInstance;
 	
 	private void computeEndDate() {
 		Calendar cal = Calendar.getInstance();
@@ -47,11 +60,34 @@ public class CalendarDisplay {
 		resetDays();
 	}
 	
+	public void loadGames() {
+		for (List<Day> dayList : months.values()) {
+			for (Day day : dayList) {
+				day.getGames().clear();
+			}
+		}
+		List<Game> games = gameManagerInstance.get().fetchGames(startDate, endDate);
+		
+		for (List<Day> dayList : months.values()) {
+			for (Day day : dayList) {
+				for(Game game : games) {
+					if (day.getDate().equals(game.getTimeFrame().getDayDate())) {
+						day.addGame(game);
+					}
+				}
+			}
+		}
+	}
+	
 	private void resetDays() {
 		months.clear();
 		Calendar currentCal = Calendar.getInstance();
 		currentCal.setTime(startDate);
 		currentCal.set(Calendar.DAY_OF_MONTH, 1);
+		currentCal.set(Calendar.HOUR_OF_DAY, 0);
+		currentCal.set(Calendar.MINUTE, 0);
+		currentCal.set(Calendar.SECOND, 0);
+		currentCal.set(Calendar.MILLISECOND, 0);
 		List<Day> dayList;
 		while(currentCal.getTime().before(endDate)) {
 			int monthHeight = currentCal.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -67,8 +103,16 @@ public class CalendarDisplay {
 	public void setStartDate(Date startDate) {
 		this.startDate = endDate;
 		computeEndDate();
-	}	
+	}		
 	
+	public Date getCurrentDate() {
+		return currentDate;
+	}
+
+	public void setCurrentDate(Date currentDate) {
+		this.currentDate = currentDate;
+	}
+
 	public int getWidth() {
 		return width;
 	}
@@ -112,9 +156,9 @@ public class CalendarDisplay {
 		return builder.toString();
 	}
 	
-	public void startEditDay(Date date) {
+	public String startEditDay() {
 		editMode = true;
-		currentDate = date;
+		return null;
 	}
 	
 	public void saveDay() {
