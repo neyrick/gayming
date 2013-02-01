@@ -39,7 +39,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import fr.neyrick.karax.entities.data.MetaCharacterRepository;
+import fr.neyrick.karax.data.MetaCharacterRepository;
 import fr.neyrick.karax.entities.generic.MetaCharacter;
 import fr.neyrick.karax.service.MetaCharacterRegistration;
 
@@ -74,7 +74,7 @@ public class MetaCharacterRESTService {
     @Path("/{id:[0-9][0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
     public MetaCharacter lookupMemberById(@PathParam("id") long id) {
-    	MetaCharacter character = repository.findById(id);
+    	MetaCharacter character = repository.findCompleteById(id);
         if (character == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }

@@ -6,9 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
+@Table(name="expgains")
 @XmlRootElement
 public class ExperienceGain {
 
@@ -16,12 +21,14 @@ public class ExperienceGain {
 	@GeneratedValue
 	private Long id;
 	
+	@XmlTransient
+	@JsonIgnore
 	@ManyToOne
 	private MetaCharacter character;
 	
 	private int amount;
 	
-	private Date date;
+	private Date dateGain;
 
 	public Long getId() {
 		return id;
@@ -47,12 +54,12 @@ public class ExperienceGain {
 		this.amount = amount;
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getDateGain() {
+		return dateGain;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDateGain(Date date) {
+		this.dateGain = date;
 	}
 	
 }
