@@ -2,9 +2,9 @@ package fr.neyrick.karax.model;
 
 import fr.neyrick.karax.entities.generic.MetaCharacter;
 
-public interface CharacterFactory {
+public interface CharacterFactory<T extends GameCharacter> {
 
-	public Character createCharacter();
-	
-	public void initCharacter(Character character, MetaCharacter metaCharacter);
+	public T createCharacter(MetaCharacter metaCharacter);
+
+	public boolean isValid(MetaCharacter character);
 }

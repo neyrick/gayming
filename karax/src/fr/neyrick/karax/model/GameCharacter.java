@@ -2,9 +2,12 @@ package fr.neyrick.karax.model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import fr.neyrick.karax.entities.generic.Game;
 
-public abstract class Character {
+@XmlRootElement
+public abstract class GameCharacter {
 
 	private Long metaId;
 	
