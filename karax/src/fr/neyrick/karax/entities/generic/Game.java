@@ -21,6 +21,8 @@ public class Game {
 	
 	private String setting;
 	
+	private String ruleset;
+	
 	public Long getId() {
 		return id;
 	}
@@ -52,6 +54,13 @@ public class Game {
 	public void setSetting(String setting) {
 		this.setting = setting;
 	}
-	
+
+	public String getRuleset() {
+		return ruleset;
+	}
+
+	public void setRuleset(String ruleset) {
+		this.ruleset = ruleset;
+	}
 	
 }

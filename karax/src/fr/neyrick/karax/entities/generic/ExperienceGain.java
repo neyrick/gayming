@@ -28,7 +28,7 @@ public class ExperienceGain {
 	
 	private int amount;
 	
-	private Date dateGain;
+	private Date gainDate;
 
 	public Long getId() {
 		return id;
@@ -54,12 +54,12 @@ public class ExperienceGain {
 		this.amount = amount;
 	}
 
-	public Date getDateGain() {
-		return dateGain;
+	public Date getGainDate() {
+		return gainDate;
 	}
 
-	public void setDateGain(Date date) {
-		this.dateGain = date;
+	public void setGainDate(Date gainDate) {
+		this.gainDate = gainDate;
 	}
-	
+
 }

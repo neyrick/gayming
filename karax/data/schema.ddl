@@ -5,7 +5,10 @@ drop table expgains;
 drop table metachars;
 drop table games;
 
+drop sequence hibernate_sequence;
+
     create table games (
+    	ruleset varchar(255) not null,
         id int8 not null,
         edition varchar(255),
         name varchar(255),
