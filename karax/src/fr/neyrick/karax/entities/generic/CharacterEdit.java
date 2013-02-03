@@ -19,7 +19,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @XmlRootElement
 public class CharacterEdit {
 
-	public enum ExpenseType { NONE, CREATION, FREE, EXPERIENCE};
+	public enum ExpenseType { NONE, CREATION, FREEBIE, FREE, EXPERIENCE};
 	
 	@Id
 	@GeneratedValue

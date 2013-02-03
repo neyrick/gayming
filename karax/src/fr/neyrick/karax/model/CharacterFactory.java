@@ -1,16 +1,23 @@
 package fr.neyrick.karax.model;
 
-import javax.enterprise.context.ApplicationScoped;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import javax.enterprise.context.RequestScoped;
+
+import fr.neyrick.karax.entities.generic.CharacterEdit;
 import fr.neyrick.karax.entities.generic.MetaCharacter;
 
-@ApplicationScoped
+@RequestScoped
 public abstract class CharacterFactory {
 
+	private Map<String, EditListener> editListenersMap = new TreeMap<>();
+	
 	public GameCharacter createCharacter(MetaCharacter metaCharacter)  {
 	    GameCharacter character = initCharacter(metaCharacter);
 		setMetadata(character, metaCharacter);
-		character.processEdits(metaCharacter.getEdits());
+		processEdits(metaCharacter.getEdits());
 		return character;
 	}
 	
@@ -26,4 +33,22 @@ public abstract class CharacterFactory {
 		character.setLastUpdate(metaCharacter.getLastUpdate());
 	}
 
+	public <T extends EditListener> T registerListener(T listener) {
+		editListenersMap.put(listener.getKey(), listener);
+		return listener;
+	}
+
+	public <T extends EditListener> T unregisterListener(T listener) {
+		editListenersMap.remove(listener.getKey());
+		return listener;
+	}
+	
+	public void processEdits(List<CharacterEdit> edits) {
+		EditListener listener = null;
+		for(CharacterEdit edit : edits) {
+			listener = editListenersMap.get(edit.getTargetKey());
+			if (listener != null) listener.recordEdit(edit);
+		}
+	}
+	
 }

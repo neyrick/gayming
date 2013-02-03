@@ -1,14 +1,9 @@
 package fr.neyrick.karax.model;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
-import fr.neyrick.karax.entities.generic.CharacterEdit;
 import fr.neyrick.karax.entities.generic.Game;
 
 @XmlRootElement
@@ -28,9 +23,6 @@ public abstract class GameCharacter {
 
 	private int experience;
 
-	@XmlTransient
-	private Map<String, EditListener> editListenersMap = new TreeMap<>();
-	
 	public Long getMetaId() {
 		return metaId;
 	}
@@ -85,18 +77,6 @@ public abstract class GameCharacter {
 
 	public void setExperience(int experience) {
 		this.experience = experience;
-	}
-	
-	protected void addEditListener(EditListener listener) {
-		editListenersMap.put(listener.getKey(), listener);
-	}
-	
-	public void processEdits(List<CharacterEdit> edits) {
-		EditListener listener = null;
-		for(CharacterEdit edit : edits) {
-			listener = editListenersMap.get(edit.getTargetKey());
-			if (listener != null) listener.recordEdit(edit);
-		}
 	}
 	
 }

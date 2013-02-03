@@ -1,6 +1,9 @@
 package fr.neyrick.karax.model;
 
+import javax.xml.bind.annotation.XmlTransient;
 
+
+@XmlTransient
 public abstract class AbstractFeature implements EditListener {
 
 //	private MetaCharacter character;
