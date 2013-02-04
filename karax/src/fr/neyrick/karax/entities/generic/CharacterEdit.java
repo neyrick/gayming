@@ -1,13 +1,16 @@
 package fr.neyrick.karax.entities.generic;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -19,7 +22,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @XmlRootElement
 public class CharacterEdit {
 
-	public enum ExpenseType { NONE, CREATION, FREEBIE, FREE, EXPERIENCE};
+	public enum AmountType { NONE, CREATION, FREEBIE, FREE, EXPERIENCE, MODIFIER};
 	
 	@Id
 	@GeneratedValue
@@ -31,7 +34,7 @@ public class CharacterEdit {
 	private MetaCharacter character;
 	
 	@Enumerated(EnumType.ORDINAL)
-	private ExpenseType expenseType;
+	private AmountType amountType;
 	
 	private String targetKey;
 	
@@ -43,9 +46,15 @@ public class CharacterEdit {
 	
 	private String value;
 	
-	private int spentAmount;
+	private int amount;
 	
 	private Date editDate;	
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	private CharacterEdit cause;
+	
+	@OneToMany(mappedBy="cause")
+	private Set<CharacterEdit> consequences;
 	
 	public Long getId() {
 		return id;
@@ -63,12 +72,12 @@ public class CharacterEdit {
 		this.character = character;
 	}
 
-	public ExpenseType getExpenseType() {
-		return expenseType;
+	public AmountType getExpenseType() {
+		return amountType;
 	}
 
-	public void setExpenseType(ExpenseType expenseType) {
-		this.expenseType = expenseType;
+	public void setExpenseType(AmountType expenseType) {
+		this.amountType = expenseType;
 	}
 
 	public String getTargetKey() {
@@ -103,12 +112,12 @@ public class CharacterEdit {
 		this.targetSubKey3 = targetSubKey3;
 	}
 
-	public int getSpentAmount() {
-		return spentAmount;
+	public int getAmount() {
+		return amount;
 	}
 
-	public void setSpentAmount(int amount) {
-		this.spentAmount = amount;
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 	public Date getEditDate() {
@@ -125,6 +134,22 @@ public class CharacterEdit {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public CharacterEdit getCause() {
+		return cause;
+	}
+
+	public void setCause(CharacterEdit cause) {
+		this.cause = cause;
+	}
+
+	public Set<CharacterEdit> getConsequences() {
+		return consequences;
+	}
+
+	public void setConsequences(Set<CharacterEdit> consequences) {
+		this.consequences = consequences;
 	}
 	
 }

@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 import fr.neyrick.karax.entities.generic.CharacterEdit;
-import fr.neyrick.karax.entities.generic.CharacterEdit.ExpenseType;
+import fr.neyrick.karax.entities.generic.CharacterEdit.AmountType;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
@@ -21,6 +21,7 @@ public class VariableNumericFeature extends AbstractSingleFeature {
 	private int freeCost = 0;	
 	private int freebieCost = 0;	
 	private int experienceCost = 0;	
+	private int modifier = 0;
 	
 	private FeatureCalculator<VariableNumericFeature> calculator;
 	
@@ -38,6 +39,10 @@ public class VariableNumericFeature extends AbstractSingleFeature {
 
 	public int getExperienceCost() {
 		return experienceCost;
+	}
+
+	public int getModifier() {
+		return modifier;
 	}
 
 	public int getTotalCost() {
@@ -72,10 +77,29 @@ public class VariableNumericFeature extends AbstractSingleFeature {
 
 	@Override
 	public void recordEdit(CharacterEdit edit) {
-		if (ExpenseType.CREATION.equals(edit.getExpenseType())) creationCost += edit.getSpentAmount();
-		else if (ExpenseType.FREE.equals(edit.getExpenseType())) freeCost += edit.getSpentAmount();
-		else if (ExpenseType.FREEBIE.equals(edit.getExpenseType())) freebieCost += edit.getSpentAmount();
-		else if (ExpenseType.EXPERIENCE.equals(edit.getExpenseType())) experienceCost += edit.getSpentAmount();
+		switch (edit.getExpenseType()) {
+			case CREATION:
+				creationCost += edit.getAmount();
+				break;
+			case FREE:
+				freeCost += edit.getAmount();
+				break;
+			case FREEBIE:
+				freebieCost += edit.getAmount();
+				break;
+			case EXPERIENCE:
+				experienceCost += edit.getAmount();
+				break;
+			case MODIFIER:
+				modifier += edit.getAmount();
+				break;			
+			default:break;
+		
+		}
+		if (AmountType.CREATION.equals(edit.getExpenseType())) creationCost += edit.getAmount();
+		else if (AmountType.FREE.equals(edit.getExpenseType())) freeCost += edit.getAmount();
+		else if (AmountType.FREEBIE.equals(edit.getExpenseType())) freebieCost += edit.getAmount();
+		else if (AmountType.EXPERIENCE.equals(edit.getExpenseType())) experienceCost += edit.getAmount();
 	}
 	
 

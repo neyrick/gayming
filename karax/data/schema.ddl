@@ -27,9 +27,10 @@ drop sequence hibernate_sequence;
 
     create table charhistory (
         id int8 not null,
+        source int8,
         editDate timestamp,
-        expenseType int4,
-        spentAmount int4 not null,
+        amountType int4,
+        amount int4 not null,
         targetKey varchar(255),
         targetSubkey1 varchar(255),
         targetSubkey2 varchar(255),

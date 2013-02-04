@@ -40,7 +40,7 @@ public class FixedNumericFeature extends AbstractSingleFeature {
 
 	@Override
 	public void recordEdit(CharacterEdit edit) {
-		this.cost = edit.getSpentAmount();
+		this.cost = edit.getAmount();
 		this.value = edit.getValue();
 	}
 	
