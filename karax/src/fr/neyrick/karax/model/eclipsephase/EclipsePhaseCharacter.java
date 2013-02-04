@@ -26,9 +26,17 @@ public class EclipsePhaseCharacter extends GameCharacter {
 	
 	private SimpleContainerFeature<StringFeature> motivations;
 	
-	private List<VariableNumericFeature> aptitude;
+	private List<VariableNumericFeature> aptitudeBase;
 	
-	private VariableNumericFeature moxy;
+	private List<VariableNumericFeature> aptitudeTotal;
+	
+	private List<VariableNumericFeature> activeSkills;
+	
+	private List<VariableNumericFeature> knowledgeSkills;
+	
+	private List<VariableNumericFeature> psiSkills;
+	
+	private VariableNumericFeature moxie;
 
 	public StringFeature getBackground() {
 		return background;
@@ -58,18 +66,62 @@ public class EclipsePhaseCharacter extends GameCharacter {
 		this.motivations = motivations;
 	}
 
-	public void setAptitude(List<VariableNumericFeature> aptitude) {
-		this.aptitude = aptitude;
+	public void setAptitudeBase(List<VariableNumericFeature> aptitude) {
+		this.aptitudeBase = aptitude;
 	}
 
-	@XmlElementWrapper(name="aptitudes")
-	public List<VariableNumericFeature> getAptitude() {
-		return aptitude;
+	@XmlElementWrapper(name="aptitudesbase")
+	public List<VariableNumericFeature> getAptitudeBase() {
+		return aptitudeBase;
+	}
+
+	public void setAptitudeTotal(List<VariableNumericFeature> aptitude) {
+		this.aptitudeTotal = aptitude;
+	}
+
+	@XmlElementWrapper(name="aptitudestotal")
+	public List<VariableNumericFeature> getAptitudeTotal() {
+		return aptitudeTotal;
+	}
+
+	public void setActiveSkills(List<VariableNumericFeature> skills) {
+		this.activeSkills = skills;
+	}
+
+	@XmlElementWrapper(name="activeskills")
+	public List<VariableNumericFeature> getActiveSkill() {
+		return activeSkills;
+	}
+
+	public void setKnowledgeSkills(List<VariableNumericFeature> skills) {
+		this.knowledgeSkills = skills;
+	}
+
+	@XmlElementWrapper(name="knowledgeskills")
+	public List<VariableNumericFeature> getKnowledgeSkill() {
+		return knowledgeSkills;
+	}
+
+	public void setPsiSkills(List<VariableNumericFeature> skills) {
+		this.psiSkills = skills;
+	}
+
+	@XmlElementWrapper(name="psiskills")
+	public List<VariableNumericFeature> getPsiSkill() {
+		return psiSkills;
 	}
 
 	@XmlElementWrapper(name="motivations")
 	public Collection<StringFeature> getMotivation() {
 		return motivations.getActualSubFeatures();
+	}
+
+	public VariableNumericFeature getMoxie() {
+		return moxie;
+	}
+
+	public void setMoxie(VariableNumericFeature moxie) {
+		this.moxie = moxie;
 	}
 
 }

@@ -27,9 +27,9 @@ drop sequence hibernate_sequence;
 
     create table charhistory (
         id int8 not null,
-        source int8,
+        cause_id int8,
         editDate timestamp,
-        amountType int4,
+        amountType varchar(32),
         amount int4 not null,
         targetKey varchar(255),
         targetSubkey1 varchar(255),
@@ -53,12 +53,17 @@ drop sequence hibernate_sequence;
         foreign key (game_id) 
         references games;
 
-    alter table public.charhistory 
+    alter table charhistory 
+        add constraint FK79BB047ECDEEB78A 
+        foreign key (cause_id) 
+        references charhistory;
+
+    alter table charhistory 
         add constraint FK79BB047E5027529B 
         foreign key (character_id) 
         references metachars;
 
-    alter table public.expgains 
+    alter table expgains 
         add constraint FK8CBA64D75027529B 
         foreign key (character_id) 
         references metachars;

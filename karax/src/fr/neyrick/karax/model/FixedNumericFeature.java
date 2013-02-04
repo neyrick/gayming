@@ -11,7 +11,7 @@ public class FixedNumericFeature extends AbstractSingleFeature {
 
 //	private static final NumberFormat format = NumberFormat.getNumberInstance();
 	
-	private int cost;	
+	private int amount;	
 	
 	private String value;
 	
@@ -22,8 +22,8 @@ public class FixedNumericFeature extends AbstractSingleFeature {
 	}
 
 	@XmlAttribute
-	public int getCost() {
-		return cost;
+	public int getAmount() {
+		return amount;
 	}
 
 	public FixedNumericFeature(ContainerFeature container, String key) {
@@ -40,7 +40,7 @@ public class FixedNumericFeature extends AbstractSingleFeature {
 
 	@Override
 	public void recordEdit(CharacterEdit edit) {
-		this.cost = edit.getAmount();
+		this.amount = edit.getAmount();
 		this.value = edit.getValue();
 	}
 	

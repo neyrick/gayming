@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,7 +20,12 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @XmlRootElement
 public class CharacterEdit {
 
-	public enum AmountType { NONE, CREATION, FREEBIE, FREE, EXPERIENCE, MODIFIER};
+	public static final String CREATION = "CREATION";
+	public static final String FREE = "FREE";
+	public static final String FREEBIE = "FREEBIE";
+	public static final String MODIFIER = "MODIFIER";
+	public static final String EXPERIENCE = "EXPERIENCE";
+	
 	
 	@Id
 	@GeneratedValue
@@ -33,8 +36,7 @@ public class CharacterEdit {
 	@ManyToOne
 	private MetaCharacter character;
 	
-	@Enumerated(EnumType.ORDINAL)
-	private AmountType amountType;
+	private String amountType;
 	
 	private String targetKey;
 	
@@ -72,11 +74,11 @@ public class CharacterEdit {
 		this.character = character;
 	}
 
-	public AmountType getExpenseType() {
+	public String getAmountType() {
 		return amountType;
 	}
 
-	public void setExpenseType(AmountType expenseType) {
+	public void setAmountType(String expenseType) {
 		this.amountType = expenseType;
 	}
 

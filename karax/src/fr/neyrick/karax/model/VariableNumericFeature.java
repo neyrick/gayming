@@ -1,6 +1,8 @@
 package fr.neyrick.karax.model;
 
 import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -9,7 +11,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 import fr.neyrick.karax.entities.generic.CharacterEdit;
-import fr.neyrick.karax.entities.generic.CharacterEdit.AmountType;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
@@ -17,36 +18,41 @@ public class VariableNumericFeature extends AbstractSingleFeature {
 
 	private static final NumberFormat format = NumberFormat.getNumberInstance();
 	
-	private int creationCost = 0;	
-	private int freeCost = 0;	
-	private int freebieCost = 0;	
-	private int experienceCost = 0;	
-	private int modifier = 0;
-	
+	private Map<String, Integer> amounts = new HashMap<>();
+		
 	private FeatureCalculator<VariableNumericFeature> calculator;
 	
-	public int getCreationCost() {
-		return creationCost;
+	public int getAmount(String amountKey) {
+		Integer result = amounts.get(amountKey);
+		return (result == null ? 0 : result.intValue());
 	}
-
+	
+	public int getCreationCost() {
+		return getAmount(CharacterEdit.CREATION);
+	}
+	
+	public int getExperienceCost() {
+		return getAmount(CharacterEdit.EXPERIENCE);
+	}
+	
 	public int getFreeCost() {
-		return freeCost;
+		return getAmount(CharacterEdit.FREE);
 	}
 	
 	public int getFreebieCost() {
-		return freebieCost;
+		return getAmount(CharacterEdit.FREEBIE);
 	}
-
-	public int getExperienceCost() {
-		return experienceCost;
-	}
-
+	
 	public int getModifier() {
-		return modifier;
+		return getAmount(CharacterEdit.MODIFIER);
 	}
-
+	
 	public int getTotalCost() {
-		return creationCost + freeCost + freebieCost + experienceCost;
+		int result = 0;
+		for (Integer value : amounts.values()) {
+			result += value;
+		}
+		return result;
 	}
 	
 	public VariableNumericFeature(ContainerFeature container, String key, FeatureCalculator<VariableNumericFeature> calculator) {
@@ -75,31 +81,18 @@ public class VariableNumericFeature extends AbstractSingleFeature {
 		return format.format(calculator.calculate(this));
 	}
 
+	public Number getNumericValue() {
+		return calculator.calculate(this);
+	}
+
 	@Override
 	public void recordEdit(CharacterEdit edit) {
-		switch (edit.getExpenseType()) {
-			case CREATION:
-				creationCost += edit.getAmount();
-				break;
-			case FREE:
-				freeCost += edit.getAmount();
-				break;
-			case FREEBIE:
-				freebieCost += edit.getAmount();
-				break;
-			case EXPERIENCE:
-				experienceCost += edit.getAmount();
-				break;
-			case MODIFIER:
-				modifier += edit.getAmount();
-				break;			
-			default:break;
-		
+		String amountType = edit.getAmountType();
+		if (amountType != null) {
+			Integer currentValue = amounts.get(amountType);
+			if (currentValue == null) amounts.put(amountType, edit.getAmount());
+			else amounts.put(amountType, edit.getAmount() + currentValue);
 		}
-		if (AmountType.CREATION.equals(edit.getExpenseType())) creationCost += edit.getAmount();
-		else if (AmountType.FREE.equals(edit.getExpenseType())) freeCost += edit.getAmount();
-		else if (AmountType.FREEBIE.equals(edit.getExpenseType())) freebieCost += edit.getAmount();
-		else if (AmountType.EXPERIENCE.equals(edit.getExpenseType())) experienceCost += edit.getAmount();
 	}
 	
 
