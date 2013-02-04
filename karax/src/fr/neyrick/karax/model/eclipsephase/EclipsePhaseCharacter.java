@@ -1,7 +1,7 @@
 package fr.neyrick.karax.model.eclipsephase;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import fr.neyrick.karax.model.GameCharacter;
+import fr.neyrick.karax.model.SimpleContainerFeature;
 import fr.neyrick.karax.model.StringFeature;
 import fr.neyrick.karax.model.VariableNumericFeature;
 
@@ -23,9 +24,11 @@ public class EclipsePhaseCharacter extends GameCharacter {
 	
 	private StringFeature gender;
 	
-	private Set<StringFeature> motivation;
+	private SimpleContainerFeature<StringFeature> motivations;
 	
 	private List<VariableNumericFeature> aptitude;
+	
+	private VariableNumericFeature moxy;
 
 	public StringFeature getBackground() {
 		return background;
@@ -51,22 +54,22 @@ public class EclipsePhaseCharacter extends GameCharacter {
 		this.gender = gender;
 	}
 
-	@XmlElementWrapper(name="Motivations")
-	public Set<StringFeature> getMotivation() {
-		return motivation;
-	}
-
-	public void setMotivation(Set<StringFeature> motivation) {
-		this.motivation = motivation;
+	public void setMotivations( SimpleContainerFeature<StringFeature> motivations) {
+		this.motivations = motivations;
 	}
 
 	public void setAptitude(List<VariableNumericFeature> aptitude) {
 		this.aptitude = aptitude;
 	}
 
-	@XmlElementWrapper(name="Aptitudes")
+	@XmlElementWrapper(name="aptitudes")
 	public List<VariableNumericFeature> getAptitude() {
 		return aptitude;
+	}
+
+	@XmlElementWrapper(name="motivations")
+	public Collection<StringFeature> getMotivation() {
+		return motivations.getActualSubFeatures();
 	}
 
 }

@@ -9,7 +9,7 @@ import fr.neyrick.karax.entities.generic.CharacterEdit;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class StringFeature extends AbstractFeature {
+public class StringFeature extends AbstractSingleFeature {
 
 	private String value;	
 	
@@ -19,8 +19,12 @@ public class StringFeature extends AbstractFeature {
 		return value;
 	}
 
+	public StringFeature(ContainerFeature parent, String key) {
+		super(parent, key);
+	}
+
 	public StringFeature(String key) {
-		super(key);
+		super(null, key);
 	}
 
 	@Override
@@ -28,9 +32,8 @@ public class StringFeature extends AbstractFeature {
 		this.value = edit.getValue();
 	}
 	
-	private StringFeature() {
+	public StringFeature() {
 		super(null);
-		throw new UnsupportedOperationException("Dummy constructor");
 	}
 	
 }

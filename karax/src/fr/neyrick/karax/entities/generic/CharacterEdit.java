@@ -35,7 +35,11 @@ public class CharacterEdit {
 	
 	private String targetKey;
 	
-	private String locator;
+	private String targetSubKey1;
+	
+	private String targetSubKey2;
+	
+	private String targetSubKey3;
 	
 	private String value;
 	
@@ -75,12 +79,28 @@ public class CharacterEdit {
 		this.targetKey = targetKey;
 	}
 	
-	public String getLocator() {
-		return locator;
+	public String getTargetSubKey1() {
+		return targetSubKey1;
 	}
 
-	public void setLocator(String locator) {
-		this.locator = locator;
+	public void setTargetSubKey1(String targetSubKey1) {
+		this.targetSubKey1 = targetSubKey1;
+	}
+
+	public String getTargetSubKey2() {
+		return targetSubKey2;
+	}
+
+	public void setTargetSubKey2(String targetSubKey2) {
+		this.targetSubKey2 = targetSubKey2;
+	}
+
+	public String getTargetSubKey3() {
+		return targetSubKey3;
+	}
+
+	public void setTargetSubKey3(String targetSubKey3) {
+		this.targetSubKey3 = targetSubKey3;
 	}
 
 	public int getSpentAmount() {

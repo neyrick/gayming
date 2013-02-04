@@ -12,7 +12,7 @@ import fr.neyrick.karax.entities.generic.MetaCharacter;
 @RequestScoped
 public abstract class CharacterFactory {
 
-	private Map<String, EditListener> editListenersMap = new TreeMap<>();
+	private Map<String, CharacterFeature> editListenersMap = new TreeMap<>();
 	
 	public GameCharacter createCharacter(MetaCharacter metaCharacter)  {
 	    GameCharacter character = initCharacter(metaCharacter);
@@ -33,18 +33,18 @@ public abstract class CharacterFactory {
 		character.setLastUpdate(metaCharacter.getLastUpdate());
 	}
 
-	public <T extends EditListener> T registerListener(T listener) {
+	public <T extends CharacterFeature> T registerListener(T listener) {
 		editListenersMap.put(listener.getKey(), listener);
 		return listener;
 	}
 
-	public <T extends EditListener> T unregisterListener(T listener) {
+	public <T extends CharacterFeature> T unregisterListener(T listener) {
 		editListenersMap.remove(listener.getKey());
 		return listener;
 	}
 	
 	public void processEdits(List<CharacterEdit> edits) {
-		EditListener listener = null;
+		CharacterFeature listener = null;
 		for(CharacterEdit edit : edits) {
 			listener = editListenersMap.get(edit.getTargetKey());
 			if (listener != null) listener.recordEdit(edit);

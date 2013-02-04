@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlValue;
 import fr.neyrick.karax.entities.generic.CharacterEdit;
 
 @XmlRootElement
-public class FixedNumericFeature extends AbstractFeature {
+public class FixedNumericFeature extends AbstractSingleFeature {
 
 //	private static final NumberFormat format = NumberFormat.getNumberInstance();
 	
@@ -26,8 +26,16 @@ public class FixedNumericFeature extends AbstractFeature {
 		return cost;
 	}
 
+	public FixedNumericFeature(ContainerFeature container, String key) {
+		super(container, key);
+	}
+
 	public FixedNumericFeature(String key) {
 		super(key);
+	}
+
+	public FixedNumericFeature() {
+		super(null);
 	}
 
 	@Override

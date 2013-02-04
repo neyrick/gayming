@@ -10,6 +10,7 @@ import fr.neyrick.karax.model.CharacterFactory;
 import fr.neyrick.karax.model.FeatureCalculator;
 import fr.neyrick.karax.model.GameCharacter;
 import fr.neyrick.karax.model.Ruleset;
+import fr.neyrick.karax.model.SimpleContainerFeature;
 import fr.neyrick.karax.model.StringFeature;
 import fr.neyrick.karax.model.VariableNumericFeature;
 
@@ -42,6 +43,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		aptitudes.add(registerListener(new VariableNumericFeature("APT_SAV", aptitudeCalculator)));
 		character.setAptitude(aptitudes);
 		
+		character.setMotivations(registerListener(new SimpleContainerFeature<StringFeature>("MOTIVATION", StringFeature.class)));
 		// TODO Auto-generated method stub
 		return character;
 	}

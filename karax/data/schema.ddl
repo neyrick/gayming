@@ -29,9 +29,11 @@ drop sequence hibernate_sequence;
         id int8 not null,
         editDate timestamp,
         expenseType int4,
-        locator varchar(255),
         spentAmount int4 not null,
         targetKey varchar(255),
+        targetSubkey1 varchar(255),
+        targetSubkey2 varchar(255),
+        targetSubkey3 varchar(255),
         value varchar(255),
         character_id int8,
         primary key (id)

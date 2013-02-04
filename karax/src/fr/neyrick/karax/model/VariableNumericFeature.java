@@ -13,7 +13,7 @@ import fr.neyrick.karax.entities.generic.CharacterEdit.ExpenseType;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class VariableNumericFeature extends AbstractFeature {
+public class VariableNumericFeature extends AbstractSingleFeature {
 
 	private static final NumberFormat format = NumberFormat.getNumberInstance();
 	
@@ -44,14 +44,18 @@ public class VariableNumericFeature extends AbstractFeature {
 		return creationCost + freeCost + freebieCost + experienceCost;
 	}
 	
-	public VariableNumericFeature(String key, FeatureCalculator<VariableNumericFeature> calculator) {
-		super(key);
+	public VariableNumericFeature(ContainerFeature container, String key, FeatureCalculator<VariableNumericFeature> calculator) {
+		super(container, key);
 		this.calculator = calculator;
 	}
 
-	private VariableNumericFeature() {
+	public VariableNumericFeature(String key, FeatureCalculator<VariableNumericFeature> calculator) {
+		super(null, key);
+		this.calculator = calculator;
+	}
+
+	public VariableNumericFeature() {
 		super(null);
-		throw new UnsupportedOperationException("Dummy constructor");
 	}
 	
 	@XmlAttribute
