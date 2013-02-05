@@ -31,15 +31,21 @@ public abstract class ContainerFeature extends AbstractFeature {
 	public ContainerFeature(String key) {
 		super(null, key);
 	}
+	
+	@Override
+	public void setContainer(ContainerFeature parent) {
+		super.setContainer(parent);
+		this.depth = parent.depth + 1;		
+	}
 
 	private ContainerFeature() {
 		super(null, null);
 		throw new UnsupportedOperationException("Dummy constructor");
 	}
 	
-	protected abstract CharacterFeature addFeature(String subItemKey, CharacterEdit edit);
+	public abstract CharacterFeature addFeature(String subItemKey, CharacterEdit edit);
 	
-	protected abstract CharacterFeature getSubFeature(String key);
+	public abstract CharacterFeature getSubFeature(String key);
 	
 	@Override
 	public void recordEdit(CharacterEdit edit) {

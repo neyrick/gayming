@@ -1,7 +1,7 @@
 package fr.neyrick.karax.model;
 
-public interface FeatureCalculator<T extends CharacterFeature> {
+public interface FeatureCalculator {
 
-	public Number calculate(T feature);
+	public Number calculate(CharacterFeature feature);
 	
 }

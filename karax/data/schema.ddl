@@ -1,11 +1,11 @@
 set search_path to 'public';
 
-drop table charhistory;
-drop table expgains;
-drop table metachars;
-drop table games;
+drop table if exists charhistory;
+drop table if exists expgains;
+drop table if exists metachars;
+drop table if exists games;
 
-drop sequence hibernate_sequence;
+drop sequence if exists hibernate_sequence;
 
     create table games (
     	ruleset varchar(255) not null,

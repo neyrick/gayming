@@ -30,7 +30,16 @@ insert into charhistory (id, cause_id, editdate, amounttype, amount, targetkey, 
  (15, null, localtimestamp, 'CREATION', 15, 'APT_BASE_SAV', null, null, null, null, 2),
  (16, null, localtimestamp, 'MORPH', 10, 'APT_TOTAL_SOM', null, null, null, null, 2),
  (17, null, localtimestamp, 'MORPH', 5, 'APT_TOTAL_COO', null, null, null, null, 2),
- (18, null, localtimestamp, 'CREATION', 20, 'ASK_BLADES', null, null, null, null, 2);
+-- (18, null, localtimestamp, 'CREATION', 20, 'ASK_BLADES', null, null, null, null, 2),
+ (18, null, localtimestamp, 'CREATION', 20, 'ASK', 'BLADES', null, null, null, 2),
+ (20, null, localtimestamp, 'CREATION', 0, 'IDENTITY', '1', 'NAME', null, 'Ocho', 2),
+ (21, null, localtimestamp, 'CREATION', 0, 'IDENTITY', '1', 'NOTES', null, 'Notes Ocho', 2),
+ (22, null, localtimestamp, 'CREATION', 0, 'IDENTITY', '2', 'NAME', null, 'Esteban Valdez', 2),
+ (23, null, localtimestamp, 'CREATION', 0, 'IDENTITY', '2', 'NOTES', null, 'Notes Esteban', 2),
+ (24, null, localtimestamp, 'FREE', 40, 'IDENTITY', '1', 'REPUTATION', 'I', null, 2),
+ (25, null, localtimestamp, 'FREE', 30, 'IDENTITY', '2', 'REPUTATION', 'C', null, 2),
+ (26, null, localtimestamp, 'FREE', 10, 'IDENTITY', '2', 'REPUTATION', 'A', null, 2)
+ ;
  
 
  

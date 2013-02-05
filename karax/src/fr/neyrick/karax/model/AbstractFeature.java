@@ -10,6 +10,20 @@ public abstract class AbstractFeature implements CharacterFeature {
 	
 	private String key;
 	
+	private FeatureCalculator calculator = null;
+
+	public Number getNumericValue() {
+		return calculator.calculate(this);
+	}
+	
+	public FeatureCalculator getCalculator() {
+		return calculator;
+	}
+
+	public void setCalculator(FeatureCalculator calculator) {
+		this.calculator = calculator;
+	}
+
 	public String getKey() {
 		return key;
 	}

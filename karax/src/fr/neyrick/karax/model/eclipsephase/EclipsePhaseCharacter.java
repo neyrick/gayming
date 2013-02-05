@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 import fr.neyrick.karax.model.GameCharacter;
 import fr.neyrick.karax.model.SimpleContainerFeature;
@@ -15,9 +17,17 @@ import fr.neyrick.karax.model.VariableNumericFeature;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlSeeAlso({Identity.class})
 public class EclipsePhaseCharacter extends GameCharacter {
 
-
+	public static final String KEY_COG = "COG";
+	public static final String KEY_COO = "COO";
+	public static final String KEY_INT = "INT";
+	public static final String KEY_SOM = "SOM";
+	public static final String KEY_WIL = "WIL";
+	public static final String KEY_REF = "REF";
+	public static final String KEY_SAV = "SAV";
+	
 	private StringFeature background;
 	
 	private StringFeature faction;
@@ -30,13 +40,15 @@ public class EclipsePhaseCharacter extends GameCharacter {
 	
 	private List<VariableNumericFeature> aptitudeTotal;
 	
-	private List<VariableNumericFeature> activeSkills;
+	private EclipsePhaseActiveSkillsList activeSkills;
+/*	
+	private SimpleContainerFeature<VariableNumericFeature> knowledgeSkills;
 	
-	private List<VariableNumericFeature> knowledgeSkills;
-	
-	private List<VariableNumericFeature> psiSkills;
-	
+	private SimpleContainerFeature<VariableNumericFeature> psiSkills;
+*/	
 	private VariableNumericFeature moxie;
+	
+	private SimpleContainerFeature<Identity> identities;
 
 	public StringFeature getBackground() {
 		return background;
@@ -84,33 +96,35 @@ public class EclipsePhaseCharacter extends GameCharacter {
 		return aptitudeTotal;
 	}
 
-	public void setActiveSkills(List<VariableNumericFeature> skills) {
+	public void setActiveSkills(EclipsePhaseActiveSkillsList skills) {
 		this.activeSkills = skills;
 	}
 
-	@XmlElementWrapper(name="activeskills")
-	public List<VariableNumericFeature> getActiveSkill() {
+	@XmlElement(name="activeskills")
+	public EclipsePhaseActiveSkillsList getActiveSkills() {
 		return activeSkills;
 	}
-
-	public void setKnowledgeSkills(List<VariableNumericFeature> skills) {
+/*
+	public void setKnowledgeSkills(SimpleContainerFeature<VariableNumericFeature> skills) {
 		this.knowledgeSkills = skills;
 	}
 
 	@XmlElementWrapper(name="knowledgeskills")
-	public List<VariableNumericFeature> getKnowledgeSkill() {
-		return knowledgeSkills;
+	@XmlElement(name="skill")
+	public Collection<VariableNumericFeature> getKnowledgeSkills() {
+		return knowledgeSkills.getActualSubFeatures();
 	}
 
-	public void setPsiSkills(List<VariableNumericFeature> skills) {
+	public void setPsiSkills(SimpleContainerFeature<VariableNumericFeature> skills) {
 		this.psiSkills = skills;
 	}
 
 	@XmlElementWrapper(name="psiskills")
-	public List<VariableNumericFeature> getPsiSkill() {
-		return psiSkills;
+	@XmlElement(name="skill")
+	public Collection<VariableNumericFeature> getPsiSkills() {
+		return psiSkills.getActualSubFeatures();
 	}
-
+*/
 	@XmlElementWrapper(name="motivations")
 	public Collection<StringFeature> getMotivation() {
 		return motivations.getActualSubFeatures();
@@ -124,4 +138,15 @@ public class EclipsePhaseCharacter extends GameCharacter {
 		this.moxie = moxie;
 	}
 
+	@XmlElementWrapper(name="identities")
+	@XmlElement(name="identity")
+	public Collection<Identity> getIdentities() {
+		return identities.getActualSubFeatures();
+	}
+
+	public void setIdentities(SimpleContainerFeature<Identity> identities) {
+		this.identities = identities;
+	}
+
+	
 }

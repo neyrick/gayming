@@ -16,6 +16,7 @@ public class StringFeature extends AbstractSingleFeature {
 	@Override
 	@XmlValue
 	public String getValue() {
+		if (value == null) return "";
 		return value;
 	}
 

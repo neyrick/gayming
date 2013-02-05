@@ -20,8 +20,6 @@ public class VariableNumericFeature extends AbstractSingleFeature {
 	
 	private Map<String, Integer> amounts = new HashMap<>();
 		
-	private FeatureCalculator<VariableNumericFeature> calculator;
-	
 	public int getAmount(String amountKey) {
 		Integer result = amounts.get(amountKey);
 		return (result == null ? 0 : result.intValue());
@@ -55,14 +53,14 @@ public class VariableNumericFeature extends AbstractSingleFeature {
 		return result;
 	}
 	
-	public VariableNumericFeature(ContainerFeature container, String key, FeatureCalculator<VariableNumericFeature> calculator) {
+	public VariableNumericFeature(ContainerFeature container, String key, FeatureCalculator calculator) {
 		super(container, key);
-		this.calculator = calculator;
+		setCalculator(calculator);
 	}
 
-	public VariableNumericFeature(String key, FeatureCalculator<VariableNumericFeature> calculator) {
+	public VariableNumericFeature(String key, FeatureCalculator calculator) {
 		super(null, key);
-		this.calculator = calculator;
+		setCalculator(calculator);
 	}
 
 	public VariableNumericFeature() {
@@ -78,11 +76,7 @@ public class VariableNumericFeature extends AbstractSingleFeature {
 	@XmlValue
 	@Override
 	public String getValue() {
-		return format.format(calculator.calculate(this));
-	}
-
-	public Number getNumericValue() {
-		return calculator.calculate(this);
+		return format.format(getNumericValue());
 	}
 
 	@Override

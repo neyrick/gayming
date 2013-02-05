@@ -1,5 +1,6 @@
 package fr.neyrick.karax.model;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -8,7 +9,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import fr.neyrick.karax.entities.generic.CharacterEdit;
 
 @XmlTransient
-public abstract class ComplexContainerFeature<T extends CharacterFeature> extends ContainerFeature {
+public abstract class ComplexContainerFeature extends ContainerFeature {
 
 	private Map<String, CharacterFeature> featuresMap = new TreeMap<>();
 	
@@ -28,16 +29,18 @@ public abstract class ComplexContainerFeature<T extends CharacterFeature> extend
 	protected abstract CharacterFeature createSubFeature(String subItemKey, CharacterEdit edit);
 	
 	@Override
-	protected CharacterFeature addFeature(String subItemKey, CharacterEdit edit) {
+	public CharacterFeature addFeature(String subItemKey, CharacterEdit edit) {
 		CharacterFeature feature = createSubFeature(subItemKey, edit);
 		featuresMap.put(subItemKey, feature);
 		return feature;
 	}
 
 	@Override
-	protected CharacterFeature getSubFeature(String key) {
+	public CharacterFeature getSubFeature(String key) {
 		return featuresMap.get(key);
 	}
 
-	
+	protected Collection<CharacterFeature> getFeatures() {
+		return featuresMap.values();
+	}
 }

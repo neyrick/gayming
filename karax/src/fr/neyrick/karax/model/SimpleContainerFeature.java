@@ -16,9 +16,24 @@ public class SimpleContainerFeature<T extends AbstractFeature> extends Container
 	
 	private final Class<? extends T> featureClass;
 	
+	private FeatureCalculator calculator = null;
+	
+	public SimpleContainerFeature(ContainerFeature parent, String key, Class<T> featureClass, FeatureCalculator calculator) {
+		super(parent, key);
+		this.featureClass = featureClass;
+		this.calculator = calculator;
+		
+	}
+
 	public SimpleContainerFeature(ContainerFeature parent, String key, Class<T> featureClass) {
 		super(parent, key);
 		this.featureClass = featureClass;
+	}
+
+	public SimpleContainerFeature(String key, Class<T> featureClass, FeatureCalculator calculator) {
+		super(key);
+		this.featureClass = featureClass;
+		this.calculator = calculator;
 	}
 
 	public SimpleContainerFeature(String key, Class<T> featureClass) {
@@ -26,13 +41,13 @@ public class SimpleContainerFeature<T extends AbstractFeature> extends Container
 		this.featureClass = featureClass;
 	}
 
-	private SimpleContainerFeature() {
+	protected SimpleContainerFeature() {
 		super(null, null);
 		throw new UnsupportedOperationException("Dummy constructor");
 	}
 	
 	@Override
-	protected CharacterFeature addFeature(String subItemKey, CharacterEdit edit) {
+	public CharacterFeature addFeature(String subItemKey, CharacterEdit edit) {
 	    T feature;
 		try {
 			feature = featureClass.newInstance();
@@ -40,13 +55,14 @@ public class SimpleContainerFeature<T extends AbstractFeature> extends Container
 			throw new RuntimeException(e);
 		}
 	    feature.setContainer(this);
-	    feature.setKey(getSubItemKey(edit));
+	    feature.setKey(subItemKey);
+	    if (calculator != null) feature.setCalculator(calculator);
 	    featuresMap.put(subItemKey, feature);
 	    return feature;
 	}
 
 	@Override
-	protected CharacterFeature getSubFeature(String key) {
+	public CharacterFeature getSubFeature(String key) {
 		return featuresMap.get(key);
 	}
 
