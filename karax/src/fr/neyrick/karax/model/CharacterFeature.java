@@ -11,5 +11,5 @@ public interface CharacterFeature {
 	
 	public String getKey();
 	
-	public ContainerFeature getContainer();
+	public FeaturesCollection getContainer();
 }

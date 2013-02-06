@@ -4,22 +4,49 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.XmlTransient;
 
 import fr.neyrick.karax.entities.generic.CharacterEdit;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
-public class VariableNumericFeature extends AbstractSingleFeature {
+@XmlTransient
+public abstract class VariableNumericFeature extends AbstractSingleFeature {
 
 	private static final NumberFormat format = NumberFormat.getNumberInstance();
 	
 	private Map<String, Integer> amounts = new HashMap<>();
 		
+	private FeatureCalculator calculator = null;
+	
+	private boolean uptodate = false;
+
+	private Number value = 0;
+	
+	protected Number calculate() {
+		return calculator.calculate(this);
+	}
+	
+	protected void refresh() {
+		if (!uptodate) setValue(calculate());
+		uptodate = true;
+	}
+	
+	protected String format(Number value) {
+		return format.format(value);
+	}
+	
+	public Number getNumericValue() {
+		refresh();
+		return value;
+	}
+	
+	public FeatureCalculator getCalculator() {
+		return calculator;
+	}
+
+	public void setCalculator(FeatureCalculator calculator) {
+		this.calculator = calculator;
+	}
+
 	public int getAmount(String amountKey) {
 		Integer result = amounts.get(amountKey);
 		return (result == null ? 0 : result.intValue());
@@ -47,13 +74,13 @@ public class VariableNumericFeature extends AbstractSingleFeature {
 	
 	public int getTotalCost() {
 		int result = 0;
-		for (Integer value : amounts.values()) {
-			result += value;
+		for (Map.Entry<String, Integer> entry : amounts.entrySet()) {
+			if (!CharacterEdit.MODIFIER.equals(entry.getKey())) result += entry.getValue();
 		}
 		return result;
 	}
 	
-	public VariableNumericFeature(ContainerFeature container, String key, FeatureCalculator calculator) {
+	public VariableNumericFeature(FeaturesCollection container, String key, FeatureCalculator calculator) {
 		super(container, key);
 		setCalculator(calculator);
 	}
@@ -63,22 +90,15 @@ public class VariableNumericFeature extends AbstractSingleFeature {
 		setCalculator(calculator);
 	}
 
-	public VariableNumericFeature() {
-		super(null);
-	}
-	
-	@XmlAttribute
-	@Override
-	public String getKey() {
-		return super.getKey();
-	}
-
-	@XmlValue
 	@Override
 	public String getValue() {
-		return format.format(getNumericValue());
+		return format(getNumericValue());
 	}
 
+	protected void setValue(Number value) {
+		this.value = value;
+	}
+	
 	@Override
 	public void recordEdit(CharacterEdit edit) {
 		String amountType = edit.getAmountType();
@@ -86,6 +106,7 @@ public class VariableNumericFeature extends AbstractSingleFeature {
 			Integer currentValue = amounts.get(amountType);
 			if (currentValue == null) amounts.put(amountType, edit.getAmount());
 			else amounts.put(amountType, edit.getAmount() + currentValue);
+			uptodate = false;
 		}
 	}
 	

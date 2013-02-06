@@ -11,8 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 import fr.neyrick.karax.model.GameCharacter;
-import fr.neyrick.karax.model.SimpleContainerFeature;
+import fr.neyrick.karax.model.StaticFeaturesCollection;
 import fr.neyrick.karax.model.StringFeature;
+import fr.neyrick.karax.model.VariableFeaturesCollection;
 import fr.neyrick.karax.model.VariableNumericFeature;
 
 @XmlRootElement
@@ -34,21 +35,19 @@ public class EclipsePhaseCharacter extends GameCharacter {
 	
 	private StringFeature gender;
 	
-	private SimpleContainerFeature<StringFeature> motivations;
+	private StaticFeaturesCollection<StringFeature> motivations;
 	
-	private List<VariableNumericFeature> aptitudeBase;
+	private VariableFeaturesCollection<Aptitude> aptitudes;
 	
-	private List<VariableNumericFeature> aptitudeTotal;
+	private EclipsePhaseSkillList activeSkills;
 	
-	private EclipsePhaseActiveSkillsList activeSkills;
-/*	
-	private SimpleContainerFeature<VariableNumericFeature> knowledgeSkills;
+	private EclipsePhaseSkillList knowledgeSkills;
 	
-	private SimpleContainerFeature<VariableNumericFeature> psiSkills;
-*/	
+	private EclipsePhaseSkillList psiSkills;
+
 	private VariableNumericFeature moxie;
 	
-	private SimpleContainerFeature<Identity> identities;
+	private StaticFeaturesCollection<Identity> identities;
 
 	public StringFeature getBackground() {
 		return background;
@@ -74,57 +73,50 @@ public class EclipsePhaseCharacter extends GameCharacter {
 		this.gender = gender;
 	}
 
-	public void setMotivations( SimpleContainerFeature<StringFeature> motivations) {
+	public void setMotivations( StaticFeaturesCollection<StringFeature> motivations) {
 		this.motivations = motivations;
 	}
 
-	public void setAptitudeBase(List<VariableNumericFeature> aptitude) {
-		this.aptitudeBase = aptitude;
+	public void setAptitudes(VariableFeaturesCollection<Aptitude> aptitudes) {
+		this.aptitudes = aptitudes;
 	}
 
-	@XmlElementWrapper(name="aptitudesbase")
-	public List<VariableNumericFeature> getAptitudeBase() {
-		return aptitudeBase;
+	@XmlElementWrapper(name="aptitudes")
+	@XmlElement(name="aptitude")
+	public Collection<Aptitude> getAptitudes() {
+		return aptitudes.getActualSubFeatures();
 	}
 
-	public void setAptitudeTotal(List<VariableNumericFeature> aptitude) {
-		this.aptitudeTotal = aptitude;
-	}
-
-	@XmlElementWrapper(name="aptitudestotal")
-	public List<VariableNumericFeature> getAptitudeTotal() {
-		return aptitudeTotal;
-	}
-
-	public void setActiveSkills(EclipsePhaseActiveSkillsList skills) {
+	public void setActiveSkills(EclipsePhaseSkillList skills) {
 		this.activeSkills = skills;
 	}
 
-	@XmlElement(name="activeskills")
-	public EclipsePhaseActiveSkillsList getActiveSkills() {
-		return activeSkills;
+	@XmlElementWrapper(name="activeskills")
+	@XmlElement(name="skill")
+	public Collection<Skill> getActiveSkills() {
+		return activeSkills.getActualSubFeatures();
 	}
-/*
-	public void setKnowledgeSkills(SimpleContainerFeature<VariableNumericFeature> skills) {
+
+	public void setKnowledgeSkills(EclipsePhaseSkillList skills) {
 		this.knowledgeSkills = skills;
 	}
 
 	@XmlElementWrapper(name="knowledgeskills")
 	@XmlElement(name="skill")
-	public Collection<VariableNumericFeature> getKnowledgeSkills() {
+	public Collection<Skill> getKnowledgeSkills() {
 		return knowledgeSkills.getActualSubFeatures();
 	}
 
-	public void setPsiSkills(SimpleContainerFeature<VariableNumericFeature> skills) {
+	public void setPsiSkills(EclipsePhaseSkillList skills) {
 		this.psiSkills = skills;
 	}
 
 	@XmlElementWrapper(name="psiskills")
 	@XmlElement(name="skill")
-	public Collection<VariableNumericFeature> getPsiSkills() {
+	public Collection<Skill> getPsiSkills() {
 		return psiSkills.getActualSubFeatures();
 	}
-*/
+
 	@XmlElementWrapper(name="motivations")
 	public Collection<StringFeature> getMotivation() {
 		return motivations.getActualSubFeatures();
@@ -144,9 +136,9 @@ public class EclipsePhaseCharacter extends GameCharacter {
 		return identities.getActualSubFeatures();
 	}
 
-	public void setIdentities(SimpleContainerFeature<Identity> identities) {
+	public void setIdentities(StaticFeaturesCollection<Identity> identities) {
 		this.identities = identities;
 	}
 
-	
+
 }

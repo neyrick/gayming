@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlTransient
 public abstract class AbstractSingleFeature extends AbstractFeature {
 
-	public AbstractSingleFeature(ContainerFeature container, String key) {
+	public AbstractSingleFeature(FeaturesCollection container, String key) {
 		super(container, key);
 	}
 

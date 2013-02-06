@@ -6,12 +6,12 @@ import fr.neyrick.karax.model.VariableNumericFeature;
 
 public class SkillCalculator implements FeatureCalculator{
 
-	private VariableNumericFeature baseFeature;
+	private VariableNumericFeature aptitudeFeature;
 	
 	@Override
 	public Number calculate(CharacterFeature feature) {
 		VariableNumericFeature targetFeature = (VariableNumericFeature)feature;
-		int result = baseFeature.getNumericValue().intValue();
+		int result = aptitudeFeature.getNumericValue().intValue();
 		result += targetFeature.getTotalCost();
 		if (result > 60) result -= (result - 60) / 2;
 		return result;
@@ -19,7 +19,7 @@ public class SkillCalculator implements FeatureCalculator{
 
 	public SkillCalculator(VariableNumericFeature baseFeature) {
 		super();
-		this.baseFeature = baseFeature;
+		this.aptitudeFeature = baseFeature;
 	}
 
 }

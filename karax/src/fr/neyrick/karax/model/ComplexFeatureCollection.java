@@ -9,19 +9,19 @@ import javax.xml.bind.annotation.XmlTransient;
 import fr.neyrick.karax.entities.generic.CharacterEdit;
 
 @XmlTransient
-public abstract class ComplexContainerFeature extends ContainerFeature {
+public abstract class ComplexFeatureCollection extends FeaturesCollection {
 
 	private Map<String, CharacterFeature> featuresMap = new TreeMap<>();
 	
-	public ComplexContainerFeature(ContainerFeature parent, String key) {
+	public ComplexFeatureCollection(FeaturesCollection parent, String key) {
 		super(parent, key);
 	}
 
-	public ComplexContainerFeature(String key) {
+	public ComplexFeatureCollection(String key) {
 		super(key);
 	}
 
-	private ComplexContainerFeature() {
+	private ComplexFeatureCollection() {
 		super(null, null);
 		throw new UnsupportedOperationException("Dummy constructor");
 	}

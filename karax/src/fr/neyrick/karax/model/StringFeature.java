@@ -20,7 +20,7 @@ public class StringFeature extends AbstractSingleFeature {
 		return value;
 	}
 
-	public StringFeature(ContainerFeature parent, String key) {
+	public StringFeature(FeaturesCollection parent, String key) {
 		super(parent, key);
 	}
 

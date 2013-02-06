@@ -6,7 +6,7 @@ import fr.neyrick.karax.entities.generic.CharacterEdit;
 
 
 @XmlTransient
-public abstract class ContainerFeature extends AbstractFeature {
+public abstract class FeaturesCollection extends AbstractFeature {
 
 	private int depth = 0;
 	
@@ -23,22 +23,22 @@ public abstract class ContainerFeature extends AbstractFeature {
 		}
 	}
 	
-	public ContainerFeature(ContainerFeature parent, String key) {
+	public FeaturesCollection(FeaturesCollection parent, String key) {
 		super(parent, key);
 		this.depth = parent.depth + 1;
 	}
 
-	public ContainerFeature(String key) {
+	public FeaturesCollection(String key) {
 		super(null, key);
 	}
 	
 	@Override
-	public void setContainer(ContainerFeature parent) {
+	public void setContainer(FeaturesCollection parent) {
 		super.setContainer(parent);
 		this.depth = parent.depth + 1;		
 	}
 
-	private ContainerFeature() {
+	private FeaturesCollection() {
 		super(null, null);
 		throw new UnsupportedOperationException("Dummy constructor");
 	}
@@ -56,5 +56,6 @@ public abstract class ContainerFeature extends AbstractFeature {
 		}
 		feature.recordEdit(edit);
 	}
+	
 	
 }

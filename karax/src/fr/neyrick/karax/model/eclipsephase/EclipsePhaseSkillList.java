@@ -1,48 +1,39 @@
 package fr.neyrick.karax.model.eclipsephase;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import fr.neyrick.karax.entities.generic.CharacterEdit;
-import fr.neyrick.karax.model.ComplexContainerFeature;
-import fr.neyrick.karax.model.ContainerFeature;
 import fr.neyrick.karax.model.FeatureCalculator;
-import fr.neyrick.karax.model.SimpleContainerFeature;
-import fr.neyrick.karax.model.VariableNumericFeature;
+import fr.neyrick.karax.model.FeaturesCollection;
+import fr.neyrick.karax.model.VariableFeaturesCollection;
 
-@XmlTransient
-public abstract class EclipsePhaseSkillList extends ComplexContainerFeature {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
+public class EclipsePhaseSkillList extends VariableFeaturesCollection<Skill> {
 
-	protected SimpleContainerFeature<VariableNumericFeature> createFlexibleSkillsList(String subitemKey, String calculatorKey) {
-		return new SimpleContainerFeature<>(this, subitemKey, VariableNumericFeature.class, calculatorsMap.get(calculatorKey));
-	}
+	public static final String SUBKEY_EXOTIC_MELEE = "EM:";
+	public static final String SUBKEY_EXOTIC_RANGED = "ER:";
+	public static final String SUBKEY_HARDWARE = "HW:";
+	public static final String SUBKEY_NETWORKING = "NW:";
+	public static final String SUBKEY_PILOT = "PL:";
+	public static final String SUBKEY_ACADEMICS = "AC:";
+	public static final String SUBKEY_ART = "AR:";
+	public static final String SUBKEY_INTEREST = "IN:";
+	public static final String SUBKEY_LANGUAGE = "LA:";
+	public static final String SUBKEY_PROFESSION = "PR:";
 	
-	private Map<String, FeatureCalculator> calculatorsMap = new HashMap<>();
+	private Map<String, SkillCalculator> calculatorsMap = new HashMap<>();
 
-	private List<VariableNumericFeature> generalSkills = new ArrayList<>();
-	
-	protected VariableNumericFeature addGeneralSkill(String subItemKey, CharacterEdit edit) {
-		VariableNumericFeature feature;
-		if (edit == null) feature = new VariableNumericFeature(this, subItemKey, null);
-		else feature = new VariableNumericFeature(this, subItemKey, getCalculator(edit.getTargetSubKey3()));
-		generalSkills.add(feature);
-		return feature;
-	}
-	
-	public Collection<VariableNumericFeature> getFixedSkills() {
-		return generalSkills;
-	}
-
-	public Map<String, FeatureCalculator> getCalculatorsMap() {
+	public Map<String, SkillCalculator> getCalculatorsMap() {
 		return calculatorsMap;
 	}
 
-	public void setCalculatorsMap(Map<String, FeatureCalculator> calculatorsMap) {
+	public void setCalculatorsMap(Map<String, SkillCalculator> calculatorsMap) {
 		this.calculatorsMap = calculatorsMap;
 	}
 
@@ -51,21 +42,38 @@ public abstract class EclipsePhaseSkillList extends ComplexContainerFeature {
 		return calculatorsMap.get(calculatorKey);
 	}
 	
-	public void initFeature(String subItemKey, String calculatorKey) {
-		VariableNumericFeature feature = (VariableNumericFeature)addFeature(subItemKey, null);
-		feature.setCalculator(calculatorsMap.get(calculatorKey));
+	@Override
+	protected FeatureCalculator getExtraItemCalculator(CharacterEdit edit) {
+		String subItemKey = getSubItemKey(edit);
+		if (subItemKey.startsWith(SUBKEY_EXOTIC_MELEE)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COO);
+		else if (subItemKey.startsWith(SUBKEY_EXOTIC_RANGED)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COO);
+		else if (subItemKey.startsWith(SUBKEY_HARDWARE)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);
+		else if (subItemKey.startsWith(SUBKEY_NETWORKING)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_SAV);
+		else if (subItemKey.startsWith(SUBKEY_PILOT)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_REF);
+		else if (subItemKey.startsWith(SUBKEY_ACADEMICS)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);
+		else if (subItemKey.startsWith(SUBKEY_ART)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_INT);
+		else if (subItemKey.startsWith(SUBKEY_INTEREST)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);
+		else if (subItemKey.startsWith(SUBKEY_LANGUAGE)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_INT);
+		else if (subItemKey.startsWith(SUBKEY_PROFESSION)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);
+		else return calculatorsMap.get(edit.getTargetSubKey2());
+	}
+
+	public void addSkill(String key, String aptitude) {
+		addFeature(new Skill(key, aptitude, calculatorsMap.get(aptitude)));
 	}
 	
-	public EclipsePhaseSkillList(ContainerFeature parent, String key) {
-		super(parent, key);
+	public EclipsePhaseSkillList(FeaturesCollection parent, String key, Map<String, SkillCalculator> calculatorsMap) {
+		super(parent, key, Skill.class);
+		this.calculatorsMap = calculatorsMap;
 	}
 	
-	public EclipsePhaseSkillList(String key) {
-		super(key);
+	public EclipsePhaseSkillList(String key, Map<String, SkillCalculator> calculatorsMap) {
+		super(key, Skill.class);
+		this.calculatorsMap = calculatorsMap;
 	}
 
 	public EclipsePhaseSkillList() {
-		super(null);
+		super();
 	}
 
 }

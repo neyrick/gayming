@@ -10,16 +10,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import fr.neyrick.karax.entities.generic.CharacterEdit;
 import fr.neyrick.karax.model.CharacterFeature;
-import fr.neyrick.karax.model.ComplexContainerFeature;
-import fr.neyrick.karax.model.ContainerFeature;
+import fr.neyrick.karax.model.ComplexFeatureCollection;
 import fr.neyrick.karax.model.FeatureCalculator;
-import fr.neyrick.karax.model.SimpleContainerFeature;
+import fr.neyrick.karax.model.FeaturesCollection;
+import fr.neyrick.karax.model.SimpleVariable;
 import fr.neyrick.karax.model.StringFeature;
+import fr.neyrick.karax.model.VariableFeaturesCollection;
 import fr.neyrick.karax.model.VariableNumericFeature;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class Identity extends ComplexContainerFeature {
+public class Identity extends ComplexFeatureCollection {
 
 	public static final String SUBKEY_NAME="NAME";
 	public static final String SUBKEY_NOTES="NOTES";
@@ -29,7 +30,7 @@ public class Identity extends ComplexContainerFeature {
 
 	private StringFeature name;
 
-	private SimpleContainerFeature<VariableNumericFeature> reputations;
+	private VariableFeaturesCollection<SimpleVariable> reputations;
 	
 	@XmlElement
 	public StringFeature getName() {
@@ -43,11 +44,11 @@ public class Identity extends ComplexContainerFeature {
 
 	@XmlElementWrapper(name="reputations")
 	@XmlElement(name="reputation")
-	public Collection<VariableNumericFeature> getReputations() {
+	public Collection<SimpleVariable> getReputations() {
 		return reputations.getActualSubFeatures();
 	}
 
-	public Identity(ContainerFeature parent, String key) {
+	public Identity(FeaturesCollection parent, String key) {
 		super(parent, key);
 	}
 	
@@ -65,7 +66,7 @@ public class Identity extends ComplexContainerFeature {
 			case SUBKEY_NAME:return (name = new StringFeature(this, SUBKEY_NAME));
 			case SUBKEY_NOTES:return (notes = new StringFeature(this, SUBKEY_NOTES));
 			case SUBKEY_REPUTATION:return (reputations =
-					new SimpleContainerFeature<>(this,  SUBKEY_REPUTATION, VariableNumericFeature.class, new FeatureCalculator() {
+					new VariableFeaturesCollection<>(this,  SUBKEY_REPUTATION, SimpleVariable.class, new FeatureCalculator() {
 
 						@Override
 						public Number calculate(CharacterFeature feature) {

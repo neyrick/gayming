@@ -26,7 +26,7 @@ public class FixedNumericFeature extends AbstractSingleFeature {
 		return amount;
 	}
 
-	public FixedNumericFeature(ContainerFeature container, String key) {
+	public FixedNumericFeature(FeaturesCollection container, String key) {
 		super(container, key);
 	}
 

@@ -10,42 +10,31 @@ import javax.xml.bind.annotation.XmlTransient;
 import fr.neyrick.karax.entities.generic.CharacterEdit;
 
 @XmlTransient
-public class SimpleContainerFeature<T extends AbstractFeature> extends ContainerFeature {
+public class StaticFeaturesCollection<T extends AbstractFeature> extends FeaturesCollection {
 
 	private Map<String, T> featuresMap = new TreeMap<>();
 	
 	private final Class<? extends T> featureClass;
 	
-	private FeatureCalculator calculator = null;
-	
-	public SimpleContainerFeature(ContainerFeature parent, String key, Class<T> featureClass, FeatureCalculator calculator) {
-		super(parent, key);
-		this.featureClass = featureClass;
-		this.calculator = calculator;
-		
-	}
-
-	public SimpleContainerFeature(ContainerFeature parent, String key, Class<T> featureClass) {
+	public StaticFeaturesCollection(FeaturesCollection parent, String key, Class<T> featureClass) {
 		super(parent, key);
 		this.featureClass = featureClass;
 	}
 
-	public SimpleContainerFeature(String key, Class<T> featureClass, FeatureCalculator calculator) {
-		super(key);
-		this.featureClass = featureClass;
-		this.calculator = calculator;
-	}
-
-	public SimpleContainerFeature(String key, Class<T> featureClass) {
+	public StaticFeaturesCollection(String key, Class<T> featureClass) {
 		super(key);
 		this.featureClass = featureClass;
 	}
 
-	protected SimpleContainerFeature() {
+	protected StaticFeaturesCollection() {
 		super(null, null);
 		throw new UnsupportedOperationException("Dummy constructor");
 	}
 	
+	public CharacterFeature addFeature(String subItemKey) {
+		return this.addFeature(subItemKey, null);
+	}
+
 	@Override
 	public CharacterFeature addFeature(String subItemKey, CharacterEdit edit) {
 	    T feature;
@@ -54,10 +43,13 @@ public class SimpleContainerFeature<T extends AbstractFeature> extends Container
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-	    feature.setContainer(this);
 	    feature.setKey(subItemKey);
-	    if (calculator != null) feature.setCalculator(calculator);
-	    featuresMap.put(subItemKey, feature);
+	    return addFeature(feature);
+	}
+
+	public CharacterFeature addFeature(T feature) {
+	    feature.setContainer(this);
+	    featuresMap.put(feature.getKey(), feature);
 	    return feature;
 	}
 
