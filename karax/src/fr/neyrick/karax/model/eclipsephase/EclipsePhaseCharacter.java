@@ -1,7 +1,6 @@
 package fr.neyrick.karax.model.eclipsephase;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,6 +9,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import fr.neyrick.karax.model.FixedNumericFeature;
 import fr.neyrick.karax.model.GameCharacter;
 import fr.neyrick.karax.model.StaticFeaturesCollection;
 import fr.neyrick.karax.model.StringFeature;
@@ -35,6 +35,8 @@ public class EclipsePhaseCharacter extends GameCharacter {
 	
 	private StringFeature gender;
 	
+	private FixedNumericFeature actualAge;
+	
 	private StaticFeaturesCollection<StringFeature> motivations;
 	
 	private VariableFeaturesCollection<Aptitude> aptitudes;
@@ -47,7 +49,19 @@ public class EclipsePhaseCharacter extends GameCharacter {
 
 	private VariableNumericFeature moxie;
 	
+	private VariableNumericFeature initiative;
+	
 	private StaticFeaturesCollection<Identity> identities;
+	
+	private Muse muse;
+
+	private VariableNumericFeature credits;
+	
+	private Morph currentMorph;
+	
+	private StaticFeaturesCollection<FixedNumericFeature> traits;
+
+	private StaticFeaturesCollection<FixedNumericFeature> psiSleights;
 
 	public StringFeature getBackground() {
 		return background;
@@ -122,12 +136,36 @@ public class EclipsePhaseCharacter extends GameCharacter {
 		return motivations.getActualSubFeatures();
 	}
 
+	public FixedNumericFeature getActualAge() {
+		return actualAge;
+	}
+
+	public void setActualAge(FixedNumericFeature actualAge) {
+		this.actualAge = actualAge;
+	}
+
 	public VariableNumericFeature getMoxie() {
 		return moxie;
 	}
 
 	public void setMoxie(VariableNumericFeature moxie) {
 		this.moxie = moxie;
+	}
+
+	public VariableNumericFeature getInitiative() {
+		return initiative;
+	}
+
+	public void setInitiative(VariableNumericFeature initiative) {
+		this.initiative = initiative;
+	}
+
+	public VariableNumericFeature getCredits() {
+		return credits;
+	}
+
+	public void setCredits(VariableNumericFeature credits) {
+		this.credits = credits;
 	}
 
 	@XmlElementWrapper(name="identities")
@@ -140,5 +178,55 @@ public class EclipsePhaseCharacter extends GameCharacter {
 		this.identities = identities;
 	}
 
+	public Muse getMuse() {
+		return muse;
+	}
 
+	public void setMuse(Muse muse) {
+		this.muse = muse;
+	}
+
+	public Morph getCurrentMorph() {
+		return currentMorph;
+	}
+
+	public void setCurrentMorph(Morph currentMorph) {
+		this.currentMorph = currentMorph;
+	}
+
+	@XmlElementWrapper(name="traits")
+	@XmlElement(name="trait")
+	public Collection<FixedNumericFeature> getTraits() {
+		return traits.getActualSubFeatures();
+	}
+
+	public void setTraits(StaticFeaturesCollection<FixedNumericFeature> traits) {
+		this.traits = traits;
+	}
+
+	@XmlElementWrapper(name="psiSleights")
+	@XmlElement(name="sleight")
+	public Collection<FixedNumericFeature> getPsiSleights() {
+		return psiSleights.getActualSubFeatures();
+	}
+
+	public void setPsiSleights(StaticFeaturesCollection<FixedNumericFeature> sleights) {
+		this.psiSleights = sleights;
+	}
+
+	public int getLucidity() {
+		return aptitudes.getActualSubFeature(KEY_WIL).getNumericValue().intValue()*2;
+	}
+	
+	public int getTraumaThreshold() {
+		return (int)Math.ceil(getLucidity() / 5.);
+	}
+
+	public int getInsanityRating() {
+		return getLucidity()*2;
+	}
+	
+	public int getDamageBonus() {
+		return aptitudes.getActualSubFeature(KEY_SOM).getNumericValue().intValue()/10;
+	}
 }

@@ -1,5 +1,7 @@
 package fr.neyrick.karax.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
@@ -7,6 +9,7 @@ import javax.xml.bind.annotation.XmlValue;
 import fr.neyrick.karax.entities.generic.CharacterEdit;
 
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class FixedNumericFeature extends AbstractSingleFeature {
 
 //	private static final NumberFormat format = NumberFormat.getNumberInstance();
@@ -21,6 +24,10 @@ public class FixedNumericFeature extends AbstractSingleFeature {
 		return value;
 	}
 
+	public int getNumericValue() {
+		return getAmount();
+	}
+	
 	@XmlAttribute
 	public int getAmount() {
 		return amount;

@@ -63,5 +63,8 @@ public class StaticFeaturesCollection<T extends AbstractFeature> extends Feature
 		return featuresMap.values();
 	}
 
+	public T getActualSubFeature(String key) {
+		return featuresMap.get(key);
+	}
 	
 }

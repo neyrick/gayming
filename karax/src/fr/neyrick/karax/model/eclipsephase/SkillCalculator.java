@@ -10,7 +10,9 @@ public class SkillCalculator implements FeatureCalculator{
 	
 	@Override
 	public Number calculate(CharacterFeature feature) {
-		VariableNumericFeature targetFeature = (VariableNumericFeature)feature;
+		Skill targetFeature = (Skill)feature;
+		int spent = targetFeature.getTotalCost();
+		if ((spent == 0) && targetFeature.isNodefault()) return 0;
 		int result = aptitudeFeature.getNumericValue().intValue();
 		result += targetFeature.getTotalCost();
 		if (result > 60) result -= (result - 60) / 2;

@@ -86,6 +86,10 @@ public class VariableFeaturesCollection<T extends VariableNumericFeature> extend
 		return featuresMap.get(key);
 	}
 
+	public T getActualSubFeature(String key) {
+		return featuresMap.get(key);
+	}
+
 	@XmlElement
 	public Collection<T> getActualSubFeatures() {
 		return featuresMap.values();

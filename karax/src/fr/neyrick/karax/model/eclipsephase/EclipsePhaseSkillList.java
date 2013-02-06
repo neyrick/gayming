@@ -58,8 +58,12 @@ public class EclipsePhaseSkillList extends VariableFeaturesCollection<Skill> {
 		else return calculatorsMap.get(edit.getTargetSubKey2());
 	}
 
+	public void addSkill(String key, String aptitude, boolean isNoDefault) {
+		addFeature(new Skill(key, aptitude, calculatorsMap.get(aptitude), isNoDefault));
+	}
+	
 	public void addSkill(String key, String aptitude) {
-		addFeature(new Skill(key, aptitude, calculatorsMap.get(aptitude)));
+		this.addSkill(key, aptitude, false);
 	}
 	
 	public EclipsePhaseSkillList(FeaturesCollection parent, String key, Map<String, SkillCalculator> calculatorsMap) {

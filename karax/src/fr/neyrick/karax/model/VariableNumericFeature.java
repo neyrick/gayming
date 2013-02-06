@@ -2,7 +2,9 @@ package fr.neyrick.karax.model;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -20,6 +22,8 @@ public abstract class VariableNumericFeature extends AbstractSingleFeature {
 	private boolean uptodate = false;
 
 	private Number value = 0;
+	
+	private Set<String> extraInfo = new HashSet<>();
 	
 	protected Number calculate() {
 		return calculator.calculate(this);
@@ -106,8 +110,23 @@ public abstract class VariableNumericFeature extends AbstractSingleFeature {
 			Integer currentValue = amounts.get(amountType);
 			if (currentValue == null) amounts.put(amountType, edit.getAmount());
 			else amounts.put(amountType, edit.getAmount() + currentValue);
+			
+			String extra = edit.getValue();
+			if (extra != null) {
+				if (extra.startsWith("-")) {
+					extraInfo.remove(extra.substring(1));
+				}
+				else {
+					extraInfo.add(extra);
+				}
+			}
+			
 			uptodate = false;
 		}
+	}
+
+	public Set<String> getExtraInfo() {
+		return extraInfo;
 	}
 	
 
