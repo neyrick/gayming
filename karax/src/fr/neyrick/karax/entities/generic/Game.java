@@ -23,6 +23,8 @@ public class Game {
 	
 	private String ruleset;
 	
+	private String stylesheet;
+	
 	public Long getId() {
 		return id;
 	}
@@ -61,6 +63,14 @@ public class Game {
 
 	public void setRuleset(String ruleset) {
 		this.ruleset = ruleset;
+	}
+
+	public String getStylesheet() {
+		return stylesheet;
+	}
+
+	public void setStylesheet(String stylesheet) {
+		this.stylesheet = stylesheet;
 	}
 	
 }

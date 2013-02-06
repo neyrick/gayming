@@ -13,6 +13,7 @@ drop sequence if exists hibernate_sequence;
         edition varchar(255),
         name varchar(255),
         setting varchar(255),
+        stylesheet varchar(255),
         primary key (id)
     );
 

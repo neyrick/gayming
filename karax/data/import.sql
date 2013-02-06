@@ -3,8 +3,8 @@ delete from expgains;
 delete from metachars;
 delete from games;
 
-insert into games (id, name, setting, edition, ruleset) values (1, 'Eclipse Phase', 'Firewall', '1', 'ECLIPSE_PHASE_1.0');
-insert into games (id, name, setting, edition, ruleset) values (2, 'Shadowrun', 'Madrid', '4', 'ECLIPSE_PHASE_1.0');
+insert into games (id, name, setting, edition, ruleset, stylesheet) values (1, 'Eclipse Phase', 'Firewall', '1', 'ECLIPSE_PHASE_1.0', 'eclipse_phase_v1.xsl');
+insert into games (id, name, setting, edition, ruleset, stylesheet) values (2, 'Shadowrun', 'Madrid', '4', 'ECLIPSE_PHASE_1.0', null);
 
 insert into metachars (id, creationdate, name, playername, game_id) values (1, localtimestamp, 'Moko', 'Neyrick', 1);
 insert into metachars (id, creationdate, name, playername, game_id) values (2, localtimestamp, 'Ocho', 'Bruno', 1);
