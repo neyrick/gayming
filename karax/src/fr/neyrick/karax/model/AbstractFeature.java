@@ -1,25 +1,46 @@
 package fr.neyrick.karax.model;
 
-import javax.xml.bind.annotation.XmlTransient;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlTransient
 public abstract class AbstractFeature implements CharacterFeature {
 
 	private FeaturesCollection container = null;
-	
+
+	private ResourceBundle resourceBundle;
+
 	private String key;
-	
+
 	public String getKey() {
 		return key;
 	}
+
+	protected String tryTranslation(String value) {
+		try {
+			return resourceBundle.getString(value);
+		} catch (MissingResourceException e) {
+			return value;
+		}
+	}
 	
+	public ResourceBundle getResourceBundle() {
+		return resourceBundle;
+	}
+
+	public void setResourceBundle(ResourceBundle resourceBundle) {
+		this.resourceBundle = resourceBundle;
+	}
+
 	public FeaturesCollection getContainer() {
 		return container;
 	}
 
 	public void setContainer(FeaturesCollection container) {
 		this.container = container;
+		this.resourceBundle = container.getResourceBundle();
 	}
 
 	public void setKey(String key) {
@@ -29,6 +50,6 @@ public abstract class AbstractFeature implements CharacterFeature {
 	public AbstractFeature(FeaturesCollection container, String key) {
 		super();
 		this.key = key;
-		this.container = container;
+		if (container != null) this.setContainer(container);
 	}
 }

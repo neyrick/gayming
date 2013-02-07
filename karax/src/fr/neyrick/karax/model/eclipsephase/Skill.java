@@ -21,6 +21,11 @@ public class Skill extends VariableNumericFeature {
 	
 	private boolean nodefault = false;
 	
+	@XmlAttribute
+	public String getDisplay() {
+		return tryTranslation(getKey());
+	}
+
 	@Override
 	protected Number calculate() {
 		base = getCalculator().calculate(this).intValue();
@@ -43,6 +48,10 @@ public class Skill extends VariableNumericFeature {
 		return getAmount("MORPH");
 	}
 
+	public int getDiscountCost() {
+		return getAmount("DISCOUNT");
+	}
+	
 	@XmlAttribute
 	@Override
 	public String getKey() {

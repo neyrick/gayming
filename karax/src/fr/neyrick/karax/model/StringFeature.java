@@ -2,6 +2,7 @@ package fr.neyrick.karax.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
@@ -17,7 +18,12 @@ public class StringFeature extends AbstractSingleFeature {
 	@XmlValue
 	public String getValue() {
 		if (value == null) return "";
-		return value;
+		return tryTranslation(value);
+	}
+
+	@XmlAttribute
+	public String getDisplay() {
+		return tryTranslation(getKey());
 	}
 
 	public StringFeature(FeaturesCollection parent, String key) {

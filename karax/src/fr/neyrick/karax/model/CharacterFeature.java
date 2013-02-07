@@ -1,5 +1,7 @@
 package fr.neyrick.karax.model;
 
+import java.util.ResourceBundle;
+
 import javax.xml.bind.annotation.XmlTransient;
 
 import fr.neyrick.karax.entities.generic.CharacterEdit;
@@ -12,4 +14,6 @@ public interface CharacterFeature {
 	public String getKey();
 	
 	public FeaturesCollection getContainer();
+	
+	public void setResourceBundle(ResourceBundle bundle);
 }

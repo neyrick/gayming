@@ -27,6 +27,11 @@ public class Aptitude extends VariableNumericFeature {
 	}
 
 	@XmlAttribute
+	public String getDisplay() {
+		return tryTranslation(getKey());
+	}
+
+	@XmlAttribute
 	public int getBase() {
 		refresh();
 		return base;

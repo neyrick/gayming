@@ -15,6 +15,7 @@ public class SkillCalculator implements FeatureCalculator{
 		if ((spent == 0) && targetFeature.isNodefault()) return 0;
 		int result = aptitudeFeature.getNumericValue().intValue();
 		result += targetFeature.getTotalCost();
+		result += targetFeature.getDiscountCost()*3;
 		if (result > 60) result -= (result - 60) / 2;
 		return result;
 	}

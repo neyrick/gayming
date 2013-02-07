@@ -1,9 +1,13 @@
 package fr.neyrick.karax.model.eclipsephase;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 import fr.neyrick.karax.entities.generic.MetaCharacter;
 import fr.neyrick.karax.model.CharacterFactory;
@@ -22,8 +26,19 @@ import fr.neyrick.karax.model.VariableNumericFeature;
 @RequestScoped
 public class EclipsePhaseCharacterFactory extends CharacterFactory {
 
+	@Inject
+	private FacesContext facesContext;
+	
+	private ResourceBundle resourceBundle;
+	
+	public ResourceBundle getResourceBundle(Locale locale) {
+		if (resourceBundle == null ) resourceBundle = ResourceBundle.getBundle("fr.neyrick.karax.model.eclipsephase.eclipsephase", locale);
+		return resourceBundle;
+	}
+
 	@Override
 	protected GameCharacter initCharacter(MetaCharacter metaCharacter) {
+		
 		EclipsePhaseCharacter character = new EclipsePhaseCharacter();
 		
 		// GENERAL INFORMATION

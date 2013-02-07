@@ -24,6 +24,11 @@ public class FixedNumericFeature extends AbstractSingleFeature {
 		return value;
 	}
 
+	@XmlAttribute
+	public String getDisplay() {
+		return tryTranslation(getKey());
+	}
+
 	public int getNumericValue() {
 		return getAmount();
 	}

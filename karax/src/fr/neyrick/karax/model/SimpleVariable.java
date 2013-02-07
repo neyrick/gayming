@@ -20,6 +20,11 @@ public class SimpleVariable extends VariableNumericFeature {
 		return super.getKey();
 	}
 
+	@XmlAttribute
+	public String getDisplay() {
+		return tryTranslation(getKey());
+	}
+
 	@Override
 	@XmlValue
 	public String getValue() {

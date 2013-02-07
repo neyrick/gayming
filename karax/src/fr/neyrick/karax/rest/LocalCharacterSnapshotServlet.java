@@ -1,4 +1,4 @@
-package fr.neyrick.karax.fop;
+package fr.neyrick.karax.rest;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,23 +18,16 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.util.JAXBSource;
-import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
-import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.fop.apps.FOPException;
-import org.apache.fop.apps.FOUserAgent;
-import org.apache.fop.apps.Fop;
-import org.apache.fop.apps.FopFactory;
-import org.apache.fop.apps.MimeConstants;
 import org.apache.fop.servlet.ServletContextURIResolver;
-import org.xml.sax.SAXException;
 
 import fr.neyrick.karax.data.MetaCharacterRepository;
 import fr.neyrick.karax.entities.generic.MetaCharacter;
@@ -44,17 +37,16 @@ import fr.neyrick.karax.model.RulesetLiteral;
 /**
  * Servlet implementation class FopServlet
  */
-@WebServlet(description = "PDF generation using Fop", urlPatterns = { "/pdfgen" })
-public class FopServlet extends HttpServlet {
+@WebServlet(description = "Localized XML from REST calls", urlPatterns = { "/localchar" })
+public class LocalCharacterSnapshotServlet extends HttpServlet {
     private static final long serialVersionUID = -908918093488215264L;
 
-    /** Name of the parameter used for the XSL-FO file */
     protected static final String CHARID_REQUEST_PARAM = "char";
+
+    protected static final String LANG_REQUEST_PARAM = "lang";
 
     /** The TransformerFactory used to create Transformer instances */
     protected TransformerFactory transFactory = null;
-    /** The FopFactory used to create Fop instances */
-    protected FopFactory fopFactory = null;
     /** URIResolver for use by this servlet */
     protected URIResolver uriResolver;
 
@@ -71,20 +63,10 @@ public class FopServlet extends HttpServlet {
      * {@inheritDoc}
      */
     public void init() throws ServletException {
-    	this.xslPath = getServletContext().getRealPath("/WEB-INF/xsl/fo/");
+    	this.xslPath = getServletContext().getRealPath("/WEB-INF/xsl/");
     	this.uriResolver = new ServletContextURIResolver(getServletContext());
         this.transFactory = TransformerFactory.newInstance();
         this.transFactory.setURIResolver(this.uriResolver);
-        //Configure FopFactory as desired
-        this.fopFactory = FopFactory.newInstance();
-        try {
-			this.fopFactory.setUserConfig(new File(getServletContext().getRealPath("/WEB-INF"), "fop.xconf"));
-		} catch (SAXException | IOException e) {
-			throw new ServletException(e);
-		}
-         this.fopFactory.setSourceResolution(300);
-         this.fopFactory.setURIResolver(uriResolver);
-        configureFopFactory();
     }
 
     /**
@@ -149,27 +131,6 @@ public class FopServlet extends HttpServlet {
         return src;
     }
 
-    private void sendPDF(byte[] content, HttpServletResponse response) throws IOException {
-        //Send the result back to the client
-        response.setContentType("application/pdf");
-        response.setContentLength(content.length);
-        response.getOutputStream().write(content);
-        response.getOutputStream().flush();
-    }
-
-    /**
-     * Renders an XML file into a PDF file by applying a stylesheet
-     * that converts the XML to XSL-FO. The PDF is written to a byte array
-     * that is returned as the method's result.
-     * @param xml the XML file
-     * @param xslt the XSLT file
-     * @param response HTTP response object
-     * @throws FOPException If an error occurs during the rendering of the
-     * XSL-FO
-     * @throws TransformerException If an error occurs during XSL
-     * transformation
-     * @throws IOException In case of an I/O problem
-     */
     protected void renderXML(long charId, Locale locale, HttpServletResponse response)
                 throws FOPException, TransformerException, IOException {
 
@@ -184,58 +145,16 @@ public class FopServlet extends HttpServlet {
 			throw new WebApplicationException(e);
 		}
         
-		Source xslSource = new StreamSource(new File(xslPath, character.getGame().getStylesheet()));
-//		Source xslSource = new StreamSource(new File(xslPath, "fochain.xsl"));
+		Source xslSource = new StreamSource(new File(xslPath, "fochain.xsl"));
 
         //Setup the XSL transformation
         Transformer transformer = this.transFactory.newTransformer(xslSource);
-//        transformer.setParameter("filesdir", character.getGame().getStylesheet());
         transformer.setURIResolver(this.uriResolver);
 
         //Start transformation and rendering process
-        render(xmlSrc, transformer, response);
-    }
-
-    /**
-     * Renders an input file (XML or XSL-FO) into a PDF file. It uses the JAXP
-     * transformer given to optionally transform the input document to XSL-FO.
-     * The transformer may be an identity transformer in which case the input
-     * must already be XSL-FO. The PDF is written to a byte array that is
-     * returned as the method's result.
-     * @param src Input XML or XSL-FO
-     * @param transformer Transformer to use for optional transformation
-     * @param response HTTP response object
-     * @throws FOPException If an error occurs during the rendering of the
-     * XSL-FO
-     * @throws TransformerException If an error occurs during XSL
-     * transformation
-     * @throws IOException In case of an I/O problem
-     */
-    protected void render(Source src, Transformer transformer, HttpServletResponse response)
-                throws FOPException, TransformerException, IOException {
-
-        FOUserAgent foUserAgent = getFOUserAgent();
-
-        //Setup output
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-        //Setup FOP
-        Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
-
-        //Make sure the XSL transformation's result is piped through to FOP
-        Result res = new SAXResult(fop.getDefaultHandler());
-
+        response.setContentType("application/xml");
         //Start the transformation and rendering process
-        transformer.transform(src, res);
-
-        //Return the result
-        sendPDF(out.toByteArray(), response);
+        transformer.transform(xmlSrc, new StreamResult(response.getOutputStream()));
     }
 
-    /** @return a new FOUserAgent for FOP */
-    protected FOUserAgent getFOUserAgent() {
-        FOUserAgent userAgent = fopFactory.newFOUserAgent();
-        //Configure foUserAgent as desired
-        return userAgent;
-    }
 }
