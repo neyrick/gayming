@@ -31,6 +31,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		character.setBackground(registerListener(new StringFeature("BACKGROUND")));
 		character.setFaction(registerListener(new StringFeature("FACTION")));
 		character.setActualAge(registerListener(new FixedNumericFeature("ACTUAL_AGE")));
+		character.setGender(registerListener(new StringFeature("GENDER")));
 		
 		// TRAITS
 		
@@ -46,6 +47,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		currentMorph.setSpeedModifier(registerListener(new FixedNumericFeature("MORPH_SPEED_MOD")));
 		currentMorph.setEnhancements(registerListener(new StaticFeaturesCollection<>("MORPH_ENH", StringFeature.class)));
 		currentMorph.setTraits(registerListener(new StaticFeaturesCollection<>("MORPH_TRAITS", StringFeature.class)));
+		currentMorph.setMovementRate(registerListener(new StringFeature("MORPH_MOVEMENT")));
 		character.setCurrentMorph(currentMorph);
 		
 		// APTITUDES
@@ -124,7 +126,6 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		activeSkills.addSkill("INVESTIGATION", EclipsePhaseCharacter.KEY_INT);
 		activeSkills.addSkill("KINESICS", EclipsePhaseCharacter.KEY_SAV);
 		activeSkills.addSkill("KINETICWEAPONS", EclipsePhaseCharacter.KEY_COO);
-		activeSkills.addSkill("MEDICINE", EclipsePhaseCharacter.KEY_COG);
 		activeSkills.addSkill("NAVIGATION", EclipsePhaseCharacter.KEY_INT);
 		activeSkills.addSkill("PALMING", EclipsePhaseCharacter.KEY_COO);
 		activeSkills.addSkill("PERCEPTION", EclipsePhaseCharacter.KEY_INT);
@@ -175,7 +176,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		
 		// INITIATIVE
 		
-		character.setCredits(registerListener(new SimpleVariable("INITIATIVE", new InitiativeCalculator(aptitudeINT, aptitudeREF))));
+		character.setInitiative(registerListener(new SimpleVariable("INITIATIVE", new InitiativeCalculator(aptitudeINT, aptitudeREF))));
 		
 		// PSI SLEIGHTS
 		

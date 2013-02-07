@@ -19,6 +19,7 @@ public class EclipsePhaseSkillList extends VariableFeaturesCollection<Skill> {
 	public static final String SUBKEY_EXOTIC_MELEE = "EM:";
 	public static final String SUBKEY_EXOTIC_RANGED = "ER:";
 	public static final String SUBKEY_HARDWARE = "HW:";
+	public static final String SUBKEY_MEDICINE = "ME:";
 	public static final String SUBKEY_NETWORKING = "NW:";
 	public static final String SUBKEY_PILOT = "PL:";
 	public static final String SUBKEY_ACADEMICS = "AC:";
@@ -48,6 +49,7 @@ public class EclipsePhaseSkillList extends VariableFeaturesCollection<Skill> {
 		if (subItemKey.startsWith(SUBKEY_EXOTIC_MELEE)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COO);
 		else if (subItemKey.startsWith(SUBKEY_EXOTIC_RANGED)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COO);
 		else if (subItemKey.startsWith(SUBKEY_HARDWARE)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);
+		else if (subItemKey.startsWith(SUBKEY_MEDICINE)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);
 		else if (subItemKey.startsWith(SUBKEY_NETWORKING)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_SAV);
 		else if (subItemKey.startsWith(SUBKEY_PILOT)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_REF);
 		else if (subItemKey.startsWith(SUBKEY_ACADEMICS)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);

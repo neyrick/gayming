@@ -33,6 +33,7 @@ import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
 import org.apache.fop.servlet.ServletContextURIResolver;
+import org.xml.sax.SAXException;
 
 import fr.neyrick.karax.data.MetaCharacterRepository;
 import fr.neyrick.karax.entities.generic.MetaCharacter;
@@ -69,13 +70,19 @@ public class FopServlet extends HttpServlet {
      * {@inheritDoc}
      */
     public void init() throws ServletException {
-    	this.xslPath = getServletContext().getRealPath("/WEB-INF/xsl/");
+    	this.xslPath = getServletContext().getRealPath("/WEB-INF/xsl/fo/");
     	this.uriResolver = new ServletContextURIResolver(getServletContext());
         this.transFactory = TransformerFactory.newInstance();
         this.transFactory.setURIResolver(this.uriResolver);
         //Configure FopFactory as desired
         this.fopFactory = FopFactory.newInstance();
-        this.fopFactory.setURIResolver(this.uriResolver);
+        try {
+			this.fopFactory.setUserConfig(new File(getServletContext().getRealPath("/WEB-INF"), "fop.xconf"));
+		} catch (SAXException | IOException e) {
+			throw new ServletException(e);
+		}
+         this.fopFactory.setSourceResolution(300);
+         this.fopFactory.setURIResolver(uriResolver);
         configureFopFactory();
     }
 

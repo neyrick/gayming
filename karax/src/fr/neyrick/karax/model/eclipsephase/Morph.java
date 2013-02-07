@@ -11,10 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import fr.neyrick.karax.model.FixedNumericFeature;
 import fr.neyrick.karax.model.StaticFeaturesCollection;
 import fr.neyrick.karax.model.StringFeature;
-import fr.neyrick.karax.model.VariableNumericFeature;
 
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlAccessorType(XmlAccessType.NONE)
 public class Morph {
 
 	public static final String ORIGIN_BIO = "BIO";
@@ -29,7 +28,7 @@ public class Morph {
 
 	private FixedNumericFeature durability;
 
-	private FixedNumericFeature movementRate;
+	private StringFeature movementRate;
 
 	private FixedNumericFeature visibleAge;
 	
@@ -37,14 +36,13 @@ public class Morph {
 	
 	private StringFeature sex;
 	
-	private VariableNumericFeature speed;
-	
 	private StaticFeaturesCollection<StringFeature> traits;
 	
 	private StaticFeaturesCollection<StringFeature> enhancements;
 	
 	private StringFeature origin;
 	
+	@XmlElement
 	public StringFeature getType() {
 		return type;
 	}
@@ -53,6 +51,7 @@ public class Morph {
 		this.type = type;
 	}
 
+	@XmlElement
 	public StringFeature getOrigin() {
 		return origin;
 	}
@@ -61,6 +60,7 @@ public class Morph {
 		this.origin = origin;
 	}
 
+	@XmlElement
 	public FixedNumericFeature getAptitudeMax() {
 		return aptitudeMax;
 	}
@@ -69,6 +69,7 @@ public class Morph {
 		this.aptitudeMax = aptitudeMax;
 	}
 
+	@XmlElement
 	public FixedNumericFeature getSpeedModifier() {
 		return speedModifier;
 	}
@@ -77,6 +78,7 @@ public class Morph {
 		this.speedModifier = speedModifier;
 	}
 
+	@XmlElement
 	public FixedNumericFeature getDurability() {
 		return durability;
 	}
@@ -85,14 +87,16 @@ public class Morph {
 		this.durability = durability;
 	}
 
-	public FixedNumericFeature getMovementRate() {
+	@XmlElement
+	public StringFeature getMovementRate() {
 		return movementRate;
 	}
 
-	public void setMovementRate(FixedNumericFeature movementRate) {
+	public void setMovementRate(StringFeature movementRate) {
 		this.movementRate = movementRate;
 	}
 
+	@XmlElement
 	public FixedNumericFeature getVisibleAge() {
 		return visibleAge;
 	}
@@ -101,6 +105,7 @@ public class Morph {
 		this.visibleAge = visibleAge;
 	}
 
+	@XmlElement
 	public StringFeature getDescription() {
 		return description;
 	}
@@ -109,6 +114,7 @@ public class Morph {
 		this.description = description;
 	}
 
+	@XmlElement
 	public StringFeature getSex() {
 		return sex;
 	}
@@ -117,12 +123,9 @@ public class Morph {
 		this.sex = sex;
 	}
 
-	public VariableNumericFeature getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(VariableNumericFeature speed) {
-		this.speed = speed;
+	@XmlElement
+	public int getSpeed() {
+		return 1 + speedModifier.getNumericValue();
 	}
 
 	@XmlElementWrapper(name="traits")
@@ -145,10 +148,12 @@ public class Morph {
 		this.enhancements = enhancements;
 	}
 	
+	@XmlElement
 	public int getWoundThreshold() {
 		return (int)Math.ceil(durability.getNumericValue() / 5);
 	}
 	
+	@XmlElement
 	public int getDeathRating() {
 		double factor = 0;
 		if (ORIGIN_BIO.equals(origin.getValue())) factor = 1.5;
