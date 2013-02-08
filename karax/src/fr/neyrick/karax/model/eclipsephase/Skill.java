@@ -22,6 +22,9 @@ public class Skill extends VariableNumericFeature {
 	private boolean nodefault = false;
 	
 	@XmlAttribute
+	private String category;
+	
+	@XmlAttribute
 	public String getDisplay() {
 		return tryTranslation(getKey());
 	}
@@ -75,20 +78,22 @@ public class Skill extends VariableNumericFeature {
 	}
 
 	public Skill() {
-		this(null, null, null, false);
+		this(null, null, null, false, null);
 	}
 
 	public Skill(FeaturesCollection container, String linkedAptitude, String key,
-			SkillCalculator calculator, boolean isNoDefault) {
+			SkillCalculator calculator, boolean isNoDefault, String category) {
 		super(container, key, calculator);
 		this.linkedAptitude = linkedAptitude;
 		this.nodefault = isNoDefault;
+		this.category = category;
 	}
 
-	public Skill(String key, String linkedAptitude, SkillCalculator calculator, boolean isNoDefault) {
+	public Skill(String key, String linkedAptitude, SkillCalculator calculator, boolean isNoDefault, String category) {
 		super(key, calculator);
 		this.linkedAptitude = linkedAptitude;
 		this.nodefault = isNoDefault;
+		this.category = category;
 	}
 
 	

@@ -28,6 +28,13 @@ public class EclipsePhaseSkillList extends VariableFeaturesCollection<Skill> {
 	public static final String SUBKEY_LANGUAGE = "LA:";
 	public static final String SUBKEY_PROFESSION = "PR:";
 	
+	public static final String CATEGORY_COMBAT = "COMBAT";
+	public static final String CATEGORY_MOVEMENT = "MOVEMENT";
+	public static final String CATEGORY_MENTAL = "MENTAL";
+	public static final String CATEGORY_PSI = "PSI";
+	public static final String CATEGORY_SOCIAL = "SOCIAL";
+	public static final String CATEGORY_KNOWLEDGE = "KNOWLEDGE";
+	
 	private Map<String, SkillCalculator> calculatorsMap = new HashMap<>();
 
 	public Map<String, SkillCalculator> getCalculatorsMap() {
@@ -60,12 +67,28 @@ public class EclipsePhaseSkillList extends VariableFeaturesCollection<Skill> {
 		else return calculatorsMap.get(edit.getTargetSubKey2());
 	}
 
-	public void addSkill(String key, String aptitude, boolean isNoDefault) {
-		addFeature(new Skill(key, aptitude, calculatorsMap.get(aptitude), isNoDefault));
+	protected String getExtraItemCategory(CharacterEdit edit) {
+		String subItemKey = getSubItemKey(edit);
+		if (subItemKey.startsWith(SUBKEY_EXOTIC_MELEE)) return CATEGORY_COMBAT;
+		else if (subItemKey.startsWith(SUBKEY_EXOTIC_RANGED)) return CATEGORY_COMBAT;
+		else if (subItemKey.startsWith(SUBKEY_HARDWARE)) return CATEGORY_MENTAL;
+		else if (subItemKey.startsWith(SUBKEY_MEDICINE)) return CATEGORY_MENTAL;
+		else if (subItemKey.startsWith(SUBKEY_NETWORKING)) return CATEGORY_SOCIAL;
+		else if (subItemKey.startsWith(SUBKEY_PILOT)) return CATEGORY_MOVEMENT;
+		else if (subItemKey.startsWith(SUBKEY_ACADEMICS)) return CATEGORY_KNOWLEDGE;
+		else if (subItemKey.startsWith(SUBKEY_ART)) return CATEGORY_KNOWLEDGE;
+		else if (subItemKey.startsWith(SUBKEY_INTEREST)) return CATEGORY_KNOWLEDGE;
+		else if (subItemKey.startsWith(SUBKEY_LANGUAGE)) return CATEGORY_KNOWLEDGE;
+		else if (subItemKey.startsWith(SUBKEY_PROFESSION)) return CATEGORY_KNOWLEDGE;
+		else return edit.getTargetSubKey3();
+	}
+
+	public void addSkill(String key, String aptitude, boolean isNoDefault, String category) {
+		addFeature(new Skill(key, aptitude, calculatorsMap.get(aptitude), isNoDefault, category));
 	}
 	
-	public void addSkill(String key, String aptitude) {
-		this.addSkill(key, aptitude, false);
+	public void addSkill(String key, String aptitude, String category) {
+		this.addSkill(key, aptitude, false, category);
 	}
 	
 	public EclipsePhaseSkillList(FeaturesCollection parent, String key, Map<String, SkillCalculator> calculatorsMap) {

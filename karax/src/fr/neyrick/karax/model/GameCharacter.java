@@ -23,6 +23,8 @@ public abstract class GameCharacter {
 
 	private int experience;
 
+	private int availableExperience;
+	
 	public Long getMetaId() {
 		return metaId;
 	}
@@ -77,6 +79,14 @@ public abstract class GameCharacter {
 
 	public void setExperience(int experience) {
 		this.experience = experience;
+	}
+
+	public int getAvailableExperience() {
+		return availableExperience;
+	}
+
+	public void setAvailableExperience(int availableExperience) {
+		this.availableExperience = availableExperience;
 	}
 	
 }

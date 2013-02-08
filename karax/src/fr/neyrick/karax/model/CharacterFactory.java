@@ -22,7 +22,7 @@ public abstract class CharacterFactory {
 		this.locale = locale;
 	    GameCharacter character = initCharacter(metaCharacter);
 		setMetadata(character, metaCharacter);
-		processEdits(metaCharacter.getEdits());
+		processEdits(metaCharacter.getEdits(), character);
 		return character;
 	}
 	
@@ -51,12 +51,15 @@ public abstract class CharacterFactory {
 		return listener;
 	}
 	
-	public void processEdits(List<CharacterEdit> edits) {
+	public void processEdits(List<CharacterEdit> edits, GameCharacter character) {
 		CharacterFeature listener = null;
+		int spentExperience = 0;
 		for(CharacterEdit edit : edits) {
+			if (CharacterEdit.EXPERIENCE.equals(edit.getAmountType())) spentExperience += edit.getAmount();
 			listener = editListenersMap.get(edit.getTargetKey());
 			if (listener != null) listener.recordEdit(edit);
 		}
+		character.setAvailableExperience(character.getExperience() - spentExperience);
 	}
 	
 }

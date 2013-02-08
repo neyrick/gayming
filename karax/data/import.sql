@@ -18,9 +18,9 @@ insert into charhistory (id, cause_id, editdate, amounttype, amount, targetkey, 
  (3, null, localtimestamp, null, 0, 'FACTION', null, null, null, 'HYPERCORP', 2), 
  (4, null, localtimestamp, null, 0, 'GENDER', null, null, null, 'MALE', 2),
  (5, null, localtimestamp, null, 0, 'BACKGROUND', null, null, null, 'EVACUEE', 2),
- (6, null, localtimestamp, null, 0, 'MOTIVATION', '1', null, null, 'SECURITY', 2),
- (7, null, localtimestamp, null, 0, 'MOTIVATION', '2', null, null, 'IMMORTALITY', 2),
- (8, null, localtimestamp, null, 0, 'MOTIVATION', '3', null, null, 'INFOMORPH_RIGHTS', 2),
+ (6, null, localtimestamp, null, 0, 'MOTIVATION', 'MV_SECURITY', null, null, null, 2),
+ (7, null, localtimestamp, null, 0, 'MOTIVATION', 'MV_IMMORTALITY', null, null, null, 2),
+ (8, null, localtimestamp, null, 0, 'MOTIVATION', 'MV_INFOMORPH_RIGHTS', null, null, null, 2),
  (9, null, localtimestamp, 'CREATION', 15, 'APT', 'COG', null, null, null, 2),
  (10, null, localtimestamp, 'CREATION', 10, 'APT', 'COO', null, null, null, 2),
  (11, null, localtimestamp, 'CREATION', 15, 'APT', 'INT', null, null, null, 2),
@@ -37,7 +37,12 @@ insert into charhistory (id, cause_id, editdate, amounttype, amount, targetkey, 
  (23, null, localtimestamp, 'CREATION', 0, 'IDENTITY', '2', 'NOTES', null, 'Notes Esteban', 2),
  (24, null, localtimestamp, 'FREE', 40, 'IDENTITY', '1', 'REPUTATION', 'I', null, 2),
  (25, null, localtimestamp, 'FREE', 30, 'IDENTITY', '2', 'REPUTATION', 'C', null, 2),
- (26, null, localtimestamp, 'FREE', 10, 'IDENTITY', '2', 'REPUTATION', 'A', null, 2)
+ (26, null, localtimestamp, 'FREE', 10, 'IDENTITY', '2', 'REPUTATION', 'A', null, 2),
+ (27, null, localtimestamp, 'FREEBIE', 10, 'TRAIT', 'RIGHT_AT_HOME_FURY', null, null, null, 2),
+ (28, null, localtimestamp, 'FREEBIE', 10, 'TRAIT', 'DANGER_SENSE', null, null, null, 2),
+ (29, null, localtimestamp, 'FREEBIE', 10, 'TRAIT', 'SITUATIONAL_AWARENESS', null, null, null, 2),
+ (30, null, localtimestamp, 'FREEBIE', -10, 'TRAIT', 'EDITED_MEMORIES', null, null, null, 2),
+ (31, null, localtimestamp, null, 0, 'MORPH_MOVEMENT', null, null, null, '4 / 20', 2)
  ;
  
 

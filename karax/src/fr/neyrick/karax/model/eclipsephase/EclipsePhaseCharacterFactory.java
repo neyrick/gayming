@@ -120,50 +120,50 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 
 		EclipsePhaseSkillList activeSkills = registerListener(new EclipsePhaseSkillList("ASK", skillCalculatorsMap));
 		character.setActiveSkills(activeSkills);
-		activeSkills.addSkill("ANIMALHANDLING", EclipsePhaseCharacter.KEY_SAV);
-		activeSkills.addSkill("BEAMWEAPONS", EclipsePhaseCharacter.KEY_COO);
-		activeSkills.addSkill("BLADES", EclipsePhaseCharacter.KEY_SOM);
-		activeSkills.addSkill("CLIMBING", EclipsePhaseCharacter.KEY_SOM);
-		activeSkills.addSkill("CLUBS", EclipsePhaseCharacter.KEY_SOM);
-		activeSkills.addSkill("DECEPTION", EclipsePhaseCharacter.KEY_SAV);
-		activeSkills.addSkill("DEMOLITIONS", EclipsePhaseCharacter.KEY_COG, true);
-		activeSkills.addSkill("DISGUISE", EclipsePhaseCharacter.KEY_INT);
-		activeSkills.addSkill("FLIGHT", EclipsePhaseCharacter.KEY_SOM);
-		activeSkills.addSkill("FRAY", EclipsePhaseCharacter.KEY_REF);
-		activeSkills.addSkill("FREEFALL", EclipsePhaseCharacter.KEY_REF);
-		activeSkills.addSkill("FREERUNNING", EclipsePhaseCharacter.KEY_SOM);
-		activeSkills.addSkill("GUNNERY", EclipsePhaseCharacter.KEY_INT);
-		activeSkills.addSkill("IMPERSONATION", EclipsePhaseCharacter.KEY_SAV);
-		activeSkills.addSkill("INFILTRATION", EclipsePhaseCharacter.KEY_COO);
-		activeSkills.addSkill("INFOSEC", EclipsePhaseCharacter.KEY_COG, true);
-		activeSkills.addSkill("INTERFACING", EclipsePhaseCharacter.KEY_COG);
-		activeSkills.addSkill("INTIMIDATION", EclipsePhaseCharacter.KEY_SAV);
-		activeSkills.addSkill("INVESTIGATION", EclipsePhaseCharacter.KEY_INT);
-		activeSkills.addSkill("KINESICS", EclipsePhaseCharacter.KEY_SAV);
-		activeSkills.addSkill("KINETICWEAPONS", EclipsePhaseCharacter.KEY_COO);
-		activeSkills.addSkill("NAVIGATION", EclipsePhaseCharacter.KEY_INT);
-		activeSkills.addSkill("PALMING", EclipsePhaseCharacter.KEY_COO);
-		activeSkills.addSkill("PERCEPTION", EclipsePhaseCharacter.KEY_INT);
-		activeSkills.addSkill("PERSUASION", EclipsePhaseCharacter.KEY_SAV);
-		activeSkills.addSkill("PROGRAMMING", EclipsePhaseCharacter.KEY_INT, true);
-		activeSkills.addSkill("PROTOCOL", EclipsePhaseCharacter.KEY_SAV);
-		activeSkills.addSkill("PSYCHOSURGERY", EclipsePhaseCharacter.KEY_INT);
-		activeSkills.addSkill("RESEARCH", EclipsePhaseCharacter.KEY_COG);
-		activeSkills.addSkill("SCROUNGING", EclipsePhaseCharacter.KEY_INT);
-		activeSkills.addSkill("SEEKERWEAPONS", EclipsePhaseCharacter.KEY_COO);
-		activeSkills.addSkill("SPRAYWEAPONS", EclipsePhaseCharacter.KEY_COO);
-		activeSkills.addSkill("SWIMMING", EclipsePhaseCharacter.KEY_SOM);
-		activeSkills.addSkill("THROWINGWEAPONS", EclipsePhaseCharacter.KEY_COO);
-		activeSkills.addSkill("UNARMED", EclipsePhaseCharacter.KEY_SOM);
+		activeSkills.addSkill("ANIMALHANDLING", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
+		activeSkills.addSkill("BEAMWEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("BLADES", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("CLIMBING", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
+		activeSkills.addSkill("CLUBS", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("DECEPTION", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
+		activeSkills.addSkill("DEMOLITIONS", EclipsePhaseCharacter.KEY_COG, true, EclipsePhaseSkillList.CATEGORY_MENTAL);
+		activeSkills.addSkill("DISGUISE", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_SOCIAL);
+		activeSkills.addSkill("FLIGHT", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
+		activeSkills.addSkill("FRAY", EclipsePhaseCharacter.KEY_REF, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("FREEFALL", EclipsePhaseCharacter.KEY_REF, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
+		activeSkills.addSkill("FREERUNNING", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
+		activeSkills.addSkill("GUNNERY", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("IMPERSONATION", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
+		activeSkills.addSkill("INFILTRATION", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
+		activeSkills.addSkill("INFOSEC", EclipsePhaseCharacter.KEY_COG, true, EclipsePhaseSkillList.CATEGORY_MENTAL);
+		activeSkills.addSkill("INTERFACING", EclipsePhaseCharacter.KEY_COG, EclipsePhaseSkillList.CATEGORY_MENTAL);
+		activeSkills.addSkill("INTIMIDATION", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
+		activeSkills.addSkill("INVESTIGATION", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MENTAL);
+		activeSkills.addSkill("KINESICS", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
+		activeSkills.addSkill("KINETICWEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("NAVIGATION", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MENTAL);
+		activeSkills.addSkill("PALMING", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
+		activeSkills.addSkill("PERCEPTION", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
+		activeSkills.addSkill("PERSUASION", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
+		activeSkills.addSkill("PROGRAMMING", EclipsePhaseCharacter.KEY_INT, true, EclipsePhaseSkillList.CATEGORY_MENTAL);
+		activeSkills.addSkill("PROTOCOL", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
+		activeSkills.addSkill("PSYCHOSURGERY", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MENTAL);
+		activeSkills.addSkill("RESEARCH", EclipsePhaseCharacter.KEY_COG, EclipsePhaseSkillList.CATEGORY_MENTAL);
+		activeSkills.addSkill("SCROUNGING", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MENTAL);
+		activeSkills.addSkill("SEEKERWEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("SPRAYWEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("SWIMMING", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
+		activeSkills.addSkill("THROWINGWEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("UNARMED", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_COMBAT);
 		
 		
 		EclipsePhaseSkillList  knowledgeSkills = registerListener(new EclipsePhaseSkillList("KSK", skillCalculatorsMap));
 		character.setKnowledgeSkills(knowledgeSkills);
 		
 		EclipsePhaseSkillList  psiSkills = registerListener(new EclipsePhaseSkillList("PSK", skillCalculatorsMap));
-		psiSkills.addSkill("CONTROL", EclipsePhaseCharacter.KEY_WIL, true);
-		psiSkills.addSkill("ASSAULT", EclipsePhaseCharacter.KEY_WIL, true);
-		psiSkills.addSkill("SENSE", EclipsePhaseCharacter.KEY_INT, true);
+		psiSkills.addSkill("CONTROL", EclipsePhaseCharacter.KEY_WIL, true, EclipsePhaseSkillList.CATEGORY_PSI);
+		psiSkills.addSkill("ASSAULT", EclipsePhaseCharacter.KEY_WIL, true, EclipsePhaseSkillList.CATEGORY_PSI);
+		psiSkills.addSkill("SENSE", EclipsePhaseCharacter.KEY_INT, true, EclipsePhaseSkillList.CATEGORY_PSI);
 		character.setPsiSkills(psiSkills);
 		
 		// IDENTITIES
@@ -176,6 +176,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		muse.setName(registerListener(new StringFeature("MUSE_NAME")));
 		muse.setAptitudes(registerListener(new StaticFeaturesCollection<>("MUSE_APT", FixedNumericFeature.class)));
 		muse.setSkills(registerListener(new StaticFeaturesCollection<>("MUSE_SKILLS", FixedNumericFeature.class)));
+		character.setMuse(muse);
 		
 		// CREDITS
 		
