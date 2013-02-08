@@ -140,7 +140,14 @@
           
            <fo:block-container absolute-position="absolute" top="87mm" left="8mm" width="28mm" text-align="left">
            	<xsl:for-each select="traits/trait[@amount &gt; 0]">
-	            <fo:block  font-size="7pt"><xsl:value-of select="@display"/>(<xsl:value-of select="@amount"/>)</fo:block>
+	            <fo:block  font-size="7pt"><xsl:value-of select="@display"/>
+	            <xsl:if test="@descriptor">
+	            	- <xsl:value-of select="@descriptor"></xsl:value-of>
+	            </xsl:if>
+	            <xsl:if test="@level">
+	            	(<xsl:value-of select="@level"></xsl:value-of>)
+	            </xsl:if>
+	            (<xsl:value-of select="@level"/>)</fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>

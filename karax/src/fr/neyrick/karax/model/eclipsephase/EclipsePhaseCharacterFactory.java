@@ -50,7 +50,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		
 		// TRAITS
 		
-		character.setTraits(registerListener(new StaticFeaturesCollection<>("TRAIT", FixedNumericFeature.class)));
+		character.setTraits(registerListener(new StaticFeaturesCollection<>("TRAIT", Trait.class)));
 		
 		// MORPH
 		
@@ -61,32 +61,21 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		currentMorph.setAptitudeMax(registerListener(new FixedNumericFeature("MORPH_APT_MAX")));
 		currentMorph.setSpeedModifier(registerListener(new FixedNumericFeature("MORPH_SPEED_MOD")));
 		currentMorph.setEnhancements(registerListener(new StaticFeaturesCollection<>("MORPH_ENH", StringFeature.class)));
-		currentMorph.setTraits(registerListener(new StaticFeaturesCollection<>("MORPH_TRAITS", StringFeature.class)));
+		currentMorph.setTraits(registerListener(new StaticFeaturesCollection<>("MORPH_TRAIT", Trait.class)));
 		currentMorph.setMovementRate(registerListener(new StringFeature("MORPH_MOVEMENT")));
 		character.setCurrentMorph(currentMorph);
 		
 		// APTITUDES
-		
-		FeatureCalculator aptitudeBaseCalculator = new FeatureCalculator() {
-			
-			@Override
-			public Number calculate(CharacterFeature feature) {
-				Aptitude targetFeature = (Aptitude)feature;
-				int result = targetFeature.getCreationCost();
-				result += (targetFeature.getFreebieCost() / 10) + (targetFeature.getExperienceCost() / 10) + (targetFeature.getFreeCost() / 10);
-				return result;
-			}
-		};
-		
-		// TODO: morph limit
+
+		AptitudeCalculator aptitudeCalculator = new AptitudeCalculator();
 		VariableFeaturesCollection<Aptitude> aptitudes = registerListener(new VariableFeaturesCollection<>("APT", Aptitude.class));
-		Aptitude aptitudeCOG = aptitudes.addFeature(new Aptitude("COG", 30, aptitudeBaseCalculator));
-		Aptitude aptitudeCOO = aptitudes.addFeature(new Aptitude("COO", 30, aptitudeBaseCalculator));
-		Aptitude aptitudeINT = aptitudes.addFeature(new Aptitude("INT", 30, aptitudeBaseCalculator));
-		Aptitude aptitudeSOM = aptitudes.addFeature(new Aptitude("SOM", 30, aptitudeBaseCalculator));
-		Aptitude aptitudeWIL = aptitudes.addFeature(new Aptitude("WIL", 30, aptitudeBaseCalculator));
-		Aptitude aptitudeREF = aptitudes.addFeature(new Aptitude("REF", 30, aptitudeBaseCalculator));
-		Aptitude aptitudeSAV = aptitudes.addFeature(new Aptitude("SAV", 30, aptitudeBaseCalculator));
+		Aptitude aptitudeCOG = aptitudes.addFeature(new Aptitude("COG", aptitudeCalculator));
+		Aptitude aptitudeCOO = aptitudes.addFeature(new Aptitude("COO", aptitudeCalculator));
+		Aptitude aptitudeINT = aptitudes.addFeature(new Aptitude("INT", aptitudeCalculator));
+		Aptitude aptitudeSOM = aptitudes.addFeature(new Aptitude("SOM", aptitudeCalculator));
+		Aptitude aptitudeWIL = aptitudes.addFeature(new Aptitude("WIL", aptitudeCalculator));
+		Aptitude aptitudeREF = aptitudes.addFeature(new Aptitude("REF", aptitudeCalculator));
+		Aptitude aptitudeSAV = aptitudes.addFeature(new Aptitude("SAV", aptitudeCalculator));
 		character.setAptitudes(aptitudes);
 				
 		// MOTIVATIONS
@@ -175,7 +164,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		Muse muse = new Muse();
 		muse.setName(registerListener(new StringFeature("MUSE_NAME")));
 		muse.setAptitudes(registerListener(new StaticFeaturesCollection<>("MUSE_APT", FixedNumericFeature.class)));
-		muse.setSkills(registerListener(new StaticFeaturesCollection<>("MUSE_SKILLS", FixedNumericFeature.class)));
+		muse.setSkills(registerListener(new StaticFeaturesCollection<>("MUSE_SKILL", FixedNumericFeature.class)));
 		character.setMuse(muse);
 		
 		// CREDITS

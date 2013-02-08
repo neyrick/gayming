@@ -57,7 +57,7 @@ public class EclipsePhaseCharacter extends GameCharacter {
 	
 	private Morph currentMorph;
 	
-	private StaticFeaturesCollection<FixedNumericFeature> traits;
+	private StaticFeaturesCollection<Trait> traits;
 
 	private StaticFeaturesCollection<FixedNumericFeature> psiSleights;
 
@@ -203,11 +203,11 @@ public class EclipsePhaseCharacter extends GameCharacter {
 
 	@XmlElementWrapper(name="traits")
 	@XmlElement(name="trait")
-	public Collection<FixedNumericFeature> getTraits() {
+	public Collection<Trait> getTraits() {
 		return traits.getActualSubFeatures();
 	}
 
-	public void setTraits(StaticFeaturesCollection<FixedNumericFeature> traits) {
+	public void setTraits(StaticFeaturesCollection<Trait> traits) {
 		this.traits = traits;
 	}
 

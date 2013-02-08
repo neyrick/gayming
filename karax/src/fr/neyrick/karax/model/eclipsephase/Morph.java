@@ -36,7 +36,7 @@ public class Morph {
 	
 	private StringFeature sex;
 	
-	private StaticFeaturesCollection<StringFeature> traits;
+	private StaticFeaturesCollection<Trait> traits;
 	
 	private StaticFeaturesCollection<StringFeature> enhancements;
 	
@@ -130,11 +130,11 @@ public class Morph {
 
 	@XmlElementWrapper(name="traits")
 	@XmlElement(name="trait")
-	public Collection<StringFeature> getTraits() {
+	public Collection<Trait> getTraits() {
 		return traits.getActualSubFeatures();
 	}
 
-	public void setTraits(StaticFeaturesCollection<StringFeature> traits) {
+	public void setTraits(StaticFeaturesCollection<Trait> traits) {
 		this.traits = traits;
 	}
 

@@ -16,16 +16,6 @@ public class Aptitude extends VariableNumericFeature {
 
 	private int base;
 	
-	private int maxAptitude;
-	
-	@Override
-	protected Number calculate() {
-		base = getCalculator().calculate(this).intValue();
-		int total = base + getMorphBonus();
-		if (total > maxAptitude) total = maxAptitude;
-		return total;
-	}
-
 	@XmlAttribute
 	public String getDisplay() {
 		return tryTranslation(getKey());
@@ -37,11 +27,23 @@ public class Aptitude extends VariableNumericFeature {
 		return base;
 	}
 
+	public void setBase(int base) {
+		this.base = base;
+	}
+
 	@XmlAttribute
 	public int getMorphBonus() {
 		return getAmount("MORPH");
 	}
 
+	public int getMorphMax() {
+		return getAmount("MORPH_MAX");
+	}
+	
+	public int getEgoMax() {
+		return 30 + getAmount("EGO_MAX");
+	}
+	
 	@XmlAttribute
 	@Override
 	public String getKey() {
@@ -55,18 +57,16 @@ public class Aptitude extends VariableNumericFeature {
 	}
 
 	public Aptitude() {
-		this(null, 0, null);
+		this(null, null);
 	}
 
-	public Aptitude(FeaturesCollection container, int maxAptitude, String key,
+	public Aptitude(FeaturesCollection container, String key,
 			FeatureCalculator calculator) {
 		super(container, key, calculator);
-		this.maxAptitude = maxAptitude;
 	}
 
-	public Aptitude(String key, int maxAptitude, FeatureCalculator calculator) {
+	public Aptitude(String key, FeatureCalculator calculator) {
 		super(key, calculator);
-		this.maxAptitude = maxAptitude;
 	}
 
 	
