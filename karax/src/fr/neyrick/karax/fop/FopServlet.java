@@ -71,7 +71,7 @@ public class FopServlet extends HttpServlet {
      * {@inheritDoc}
      */
     public void init() throws ServletException {
-    	this.xslPath = getServletContext().getRealPath("/WEB-INF/xsl/fo/");
+    	this.xslPath = getServletContext().getRealPath("/WEB-INF/xsl/");
     	this.uriResolver = new ServletContextURIResolver(getServletContext());
         this.transFactory = TransformerFactory.newInstance();
         this.transFactory.setURIResolver(this.uriResolver);
@@ -184,7 +184,9 @@ public class FopServlet extends HttpServlet {
 			throw new WebApplicationException(e);
 		}
         
-		Source xslSource = new StreamSource(new File(xslPath, character.getGame().getStylesheet()));
+		File xslFile = getCharacterSheetFile(character.getGame().getStylesheet(), locale);
+		
+		Source xslSource = new StreamSource(xslFile);
 //		Source xslSource = new StreamSource(new File(xslPath, "fochain.xsl"));
 
         //Setup the XSL transformation
@@ -196,6 +198,12 @@ public class FopServlet extends HttpServlet {
         render(xmlSrc, transformer, response);
     }
 
+    private File getCharacterSheetFile(String styleSheetDir, Locale locale) {
+    	File xslFile = new File(xslPath + "/" + styleSheetDir, "character_sheet." + locale.getLanguage().toLowerCase() + ".xsl");
+    	if (xslFile.exists()) return xslFile;
+    	else return new File(xslPath + "/" + styleSheetDir, "character_sheet.xsl");
+    }
+    
     /**
      * Renders an input file (XML or XSL-FO) into a PDF file. It uses the JAXP
      * transformer given to optionally transform the input document to XSL-FO.
