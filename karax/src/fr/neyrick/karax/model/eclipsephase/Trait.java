@@ -1,17 +1,13 @@
 package fr.neyrick.karax.model.eclipsephase;
 
-import java.util.Set;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import fr.neyrick.karax.entities.generic.CharacterEdit;
 import fr.neyrick.karax.model.FeaturesCollection;
 import fr.neyrick.karax.model.FixedNumericFeature;
-import fr.neyrick.karax.model.VariableNumericFeature;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)

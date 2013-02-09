@@ -72,7 +72,9 @@ public class Identity extends ComplexFeatureCollection {
 						public Number calculate(CharacterFeature feature) {
 							VariableNumericFeature targetFeature = (VariableNumericFeature)feature;
 							int result = targetFeature.getCreationCost();
-							result += (targetFeature.getFreebieCost() * 10) + (targetFeature.getExperienceCost() * 10) + targetFeature.getFreeCost();
+							result += (targetFeature.getFreebieCost() * 10) + (targetFeature.getExperienceCost() * 10);
+							result += targetFeature.getFreeCost();
+							if ((targetFeature.getModifier() < -500) && (result > 0)) return 0; 
 							return result;
 						}
 						

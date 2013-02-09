@@ -42,6 +42,14 @@ public class FixedNumericFeature extends AbstractSingleFeature {
 	public int getAmount() {
 		return amount;
 	}
+	
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
 
 	public FixedNumericFeature(FeaturesCollection container, String key) {
 		super(container, key);

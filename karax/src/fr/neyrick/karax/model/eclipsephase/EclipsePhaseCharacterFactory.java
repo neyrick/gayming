@@ -57,7 +57,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		Morph currentMorph = new Morph();
 		currentMorph.setOrigin(registerListener(new StringFeature("MORPH_ORIGIN")));
 		currentMorph.setType(registerListener(new StringFeature("MORPH_TYPE")));
-		currentMorph.setDurability(registerListener(new FixedNumericFeature("MORPH_DURABILITY")));
+		currentMorph.setDurability(registerListener(new SimpleVariable("MORPH_DURABILITY")));
 		currentMorph.setAptitudeMax(registerListener(new FixedNumericFeature("MORPH_APT_MAX")));
 		currentMorph.setSpeedModifier(registerListener(new FixedNumericFeature("MORPH_SPEED_MOD")));
 		currentMorph.setEnhancements(registerListener(new StaticFeaturesCollection<>("MORPH_ENH", StringFeature.class)));
@@ -109,8 +109,8 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 
 		EclipsePhaseSkillList activeSkills = registerListener(new EclipsePhaseSkillList("ASK", skillCalculatorsMap));
 		character.setActiveSkills(activeSkills);
-		activeSkills.addSkill("ANIMALHANDLING", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
-		activeSkills.addSkill("BEAMWEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("ANIMAL_HANDLING", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
+		activeSkills.addSkill("BEAM_WEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
 		activeSkills.addSkill("BLADES", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_COMBAT);
 		activeSkills.addSkill("CLIMBING", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
 		activeSkills.addSkill("CLUBS", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_COMBAT);
@@ -119,7 +119,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		activeSkills.addSkill("DISGUISE", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_SOCIAL);
 		activeSkills.addSkill("FLIGHT", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
 		activeSkills.addSkill("FRAY", EclipsePhaseCharacter.KEY_REF, EclipsePhaseSkillList.CATEGORY_COMBAT);
-		activeSkills.addSkill("FREEFALL", EclipsePhaseCharacter.KEY_REF, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
+		activeSkills.addSkill("FREE_FALL", EclipsePhaseCharacter.KEY_REF, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
 		activeSkills.addSkill("FREERUNNING", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
 		activeSkills.addSkill("GUNNERY", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_COMBAT);
 		activeSkills.addSkill("IMPERSONATION", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
@@ -129,7 +129,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		activeSkills.addSkill("INTIMIDATION", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
 		activeSkills.addSkill("INVESTIGATION", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MENTAL);
 		activeSkills.addSkill("KINESICS", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
-		activeSkills.addSkill("KINETICWEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("KINETIC_WEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
 		activeSkills.addSkill("NAVIGATION", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MENTAL);
 		activeSkills.addSkill("PALMING", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
 		activeSkills.addSkill("PERCEPTION", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
@@ -139,10 +139,10 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		activeSkills.addSkill("PSYCHOSURGERY", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MENTAL);
 		activeSkills.addSkill("RESEARCH", EclipsePhaseCharacter.KEY_COG, EclipsePhaseSkillList.CATEGORY_MENTAL);
 		activeSkills.addSkill("SCROUNGING", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MENTAL);
-		activeSkills.addSkill("SEEKERWEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
-		activeSkills.addSkill("SPRAYWEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("SEEKER_WEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("SPRAY_WEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
 		activeSkills.addSkill("SWIMMING", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
-		activeSkills.addSkill("THROWINGWEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
+		activeSkills.addSkill("THROWING_WEAPONS", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_COMBAT);
 		activeSkills.addSkill("UNARMED", EclipsePhaseCharacter.KEY_SOM, EclipsePhaseSkillList.CATEGORY_COMBAT);
 		
 		

@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import fr.neyrick.karax.model.FixedNumericFeature;
+import fr.neyrick.karax.model.SimpleVariable;
 import fr.neyrick.karax.model.StaticFeaturesCollection;
 import fr.neyrick.karax.model.StringFeature;
 
@@ -26,7 +27,7 @@ public class Morph {
 
 	private FixedNumericFeature speedModifier;
 
-	private FixedNumericFeature durability;
+	private SimpleVariable durability;
 
 	private StringFeature movementRate;
 
@@ -79,11 +80,11 @@ public class Morph {
 	}
 
 	@XmlElement
-	public FixedNumericFeature getDurability() {
+	public SimpleVariable getDurability() {
 		return durability;
 	}
 
-	public void setDurability(FixedNumericFeature durability) {
+	public void setDurability(SimpleVariable durability) {
 		this.durability = durability;
 	}
 
@@ -150,7 +151,7 @@ public class Morph {
 	
 	@XmlElement
 	public int getWoundThreshold() {
-		return (int)Math.ceil(durability.getNumericValue() / 5);
+		return (int)Math.ceil(durability.getNumericValue().intValue() / 5);
 	}
 	
 	@XmlElement
@@ -158,6 +159,6 @@ public class Morph {
 		double factor = 0;
 		if (ORIGIN_BIO.equals(origin.getValue())) factor = 1.5;
 		else if (ORIGIN_SYNTH.equals(origin.getValue())) factor = 2.; 
-		return (int)(durability.getNumericValue() * factor);
+		return (int)(durability.getNumericValue().intValue() * factor);
 	}
 }

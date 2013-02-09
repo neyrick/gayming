@@ -14,6 +14,14 @@ import com.sun.xml.internal.txw2.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public class SimpleVariable extends VariableNumericFeature {
 
+	private static final FeatureCalculator dummyCalculator = new FeatureCalculator() {
+		
+		@Override
+		public Number calculate(CharacterFeature feature) {
+			return ((VariableNumericFeature)feature).getTotalCost();
+		}
+	};
+	
 	@Override
 	@XmlAttribute
 	public String getKey() {
@@ -42,11 +50,19 @@ public class SimpleVariable extends VariableNumericFeature {
 		super(container, key, calculator);
 	}
 
+	public SimpleVariable(FeaturesCollection container, String key) {
+		super(container, key, dummyCalculator);
+	}
+
 	public SimpleVariable(String key, FeatureCalculator calculator) {
 		super(key, calculator);
 	}
 
+	public SimpleVariable(String key) {
+		super(key, dummyCalculator);
+	}
+
 	public SimpleVariable() {
-		this(null,null);
+		this(null);
 	}
 }

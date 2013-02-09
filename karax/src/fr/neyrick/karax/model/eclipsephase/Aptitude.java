@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import fr.neyrick.karax.entities.generic.CharacterEdit;
 import fr.neyrick.karax.model.FeatureCalculator;
 import fr.neyrick.karax.model.FeaturesCollection;
 import fr.neyrick.karax.model.VariableNumericFeature;
@@ -14,8 +15,22 @@ import fr.neyrick.karax.model.VariableNumericFeature;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Aptitude extends VariableNumericFeature {
 
+	static public final String MORPH_BASE_MAX = "MORPH_BASE_MAX";
+	
+	static public final String MORPH_MAX = "MORPH_MAX";
+	
+	static public final String EGO_MAX = "EGO_MAX";
+
+	private int EGO_BASE_MAX = 30;
+	
 	private int base;
 	
+	private int newMorphMax = 200;
+
+	private int morphBaseMax;
+
+	private int newEgoMax = 200;
+
 	@XmlAttribute
 	public String getDisplay() {
 		return tryTranslation(getKey());
@@ -37,11 +52,16 @@ public class Aptitude extends VariableNumericFeature {
 	}
 
 	public int getMorphMax() {
-		return getAmount("MORPH_MAX");
+		int result = (newMorphMax == 200 ? morphBaseMax : newMorphMax);
+		return result + getMorphMaxMod();
+	}
+	
+	public int getMorphMaxMod() {
+		return getAmount("MORPH_MAX_MOD");
 	}
 	
 	public int getEgoMax() {
-		return 30 + getAmount("EGO_MAX");
+		return (newEgoMax == 200 ? EGO_BASE_MAX : newEgoMax);
 	}
 	
 	@XmlAttribute
@@ -58,6 +78,16 @@ public class Aptitude extends VariableNumericFeature {
 
 	public Aptitude() {
 		this(null, null);
+	}
+
+	@Override
+	public void recordEdit(CharacterEdit edit) {
+		String amountType = edit.getAmountType();
+		int newValue = edit.getAmount();
+		if (EGO_MAX.equals(amountType)) newEgoMax = newValue;
+		else if (MORPH_MAX.equals(amountType)) newMorphMax = (newMorphMax > newValue ? newValue : newMorphMax);
+		else if (MORPH_BASE_MAX.equals(amountType)) morphBaseMax = newValue;
+		else super.recordEdit(edit);
 	}
 
 	public Aptitude(FeaturesCollection container, String key,
