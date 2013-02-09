@@ -17,7 +17,7 @@ the location of this file.
 
   <!-- Base URL for resolving relative URLs -->
   <base>.</base>
-  <font-base>./xsl/fo/fonts/</font-base>
+  <font-base>./xsl/fonts/</font-base>
   
   <!-- Source resolution in dpi (dots/pixels per inch) for determining the size of pixels in SVG and bitmap images, default: 72dpi -->
   <source-resolution>300</source-resolution>
@@ -84,6 +84,10 @@ the location of this file.
         </font>
         <font kerning="yes" embed-url="liberationsansnarrow-bold.ttf">
           <font-triplet name="Liberation" style="normal" weight="bold"/>
+        </font>
+
+        <font kerning="yes" embed-url="electrolize-regular.ttf">
+          <font-triplet name="Electrolize" style="normal" weight="normal"/>
         </font>
       </fonts>
 
