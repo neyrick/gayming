@@ -18,12 +18,8 @@ public class Trait extends FixedNumericFeature {
 	private String descriptor;
 	
 	@XmlAttribute
-	public String getDisplay() {
-		return tryTranslation(getKey());
-	}
-
-	@XmlAttribute
 	public String getDescriptor() {
+		if (descriptor == null) return null;
 		return tryTranslation(descriptor);
 	}
 
@@ -38,12 +34,6 @@ public class Trait extends FixedNumericFeature {
 
 	public void setDescriptor(String descriptor) {
 		this.descriptor = descriptor;
-	}
-
-	@XmlAttribute
-	@Override
-	public String getKey() {
-		return super.getKey();
 	}
 
 	public Trait() {
