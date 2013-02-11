@@ -121,7 +121,7 @@
           </fo:block-container>
           
           <!-- Donnees chiffrees individuelles -->
-           <fo:block-container absolute-position="absolute" top="77mm" left="150mm" width="10mm" text-align="center">
+           <fo:block-container absolute-position="absolute" top="77mm" left="139mm" width="30mm" text-align="center">
             <fo:block  font-family="Electrolize" font-size="14pt" color="{$labelColor}"><xsl:value-of select="$label.STATS"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="66.7mm" left="105.5mm" width="10mm" text-align="center">
@@ -158,7 +158,7 @@
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.DUR"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="80.5mm" left="121mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="currentMorph/durability/@amount"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="currentMorph/durability"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="76.2mm" left="131.5mm" width="10mm" text-align="center">
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.DR"/></fo:block>
@@ -242,13 +242,20 @@
 	            <xsl:if test="@level">
 	            	(<xsl:value-of select="@level"></xsl:value-of>)
 	            </xsl:if>
-	            (<xsl:value-of select="@level"/>)</fo:block>
+	            </fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="87mm" left="37mm" width="28mm" text-align="left">
            	<xsl:for-each select="traits/trait[@amount &lt;  0]">
-	            <fo:block  font-size="7pt"><xsl:value-of select="@display"/>(<xsl:value-of select="@amount"/>)</fo:block>
+	            <fo:block  font-size="7pt"><xsl:value-of select="@display"/>
+	            <xsl:if test="@descriptor">
+	            	- <xsl:value-of select="@descriptor"></xsl:value-of>
+	            </xsl:if>
+	            <xsl:if test="@level">
+	            	(<xsl:value-of select="@level"></xsl:value-of>)
+	            </xsl:if>
+	            </fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>
@@ -449,8 +456,7 @@
  		   </fo:block-container>
  		   
  		             <!-- Donnees chiffrees Muse -->
- 		             
-           <fo:block-container absolute-position="absolute" top="270mm" left="153mm" width="10mm" text-align="center">
+           <fo:block-container absolute-position="absolute" top="270mm" left="142.5mm" width="30mm" text-align="center">
             <fo:block font-family="Electrolize" font-size="14pt" color="{$labelColor}"><xsl:value-of select="$label.MUSE"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="260.5mm" left="111.3mm" width="10mm" text-align="center">
@@ -515,7 +521,6 @@
           </fo:block-container>
  		   
            <!-- Muse skills -->
-
            <fo:block-container absolute-position="absolute" top="257mm" left="175mm" width="26mm" text-align="center">
  			 <fo:block  font-size="6pt">
 				<fo:table table-layout="fixed" width="100%">
@@ -544,7 +549,15 @@
             <fo:block/>
           </fo:block-container>
           
+          <!--  Backup -->
+           <fo:block-container absolute-position="absolute" top="14.7mm" left="10mm" width="55mm" text-align="left">
+	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.backupNotes"/></fo:block>
+          </fo:block-container>
+
           <!--  Pouvoirs Psi -->
+           <fo:block-container absolute-position="absolute" top="14.7mm" left="84.5mm" width="55mm" text-align="left">
+	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.psiSleights"/></fo:block>
+          </fo:block-container>
            <fo:block-container absolute-position="absolute" top="20mm" left="85mm" width="55mm" text-align="left">
            	<xsl:for-each select="psiSleights/sleight[position() &lt;= 3]">
 	            <fo:block  font-size="8pt"><xsl:value-of select="@display"/></fo:block>
@@ -560,21 +573,72 @@
           
           <!--  ID  -->
 
-          <fo:block-container absolute-position="absolute" top="39mm" left="10mm" width="56mm" text-align="left" border-style="1">
+          <fo:block-container absolute-position="absolute" top="39mm" left="10mm" width="56mm" text-align="left">
            	<xsl:apply-templates select="identities/identity[1]"/>
            	<fo:block/>
           </fo:block-container>
-          <fo:block-container absolute-position="absolute" top="39mm" left="78mm" width="56mm" text-align="left" border-style="1">
+          <fo:block-container absolute-position="absolute" top="39mm" left="78mm" width="56mm" text-align="left">
            	<xsl:apply-templates select="identities/identity[2]"/>
            	<fo:block/>
           </fo:block-container>
-          <fo:block-container absolute-position="absolute" top="39mm" left="147mm" width="56mm" text-align="left" border-style="1">
+          <fo:block-container absolute-position="absolute" top="39mm" left="147mm" width="56mm" text-align="left">
            	<xsl:apply-templates select="identities/identity[3]"/>
            	<fo:block/>
           </fo:block-container>
           
+          <!--  Armure -->
+          
+          <fo:block-container absolute-position="absolute" top="92.6mm" left="9mm" width="80mm" text-align="left">
+	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.armor"/></fo:block>
+          </fo:block-container>
+          <fo:block-container absolute-position="absolute" top="102mm" left="5mm" width="16.5mm" text-align="right">
+	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.energyArmor"/></fo:block>
+          </fo:block-container>
+          <fo:block-container absolute-position="absolute" top="102mm" left="43.5mm" width="80mm" text-align="left">
+	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.kineticArmor"/></fo:block>
+          </fo:block-container>
+          <fo:block-container font-family="Electrolize" absolute-position="absolute" top="110mm" left="9mm" width="50mm" text-align="left" font-size="8pt">
+	  		  <fo:block wrap-option="wrap">	_______________________________ _______________________________ _______________________________
+		     	_______________________________
+		      </fo:block>
+		  </fo:block-container>
+     
+          <!--  Armes melee  -->
+
+          <fo:block-container absolute-position="absolute" top="90mm" left="67mm" width="38mm" text-align="left">
+           	<xsl:call-template name="meleeWeapon"/>
+          </fo:block-container>
+          <fo:block-container absolute-position="absolute" top="90mm" left="114mm" width="38mm" text-align="left">
+           	<xsl:call-template name="meleeWeapon"/>
+          </fo:block-container>
+          <fo:block-container absolute-position="absolute" top="90mm" left="162mm" width="38mm" text-align="left">
+           	<xsl:call-template name="meleeWeapon"/>
+          </fo:block-container>
+          
+          <!--  Armes distance  -->
+
+          <fo:block-container absolute-position="absolute" top="130mm" left="7mm" width="58mm" text-align="left">
+           	<xsl:call-template name="rangedWeapon"/>
+          </fo:block-container>
+          <fo:block-container absolute-position="absolute" top="130mm" left="76.3mm" width="58mm" text-align="left">
+           	<xsl:call-template name="rangedWeapon"/>
+          </fo:block-container>
+          <fo:block-container absolute-position="absolute" top="130mm" left="144mm" width="58mm" text-align="left">
+           	<xsl:call-template name="rangedWeapon"/>
+          </fo:block-container>
+          
+          <!-- Equipement -->
+          
+          <fo:block-container absolute-position="absolute" top="169.5mm" left="9mm" width="80mm" text-align="left">
+	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.gear"/></fo:block>
+          </fo:block-container>
+
           <!-- Traits de Morphe -->
           
+           <fo:block-container absolute-position="absolute" top="215mm" left="9mm" width="80mm" text-align="left">
+	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.morphTraits"/></fo:block>
+          </fo:block-container>
+
            <fo:block-container absolute-position="absolute" top="220mm" left="10mm" width="55mm" text-align="left" >
            	<xsl:for-each select="currentMorph/traits/trait">
 	            <fo:block  font-size="8pt"><xsl:value-of select="@key"/></fo:block>
@@ -584,6 +648,10 @@
 
           <!--  Ameliorations de Morphe  -->
           
+           <fo:block-container absolute-position="absolute" top="215mm" left="76mm" width="100mm" text-align="left">
+	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.morphEnhancements"/></fo:block>
+          </fo:block-container>
+
            <fo:block-container absolute-position="absolute" top="220mm" left="77mm" width="55mm" text-align="left">
            	<xsl:for-each select="currentMorph/enhancements/enhancement[position() &lt;= 13]">
 	            <fo:block  font-size="8pt"><xsl:value-of select="."/></fo:block>
@@ -597,38 +665,109 @@
            	<fo:block/>
           </fo:block-container>
           
+           <fo:block-container absolute-position="absolute" top="270mm" left="10mm" width="55mm" text-align="left">
+	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.embeddedSoftware"/></fo:block>
+          </fo:block-container>
+
          </fo:flow>
       </fo:page-sequence>
     </fo:root>
   </xsl:template>
   
   <xsl:template match="identity">
-	<fo:block>ID: <xsl:value-of select="name"/></fo:block>
-	<fo:block  font-size="8pt" space-before="2mm">
-		<fo:table table-layout="fixed" width="100%" text-align="right">
+	<fo:block><xsl:value-of select="$label.ID"/>: <xsl:value-of select="name"/></fo:block>
+	<fo:block font-size="8pt" space-before="1.5mm">
+		<fo:table table-layout="fixed" width="100%" text-align="left">
+			<fo:table-column column-width="32mm" />
 			<fo:table-column column-width="20mm" />
-			<fo:table-column column-width="30mm" />
 			<fo:table-body>
+				<fo:table-row height="6mm">
+					<fo:table-cell padding-left="4mm"><fo:block><xsl:value-of select="$label.REPA"/>: <xsl:value-of select="reputations/reputation[@key='A']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="1mm"><fo:block><xsl:value-of select="$label.REPG"/>: <xsl:value-of select="reputations/reputation[@key='G']"/></fo:block></fo:table-cell>
+				</fo:table-row>
+				<fo:table-row height="5.6mm">
+					<fo:table-cell padding-left="2mm"><fo:block><xsl:value-of select="$label.REPC"/>: <xsl:value-of select="reputations/reputation[@key='C']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="3mm"><fo:block><xsl:value-of select="$label.REPI"/>: <xsl:value-of select="reputations/reputation[@key='I']"/></fo:block></fo:table-cell>
+				</fo:table-row>
 				<fo:table-row height="5.8mm">
-					<fo:table-cell padding-right="2mm" border-style="1"><fo:block><xsl:value-of select="reputations/reputation[@key='A']"/></fo:block></fo:table-cell>
-					<fo:table-cell padding-right="3.5mm" border-style="1"><fo:block><xsl:value-of select="reputations/reputation[@key='G']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="2mm"><fo:block><xsl:value-of select="$label.REPE"/>: <xsl:value-of select="reputations/reputation[@key='E']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="3mm"><fo:block><xsl:value-of select="$label.REPR"/>: <xsl:value-of select="reputations/reputation[@key='R']"/></fo:block></fo:table-cell>
 				</fo:table-row>
 				<fo:table-row height="5.5mm">
-					<fo:table-cell padding-right="4mm" border-style="1"><fo:block><xsl:value-of select="reputations/reputation[@key='C']"/></fo:block></fo:table-cell>
-					<fo:table-cell padding-right="1.5mm" border-style="1"><fo:block><xsl:value-of select="reputations/reputation[@key='I']"/></fo:block></fo:table-cell>
-				</fo:table-row>
-				<fo:table-row height="5.5mm">
-					<fo:table-cell padding-right="4mm" border-style="1"><fo:block><xsl:value-of select="reputations/reputation[@key='E']"/></fo:block></fo:table-cell>
-					<fo:table-cell padding-right="1.5mm" border-style="1"><fo:block><xsl:value-of select="reputations/reputation[@key='R']"/></fo:block></fo:table-cell>
-				</fo:table-row>
-				<fo:table-row height="5.5mm">
-					<fo:table-cell padding-right="2mm"><fo:block><xsl:value-of select="reputations/reputation[@key='F']"/></fo:block></fo:table-cell>
-					<fo:table-cell padding-right="3.5mm" border-style="1"><fo:block><xsl:value-of select="reputations/reputation[@key!='A' and @key!='C' and @key!='E' and @key!='F' and @key!='G' and @key!='I' and @key!='R']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="4mm"><fo:block><xsl:value-of select="$label.REPF"/>: <xsl:value-of select="reputations/reputation[@key='F']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="1mm"><fo:block><xsl:value-of select="reputations/reputation[@key!='A' and @key!='C' and @key!='E' and @key!='F' and @key!='G' and @key!='I' and @key!='R']"/></fo:block></fo:table-cell>
 				</fo:table-row>
 			</fo:table-body>
 		</fo:table>
  	 </fo:block>
-     <fo:block border-style="1"><xsl:value-of select="notes"/></fo:block>
+     <fo:block font-size="8pt" width="54mm" wrap-option="wrap">
+     <xsl:choose>
+     	<xsl:when test="notes"><xsl:value-of select="notes"/></xsl:when>
+     	<xsl:otherwise>_______________________________________ _______________________________________ _______________________________________
+     	_______________________________________</xsl:otherwise>
+     </xsl:choose>
+     	
+     </fo:block>
+  </xsl:template>
+  
+  <xsl:template name="meleeWeapon">
+        <fo:block-container absolute-position="absolute" top="2.5mm" left="2mm" text-align="left">
+	        <fo:block  font-family="Electrolize" font-size="8pt" wrap-option="wrap">
+	        	<fo:inline color="{$labelColor}"><xsl:value-of select="$label.meleeWeapon"/>:</fo:inline> _________ _______________________
+	        </fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="13mm" left="2mm" text-align="left">
+	           <fo:block font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.weaponSkill"/>: _______</fo:block>
+	           <fo:block space-before="2mm" font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.weaponDV"/>: ___________
+	           <xsl:value-of select="$label.weaponAP"/>: _____</fo:block>
+	           <fo:block space-before="2mm" font-family="Electrolize" font-size="8pt">_______________________
+	           _______________________ _______________________</fo:block>
+        </fo:block-container>
+  </xsl:template>
+  
+  <xsl:template name="rangedWeapon">
+        <fo:block-container absolute-position="absolute" top="0.5mm" left="2mm" text-align="left">
+	        <fo:block  font-family="Electrolize" font-size="8pt" wrap-option="wrap">
+	        	<fo:inline color="{$labelColor}"><xsl:value-of select="$label.rangedWeapon"/>:</fo:inline> ________ _______________________
+	        </fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="2.5mm" left="40mm" text-align="left">
+        	<fo:block font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.weaponSkill"/>: ____</fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="9mm" left="1mm" text-align="right" width="15mm">
+        	<fo:block font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.weaponRange"/>:</fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="9mm" left="17mm" text-align="center" width="10mm">
+        	<fo:block font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.rangeShort"/>:____ [0]</fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="9mm" left="26mm" text-align="center" width="10mm">
+        	<fo:block font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.rangeMedium"/>:____ [-10]</fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="9mm" left="35mm" text-align="center" width="10mm">
+        	<fo:block font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.rangeLong"/>:____ [-20]</fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="9mm" left="44mm" text-align="center" width="10mm">
+        	<fo:block font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.rangeExtreme"/>:____ [-30]</fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="16mm" left="1.7mm" text-align="right" width="6mm">
+        	<fo:block font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.SS"/></fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="16mm" left="9mm" text-align="left" width="6mm">
+        	<fo:block font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.SA"/></fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="19.5mm" left="1.7mm" text-align="right" width="6mm">
+        	<fo:block font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.BF"/></fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="19.5mm" left="9mm" text-align="left" width="6mm">
+        	<fo:block font-family="Electrolize" font-size="8pt"><xsl:value-of select="$label.FA"/></fo:block>
+        </fo:block-container>
+        <fo:block-container absolute-position="absolute" top="16.5mm" left="2mm" text-align="right" width="52mm">
+        	<fo:block font-family="Electrolize" font-size="8pt">
+        		<xsl:value-of select="$label.weaponDV"/>:_______________ <xsl:value-of select="$label.weaponAP"/>:____
+        		___________________________ _____________________________ __________________________________ __________________________________
+        		
+        	</fo:block>
+        </fo:block-container>
   </xsl:template>
   
 </xsl:stylesheet>

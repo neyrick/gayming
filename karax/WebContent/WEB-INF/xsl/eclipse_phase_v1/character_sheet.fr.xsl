@@ -47,5 +47,35 @@
   <xsl:variable name="label.linkedAptitude" select="'Aptitude'"/>
   <xsl:variable name="label.specOtherBonus" select="'Spécialité / Notes'"/>
   <xsl:variable name="label.MUSE" select="'MUSE'"/>
-  <xsl:variable name="label." select="''"/>
+  <xsl:variable name="label.backupNotes" select="'Sauvegarde'"/>
+  <xsl:variable name="label.psiSleights" select="'Passes Psi'"/>
+  <xsl:variable name="label.ID" select="'ID'"/>
+  <xsl:variable name="label.REPA" select="'@-Rep'"/>
+  <xsl:variable name="label.REPC" select="'C-Rep'"/>
+  <xsl:variable name="label.REPE" select="'E-Rep'"/>
+  <xsl:variable name="label.REPF" select="'F-Rep'"/>
+  <xsl:variable name="label.REPG" select="'G-Rep'"/>
+  <xsl:variable name="label.REPI" select="'I-Rep'"/>
+  <xsl:variable name="label.REPR" select="'R-Rep'"/>
+  <xsl:variable name="label.armor" select="'Armure'"/>
+  <xsl:variable name="label.energyArmor" select="'Énergie'"/>
+  <xsl:variable name="label.kineticArmor" select="'Cinétique'"/>
+  <xsl:variable name="label.meleeWeapon" select="'Arme de Mêlée'"/>
+  <xsl:variable name="label.rangedWeapon" select="'Arme à Distance'"/>
+  <xsl:variable name="label.weaponSkill" select="'Comp.'"/>
+  <xsl:variable name="label.weaponDV" select="'VD'"/>
+  <xsl:variable name="label.weaponAP" select="'PA'"/>
+  <xsl:variable name="label.weaponRange" select="'Portée'"/>
+  <xsl:variable name="label.rangeShort" select="'C'"/>
+  <xsl:variable name="label.rangeMedium" select="'M'"/>
+  <xsl:variable name="label.rangeLong" select="'L'"/>
+  <xsl:variable name="label.rangeExtreme" select="'E'"/>
+  <xsl:variable name="label.SS" select="'CC'"/>
+  <xsl:variable name="label.SA" select="'SA'"/>
+  <xsl:variable name="label.BF" select="'TR'"/>
+  <xsl:variable name="label.FA" select="'FA'"/>
+  <xsl:variable name="label.gear" select="'Équipement'"/>
+  <xsl:variable name="label.morphTraits" select="'Traits de Morphe'"/>
+  <xsl:variable name="label.morphEnhancements" select="'Implants, Améliorations et Customisations'"/>
+  <xsl:variable name="label.embeddedSoftware" select="'Logiciels Embarqués'"/>
 </xsl:stylesheet>
