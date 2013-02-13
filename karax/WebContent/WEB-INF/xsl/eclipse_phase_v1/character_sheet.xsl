@@ -667,7 +667,7 @@
            <fo:block-container absolute-position="absolute" top="215mm" left="9mm" width="80mm" text-align="left">
 	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.morphTraits"/></fo:block>
           </fo:block-container>
-
+ 
            <fo:block-container absolute-position="absolute" top="221.8mm" left="10mm" width="55mm" text-align="left" >
            	<xsl:for-each select="currentMorph/traits/trait">
 	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
