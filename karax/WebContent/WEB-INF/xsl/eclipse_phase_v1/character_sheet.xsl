@@ -646,7 +646,7 @@
            	<xsl:for-each select="gear/item[position() &lt; 11]">
 	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
            	</xsl:for-each>
-           	<fo:block/>
+           	<fo:block/> 
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="174.7mm" left="77mm" width="60mm" text-align="left" >
            	<xsl:for-each select="gear/item[position() &gt; 10 and position() &lt; 21]">
