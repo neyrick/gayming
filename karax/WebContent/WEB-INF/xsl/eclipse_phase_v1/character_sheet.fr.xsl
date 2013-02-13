@@ -48,7 +48,7 @@
   <xsl:variable name="label.specOtherBonus" select="'Spécialité / Notes'"/>
   <xsl:variable name="label.MUSE" select="'MUSE'"/>
   <xsl:variable name="label.backupNotes" select="'Sauvegarde'"/>
-  <xsl:variable name="label.psiSleights" select="'Passes Psi'"/>
+  <xsl:variable name="label.contacts" select="'Contacts'"/>
   <xsl:variable name="label.ID" select="'ID'"/>
   <xsl:variable name="label.REPA" select="'@-Rep'"/>
   <xsl:variable name="label.REPC" select="'C-Rep'"/>
@@ -57,6 +57,7 @@
   <xsl:variable name="label.REPG" select="'G-Rep'"/>
   <xsl:variable name="label.REPI" select="'I-Rep'"/>
   <xsl:variable name="label.REPR" select="'R-Rep'"/>
+  <xsl:variable name="label.psiSleights" select="'Passes Psi'"/>
   <xsl:variable name="label.armor" select="'Armure'"/>
   <xsl:variable name="label.energyArmor" select="'Énergie'"/>
   <xsl:variable name="label.kineticArmor" select="'Cinétique'"/>
