@@ -15,6 +15,9 @@ import fr.neyrick.karax.model.VariableNumericFeature;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Skill extends VariableNumericFeature {
 
+	private static final String CUSTOM_SKILL_SEPARATOR = ":";
+	private static final String CUSTOM_SKILL_PREFIX = "CS_";
+	
 	private String linkedAptitude;
 	
 	private int base;
@@ -45,7 +48,14 @@ public class Skill extends VariableNumericFeature {
 
 	@XmlAttribute
 	public String getDisplay() {
-		return tryTranslation(getKey());
+		String key = getKey();
+		int index = key.indexOf(CUSTOM_SKILL_SEPARATOR);
+		if (index > -1) {
+			return tryTranslation(CUSTOM_SKILL_PREFIX + key.substring(0,  index)) + key.substring(index);
+		}
+		else {
+			return tryTranslation(getKey());
+		}
 	}
 
 	@Override

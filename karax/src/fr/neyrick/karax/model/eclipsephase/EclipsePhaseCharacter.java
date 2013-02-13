@@ -60,6 +60,13 @@ public class EclipsePhaseCharacter extends GameCharacter {
 	private StaticFeaturesCollection<Trait> traits;
 
 	private StaticFeaturesCollection<FixedNumericFeature> psiSleights;
+	
+	private StaticFeaturesCollection<StringFeature> gear;
+	
+	private StaticFeaturesCollection<StringFeature> software;
+	
+	private StaticFeaturesCollection<StringFeature> contacts;
+	
 
 	@XmlElement
 	public StringFeature getBackground() {
@@ -240,4 +247,35 @@ public class EclipsePhaseCharacter extends GameCharacter {
 	public int getDamageBonus() {
 		return aptitudes.getActualSubFeature(KEY_SOM).getNumericValue().intValue()/10;
 	}
+
+	@XmlElementWrapper(name="gear")
+	@XmlElement(name="item")
+	public Collection<StringFeature> getGear() {
+		return gear.getActualSubFeatures();
+	}
+
+	public void setGear(StaticFeaturesCollection<StringFeature> gear) {
+		this.gear = gear;
+	}
+
+	@XmlElementWrapper(name="software")
+	@XmlElement(name="item")
+	public Collection<StringFeature> getSoftware() {
+		return software.getActualSubFeatures();
+	}
+
+	public void setSoftware(StaticFeaturesCollection<StringFeature> software) {
+		this.software = software;
+	}
+
+	@XmlElementWrapper(name="contacts")
+	@XmlElement(name="contact")
+	public Collection<StringFeature> getContacts() {
+		return contacts.getActualSubFeatures();
+	}
+
+	public void setContacts(StaticFeaturesCollection<StringFeature> contacts) {
+		this.contacts = contacts;
+	}
+	
 }

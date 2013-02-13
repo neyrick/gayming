@@ -187,6 +187,17 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		
 		character.setPsiSleights(registerListener(new StaticFeaturesCollection<>("PSI_SLEIGHT", FixedNumericFeature.class)));
 		
+		// GEAR
+		
+		character.setGear(registerListener(new StaticFeaturesCollection<StringFeature>("GEAR", StringFeature.class)));
+		
+		// SOFTWARE
+		
+		character.setSoftware(registerListener(new StaticFeaturesCollection<StringFeature>("SOFTWARE", StringFeature.class)));
+		
+		// CONTACTS
+		
+		character.setContacts(registerListener(new StaticFeaturesCollection<StringFeature>("CONTACT", StringFeature.class)));
 		
 		return character;
 	}

@@ -32,31 +32,31 @@
           <fo:block-container absolute-position="absolute" top="25.5mm" left="19mm" color="{$labelColor}">
             <fo:block font-family="Electrolize" font-size="12pt"><xsl:value-of select="$label.background"/></fo:block>
           </fo:block-container>
-          <fo:block-container absolute-position="absolute" top="25.5mm" left="50mm">
+          <fo:block-container absolute-position="absolute" top="25.5mm" left="49mm">
             <fo:block  font-size="12pt"><xsl:value-of select="background"/></fo:block>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="36.5mm" left="19mm" color="{$labelColor}">
             <fo:block font-family="Electrolize" font-size="12pt"><xsl:value-of select="$label.faction"/></fo:block>
           </fo:block-container>
-          <fo:block-container absolute-position="absolute" top="36.5mm" left="50mm">
+          <fo:block-container absolute-position="absolute" top="36.5mm" left="49mm">
             <fo:block  font-size="12pt"><xsl:value-of select="faction"/></fo:block>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="47.5mm" left="19mm" color="{$labelColor}">
             <fo:block font-family="Electrolize" font-size="12pt"><xsl:value-of select="$label.morph"/></fo:block>
           </fo:block-container>
-          <fo:block-container absolute-position="absolute" top="47.5mm" left="50mm">
+          <fo:block-container absolute-position="absolute" top="47.5mm" left="49mm">
             <fo:block  font-size="12pt"><xsl:value-of select="currentMorph/type"/></fo:block>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="58.5mm" left="19mm" color="{$labelColor}">
             <fo:block font-family="Electrolize" font-size="12pt"><xsl:value-of select="$label.gender"/></fo:block>
           </fo:block-container>
-          <fo:block-container absolute-position="absolute" top="58.5mm" left="50mm">
+          <fo:block-container absolute-position="absolute" top="58.5mm" left="49mm">
             <fo:block  font-size="12pt"><xsl:value-of select="gender"/></fo:block>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="69.5mm" left="19mm" color="{$labelColor}">
             <fo:block font-family="Electrolize" font-size="12pt"><xsl:value-of select="$label.actualAge"/></fo:block>
           </fo:block-container>
-          <fo:block-container absolute-position="absolute" top="69.5mm" left="50mm">
+          <fo:block-container absolute-position="absolute" top="69.5mm" left="49mm">
             <fo:block  font-size="12pt"><xsl:value-of select="actualAge/@amount"/></fo:block>
           </fo:block-container>
           
@@ -267,7 +267,7 @@
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="87mm" left="69mm" width="28mm" text-align="left">
            	<xsl:for-each select="motivations/motivation">
-	            <fo:block  font-size="7pt"><xsl:value-of select="@display"/></fo:block>
+	            <fo:block  font-size="7pt"><xsl:value-of select="."/></fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>
@@ -554,19 +554,20 @@
 	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.backupNotes"/></fo:block>
           </fo:block-container>
 
-          <!--  Pouvoirs Psi -->
-           <fo:block-container absolute-position="absolute" top="14.7mm" left="84.5mm" width="55mm" text-align="left">
-	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.psiSleights"/></fo:block>
+          <!--  Contacts -->
+          
+           <fo:block-container absolute-position="absolute" top="14.7mm" left="78mm" width="55mm" text-align="left">
+	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.contacts"/></fo:block>
           </fo:block-container>
-           <fo:block-container absolute-position="absolute" top="20mm" left="85mm" width="55mm" text-align="left">
-           	<xsl:for-each select="psiSleights/sleight[position() &lt;= 3]">
-	            <fo:block  font-size="8pt"><xsl:value-of select="@display"/></fo:block>
+           <fo:block-container absolute-position="absolute" top="21.1mm" left="80mm" width="55mm" text-align="left">
+           	<xsl:for-each select="contacts/contact[position() &lt;= 3]">
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="@display"/></fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>
-           <fo:block-container absolute-position="absolute" top="20mm" left="145mm" width="55mm" text-align="left">
-           	<xsl:for-each select="psiSleights/sleight[position() &gt; 3]">
-	            <fo:block  font-size="8pt"><xsl:value-of select="@display"/></fo:block>
+           <fo:block-container absolute-position="absolute" top="14.8mm" left="140mm" width="55mm" text-align="left">
+           	<xsl:for-each select="contacts/contact[position() &gt; 3]">
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="@display"/></fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>
@@ -611,8 +612,17 @@
           <fo:block-container absolute-position="absolute" top="90mm" left="114mm" width="38mm" text-align="left">
            	<xsl:call-template name="meleeWeapon"/>
           </fo:block-container>
-          <fo:block-container absolute-position="absolute" top="90mm" left="162mm" width="38mm" text-align="left">
-           	<xsl:call-template name="meleeWeapon"/>
+          
+          <!--  Pouvoirs Psi -->
+          
+          <fo:block-container absolute-position="absolute" top="94mm" left="164mm" width="38mm" text-align="left">
+           	<fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.psiSleights"/></fo:block>
+          </fo:block-container>
+          <fo:block-container absolute-position="absolute" top="101mm" left="164mm" width="38mm" text-align="left">
+         	 <xsl:for-each select="psiSleights/sleight">
+	            <fo:block  font-size="8pt"><xsl:value-of select="@display"/></fo:block>
+           	</xsl:for-each>
+           	<fo:block/>
           </fo:block-container>
           
           <!--  Armes distance  -->
@@ -632,6 +642,25 @@
           <fo:block-container absolute-position="absolute" top="169.5mm" left="9mm" width="80mm" text-align="left">
 	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.gear"/></fo:block>
           </fo:block-container>
+           <fo:block-container absolute-position="absolute" top="174.7mm" left="15mm" width="60mm" text-align="left" >
+           	<xsl:for-each select="gear/item[position() &lt; 11]">
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
+           	</xsl:for-each>
+           	<fo:block/>
+          </fo:block-container>
+           <fo:block-container absolute-position="absolute" top="174.7mm" left="77mm" width="60mm" text-align="left" >
+           	<xsl:for-each select="gear/item[position() &gt; 10 and position() &lt; 21]">
+	            <fo:block  space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
+           	</xsl:for-each>
+           	<fo:block/>
+          </fo:block-container>
+           <fo:block-container absolute-position="absolute" top="174.7mm" left="140mm" width="60mm" text-align="left" >
+           	<xsl:for-each select="gear/item[position() &gt; 20]">
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
+           	</xsl:for-each>
+           	<fo:block/>
+          </fo:block-container>
+
 
           <!-- Traits de Morphe -->
           
@@ -639,9 +668,9 @@
 	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.morphTraits"/></fo:block>
           </fo:block-container>
 
-           <fo:block-container absolute-position="absolute" top="220mm" left="10mm" width="55mm" text-align="left" >
+           <fo:block-container absolute-position="absolute" top="221.8mm" left="10mm" width="55mm" text-align="left" >
            	<xsl:for-each select="currentMorph/traits/trait">
-	            <fo:block  font-size="8pt"><xsl:value-of select="."/></fo:block>
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>
@@ -652,21 +681,41 @@
 	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.morphEnhancements"/></fo:block>
           </fo:block-container>
 
-           <fo:block-container absolute-position="absolute" top="220mm" left="77mm" width="55mm" text-align="left">
+           <fo:block-container absolute-position="absolute" top="221.8mm" left="77mm" width="55mm" text-align="left">
            	<xsl:for-each select="currentMorph/enhancements/enhancement[position() &lt;= 13]">
-	            <fo:block  font-size="8pt"><xsl:value-of select="."/></fo:block>
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>
-           <fo:block-container absolute-position="absolute" top="220mm" left="137mm" width="55mm" text-align="left">
+           <fo:block-container absolute-position="absolute" top="221.8mm" left="140mm" width="55mm" text-align="left">
            	<xsl:for-each select="currentMorph/enhancements/enhancement[position() &gt; 13]">
-	            <fo:block  font-size="8pt"><xsl:value-of select="."/></fo:block>
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>
           
-           <fo:block-container absolute-position="absolute" top="270mm" left="10mm" width="55mm" text-align="left">
+          <!-- Logiciels embarques -->
+          
+           <fo:block-container absolute-position="absolute" top="270.5mm" left="10mm" width="55mm" text-align="left">
 	            <fo:block  font-family="Electrolize" color="{$labelColor}" font-size="8pt"><xsl:value-of select="$label.embeddedSoftware"/></fo:block>
+          </fo:block-container>
+           <fo:block-container absolute-position="absolute" top="275.4mm" left="15mm" width="60mm" text-align="left" >
+           	<xsl:for-each select="software/item[position() &lt; 6]">
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
+           	</xsl:for-each>
+           	<fo:block/>
+          </fo:block-container>
+           <fo:block-container absolute-position="absolute" top="275.4mm" left="77mm" width="60mm" text-align="left" >
+           	<xsl:for-each select="software/item[position() &gt; 5 and position() &lt; 11]">
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
+           	</xsl:for-each>
+           	<fo:block/>
+          </fo:block-container>
+           <fo:block-container absolute-position="absolute" top="275.4mm" left="140mm" width="60mm" text-align="left" >
+           	<xsl:for-each select="software/item[position() &gt; 10]">
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
+           	</xsl:for-each>
+           	<fo:block/>
           </fo:block-container>
 
          </fo:flow>
