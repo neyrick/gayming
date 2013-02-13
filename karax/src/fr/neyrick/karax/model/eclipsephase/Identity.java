@@ -28,7 +28,7 @@ public class Identity extends ComplexFeatureCollection {
 	
 	private StringFeature notes;
 
-	private StringFeature name;
+	private StringFeature name ;
 
 	private VariableFeaturesCollection<SimpleVariable> reputations;
 	
@@ -48,37 +48,46 @@ public class Identity extends ComplexFeatureCollection {
 		return reputations.getActualSubFeatures();
 	}
 
+	private void initFields() {
+		name = new StringFeature(this, SUBKEY_NAME);
+		notes = new StringFeature(this, SUBKEY_NOTES);
+		reputations =
+				new VariableFeaturesCollection<>(this,  SUBKEY_REPUTATION, SimpleVariable.class, new FeatureCalculator() {
+
+					@Override
+					public Number calculate(CharacterFeature feature) {
+						VariableNumericFeature targetFeature = (VariableNumericFeature)feature;
+						int result = targetFeature.getCreationCost();
+						result += (targetFeature.getFreebieCost() * 10) + (targetFeature.getExperienceCost() * 10);
+						result += targetFeature.getFreeCost();
+						if ((targetFeature.getModifier() < -500) && (result > 0)) return 0; 
+						return result;
+					}
+					
+				});
+	}
+	
 	public Identity(FeaturesCollection parent, String key) {
 		super(parent, key);
+		initFields();
 	}
 	
 	public Identity(String key) {
 		super(key);
+		initFields();
 	}
 
 	public Identity() {
 		super(null);
+		initFields();
 	}
 
 	@Override
 	protected CharacterFeature createSubFeature(String subItemKey, CharacterEdit edit) {
 		switch(subItemKey) {
-			case SUBKEY_NAME:return (name = new StringFeature(this, SUBKEY_NAME));
-			case SUBKEY_NOTES:return (notes = new StringFeature(this, SUBKEY_NOTES));
-			case SUBKEY_REPUTATION:return (reputations =
-					new VariableFeaturesCollection<>(this,  SUBKEY_REPUTATION, SimpleVariable.class, new FeatureCalculator() {
-
-						@Override
-						public Number calculate(CharacterFeature feature) {
-							VariableNumericFeature targetFeature = (VariableNumericFeature)feature;
-							int result = targetFeature.getCreationCost();
-							result += (targetFeature.getFreebieCost() * 10) + (targetFeature.getExperienceCost() * 10);
-							result += targetFeature.getFreeCost();
-							if ((targetFeature.getModifier() < -500) && (result > 0)) return 0; 
-							return result;
-						}
-						
-					}));
+			case SUBKEY_NAME:return name;
+			case SUBKEY_NOTES:return notes;
+			case SUBKEY_REPUTATION:return reputations;
 			default:return null;				
 		}
 	}

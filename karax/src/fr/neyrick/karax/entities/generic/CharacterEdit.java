@@ -1,6 +1,8 @@
 package fr.neyrick.karax.entities.generic;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -25,6 +27,8 @@ public class CharacterEdit {
 	public static final String FREEBIE = "FREEBIE";
 	public static final String MODIFIER = "MODIFIER";
 	public static final String EXPERIENCE = "EXPERIENCE";
+	
+	public static final List<String> REGULAR_COSTS = Arrays.asList(CREATION, FREE, FREEBIE, EXPERIENCE);
 	
 	
 	@Id

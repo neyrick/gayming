@@ -21,9 +21,28 @@ public class Skill extends VariableNumericFeature {
 	
 	private boolean nodefault = false;
 	
+	private int aptitudeMorphBonus = 0;
+	
+	
+	public int getAptitudeMorphBonus() {
+		return aptitudeMorphBonus;
+	}
+
+	public void setAptitudeMorphBonus(int aptitudeMorphBonus) {
+		this.aptitudeMorphBonus = aptitudeMorphBonus;
+	}
+
 	@XmlAttribute
 	private String category;
 	
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	@XmlAttribute
 	public String getDisplay() {
 		return tryTranslation(getKey());
@@ -40,6 +59,10 @@ public class Skill extends VariableNumericFeature {
 		return linkedAptitude;
 	}
 
+	public void setLinkedAptitude(String linkedAptitude) {
+		this.linkedAptitude = linkedAptitude;
+	}
+
 	@XmlAttribute
 	public int getBase() {
 		refresh();
@@ -48,7 +71,7 @@ public class Skill extends VariableNumericFeature {
 
 	@XmlAttribute
 	public int getMorphBonus() {
-		return getAmount("MORPH");
+		return aptitudeMorphBonus + getAmount("MORPH");
 	}
 
 	public int getDiscountCost() {
@@ -77,6 +100,7 @@ public class Skill extends VariableNumericFeature {
 		return super.getExtraInfo();
 	}
 
+	
 	public Skill() {
 		this(null, null, null, false, null);
 	}

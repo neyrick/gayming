@@ -67,9 +67,14 @@ public class VariableFeaturesCollection<T extends VariableNumericFeature> extend
 		}
 	    feature.setKey(subItemKey);
 	    feature.setCalculator(getExtraItemCalculator(edit));
+	    customizeExtraFeature(edit, feature);
 	    return addFeature(feature);
 	}
 
+	protected void customizeExtraFeature(CharacterEdit edit, T newFeature) {
+		
+	}
+	
 	public T addFeature(String subItemKey) {
 		return this.addFeature(subItemKey, null);
 	}

@@ -20,13 +20,16 @@ public abstract class AbstractFeature implements CharacterFeature {
 
 	protected String tryTranslation(String value) {
 		try {
-			return resourceBundle.getString(value);
+			return getResourceBundle().getString(value);
 		} catch (MissingResourceException e) {
 			return value;
 		}
 	}
 	
 	public ResourceBundle getResourceBundle() {
+		if (resourceBundle == null) {
+			if (container != null) return container.getResourceBundle();
+		}
 		return resourceBundle;
 	}
 
@@ -40,7 +43,6 @@ public abstract class AbstractFeature implements CharacterFeature {
 
 	public void setContainer(FeaturesCollection container) {
 		this.container = container;
-		this.resourceBundle = container.getResourceBundle();
 	}
 
 	public void setKey(String key) {

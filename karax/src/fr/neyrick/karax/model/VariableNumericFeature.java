@@ -25,6 +25,8 @@ public abstract class VariableNumericFeature extends AbstractSingleFeature {
 	
 	private Set<String> extraInfo = new HashSet<>();
 	
+	private int extraCost = 0;
+	
 	protected Number calculate() {
 		return calculator.calculate(this);
 	}
@@ -76,6 +78,17 @@ public abstract class VariableNumericFeature extends AbstractSingleFeature {
 		return getAmount(CharacterEdit.MODIFIER);
 	}
 	
+	public int getRegularCost() {
+		int result = 0;
+		for (Map.Entry<String, Integer> entry : amounts.entrySet()) {
+			if (CharacterEdit.REGULAR_COSTS.contains(entry.getKey())) {
+				 result += entry.getValue();
+			}
+		}
+		result -= extraCost;
+		return result;
+	}
+	
 	public int getTotalCost() {
 		int result = 0;
 		for (Map.Entry<String, Integer> entry : amounts.entrySet()) {
@@ -113,6 +126,7 @@ public abstract class VariableNumericFeature extends AbstractSingleFeature {
 			
 			String extra = edit.getValue();
 			if (extra != null) {
+				if (CharacterEdit.REGULAR_COSTS.contains(amountType)) extraCost += edit.getAmount();
 				if (extra.startsWith("-")) {
 					extraInfo.remove(extra.substring(1));
 				}

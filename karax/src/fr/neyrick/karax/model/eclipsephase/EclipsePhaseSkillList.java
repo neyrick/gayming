@@ -50,21 +50,25 @@ public class EclipsePhaseSkillList extends VariableFeaturesCollection<Skill> {
 		return calculatorsMap.get(calculatorKey);
 	}
 	
+	private String getLinkedAptitudeKey(CharacterEdit edit) {
+		String subItemKey = getSubItemKey(edit);
+		if (subItemKey.startsWith(SUBKEY_EXOTIC_MELEE)) return EclipsePhaseCharacter.KEY_COO;
+		else if (subItemKey.startsWith(SUBKEY_EXOTIC_RANGED)) return EclipsePhaseCharacter.KEY_COO;
+		else if (subItemKey.startsWith(SUBKEY_HARDWARE)) return EclipsePhaseCharacter.KEY_COG;
+		else if (subItemKey.startsWith(SUBKEY_MEDICINE)) return EclipsePhaseCharacter.KEY_COG;
+		else if (subItemKey.startsWith(SUBKEY_NETWORKING)) return EclipsePhaseCharacter.KEY_SAV;
+		else if (subItemKey.startsWith(SUBKEY_PILOT)) return EclipsePhaseCharacter.KEY_REF;
+		else if (subItemKey.startsWith(SUBKEY_ACADEMICS)) return EclipsePhaseCharacter.KEY_COG;
+		else if (subItemKey.startsWith(SUBKEY_ART)) return EclipsePhaseCharacter.KEY_INT;
+		else if (subItemKey.startsWith(SUBKEY_INTEREST)) return EclipsePhaseCharacter.KEY_COG;
+		else if (subItemKey.startsWith(SUBKEY_LANGUAGE)) return EclipsePhaseCharacter.KEY_INT;
+		else if (subItemKey.startsWith(SUBKEY_PROFESSION)) return EclipsePhaseCharacter.KEY_COG;
+		else return edit.getTargetSubKey2();
+	}
+	
 	@Override
 	protected FeatureCalculator getExtraItemCalculator(CharacterEdit edit) {
-		String subItemKey = getSubItemKey(edit);
-		if (subItemKey.startsWith(SUBKEY_EXOTIC_MELEE)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COO);
-		else if (subItemKey.startsWith(SUBKEY_EXOTIC_RANGED)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COO);
-		else if (subItemKey.startsWith(SUBKEY_HARDWARE)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);
-		else if (subItemKey.startsWith(SUBKEY_MEDICINE)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);
-		else if (subItemKey.startsWith(SUBKEY_NETWORKING)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_SAV);
-		else if (subItemKey.startsWith(SUBKEY_PILOT)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_REF);
-		else if (subItemKey.startsWith(SUBKEY_ACADEMICS)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);
-		else if (subItemKey.startsWith(SUBKEY_ART)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_INT);
-		else if (subItemKey.startsWith(SUBKEY_INTEREST)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);
-		else if (subItemKey.startsWith(SUBKEY_LANGUAGE)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_INT);
-		else if (subItemKey.startsWith(SUBKEY_PROFESSION)) return calculatorsMap.get(EclipsePhaseCharacter.KEY_COG);
-		else return calculatorsMap.get(edit.getTargetSubKey2());
+		return calculatorsMap.get(getLinkedAptitudeKey(edit));
 	}
 
 	protected String getExtraItemCategory(CharacterEdit edit) {
@@ -91,6 +95,13 @@ public class EclipsePhaseSkillList extends VariableFeaturesCollection<Skill> {
 		this.addSkill(key, aptitude, false, category);
 	}
 	
+	@Override
+	protected void customizeExtraFeature(CharacterEdit edit, Skill newFeature) {
+		super.customizeExtraFeature(edit, newFeature);
+		newFeature.setCategory(getExtraItemCategory(edit));
+		newFeature.setLinkedAptitude(getLinkedAptitudeKey(edit));
+	}
+
 	public EclipsePhaseSkillList(FeaturesCollection parent, String key, Map<String, SkillCalculator> calculatorsMap) {
 		super(parent, key, Skill.class);
 		this.calculatorsMap = calculatorsMap;

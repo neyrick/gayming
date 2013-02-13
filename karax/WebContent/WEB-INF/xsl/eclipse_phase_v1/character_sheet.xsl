@@ -57,7 +57,7 @@
             <fo:block font-family="Electrolize" font-size="12pt"><xsl:value-of select="$label.actualAge"/></fo:block>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="69.5mm" left="50mm">
-            <fo:block  font-size="12pt"><xsl:value-of select="actualAge"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="actualAge/@amount"/></fo:block>
           </fo:block-container>
           
           <!-- Aptitudes -->
@@ -97,13 +97,13 @@
 						</fo:table-row>
 						<fo:table-row height="6mm">
 							<fo:table-cell><fo:block font-size="10pt" font-family="Electrolize" text-align="right" color="{$labelColor}" margin-right="1mm"><xsl:value-of select="$label.morphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG']/@morphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COO']/@morphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='INT']/@morphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='SOM']/@morphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='WIL']/@morphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='REF']/@morphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='SAV']/@morphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COO']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='INT']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='SOM']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='WIL']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='REF']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='SAV']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row>
 							<fo:table-cell><fo:block font-size="10pt" font-family="Electrolize" text-align="right" color="{$labelColor}" margin-right="1mm"><xsl:value-of select="$label.total"/></fo:block></fo:table-cell>
@@ -302,8 +302,8 @@
 								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block text-align="left">
-									<xsl:for-each select="extra"><xsl:value-of select="."/></xsl:for-each>
+								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
+									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
 							</fo:table-row>
 						</xsl:for-each>
@@ -317,8 +317,8 @@
 								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block text-align="left">
-									<xsl:for-each select="extra"><xsl:value-of select="."/></xsl:for-each>
+								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
+									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
 							</fo:table-row>
 						</xsl:for-each>
@@ -332,8 +332,8 @@
 								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block text-align="left">
-									<xsl:for-each select="extra"><xsl:value-of select="."/></xsl:for-each>
+								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
+									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
 							</fo:table-row>
 						</xsl:for-each>
@@ -347,8 +347,8 @@
 								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block text-align="left">
-									<xsl:for-each select="extra"><xsl:value-of select="."/></xsl:for-each>
+								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
+									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
 							</fo:table-row>
 						</xsl:for-each>
@@ -362,8 +362,8 @@
 								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block text-align="left">
-									<xsl:for-each select="extra"><xsl:value-of select="."/></xsl:for-each>
+								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
+									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
 							</fo:table-row>
 						</xsl:for-each>
@@ -402,8 +402,8 @@
 								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block text-align="left">
-									<xsl:for-each select="extra"><xsl:value-of select="."/></xsl:for-each>
+								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
+									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
 							</fo:table-row>
 						</xsl:for-each>
@@ -445,8 +445,8 @@
 								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block text-align="left">
-									<xsl:for-each select="extra"><xsl:value-of select="."/></xsl:for-each>
+								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
+									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
 							</fo:table-row>
 						</xsl:for-each>
@@ -463,43 +463,43 @@
             <fo:block  font-size="8pt" color="{$labelColor}"><xsl:value-of select="$label.COG"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="264.5mm" left="111.3mm" width="9mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='COG']"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='COG']/@amount"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="260.5mm" left="121.7mm" width="10mm" text-align="center">
             <fo:block  font-size="8pt" color="{$labelColor}"><xsl:value-of select="$label.COO"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="264.5mm" left="121.7mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='COO']"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='COO']/@amount"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="260.5mm" left="132.2mm" width="10mm" text-align="center">
             <fo:block  font-size="8pt" color="{$labelColor}"><xsl:value-of select="$label.INT"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="264.5mm" left="132.2mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='INT']"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='INT']/@amount"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="260.5mm" left="142.7mm" width="10mm" text-align="center">
             <fo:block  font-size="8pt" color="{$labelColor}"><xsl:value-of select="$label.REF"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="264.5mm" left="142.7mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='REF']"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='REF']/@amount"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="269.5mm" left="116.5mm" width="10mm" text-align="center">
             <fo:block  font-size="8pt" color="{$labelColor}"><xsl:value-of select="$label.SAV"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="273.5mm" left="116.5mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='SAV']"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='SAV']/@amount"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="269.5mm" left="127mm" width="10mm" text-align="center">
             <fo:block  font-size="8pt" color="{$labelColor}"><xsl:value-of select="$label.SOM"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="273.5mm" left="127mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='SOM']"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='SOM']/@amount"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="269.5mm" left="137.5mm" width="10mm" text-align="center">
             <fo:block  font-size="8pt" color="{$labelColor}"><xsl:value-of select="$label.WIL"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="273.5mm" left="137.5mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='WIL']"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="muse/aptitudes/aptitude[@key='WIL']/@amount"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="278.5mm" left="121.7mm" width="10mm" text-align="center">
             <fo:block  font-size="8pt" color="{$labelColor}"><xsl:value-of select="$label.TT"/></fo:block>
@@ -528,9 +528,9 @@
 					<fo:table-column column-width="5mm" />
  					<fo:table-body>
  			           	<xsl:for-each select="muse/skills/skill">
-							<fo:table-row height="3.1mm">
-								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@key"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+							<fo:table-row height="2.9mm">
+								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="@amount"/></fo:block></fo:table-cell>
 							</fo:table-row>
 						</xsl:for-each>
 						<fo:table-row height="1mm">
@@ -641,7 +641,7 @@
 
            <fo:block-container absolute-position="absolute" top="220mm" left="10mm" width="55mm" text-align="left" >
            	<xsl:for-each select="currentMorph/traits/trait">
-	            <fo:block  font-size="8pt"><xsl:value-of select="@key"/></fo:block>
+	            <fo:block  font-size="8pt"><xsl:value-of select="."/></fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>
@@ -682,19 +682,19 @@
 			<fo:table-column column-width="20mm" />
 			<fo:table-body>
 				<fo:table-row height="6mm">
-					<fo:table-cell padding-left="4mm"><fo:block><xsl:value-of select="$label.REPA"/>: <xsl:value-of select="reputations/reputation[@key='A']"/></fo:block></fo:table-cell>
-					<fo:table-cell padding-left="1mm"><fo:block><xsl:value-of select="$label.REPG"/>: <xsl:value-of select="reputations/reputation[@key='G']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="4mm"><fo:block><xsl:value-of select="$label.REPA"/>: <xsl:value-of select="reputations/reputation[@key='A-rep']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="1mm"><fo:block><xsl:value-of select="$label.REPG"/>: <xsl:value-of select="reputations/reputation[@key='G-rep']"/></fo:block></fo:table-cell>
 				</fo:table-row>
 				<fo:table-row height="5.6mm">
-					<fo:table-cell padding-left="2mm"><fo:block><xsl:value-of select="$label.REPC"/>: <xsl:value-of select="reputations/reputation[@key='C']"/></fo:block></fo:table-cell>
-					<fo:table-cell padding-left="3mm"><fo:block><xsl:value-of select="$label.REPI"/>: <xsl:value-of select="reputations/reputation[@key='I']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="2mm"><fo:block><xsl:value-of select="$label.REPC"/>: <xsl:value-of select="reputations/reputation[@key='C-rep']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="3mm"><fo:block><xsl:value-of select="$label.REPI"/>: <xsl:value-of select="reputations/reputation[@key='I-rep']"/></fo:block></fo:table-cell>
 				</fo:table-row>
 				<fo:table-row height="5.8mm">
-					<fo:table-cell padding-left="2mm"><fo:block><xsl:value-of select="$label.REPE"/>: <xsl:value-of select="reputations/reputation[@key='E']"/></fo:block></fo:table-cell>
-					<fo:table-cell padding-left="3mm"><fo:block><xsl:value-of select="$label.REPR"/>: <xsl:value-of select="reputations/reputation[@key='R']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="2mm"><fo:block><xsl:value-of select="$label.REPE"/>: <xsl:value-of select="reputations/reputation[@key='E-rep']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="3mm"><fo:block><xsl:value-of select="$label.REPR"/>: <xsl:value-of select="reputations/reputation[@key='R-rep']"/></fo:block></fo:table-cell>
 				</fo:table-row>
 				<fo:table-row height="5.5mm">
-					<fo:table-cell padding-left="4mm"><fo:block><xsl:value-of select="$label.REPF"/>: <xsl:value-of select="reputations/reputation[@key='F']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="4mm"><fo:block><xsl:value-of select="$label.REPF"/>: <xsl:value-of select="reputations/reputation[@key='F-rep']"/></fo:block></fo:table-cell>
 					<fo:table-cell padding-left="1mm"><fo:block><xsl:value-of select="reputations/reputation[@key!='A' and @key!='C' and @key!='E' and @key!='F' and @key!='G' and @key!='I' and @key!='R']"/></fo:block></fo:table-cell>
 				</fo:table-row>
 			</fo:table-body>

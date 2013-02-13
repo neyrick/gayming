@@ -13,7 +13,7 @@ import fr.neyrick.karax.model.StaticFeaturesCollection;
 import fr.neyrick.karax.model.StringFeature;
 
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlAccessorType(XmlAccessType.NONE)
 public class Muse {
 
 	private StringFeature name;
@@ -22,6 +22,7 @@ public class Muse {
 	
 	private StaticFeaturesCollection<FixedNumericFeature> skills;
 	
+	@XmlElement
 	public StringFeature getName() {
 		return name;
 	}
@@ -50,14 +51,17 @@ public class Muse {
 		this.skills = skills;
 	}
 
+	@XmlElement
 	public int getLucidity() {
 		return aptitudes.getActualSubFeature(EclipsePhaseCharacter.KEY_WIL).getNumericValue()*2;
 	}
 	
+	@XmlElement
 	public int getTraumaThreshold() {
 		return (int)Math.ceil(getLucidity() / 5.);
 	}
 
+	@XmlElement
 	public int getInsanityRating() {
 		return getLucidity()*2;
 	}

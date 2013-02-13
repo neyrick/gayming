@@ -8,14 +8,23 @@ import fr.neyrick.karax.entities.generic.CharacterEdit;
 @XmlTransient
 public abstract class FeaturesCollection extends AbstractFeature {
 
-	private int depth = 0;
+	private int depth = -1;
+	
+	private int keygenCounter = 0;
+	
+	private static final String KEYGEN_PREFIX = "KEYGEN_";
 	
 	public int getDepth() {
+		if (depth > -1) return depth;
+		if (this.getContainer() != null) {
+			depth = this.getContainer().getDepth() + 1;
+		}
+		else depth = 0;
 		return depth;
 	}
 
 	protected String getSubItemKey(CharacterEdit edit) {
-		switch (depth) {
+		switch (getDepth()) {
 			case 0: return edit.getTargetSubKey1(); 
 			case 1: return edit.getTargetSubKey2(); 
 			case 2: return edit.getTargetSubKey3();
@@ -25,7 +34,6 @@ public abstract class FeaturesCollection extends AbstractFeature {
 	
 	public FeaturesCollection(FeaturesCollection parent, String key) {
 		super(parent, key);
-		this.depth = parent.depth + 1;
 	}
 
 	public FeaturesCollection(String key) {
@@ -35,7 +43,6 @@ public abstract class FeaturesCollection extends AbstractFeature {
 	@Override
 	public void setContainer(FeaturesCollection parent) {
 		super.setContainer(parent);
-		this.depth = parent.depth + 1;		
 	}
 
 	private FeaturesCollection() {
@@ -50,6 +57,9 @@ public abstract class FeaturesCollection extends AbstractFeature {
 	@Override
 	public void recordEdit(CharacterEdit edit) {
 		String subitemKey = getSubItemKey(edit);
+		if (subitemKey == null) {
+			subitemKey = KEYGEN_PREFIX + (keygenCounter++);
+		}
 		CharacterFeature feature = getSubFeature(subitemKey);
 		if (feature == null) {
 			feature = addFeature(subitemKey, edit);

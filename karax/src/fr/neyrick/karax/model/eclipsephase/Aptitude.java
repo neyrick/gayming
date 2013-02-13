@@ -31,6 +31,18 @@ public class Aptitude extends VariableNumericFeature {
 
 	private int newEgoMax = 200;
 
+	private int effectiveMorphBonus = 0;
+	
+	
+	@XmlAttribute
+	public int getEffectiveMorphBonus() {
+		return effectiveMorphBonus;
+	}
+
+	public void setEffectiveMorphBonus(int effectiveMorphBonus) {
+		this.effectiveMorphBonus = effectiveMorphBonus;
+	}
+
 	@XmlAttribute
 	public String getDisplay() {
 		return tryTranslation(getKey());
