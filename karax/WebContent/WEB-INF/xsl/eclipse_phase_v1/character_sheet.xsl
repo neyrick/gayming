@@ -27,7 +27,7 @@
           <!-- Nom et attributs generaux -->
           
           <fo:block-container absolute-position="absolute" top="9mm" left="15mm">
-            <fo:block font-family="Electrolize" font-size="21pt"><xsl:value-of select="name"/></fo:block>
+            <fo:block font-family="Electrolize" font-size="21pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="25.5mm" left="19mm" color="{$labelColor}">
             <fo:block font-family="Electrolize" font-size="12pt"><xsl:value-of select="$label.background"/></fo:block>
@@ -39,7 +39,7 @@
             <fo:block font-family="Electrolize" font-size="12pt"><xsl:value-of select="$label.faction"/></fo:block>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="36.5mm" left="49mm">
-            <fo:block  font-size="12pt"><xsl:value-of select="faction"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="faction2"/></fo:block>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="47.5mm" left="19mm" color="{$labelColor}">
             <fo:block font-family="Electrolize" font-size="12pt"><xsl:value-of select="$label.morph"/></fo:block>
@@ -51,13 +51,13 @@
             <fo:block font-family="Electrolize" font-size="12pt"><xsl:value-of select="$label.gender"/></fo:block>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="58.5mm" left="49mm">
-            <fo:block  font-size="12pt"><xsl:value-of select="gender"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="gender2"/></fo:block>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="69.5mm" left="19mm" color="{$labelColor}">
             <fo:block font-family="Electrolize" font-size="12pt"><xsl:value-of select="$label.actualAge"/></fo:block>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="69.5mm" left="49mm">
-            <fo:block  font-size="12pt"><xsl:value-of select="actualAge/@amount"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="actualAge2/@amount"/></fo:block>
           </fo:block-container>
           
           <!-- Aptitudes -->
@@ -87,33 +87,33 @@
 						</fo:table-row>
 						<fo:table-row height="6.0mm">
 							<fo:table-cell><fo:block font-size="10pt" font-family="Electrolize" space-before="-5mm" text-align="right" color="{$labelColor}" margin-right="1mm"><xsl:value-of select="$label.base"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG']/@base"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COO']/@base"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='INT']/@base"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='SOM']/@base"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='WIL']/@base"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='REF']/@base"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='SAV']/@base"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@base"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@base"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@base"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@base"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@base"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@base"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@base"/></fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row height="6mm">
 							<fo:table-cell><fo:block font-size="10pt" font-family="Electrolize" text-align="right" color="{$labelColor}" margin-right="1mm"><xsl:value-of select="$label.morphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COO']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='INT']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='SOM']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='WIL']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='REF']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='SAV']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block><xsl:value-of select="aptitudes/aptitude[@key='COG2']/@effectiveMorphBonus"/></fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row>
 							<fo:table-cell><fo:block font-size="10pt" font-family="Electrolize" text-align="right" color="{$labelColor}" margin-right="1mm"><xsl:value-of select="$label.total"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COO']"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COO']"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='INT']"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='SOM']"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='WIL']"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='REF']"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='SAV']"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COG2']"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COG2']"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COG2']"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COG2']"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COG2']"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COG2']"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COG2']"/></fo:block></fo:table-cell>
 						</fo:table-row>
 					</fo:table-body>
 				</fo:table>
@@ -128,91 +128,91 @@
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.MOX"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="71mm" left="105.5mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="moxie"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="66.7mm" left="116mm" width="10mm" text-align="center">
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.INIT"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="71mm" left="116mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="initiative"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="66.7mm" left="126.5mm" width="10mm" text-align="center">
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.SPD"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="71mm" left="126.5mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="currentMorph/speed"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="66.5mm" left="137mm" width="10mm" text-align="center">
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.DB"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="71mm" left="137mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="damageBonus"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="76.2mm" left="110.5mm" width="10mm" text-align="center">
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.WT"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="80.5mm" left="110.5mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="currentMorph/woundThreshold"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="76.2mm" left="121mm" width="10mm" text-align="center">
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.DUR"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="80.5mm" left="121mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="currentMorph/durability"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="76.2mm" left="131.5mm" width="10mm" text-align="center">
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.DR"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="80.5mm" left="131.5mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="currentMorph/deathRating"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="85.2mm" left="116mm" width="10mm" text-align="center">
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.TT"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="89.5mm" left="116mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="traumaThreshold"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="85.2mm" left="126.5mm" width="10mm" text-align="center">
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.LUC"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="89.5mm" left="126.5mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="lucidity"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="85.2mm" left="137mm" width="10mm" text-align="center">
             <fo:block  font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.IR"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="89.5mm" left="137mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="insanityRating"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="68mm" left="169mm" width="30mm" text-align="left">
             <fo:block font-family="Electrolize" font-size="8pt" color="{$labelColor}"><xsl:value-of select="$label.aptitudeMax"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="67.5mm" left="193mm" width="10mm" text-align="right">
-            <fo:block  font-size="12pt"><xsl:value-of select="currentMorph/aptitudeMax/@amount"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="74mm" left="169mm" width="30mm" text-align="left">
             <fo:block font-family="Electrolize" font-size="8pt" color="{$labelColor}"><xsl:value-of select="$label.speedMod"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="73.5mm" left="193mm" width="10mm" text-align="right">
-            <fo:block  font-size="12pt"><xsl:value-of select="currentMorph/speedModifier/@amount"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="80mm" left="169mm" width="20mm" text-align="left">
             <fo:block font-family="Electrolize" font-size="8pt" color="{$labelColor}"><xsl:value-of select="$label.movement"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="79.5mm" left="173mm" width="30mm" text-align="right">
-            <fo:block  font-size="12pt"><xsl:value-of select="currentMorph/movementRate"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="89mm" left="166mm" width="20mm" text-align="left">
             <fo:block font-family="Electrolize" font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.rez"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="88.5mm" left="173mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="availableExperience"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="89mm" left="196mm" width="20mm" text-align="left">
             <fo:block font-family="Electrolize" font-size="10pt" color="{$labelColor}"><xsl:value-of select="$label.totalRez"/></fo:block>
           </fo:block-container>
            <fo:block-container absolute-position="absolute" top="88.5mm" left="185mm" width="10mm" text-align="center">
-            <fo:block  font-size="12pt"><xsl:value-of select="experience"/></fo:block>
+            <fo:block  font-size="12pt"><xsl:value-of select="prout"/></fo:block>
           </fo:block-container>
 
            <fo:block-container absolute-position="absolute" top="99mm" left="108mm" width="20mm" text-align="left">
@@ -299,9 +299,9 @@
 							<fo:table-row height="3.82mm">
 								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -314,9 +314,9 @@
 							<fo:table-row height="3.82mm">
 								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -329,9 +329,9 @@
 							<fo:table-row height="3.82mm">
 								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -344,9 +344,9 @@
 							<fo:table-row height="3.82mm">
 								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -359,9 +359,9 @@
 							<fo:table-row height="3.82mm">
 								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -399,9 +399,9 @@
 							<fo:table-row height="3.82mm">
 								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -442,9 +442,9 @@
 							<fo:table-row height="3.82mm">
 								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block><xsl:value-of select="prout"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -575,15 +575,18 @@
           <!--  ID  -->
 
           <fo:block-container absolute-position="absolute" top="39mm" left="10mm" width="56mm" text-align="left">
-           	<xsl:apply-templates select="identities/identity[1]"/>
+<!--            	<xsl:apply-templates select="identities/identity[1]"/> -->
+				<xsl:call-template name="identityTemplate"/>
            	<fo:block/>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="39mm" left="78mm" width="56mm" text-align="left">
-           	<xsl:apply-templates select="identities/identity[2]"/>
+<!--            	<xsl:apply-templates select="identities/identity[2]"/> -->
+				<xsl:call-template name="identityTemplate"/>
            	<fo:block/>
           </fo:block-container>
           <fo:block-container absolute-position="absolute" top="39mm" left="147mm" width="56mm" text-align="left">
-           	<xsl:apply-templates select="identities/identity[3]"/>
+<!--            	<xsl:apply-templates select="identities/identity[3]"/> -->
+				<xsl:call-template name="identityTemplate"/>
            	<fo:block/>
           </fo:block-container>
           
@@ -723,8 +726,8 @@
     </fo:root>
   </xsl:template>
   
-  <xsl:template match="identity">
-	<fo:block><xsl:value-of select="$label.ID"/>: <xsl:value-of select="name"/></fo:block>
+  <xsl:template match="identity" name="identityTemplate">
+	<fo:block><xsl:value-of select="$label.ID"/>: <xsl:value-of select="name2"/></fo:block>
 	<fo:block font-size="8pt" space-before="1.5mm">
 		<fo:table table-layout="fixed" width="100%" text-align="left">
 			<fo:table-column column-width="32mm" />

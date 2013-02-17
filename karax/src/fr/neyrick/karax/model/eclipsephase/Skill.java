@@ -66,7 +66,7 @@ public class Skill extends VariableNumericFeature {
 
 	@XmlAttribute
 	public String getLinkedAptitude() {
-		return linkedAptitude;
+		return tryTranslation(linkedAptitude);
 	}
 
 	public void setLinkedAptitude(String linkedAptitude) {

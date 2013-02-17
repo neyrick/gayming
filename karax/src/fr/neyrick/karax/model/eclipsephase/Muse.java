@@ -53,7 +53,9 @@ public class Muse {
 
 	@XmlElement
 	public int getLucidity() {
-		return aptitudes.getActualSubFeature(EclipsePhaseCharacter.KEY_WIL).getNumericValue()*2;
+		FixedNumericFeature wil = aptitudes.getActualSubFeature(EclipsePhaseCharacter.KEY_WIL);
+		if (wil != null) return aptitudes.getActualSubFeature(EclipsePhaseCharacter.KEY_WIL).getNumericValue()*2;
+		else return 0;
 	}
 	
 	@XmlElement

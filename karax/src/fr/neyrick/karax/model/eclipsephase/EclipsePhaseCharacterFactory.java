@@ -134,7 +134,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		activeSkills.addSkill("PALMING", EclipsePhaseCharacter.KEY_COO, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
 		activeSkills.addSkill("PERCEPTION", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MOVEMENT);
 		activeSkills.addSkill("PERSUASION", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
-		activeSkills.addSkill("PROGRAMMING", EclipsePhaseCharacter.KEY_INT, true, EclipsePhaseSkillList.CATEGORY_MENTAL);
+		activeSkills.addSkill("PROGRAMMING", EclipsePhaseCharacter.KEY_COG, true, EclipsePhaseSkillList.CATEGORY_MENTAL);
 		activeSkills.addSkill("PROTOCOL", EclipsePhaseCharacter.KEY_SAV, EclipsePhaseSkillList.CATEGORY_SOCIAL);
 		activeSkills.addSkill("PSYCHOSURGERY", EclipsePhaseCharacter.KEY_INT, EclipsePhaseSkillList.CATEGORY_MENTAL);
 		activeSkills.addSkill("RESEARCH", EclipsePhaseCharacter.KEY_COG, EclipsePhaseSkillList.CATEGORY_MENTAL);

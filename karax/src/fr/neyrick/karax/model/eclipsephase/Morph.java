@@ -18,6 +18,8 @@ import fr.neyrick.karax.model.StringFeature;
 public class Morph {
 
 	public static final String ORIGIN_BIO = "BIO";
+	public static final String ORIGIN_POD = "POD";
+	public static final String ORIGIN_INFO = "INFO";
 	public static final String ORIGIN_SYNTH = "SYNTH";
 	
 	
@@ -157,8 +159,8 @@ public class Morph {
 	@XmlElement
 	public int getDeathRating() {
 		double factor = 0;
-		if (ORIGIN_BIO.equals(origin.getValue())) factor = 1.5;
-		else if (ORIGIN_SYNTH.equals(origin.getValue())) factor = 2.; 
+		if (ORIGIN_SYNTH.equals(origin.getValue())) factor = 2.;
+		else factor = 1.5;
 		return (int)(durability.getNumericValue().intValue() * factor);
 	}
 }
