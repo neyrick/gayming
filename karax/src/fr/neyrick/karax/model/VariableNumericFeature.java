@@ -1,21 +1,30 @@
 package fr.neyrick.karax.model;
 
 import java.text.NumberFormat;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlTransient;
 
 import fr.neyrick.karax.entities.generic.CharacterEdit;
+import fr.neyrick.karax.entities.generic.Increment;
 
 @XmlTransient
 public abstract class VariableNumericFeature extends AbstractSingleFeature {
 
+	protected static final FeatureCalculator defaultCalculator = new AbstractNumericFeatureCalculator() {
+		
+		@Override
+		public Number calculate(CharacterFeature feature) {
+			return super.calculateFromTotalCost((VariableNumericFeature)feature);
+		}
+	};
+	
 	private static final NumberFormat format = NumberFormat.getNumberInstance();
 	
-	private Map<String, Integer> amounts = new HashMap<>();
+	private List<Increment> increments = new ArrayList<>();
 		
 	private FeatureCalculator calculator = null;
 	
@@ -24,8 +33,6 @@ public abstract class VariableNumericFeature extends AbstractSingleFeature {
 	private Number value = 0;
 	
 	private Set<String> extraInfo = new HashSet<>();
-	
-	private int extraCost = 0;
 	
 	protected Number calculate() {
 		return calculator.calculate(this);
@@ -53,46 +60,52 @@ public abstract class VariableNumericFeature extends AbstractSingleFeature {
 		this.calculator = calculator;
 	}
 
-	public int getAmount(String amountKey) {
-		Integer result = amounts.get(amountKey);
-		return (result == null ? 0 : result.intValue());
+	public int getCost(String amountKey) {
+		int result = 0;
+		for (Increment inc: increments) {
+			if (amountKey.equals(inc.getAmountType())) result += inc.getAmount();
+		}
+		return result;
 	}
 	
 	public int getCreationCost() {
-		return getAmount(CharacterEdit.CREATION);
+		return getCost(Increment.CREATION);
 	}
 	
 	public int getExperienceCost() {
-		return getAmount(CharacterEdit.EXPERIENCE);
+		return getCost(Increment.EXPERIENCE);
 	}
 	
 	public int getFreeCost() {
-		return getAmount(CharacterEdit.FREE);
+		return getCost(Increment.FREE);
 	}
 	
 	public int getFreebieCost() {
-		return getAmount(CharacterEdit.FREEBIE);
+		return getCost(Increment.FREEBIE);
 	}
 	
 	public int getModifier() {
-		return getAmount(CharacterEdit.MODIFIER);
+		return getCost(Increment.MODIFIER);
 	}
 	
+	public List<Increment> getIncrements() {
+		return increments;
+	}
+
 	public int getRegularCost() {
 		int result = 0;
-		for (Map.Entry<String, Integer> entry : amounts.entrySet()) {
-			if (CharacterEdit.REGULAR_COSTS.contains(entry.getKey())) {
-				 result += entry.getValue();
+		for (Increment inc: increments) {
+			if (Increment.REGULAR_COSTS.contains(inc.getAmountType())) {
+				 result += inc.getAmount();
 			}
 		}
-		result -= extraCost;
 		return result;
 	}
 	
 	public int getTotalCost() {
 		int result = 0;
-		for (Map.Entry<String, Integer> entry : amounts.entrySet()) {
-			if (!CharacterEdit.MODIFIER.equals(entry.getKey())) result += entry.getValue();
+		for (Increment inc: increments) {
+			if (!Increment.MODIFIER.equals(inc.getAmountType())) result += inc.getAmount();
 		}
 		return result;
 	}
@@ -118,15 +131,12 @@ public abstract class VariableNumericFeature extends AbstractSingleFeature {
 	
 	@Override
 	public void recordEdit(CharacterEdit edit) {
-		String amountType = edit.getAmountType();
+		String amountType = edit.getIncrement().getAmountType();
 		if (amountType != null) {
-			Integer currentValue = amounts.get(amountType);
-			if (currentValue == null) amounts.put(amountType, edit.getAmount());
-			else amounts.put(amountType, edit.getAmount() + currentValue);
+			increments.add(edit.getIncrement());
 			
 			String extra = edit.getValue();
 			if (extra != null) {
-				if (CharacterEdit.REGULAR_COSTS.contains(amountType)) extraCost += edit.getAmount();
 				if (extra.startsWith("-")) {
 					extraInfo.remove(extra.substring(1));
 				}

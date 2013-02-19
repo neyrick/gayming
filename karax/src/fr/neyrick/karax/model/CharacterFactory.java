@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import javax.enterprise.context.RequestScoped;
 
 import fr.neyrick.karax.entities.generic.CharacterEdit;
+import fr.neyrick.karax.entities.generic.Increment;
 import fr.neyrick.karax.entities.generic.MetaCharacter;
 
 @RequestScoped
@@ -55,7 +56,7 @@ public abstract class CharacterFactory {
 		CharacterFeature listener = null;
 		int spentExperience = 0;
 		for(CharacterEdit edit : edits) {
-			if (CharacterEdit.EXPERIENCE.equals(edit.getAmountType())) spentExperience += edit.getAmount();
+			if (Increment.EXPERIENCE.equals(edit.getIncrement().getAmountType())) spentExperience += edit.getIncrement().getAmount();
 			listener = editListenersMap.get(edit.getTargetKey());
 			if (listener != null) listener.recordEdit(edit);
 		}

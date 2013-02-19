@@ -7,7 +7,7 @@ public class MinimalFixedFeature extends FixedNumericFeature{
 	
 	@Override
 	public void recordEdit(CharacterEdit edit) {
-		if (edit.getAmount() < getAmount()) {
+		if (edit.getIncrement().getAmount() < getAmount()) {
 			super.recordEdit(edit);
 		}
 	}

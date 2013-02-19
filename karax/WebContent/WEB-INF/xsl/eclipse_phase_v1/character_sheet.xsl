@@ -1,5 +1,6 @@
 <xsl:stylesheet version="1.0"
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xmlns:exsl="http://exslt.org/common"
       xmlns:fo="http://www.w3.org/1999/XSL/Format">
   <xsl:output method="xml" indent="yes"/>
   
@@ -575,36 +576,22 @@
           <!--  ID  -->
 
           <fo:block-container absolute-position="absolute" top="39mm" left="10mm" width="56mm" text-align="left">
-          	<xsl:choose>
-          		<xsl:when test="identities/identity[1]">
-          			<xsl:apply-templates select="identities/identity[1]"/>
-          		</xsl:when>
-          		<xsl:otherwise>
-          			<xsl:call-template name="identityTemplate"/>
-          		</xsl:otherwise>
-          	</xsl:choose>
+          	<xsl:call-template name="identityTemplate">
+          		<xsl:with-param name="identity" select="identities/identity[1]"/>
+          	</xsl:call-template>
+          	
           </fo:block-container>
 
           <fo:block-container absolute-position="absolute" top="39mm" left="78mm" width="56mm" text-align="left">
-          	<xsl:choose>
-          		<xsl:when test="identities/identity[2]">
-          			<xsl:apply-templates select="identities/identity[2]"/>
-          		</xsl:when>
-          		<xsl:otherwise>
-          			<xsl:call-template name="identityTemplate"/>
-          		</xsl:otherwise>
-          	</xsl:choose>
+          	<xsl:call-template name="identityTemplate">
+          		<xsl:with-param name="identity" select="identities/identity[2]"/>
+          	</xsl:call-template>
           </fo:block-container>
 
           <fo:block-container absolute-position="absolute" top="39mm" left="147mm" width="56mm" text-align="left">
-          	<xsl:choose>
-          		<xsl:when test="identities/identity[2]">
-          			<xsl:apply-templates select="identities/identity[2]"/>
-          		</xsl:when>
-          		<xsl:otherwise>
-          			<xsl:call-template name="identityTemplate"/>
-          		</xsl:otherwise>
-          	</xsl:choose>
+          	<xsl:call-template name="identityTemplate">
+          		<xsl:with-param name="identity" select="identities/identity[3]"/>
+          	</xsl:call-template>
           </fo:block-container>
 
           
@@ -691,7 +678,7 @@
  
            <fo:block-container absolute-position="absolute" top="221.8mm" left="10mm" width="55mm" text-align="left" >
            	<xsl:for-each select="currentMorph/traits/trait">
-	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="."/></fo:block>
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="@display"/></fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>
@@ -745,34 +732,36 @@
   </xsl:template>
   
   <xsl:template match="identity" name="identityTemplate">
-	<fo:block><xsl:value-of select="$label.ID"/>: <xsl:value-of select="name2"/></fo:block>
+  	<xsl:param name="identity"/>
+  	<xsl:variable name="idnode" select="exsl:node-set($identity)"/>
+	<fo:block><xsl:value-of select="$label.ID"/>: <xsl:value-of select="$idnode/name"/></fo:block>
 	<fo:block font-size="8pt" space-before="1.5mm">
 		<fo:table table-layout="fixed" width="100%" text-align="left">
 			<fo:table-column column-width="32mm" />
 			<fo:table-column column-width="20mm" />
 			<fo:table-body>
 				<fo:table-row height="6mm">
-					<fo:table-cell padding-left="4mm"><fo:block><xsl:value-of select="$label.REPA"/>: <xsl:value-of select="reputations/reputation[@key='A-rep']"/></fo:block></fo:table-cell>
-					<fo:table-cell padding-left="1mm"><fo:block><xsl:value-of select="$label.REPG"/>: <xsl:value-of select="reputations/reputation[@key='G-rep']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="4mm"><fo:block><xsl:value-of select="$label.REPA"/>: <xsl:value-of select="$idnode/reputations/reputation[@key='A-rep']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="1mm"><fo:block><xsl:value-of select="$label.REPG"/>: <xsl:value-of select="$idnode/reputations/reputation[@key='G-rep']"/></fo:block></fo:table-cell>
 				</fo:table-row>
 				<fo:table-row height="5.6mm">
-					<fo:table-cell padding-left="2mm"><fo:block><xsl:value-of select="$label.REPC"/>: <xsl:value-of select="reputations/reputation[@key='C-rep']"/></fo:block></fo:table-cell>
-					<fo:table-cell padding-left="3mm"><fo:block><xsl:value-of select="$label.REPI"/>: <xsl:value-of select="reputations/reputation[@key='I-rep']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="2mm"><fo:block><xsl:value-of select="$label.REPC"/>: <xsl:value-of select="$idnode/reputations/reputation[@key='C-rep']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="3mm"><fo:block><xsl:value-of select="$label.REPI"/>: <xsl:value-of select="$idnode/reputations/reputation[@key='I-rep']"/></fo:block></fo:table-cell>
 				</fo:table-row>
 				<fo:table-row height="5.8mm">
-					<fo:table-cell padding-left="2mm"><fo:block><xsl:value-of select="$label.REPE"/>: <xsl:value-of select="reputations/reputation[@key='E-rep']"/></fo:block></fo:table-cell>
-					<fo:table-cell padding-left="3mm"><fo:block><xsl:value-of select="$label.REPR"/>: <xsl:value-of select="reputations/reputation[@key='R-rep']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="2mm"><fo:block><xsl:value-of select="$label.REPE"/>: <xsl:value-of select="$idnode/reputations/reputation[@key='E-rep']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="3mm"><fo:block><xsl:value-of select="$label.REPR"/>: <xsl:value-of select="$idnode/reputations/reputation[@key='R-rep']"/></fo:block></fo:table-cell>
 				</fo:table-row>
 				<fo:table-row height="5.5mm">
-					<fo:table-cell padding-left="4mm"><fo:block><xsl:value-of select="$label.REPF"/>: <xsl:value-of select="reputations/reputation[@key='F-rep']"/></fo:block></fo:table-cell>
-					<fo:table-cell padding-left="1mm"><fo:block><xsl:value-of select="reputations/reputation[@key!='A' and @key!='C' and @key!='E' and @key!='F' and @key!='G' and @key!='I' and @key!='R']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="4mm"><fo:block><xsl:value-of select="$label.REPF"/>: <xsl:value-of select="$idnode/reputations/reputation[@key='F-rep']"/></fo:block></fo:table-cell>
+					<fo:table-cell padding-left="1mm"><fo:block><xsl:value-of select="$idnode/reputations/reputation[@key!='A-rep' and @key!='C-rep' and @key!='E-rep' and @key!='F-rep' and @key!='G-rep' and @key!='I-rep' and @key!='R-rep']"/></fo:block></fo:table-cell>
 				</fo:table-row>
 			</fo:table-body>
 		</fo:table>
  	 </fo:block>
      <fo:block font-size="8pt" width="54mm" wrap-option="wrap">
      <xsl:choose>
-     	<xsl:when test="notes"><xsl:value-of select="notes"/></xsl:when>
+     	<xsl:when test="$idnode/notes"><xsl:value-of select="$idnode/notes"/></xsl:when>
      	<xsl:otherwise>_______________________________________ _______________________________________ _______________________________________
      	_______________________________________</xsl:otherwise>
      </xsl:choose>

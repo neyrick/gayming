@@ -10,9 +10,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import fr.neyrick.karax.entities.generic.MetaCharacter;
+import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
 import fr.neyrick.karax.model.CharacterFactory;
 import fr.neyrick.karax.model.CharacterFeature;
-import fr.neyrick.karax.model.FeatureCalculator;
 import fr.neyrick.karax.model.FixedNumericFeature;
 import fr.neyrick.karax.model.GameCharacter;
 import fr.neyrick.karax.model.Ruleset;
@@ -20,7 +20,6 @@ import fr.neyrick.karax.model.SimpleVariable;
 import fr.neyrick.karax.model.StaticFeaturesCollection;
 import fr.neyrick.karax.model.StringFeature;
 import fr.neyrick.karax.model.VariableFeaturesCollection;
-import fr.neyrick.karax.model.VariableNumericFeature;
 
 @Ruleset("ECLIPSE_PHASE_1.0")
 @RequestScoped
@@ -84,18 +83,15 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		
 		// MOXIE
 		
-		character.setMoxie(registerListener(new SimpleVariable("MOXIE", new FeatureCalculator() {
+		character.setMoxie(registerListener(new SimpleVariable("MOXIE", new AbstractNumericFeatureCalculator() {
 			
 			@Override
 			public Number calculate(CharacterFeature feature) {
-				VariableNumericFeature targetFeature = (VariableNumericFeature)feature;
-				int result = 1;
-				result += (targetFeature.getFreebieCost() / 15) + (targetFeature.getExperienceCost() / 15) + (targetFeature.getFreeCost() / 15) + (targetFeature.getModifier());
+				int result = super.calculateFromRegularCost((SimpleVariable)feature);
 				if (result > 10) return 10;
 				return result;
 			}
 		})));
-
 		// SKILLS (Active = ASK, Knowledge = KSK, PSI = PSK)
 		
 		Map<String, SkillCalculator> skillCalculatorsMap = new HashMap<>(7);
@@ -169,13 +165,11 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		
 		// CREDITS
 		
-		character.setCredits(registerListener(new SimpleVariable("CREDITS", new FeatureCalculator() {
+		character.setCredits(registerListener(new SimpleVariable("CREDITS", new AbstractNumericFeatureCalculator() {
 			
 			@Override
 			public Number calculate(CharacterFeature feature) {
-				VariableNumericFeature targetFeature = (VariableNumericFeature)feature;
-				int result = (targetFeature.getFreebieCost() * 1000) + (targetFeature.getExperienceCost() * 1000) + targetFeature.getFreeCost() + targetFeature.getModifier();
-				return result;
+				return super.calculateFromTotalCost((SimpleVariable)feature);
 			}
 		})));
 		

@@ -1,10 +1,9 @@
 package fr.neyrick.karax.entities.generic;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,14 +21,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @XmlRootElement
 public class CharacterEdit {
 
-	public static final String CREATION = "CREATION";
-	public static final String FREE = "FREE";
-	public static final String FREEBIE = "FREEBIE";
-	public static final String MODIFIER = "MODIFIER";
-	public static final String EXPERIENCE = "EXPERIENCE";
-	
-	public static final List<String> REGULAR_COSTS = Arrays.asList(CREATION, FREE, FREEBIE, EXPERIENCE);
-	
 	
 	@Id
 	@GeneratedValue
@@ -39,8 +30,6 @@ public class CharacterEdit {
 	@JsonIgnore
 	@ManyToOne
 	private MetaCharacter character;
-	
-	private String amountType;
 	
 	private String targetKey;
 	
@@ -52,7 +41,8 @@ public class CharacterEdit {
 	
 	private String value;
 	
-	private int amount;
+	@Embedded
+	private Increment increment;
 	
 	private Date editDate;	
 	
@@ -76,14 +66,6 @@ public class CharacterEdit {
 
 	public void setCharacter(MetaCharacter character) {
 		this.character = character;
-	}
-
-	public String getAmountType() {
-		return amountType;
-	}
-
-	public void setAmountType(String expenseType) {
-		this.amountType = expenseType;
 	}
 
 	public String getTargetKey() {
@@ -118,14 +100,6 @@ public class CharacterEdit {
 		this.targetSubKey3 = targetSubKey3;
 	}
 
-	public int getAmount() {
-		return amount;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-
 	public Date getEditDate() {
 		return editDate;
 	}
@@ -156,6 +130,14 @@ public class CharacterEdit {
 
 	public void setConsequences(Set<CharacterEdit> consequences) {
 		this.consequences = consequences;
+	}
+
+	public Increment getIncrement() {
+		return increment;
+	}
+
+	public void setIncrement(Increment increment) {
+		this.increment = increment;
 	}
 	
 }

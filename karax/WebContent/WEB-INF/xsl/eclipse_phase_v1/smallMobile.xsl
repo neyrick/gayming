@@ -8,6 +8,9 @@
 				
 				<meta name="viewport" content="width=device-width, initial-scale=1"/> 
 			
+				<link rel="apple-touch-icon">
+					<xsl:attribute name="href">applogo/<xsl:value-of select="game/stylesheet"/>.png</xsl:attribute>
+				</link>
 				<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0-rc.1/jquery.mobile-1.3.0-rc.1.min.css" />
 				<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 				<script src="http://code.jquery.com/mobile/1.3.0-rc.1/jquery.mobile-1.3.0-rc.1.min.js"></script>
@@ -99,7 +102,7 @@
 									<tr>
 										<th width="100%">&#160;</th>
 										<th><xsl:value-of select="$label.base"/></th>
-										<th><xsl:value-of select="$label.morph"/></th>
+										<th><xsl:value-of select="$label.morphBonus"/></th>
 										<th><xsl:value-of select="$label.total"/></th>
 									</tr>
 								</thead>
@@ -342,7 +345,7 @@
 				<div data-role="content">
 					<ul data-role="listview">
 						<li data-role="list-divider"><xsl:value-of select="$label.morphType"/></li>
-						<li class="fieldValue"><xsl:value-of select="currentMorph/type"/></li>
+						<li><xsl:value-of select="currentMorph/type"/></li>
 						<li data-role="list-divider"><xsl:value-of select="$label.morphStats"/></li>
 						<li>
 							<table class="table-stripe table-stroke">
@@ -361,7 +364,7 @@
 							</table>				
 						</li>
 						<li data-role="list-divider"><xsl:value-of select="$label.morphTraits"/></li>
-						<xsl:for-each select="currentMorph/traits/trait">
+						<xsl:for-each select="currentMorph/traits/trait/@display">
 							<li><xsl:value-of select="."/></li>
 						</xsl:for-each>
 						<li data-role="list-divider"><xsl:value-of select="$label.morphEnhancements"/></li>
@@ -387,7 +390,7 @@
 					<th width="100%">&#160;</th>
 					<th><xsl:value-of select="$label.APT"/></th>
 					<th><xsl:value-of select="$label.base"/></th>
-					<th><xsl:value-of select="$label.morph"/></th>
+					<th><xsl:value-of select="$label.morphBonus"/></th>
 					<th><xsl:value-of select="$label.total"/></th>
 					<th><xsl:value-of select="$label.specOtherBonus"/></th>
 				</tr>
@@ -399,7 +402,7 @@
 						<td class="rowValue"><xsl:value-of select="@morphBonus"/></td>
 						<td class="rowValue"><xsl:value-of select="@total"/></td>
 						<td class="rowValue">
-							<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
+							<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/<xsl:text> </xsl:text></xsl:if><xsl:value-of select="."/></xsl:for-each>
 						</td>
 					</tr>
 				</xsl:for-each>

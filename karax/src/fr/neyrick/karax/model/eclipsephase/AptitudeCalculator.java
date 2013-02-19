@@ -1,15 +1,15 @@
 package fr.neyrick.karax.model.eclipsephase;
 
+import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
 import fr.neyrick.karax.model.CharacterFeature;
 import fr.neyrick.karax.model.FeatureCalculator;
 
-public class AptitudeCalculator implements FeatureCalculator{
+public class AptitudeCalculator extends AbstractNumericFeatureCalculator implements FeatureCalculator{
 
 	@Override
 	public Number calculate(CharacterFeature feature) {
 		Aptitude targetFeature = (Aptitude)feature;
-		int base = targetFeature.getCreationCost();
-		base += (targetFeature.getFreebieCost() / 10) + (targetFeature.getExperienceCost() / 10) + (targetFeature.getFreeCost() / 10);
+		int base = super.calculateFromRegularCost(targetFeature);
 		int max = targetFeature.getEgoMax();
 		if (base > max) base = max;
 		int result = base;

@@ -81,13 +81,9 @@ public class Skill extends VariableNumericFeature {
 
 	@XmlAttribute
 	public int getMorphBonus() {
-		return aptitudeMorphBonus + getAmount("MORPH");
+		return aptitudeMorphBonus + getCost("MORPH");
 	}
 
-	public int getDiscountCost() {
-		return getAmount("DISCOUNT");
-	}
-	
 	@XmlAttribute
 	@Override
 	public String getKey() {

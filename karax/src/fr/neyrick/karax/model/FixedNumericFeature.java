@@ -65,7 +65,7 @@ public class FixedNumericFeature extends AbstractSingleFeature {
 
 	@Override
 	public void recordEdit(CharacterEdit edit) {
-		this.amount = edit.getAmount();
+		this.amount = edit.getIncrement().getAmount();
 		this.value = edit.getValue();
 	}
 	

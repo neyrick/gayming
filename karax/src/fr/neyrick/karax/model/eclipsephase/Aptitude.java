@@ -60,7 +60,7 @@ public class Aptitude extends VariableNumericFeature {
 
 	@XmlAttribute
 	public int getMorphBonus() {
-		return getAmount("MORPH");
+		return getCost("MORPH");
 	}
 
 	public int getMorphMax() {
@@ -69,7 +69,7 @@ public class Aptitude extends VariableNumericFeature {
 	}
 	
 	public int getMorphMaxMod() {
-		return getAmount("MORPH_MAX_MOD");
+		return getCost("MORPH_MAX_MOD");
 	}
 	
 	public int getEgoMax() {
@@ -94,8 +94,8 @@ public class Aptitude extends VariableNumericFeature {
 
 	@Override
 	public void recordEdit(CharacterEdit edit) {
-		String amountType = edit.getAmountType();
-		int newValue = edit.getAmount();
+		String amountType = edit.getIncrement().getAmountType();
+		int newValue = edit.getIncrement().getAmount();
 		if (EGO_MAX.equals(amountType)) newEgoMax = newValue;
 		else if (MORPH_MAX.equals(amountType)) newMorphMax = (newMorphMax > newValue ? newValue : newMorphMax);
 		else if (MORPH_BASE_MAX.equals(amountType)) morphBaseMax = newValue;

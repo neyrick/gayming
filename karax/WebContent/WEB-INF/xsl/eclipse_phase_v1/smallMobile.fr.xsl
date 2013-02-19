@@ -41,8 +41,8 @@
   <xsl:variable name="label.long.REF" select="'RÉFlexes'"/>
   <xsl:variable name="label.long.SAV" select="'ASTuce'"/>
   <xsl:variable name="label.scores" select="'Scores Dérivés'"/>
-  <xsl:variable name="label.base" select="'Base'"/>
-  <xsl:variable name="label.morphBonus" select="'Bonus de Morphe'"/>
+  <xsl:variable name="label.base" select="'B'"/>
+  <xsl:variable name="label.morphBonus" select="'M'"/>
   <xsl:variable name="label.total" select="'Total'"/>
   <xsl:variable name="label.long.MOX" select="'AUDace'"/>
   <xsl:variable name="label.long.INIT" select="'INITiative'"/>
@@ -70,7 +70,7 @@
   <xsl:variable name="label.activeSkills" select="'Compétences Actives'"/>
   <xsl:variable name="label.knowledgeSkills" select="'Connaissances'"/>
   <xsl:variable name="label.linkedAptitude" select="'Aptitude'"/>
-  <xsl:variable name="label.specOtherBonus" select="'Spéc./Notes'"/>
+  <xsl:variable name="label.specOtherBonus" select="'Notes'"/>
   <xsl:variable name="label.reputation" select="'Réputation'"/>
   <xsl:variable name="label.MUSE" select="'MUSE'"/>
   <xsl:variable name="label.backupNotes" select="'Sauvegarde'"/>

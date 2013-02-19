@@ -32,6 +32,7 @@ drop sequence if exists hibernate_sequence;
         editDate timestamp,
         amountType varchar(32),
         amount int4 not null,
+        multiplier float(16) not null default 1,
         targetKey varchar(255),
         targetSubkey1 varchar(255),
         targetSubkey2 varchar(255),
