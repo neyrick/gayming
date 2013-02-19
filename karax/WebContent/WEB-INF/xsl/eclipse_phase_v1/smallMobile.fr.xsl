@@ -7,12 +7,13 @@
  
   <xsl:variable name="label.info" select="'Infos générales'"/>
   <xsl:variable name="label.genScores" select="'Aptitudes et Dérivés'"/>
-  <xsl:variable name="label.askCombat" select="'Comp: Combat'"/>
-  <xsl:variable name="label.askMouv" select="'Comp: Mouvement'"/>
-  <xsl:variable name="label.askTech" select="'Comp: Techniques'"/>
-  <xsl:variable name="label.askSoc" select="'Comp: Sociales'"/>
-  <xsl:variable name="label.askOther" select="'Comp: Autres'"/>
+  <xsl:variable name="label.skills" select="'Compétences'"/>
+  <xsl:variable name="label.combat" select="'Combat'"/>
+  <xsl:variable name="label.tech" select="'Techniques'"/>
+  <xsl:variable name="label.social" select="'Sociales'"/>
+  <xsl:variable name="label.other" select="'Autres'"/>
   <xsl:variable name="label.psi" select="'Psi'"/>
+  <xsl:variable name="label.APT" select="'APT'"/>
   <xsl:variable name="label.identities" select="'Identités'"/>
   <xsl:variable name="label.muse" select="'Muse'"/>
   <xsl:variable name="label.gear" select="'Équipement'"/>
@@ -22,8 +23,6 @@
   <xsl:variable name="label.faction" select="'Faction'"/>
   <xsl:variable name="label.gender" select="'Genre'"/>
   <xsl:variable name="label.actualAge" select="'Âge Effectif'"/>
-
-  <xsl:variable name="label." select="''"/>
   
   <!-- Isolate locale-specific content -->
   <xsl:variable name="label.aptitudes" select="'Aptitudes'"/>
@@ -55,10 +54,12 @@
   <xsl:variable name="label.long.TT" select="'Seuil de Trauma'"/>
   <xsl:variable name="label.long.LUC" select="'LUCidité'"/>
   <xsl:variable name="label.long.IR" select="'Seuil d´Aliénation'"/>
+  <xsl:variable name="label.morphType" select="'Type'"/>
+  <xsl:variable name="label.morphStats" select="'Statistiques'"/>
   <xsl:variable name="label.aptitudeMax" select="'Limite d´Aptitude'"/>
   <xsl:variable name="label.speedMod" select="'Bonus de Rapidité'"/>
   <xsl:variable name="label.movement" select="'Mouvement'"/>
-  <xsl:variable name="label.rez" select="'XP'"/>
+  <xsl:variable name="label.rez" select="'Expérience'"/>
   <xsl:variable name="label.totalRez" select="'Total'"/>
   <xsl:variable name="label.damage" select="'Dégâts'"/>
   <xsl:variable name="label.wound" select="'Bless.'"/>
@@ -69,7 +70,8 @@
   <xsl:variable name="label.activeSkills" select="'Compétences Actives'"/>
   <xsl:variable name="label.knowledgeSkills" select="'Connaissances'"/>
   <xsl:variable name="label.linkedAptitude" select="'Aptitude'"/>
-  <xsl:variable name="label.specOtherBonus" select="'Spécialité / Notes'"/>
+  <xsl:variable name="label.specOtherBonus" select="'Spéc./Notes'"/>
+  <xsl:variable name="label.reputation" select="'Réputation'"/>
   <xsl:variable name="label.MUSE" select="'MUSE'"/>
   <xsl:variable name="label.backupNotes" select="'Sauvegarde'"/>
   <xsl:variable name="label.contacts" select="'Contacts'"/>
@@ -101,5 +103,6 @@
   <xsl:variable name="label.FA" select="'FA'"/>
   <xsl:variable name="label.morphTraits" select="'Traits de Morphe'"/>
   <xsl:variable name="label.morphEnhancements" select="'Implants, Améliorations et Customisations'"/>
+  <xsl:variable name="label.hardware" select="'Matériel'"/>
   <xsl:variable name="label.embeddedSoftware" select="'Logiciels Embarqués'"/>
 </xsl:stylesheet>
