@@ -1,8 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
 
 	<f:event type="preRenderView" listener="#{calendarDisplay.loadGames}"/>
 	<ui:composition template="/templates/common.xhtml">
@@ -39,75 +41,42 @@
 			  </script>
 			  </f:verbatim>
 			  <h:form id="topForm">
-			  <table width="100%" cellspacing="0" cellpadding="0" border="0">
-			    <tr>
-			      <td>
-			        <table border="1" cellpadding="0" cellspacing="0">
-						<tr>
-							<ui:repeat var="month" value="#{calendarDisplay.monthsList}">
-								<td style="vertical-align:top">
-									<h:dataTable border="0" var="day" value="#{calendarDisplay.months.get(month)}" width="150"
-									 cellpadding="0" cellspacing="0" columnClasses="centered,centered," rowClasses="#{calendarDisplay.getMonthStyleClasses(month)}">
-									 	<f:facet name="header">
-											<h:outputFormat value="#{month}" >
-												<f:convertDateTime pattern="MMMM"/>
-											</h:outputFormat>
-									 	</f:facet>
-									 	<h:column>
-									 	  <h:commandLink action="#{calendarDisplay.startEditDay}" styleClass="quietLink">
-									 	  	<f:setPropertyActionListener target="#{calendarDisplay.currentDate}" value="#{day.date}"/>
-									 	  	<f:ajax render="@form"/>
-									 	    <table border="0" cellpadding="0" cellspacing="0" width="100%"
-									 	    onmouseover="displayDateDetails(#{day.dayNumber}, #{day.monthNumber});" onmouseout="closeDetails();">
-									 	    	<tr>
-									 	    		<td class="calendarDayCell" width="30">#{day.dayLetter}</td>
-									 	    		<td class="calendarDayCell" width="30">#{day.dayNumber}</td>
-									 	    		<td class="calendarDayCell" width="100"><h:outputText value="#{day.date}" /></td>
-									 	    		<td class="calendarDayCell">
-									 	    			<ui:repeat var="game" value="#{day.games}">
-									 	    			  <p>Partie: #{game.setting}</p>
-									 	    			</ui:repeat>
-									 	    		&nbsp;</td>
-									 	    	</tr>
-									 	    </table>
-									 	  </h:commandLink>
-									 	</h:column>
-									</h:dataTable>
-								</td>
-							</ui:repeat>
-						</tr>
-					</table>
-				  </td>
-			      <td>
-					<ui:repeat var="month" value="#{calendarDisplay.monthsList}">
-	 	    			<ui:repeat var="day" value="#{calendarDisplay.months.get(month)}">
-	 	    				<div class="dayDetailsPanel" id="dayDetailsPanel_#{day.dayNumber}_#{day.monthNumber}">
-	 	    					Date: <h:outputText value="#{day.date}" >
-	 	    						<f:convertDateTime pattern="E dd MMMM yyyy"/>
-	 	    					</h:outputText>
+			  JSF:
+			  <h:messages />
+			  <br/>
+			  Rich: <rich:messages/>
+			  <rich:dataGrid value="#{calendarDisplay.monthsList}" var="month" columns="#{calendarDisplay.monthsList.size()}" elements="#{calendarDisplay.monthsList.size()}" width="100%"
+			  styleClass="calendarMonthPanel">
+			  	<rich:panel bodyClass="nopad" >
+			  		<f:facet name="header">
+						<h:outputFormat value="#{month}" >
+							<f:convertDateTime pattern="MMMM"/>
+						</h:outputFormat>
+			  		</f:facet>
+			  		<rich:dataTable var="day" value="#{calendarDisplay.months.get(month)}" width="150"
+			  		rowClasses="#{calendarDisplay.getMonthStyleClasses(month)}">
+			  			<rich:column style="padding: 0px;">
+					 	  <a4j:commandLink action="#{calendarDisplay.startEditDay()}" styleClass="quietLink" render="@form">
+					 	  	<f:setPropertyActionListener target="#{calendarDisplay.currentDate}" value="#{day.date}"/>
+					 	  	<h:panelGrid columns="3"  border="0" cellpadding="0" cellspacing="0" width="100%">
+					 	    	<rich:panel styleClass="calendarDayCell" style="width: 30px;background-color:inherit;">#{day.dayLetter}
+					 	    	</rich:panel>
+					 	    	<rich:panel styleClass="calendarDayCell" style="width: 30px;background-color:inherit;">#{day.dayNumber}</rich:panel>
+					 	    	<rich:panel styleClass="calendarDayCell" style="width: 100px;background-color:inherit;">
+					 	    		<h:outputText value="#{day.games}" />
+					 	    	</rich:panel>
+					 	  	</h:panelGrid>
+					 	    	<rich:tooltip>
+		 	    					Date: <h:outputText value="#{day.date}" >
+		 	    						<f:convertDateTime pattern="E dd MMMM yyyy"/>
+		 	    					</h:outputText>
 	 	    					<br/>
-			 	    			<ui:repeat var="game" value="#{day.games}">
-		 	    					Partie: #{game.setting} <br/>
-		 	    					MJ: #{game.gmname}
-		 	    					Joueurs: #{game.players} 
-			 	    			</ui:repeat>
-	 	    				</div>
-	 	    			</ui:repeat>
-					</ui:repeat>
-					<h:panelGroup id="editPanelParent">
-						<h:panelGroup id="editPanel" rendered="#{calendarDisplay.editDayMode}">
- 	    					Date: <h:outputText value="#{calendarDisplay.currentDate}" >
-	 	    						<f:convertDateTime pattern="E dd MMMM yyyy zzzz"/>
-	 	    					</h:outputText><br/>
-							Panneau d'édition
-							<h:commandButton action="#{calendarDisplay.saveDay()}" value="Valider" >
-								<f:ajax render="@form"/>
-							</h:commandButton>
-						</h:panelGroup>
-					</h:panelGroup>
-			      </td>
-			    </tr>
-			  </table>
+					 	    	</rich:tooltip>
+					 	  </a4j:commandLink>
+			  			</rich:column>
+			  		</rich:dataTable>
+			  	</rich:panel>
+			  </rich:dataGrid>
 			  </h:form>
 			</ui:define>
 	</ui:composition>

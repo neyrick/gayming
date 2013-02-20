@@ -29,7 +29,7 @@ public class CalendarDisplay implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	static private final int DEFAULT_WIDTH = 3;
+	static private final int DEFAULT_WIDTH = 2;
 	
 	private Map<Date, List<Day>> months = new HashMap<Date, List<Day>>();
 
