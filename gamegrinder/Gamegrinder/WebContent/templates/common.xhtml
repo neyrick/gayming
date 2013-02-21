@@ -1,6 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
       
@@ -89,6 +91,15 @@
 <tbody>
 
 	<tr>
+		<td width="100%" bgcolor="#E4EBEB">
+			<rich:panel style="text-align:right" rendered="#{visitor.known}">			
+				<h:form>
+					Salut <h:outputText value="#{visitor.name}" /> ! <h:commandButton action="#{visitor.clear}" value="Changer d'utilisateur" />
+				</h:form>
+			</rich:panel>
+		</td>
+	</tr>
+	<tr>
 		<td class="header" height="42" align="center" valign="middle" width="100%" bgcolor="#E4EBEB">
 			<ui:insert name="pageHeader">Page Header</ui:insert>
 		</td>
@@ -118,6 +129,16 @@
 	</tr>
 </tbody>
 </table>
+    <rich:popupPanel id="namePopup" modal="true" show="#{not(visitor.known)}" style="text-align:center" autosized="true">
+        <h:form>
+        <h:panelGrid columns="1">
+        	<rich:panel style="text-align:center">Salut ! T'es qui ?<br/>(Utiliser le nom d'utilisateur du forum)</rich:panel>
+  			<h:inputText id="visitorNameInput" value="#{visitor.name}" required="true" requiredMessage="Timide va !"/>
+  			<h:commandButton value="Valider" />
+  			<rich:messages for="visitorNameInput"/>
+        </h:panelGrid>
+ 		</h:form>
+    </rich:popupPanel>
 </h:body>
 		
 </html>

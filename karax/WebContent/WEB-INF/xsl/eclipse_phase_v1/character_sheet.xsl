@@ -108,7 +108,7 @@
 						</fo:table-row>
 						<fo:table-row>
 							<fo:table-cell><fo:block font-size="10pt" font-family="Electrolize" text-align="right" color="{$labelColor}" margin-right="1mm"><xsl:value-of select="$label.total"/></fo:block></fo:table-cell>
-							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COO']"/></fo:block></fo:table-cell>
+							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COG']"/></fo:block></fo:table-cell>
 							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='COO']"/></fo:block></fo:table-cell>
 							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='INT']"/></fo:block></fo:table-cell>
 							<fo:table-cell><fo:block font-weight="bold"><xsl:value-of select="aptitudes/aptitude[@key='SOM']"/></fo:block></fo:table-cell>
@@ -298,11 +298,11 @@
 						</fo:table-row>
 			           	<xsl:for-each select="activeskills/skill[@category='COMBAT']">
 							<fo:table-row height="3.82mm">
-								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm" text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@base"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@total"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -313,11 +313,11 @@
 						</fo:table-row>
 			           	<xsl:for-each select="activeskills/skill[@category='MOVEMENT']">
 							<fo:table-row height="3.82mm">
-								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm" text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@base"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@total"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -328,11 +328,11 @@
 						</fo:table-row>
 			           	<xsl:for-each select="activeskills/skill[@category='MENTAL']">
 							<fo:table-row height="3.82mm">
-								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm" text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@base"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@total"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -343,11 +343,11 @@
 						</fo:table-row>
 			           	<xsl:for-each select="activeskills/skill[@category!='COMBAT' and @category!='SOCIAL' and @category!='MENTAL' and @category!='MOVEMENT']">
 							<fo:table-row height="3.82mm">
-								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm" text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@base"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@total"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -358,11 +358,11 @@
 						</fo:table-row>
 			           	<xsl:for-each select="psiskills/skill">
 							<fo:table-row height="3.82mm">
-								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm" text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@base"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@total"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -398,11 +398,11 @@
 						</fo:table-row>
  			           	<xsl:for-each select="activeskills/skill[@category='SOCIAL']">
 							<fo:table-row height="3.82mm">
-								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm" text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@base"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@total"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>
@@ -441,11 +441,11 @@
 						</fo:table-row>
  			           	<xsl:for-each select="knowledgeskills/skill">
 							<fo:table-row height="3.82mm">
-								<fo:table-cell><fo:block text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@base"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
-								<fo:table-cell><fo:block><xsl:value-of select="@total"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm" text-align="left"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@linkedAptitude"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@base"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@morphBonus"/></fo:block></fo:table-cell>
+								<fo:table-cell><fo:block line-height="3.75mm"><xsl:value-of select="@total"/></fo:block></fo:table-cell>
 								<fo:table-cell><fo:block text-align="left" line-height="3.75mm">
 									<xsl:for-each select="extra"><xsl:if test="position()&gt;1">/&#160;</xsl:if><xsl:value-of select="."/>&#160;</xsl:for-each>
 								</fo:block></fo:table-cell>

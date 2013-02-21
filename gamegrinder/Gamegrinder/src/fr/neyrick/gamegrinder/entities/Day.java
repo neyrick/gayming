@@ -9,6 +9,8 @@ import java.util.Locale;
 
 import javax.faces.context.FacesContext;
 
+import fr.neyrick.gamegrinder.entities.TimeFrame.TimeFrameLocator;
+
 public class Day {
 
 	private Calendar date = Calendar.getInstance();
@@ -31,6 +33,24 @@ public class Day {
 	
 	public List<Game> getGames() {
 		return games;
+	}
+
+	public List<Game> getAfternoonGames() {
+		return getGames(TimeFrameLocator.AFTERNOON);
+	}
+	
+	public List<Game> getEveningGames() {
+		return getGames(TimeFrameLocator.EVENING);
+	}
+	
+	private List<Game> getGames(TimeFrameLocator locator) {
+		List<Game> result = new ArrayList<Game>();
+		for(Game game : games) {
+			if (locator.equals(game.getTimeFrame().getLocator())) {
+				result.add(game);
+			}
+		}
+		return result;
 	}
 
 	public String getDayLetter(Locale locale) {

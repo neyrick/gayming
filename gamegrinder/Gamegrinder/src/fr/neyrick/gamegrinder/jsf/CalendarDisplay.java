@@ -39,7 +39,7 @@ public class CalendarDisplay implements Serializable {
 	
 	private boolean editMode = false;
 	
-	private Date currentDate = null;
+	private Day currentDay = null;
 	
 	@Inject
 	private Instance<GameManager> gameManagerInstance;
@@ -105,12 +105,13 @@ public class CalendarDisplay implements Serializable {
 		computeEndDate();
 	}		
 	
-	public Date getCurrentDate() {
-		return currentDate;
+	public Day getCurrentDay() {
+		return currentDay;
 	}
 
-	public void setCurrentDate(Date currentDate) {
-		this.currentDate = currentDate;
+	public void setCurrentDay(Day currentDay) {
+		editMode = true;
+		this.currentDay = currentDay;
 	}
 
 	public int getWidth() {
@@ -143,12 +144,12 @@ public class CalendarDisplay implements Serializable {
 		StringBuilder builder = new StringBuilder(255);
 		String styleClass = null;
 		Iterator<Day> iter = days.iterator();
-		Day currentDay = null;
+		Day iterDay = null;
 		while (iter.hasNext()) {
-			currentDay = iter.next();
-			if (currentDay.getDate().equals(currentDate)) styleClass = "selectedDay";
-			else if (currentDay.getDate().before(startDate)) styleClass = "greyedDay"; 
-			else if (currentDay.isPlayDay()) styleClass = "emptyDay";
+			iterDay = iter.next();
+			if ((currentDay != null) && (iterDay.getDate().equals(currentDay.getDate()))) styleClass = "selectedDay";
+			else if (iterDay.getDate().before(startDate)) styleClass = "greyedDay"; 
+			else if (iterDay.isPlayDay()) styleClass = "emptyDay";
 			else styleClass = "notPlayDay";
 			builder.append(styleClass);
 			builder.append(", ");
@@ -156,14 +157,9 @@ public class CalendarDisplay implements Serializable {
 		return builder.toString();
 	}
 	
-	public String startEditDay() {
-		editMode = true;
-		return null;
-	}
-	
 	public void saveDay() {
 		editMode = false;
-		currentDate = null;
+		currentDay = null;
 	}
 	
 	public boolean isEditDayMode() {
