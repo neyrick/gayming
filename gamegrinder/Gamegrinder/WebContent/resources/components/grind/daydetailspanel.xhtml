@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:grind="http://java.sun.com/jsf/composite/components/grind">
+<head>
+<title>Not present in rendered output</title>
+</head>
+<body>
+<composite:interface>
+	<composite:attribute name="day" required="true"/>
+</composite:interface>
+<composite:implementation>
+	
+	  <rich:panel>
+	  	<f:facet name="header">
+	  		<h:outputText value="#{cc.attrs.day.date}">
+	  			<f:convertDateTime pattern="EEEE dd MMMM yyyy"/>
+	  		</h:outputText>
+	  	</f:facet>
+	  	
+	  	<grind:timeframe id="dayDetailsAfternoon" games="#{cc.attrs.day.afternoonGames}" timeframe="#{cc.attrs.day.afternoonTimeFrame}"></grind:timeframe>
+   		<grind:timeframe id="dayDEtailsEvening" games="#{cc.attrs.day.eveningGames}" timeframe="#{cc.attrs.day.eveningTimeFrame}"></grind:timeframe>
+	  </rich:panel>
+	
+</composite:implementation>
+</body>
+</html>

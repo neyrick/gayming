@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:grind="http://java.sun.com/jsf/composite/components/grind">
+<head>
+<title>Not present in rendered output</title>
+</head>
+<body>
+<composite:interface>
+	<composite:attribute name="games" required="true"/>
+	<composite:attribute name="timeframe" required="true"/>
+</composite:interface>
+<composite:implementation>
+	
+	<rich:panel>
+  		<f:facet name="header">
+  			<h:panelGroup>
+	  			<h:outputText value="Après-midi" rendered="#{cc.attrs.timeframe.locator == 'AFTERNOON'}"/>
+	  			<h:outputText value="Soirée" rendered="#{cc.attrs.timeframe.locator == 'EVENING'}"/>
+  			</h:panelGroup>
+  		</f:facet>
+  		<rich:dataGrid columns="1" var="game" value="#{cc.attrs.games}">
+  			<grind:game game="#{game}"/>
+  		</rich:dataGrid>
+  		<a4j:commandButton action="#{newSingleGameEditor.launch}" value="Ajouter une partie" render=":singlegameeditorContainer :singleGameEditorForm">
+			<f:setPropertyActionListener target="#{newSingleGameEditor.game.timeFrame}" value="#{cc.attrs.timeframe}"/>	  		
+			<f:setPropertyActionListener target="#{newSingleGameEditor.game.gmname}" value="#{visitor.name}"/>	  		
+	  	</a4j:commandButton>
+  	</rich:panel>
+	
+</composite:implementation>
+</body>
+</html>

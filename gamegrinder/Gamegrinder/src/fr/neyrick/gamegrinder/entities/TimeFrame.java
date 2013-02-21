@@ -23,16 +23,25 @@ public class TimeFrame {
 		return result;
 	}
 	
-	
+	public String getLocatorString() {
+		return locator.toString();
+	}
 	
 	public TimeFrameLocator getLocator() {
 		return locator;
 	}
 
+	public void setLocator(TimeFrameLocator locator) {
+		this.locator = locator;
+	}
+
+	public void setDayDate(Date dayDate) {
+		this.dayDate = dayDate;
+	}
+
 	public Date getDayDate() {
 		return dayDate;
 	}
-
 
 	@Override
 	public int hashCode() {

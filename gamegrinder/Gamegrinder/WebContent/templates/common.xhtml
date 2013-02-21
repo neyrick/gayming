@@ -4,99 +4,23 @@
       xmlns:a4j="http://richfaces.org/a4j"
       xmlns:rich="http://richfaces.org/rich"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:grind="http://java.sun.com/jsf/composite/components/grind">
       
 		<h:head>
 		<title><ui:insert name="pageTitle">Page Title</ui:insert></title>
-		<style type="text/css">
-			body {
-				  font-family: Verdana, Arial, Helvetica, sans-serif;
-				  font-size: 14px;
-			}
-			.nopad {
-				padding: 0 !important;
-			}
-			.quietLink {
-				text-decoration: none;
-				color: black;
-			}
-			.header {
-				  font-family: Verdana, Arial, Helvetica, sans-serif;
-				  font-size: 18px;
-			}
-			.bottom {
-				  font-family: Verdana, Arial, Helvetica, sans-serif;
-				  font-size: 9px;
-				  text-align: center;
-				  vertical-align: middle;
-				  color: #8E969D;
-			}
-			.selectedDay {
-				  font-family: Verdana, Arial, Helvetica, sans-serif;
-				  font-size: 14px;
-				  color: black;
-				  background-color: #EEEEA0; 
-			}
-			.greyedDay {
-				  font-family: Verdana, Arial, Helvetica, sans-serif;
-				  font-size: 14px;
-				  color: #505050;
-				  background-color: #C0C0C0; 
-			}
-			.greyedDay:HOVER {
-				  background-color: #CCFFCC; 
-			}
-			.centered {
-				  text-align: center;
-			}
-			.calendarMonthPanel td {
-				  vertical-align: top;
-				  padding: 0px;
-			}			
-			.notPlayDay {
-				  font-family: Verdana, Arial, Helvetica, sans-serif;
-				  font-size: 14px;
-				  color: #000000;
-				  background-color: #E0E0E0; 
-			}
-			.notPlayDay:HOVER {
-				  background-color: #CCFFCC; 
-			}
-			.emptyDay {
-				  font-family: Verdana, Arial, Helvetica, sans-serif;
-				  font-size: 14px;
-				  color: #000000;
-				  background-color: #FFFFFF; 
-			}
-			.emptyDay:HOVER {
-				  background-color: #CCFFCC; 
-			}
-			.calendarDayCell {
-				  font-family: Verdana, Arial, Helvetica, sans-serif;
-				  font-size: 14px;
-				  text-decoration: none;
-				  border-top: 1px solid black; 
-				  border-bottom: 1px solid black; 
-			}
-			.dayDetailsPanel {
-				border: 1px solid black;
-				background-color: grey;
-				display: none;
-			}
-		</style>
 		</h:head>
 
 <h:body bgcolor="#ffffff">
+<h:form id="topForm">
+<h:outputStylesheet library="css" name="gamegrinder.css"/>
 <table style="border:1px solid #CAD6E0"  align="center" cellpadding="0" cellspacing="0" border="0" width="900">
 <tbody>
-
 	<tr>
 		<td width="100%" bgcolor="#E4EBEB">
-			<rich:panel style="text-align:right" rendered="#{visitor.known}">			
-				<h:form>
-					Salut <h:outputText value="#{visitor.name}" /> ! <h:commandButton action="#{visitor.clear}" value="Changer d'utilisateur" />
-				</h:form>
-			</rich:panel>
+				<rich:panel style="text-align:right" rendered="#{visitor.known}">			
+						Salut <h:outputText value="#{visitor.name}" /> ! <h:commandButton action="#{visitor.clear}" value="Changer d'utilisateur"/>
+				</rich:panel>
 		</td>
 	</tr>
 	<tr>
@@ -109,7 +33,8 @@
 	</tr>	
 
 	<tr>
-		<td width="100%"  colspan="2">
+		<td width="100%"  colspan="2" id="bodyCell">
+		
 			<table width="100%" style="height:150px" align="left" cellpadding="0" cellspacing="0" border="0">
 			<tbody>
 				<tr>
@@ -129,16 +54,13 @@
 	</tr>
 </tbody>
 </table>
-    <rich:popupPanel id="namePopup" modal="true" show="#{not(visitor.known)}" style="text-align:center" autosized="true">
-        <h:form>
-        <h:panelGrid columns="1">
-        	<rich:panel style="text-align:center">Salut ! T'es qui ?<br/>(Utiliser le nom d'utilisateur du forum)</rich:panel>
-  			<h:inputText id="visitorNameInput" value="#{visitor.name}" required="true" requiredMessage="Timide va !"/>
-  			<h:commandButton value="Valider" />
-  			<rich:messages for="visitorNameInput"/>
-        </h:panelGrid>
- 		</h:form>
-    </rich:popupPanel>
+</h:form>
+	    <rich:panel id="namePopupContainer">
+	    	<ui:include src="/includes/visitorpopup.xhtml" />
+	    </rich:panel>
+	    <rich:panel id="singlegameeditorContainer">
+	    	<ui:include src="/includes/singlegameeditor.xhtml" />
+	    </rich:panel>
 </h:body>
 		
 </html>

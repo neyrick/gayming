@@ -4,7 +4,8 @@
       xmlns:a4j="http://richfaces.org/a4j"
       xmlns:rich="http://richfaces.org/rich"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:grind="http://java.sun.com/jsf/composite/components/grind"> 
 
 	<f:event type="preRenderView" listener="#{calendarDisplay.loadGames}"/>
 	<ui:composition template="/templates/common.xhtml">
@@ -18,31 +19,30 @@
 				</table>
 			</ui:define>
 			<ui:define name="body">
-			  <h:form id="topForm">
+			<h:panelGrid columns="2">
 			  JSF:
 			  <h:messages />
 			  <br/>
 			  Rich: <rich:messages globalOnly="true"/>
-			<h:panelGrid columns="2">
 			  <rich:dataGrid value="#{calendarDisplay.monthsList}" var="month" columns="#{calendarDisplay.monthsList.size()}" elements="#{calendarDisplay.monthsList.size()}" width="100%"
-			  styleClass="calendarMonthPanel">
-			  	<rich:panel bodyClass="nopad" >
+			  styleClass="calendarPanel">
+			  	<rich:panel bodyClass="nopad" headerClass="calendarMonthHeader">
 			  		<f:facet name="header">
 						<h:outputFormat value="#{month}" >
 							<f:convertDateTime pattern="MMMM"/>
 						</h:outputFormat>
 			  		</f:facet>
 			  		<rich:dataTable var="day" value="#{calendarDisplay.months.get(month)}" width="150"
-			  		rowClasses="#{calendarDisplay.getMonthStyleClasses(month)}">
-			  			<rich:column style="padding: 0px;">
+			  		rowClasses="#{calendarDisplay.getMonthStyleClasses(month)}" styleClass="calendarMonthPanel">
+			  			<rich:column style="padding: 0px;" styleClass="calendarMonthColumn">
 					 	  <a4j:commandLink styleClass="quietLink" render="@form">
 					 	  	<f:setPropertyActionListener target="#{calendarDisplay.currentDay}" value="#{day}"/>
-					 	  	<h:panelGrid columns="3"  border="0" cellpadding="0" cellspacing="0" width="100%">
-					 	    	<rich:panel styleClass="calendarDayCell" style="width: 30px;background-color:inherit;">#{day.dayLetter}
+					 	  	<h:panelGrid columns="3" border="0" cellpadding="0" cellspacing="0" width="100%">
+					 	    	<rich:panel bodyClass="calendarDaySubCell centered" styleClass="calendarDayCell" style="width: 30px;">#{day.dayLetter}
 					 	    	</rich:panel>
-					 	    	<rich:panel styleClass="calendarDayCell" style="width: 30px;background-color:inherit;">#{day.dayNumber}</rich:panel>
-					 	    	<rich:panel styleClass="calendarDayCell" style="width: 100px;background-color:inherit;">
-					 	    		<h:outputText value="#{day.games}" />
+					 	    	<rich:panel bodyClass="calendarDaySubCell centered" styleClass="calendarDayCell" style="width: 30px;">#{day.dayNumber}</rich:panel>
+					 	    	<rich:panel bodyClass="calendarDaySubCell" styleClass="calendarDayCell" style="width: 100px;">
+					 	    		<h:outputText value="#{day.games}"/>
 					 	    	</rich:panel>
 					 	  	</h:panelGrid>
 					 	    	<rich:tooltip>
@@ -56,34 +56,8 @@
 			  		</rich:dataTable>
 			  	</rich:panel>
 			  </rich:dataGrid>
-			  <rich:panel rendered="#{calendarDisplay.editDayMode}">
-			  	<f:facet name="header">
-			  		<h:outputText value="#{calendarDisplay.currentDay.date}">
-			  			<f:convertDateTime pattern="EEEE dd MMMM yyyy"/>
-			  		</h:outputText>
-			  	</f:facet>
-			  	<rich:panel>
-			  		<f:facet name="header">Après-midi</f:facet>
-			  		<rich:dataGrid columns="1" var="game" value="#{calendarDisplay.currentDay.afternoonGames}">
-			  			<rich:panel>
-			  				<f:facet name="header"><h:outputText value="#{game.setting}"/></f:facet>
-			  				<p>MJ: <h:outputText value="#{game.gmname}"/></p>
-			  				<h:dataTable var="player" value="#{game.players}">
-			  					<h:column><h:outputText value="#{player.playerName}" /></h:column>
-			  				</h:dataTable>
-			  			</rich:panel>
-			  		</rich:dataGrid>
-			  	</rich:panel>
-			  	<rich:panel>
-			  		<f:facet name="header">Soir</f:facet>
-	  				<p>MJ: <h:outputText value="#{game.gmname}"/></p>
-	  				<h:dataTable var="player" value="#{game.players}">
-	  					<h:column><h:outputText value="#{player.playerName}" /></h:column>
-	  				</h:dataTable>
-			  	</rich:panel>
-			  </rich:panel>
+			  <grind:daydetailspanel day="#{calendarDisplay.currentDay}" rendered="#{calendarDisplay.editDayMode}"/>   			  
 			</h:panelGrid>
-			  </h:form>
 			</ui:define>
 	</ui:composition>
 </html>

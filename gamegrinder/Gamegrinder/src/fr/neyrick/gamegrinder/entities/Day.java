@@ -35,6 +35,14 @@ public class Day {
 		return games;
 	}
 
+	public TimeFrame getAfternoonTimeFrame() {
+		return new TimeFrame(getDate(), TimeFrameLocator.AFTERNOON);
+	}
+	
+	public TimeFrame getEveningTimeFrame() {
+		return new TimeFrame(getDate(), TimeFrameLocator.EVENING);
+	}
+	
 	public List<Game> getAfternoonGames() {
 		return getGames(TimeFrameLocator.AFTERNOON);
 	}
