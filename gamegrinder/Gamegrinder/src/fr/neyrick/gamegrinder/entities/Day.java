@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.faces.context.FacesContext;
 
@@ -15,6 +17,10 @@ public class Day {
 
 	private Calendar date = Calendar.getInstance();
 	
+	private List<PlayerAvailability> afternoonPlayers = new ArrayList<PlayerAvailability>();
+
+	private List<PlayerAvailability> eveningPlayers = new ArrayList<PlayerAvailability>();
+
 	private List<Game> games = new ArrayList<Game>();
 	
 	private static final List<Integer> PLAY_DAYS = Arrays.asList(Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY);
@@ -28,9 +34,26 @@ public class Day {
 	public void setDate(Date date) {
 		this.date.setTime(date);
 	}
+	
+	public List<PlayerAvailability> getAfternoonPlayers() {
+		return afternoonPlayers;
+	}
+
+	public List<PlayerAvailability> getEveningPlayers() {
+		return eveningPlayers;
+	}
 
 	public void addGame(Game game) {
 		this.games.add(game);
+	}
+	
+	public void addPlayerAvailability(PlayerAvailability pa) {
+		if (TimeFrameLocator.AFTERNOON.equals(pa.getTimeFrame().getLocator())) {
+			afternoonPlayers.add(pa);
+		}
+		else {
+			eveningPlayers.add(pa);
+		}
 	}
 	
 	public List<Game> getGames() {
@@ -51,6 +74,22 @@ public class Day {
 	
 	public List<Game> getEveningGames() {
 		return getGames(TimeFrameLocator.EVENING);
+	}
+	
+	private List<Setting> getDistinctSettings(List<PlayerAvailability> players) {
+		Set<Setting> settings = new HashSet<Setting>();
+		for(PlayerAvailability pa : players) {
+			settings.add(pa.getSetting());
+		}
+		return new ArrayList<Setting>(settings);
+	}
+	
+	public List<Setting> getAfternoonSettings() {
+		return getDistinctSettings(afternoonPlayers);
+	}
+	
+	public List<Setting> getEveningSettings() {
+		return getDistinctSettings(eveningPlayers);
 	}
 	
 	private List<Game> getGames(TimeFrameLocator locator) {

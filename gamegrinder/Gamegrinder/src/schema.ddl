@@ -1,13 +1,16 @@
+drop table notes;
+drop table player_avail;
+drop table game;
 
-    create table gamegrinder.public.Setting (
-        id int8 not null,
-        color varchar(255),
-        name varchar(255),
-        open bool not null,
-        primary key (id)
-    );
+--    create table Setting (
+--        id int8 not null,
+--        color varchar(255),
+--        name varchar(255),
+--        open boolean not null,
+--        primary key (id)
+--    );
 
-    create table gamegrinder.public.game (
+    create table game (
         id int8 not null,
         gmname varchar(255),
         dayDate timestamp,
@@ -16,7 +19,7 @@
         primary key (id)
     );
 
-    create table gamegrinder.public.notes (
+    create table notes (
         id int8 not null,
         author varchar(255),
         postDate timestamp,
@@ -24,21 +27,29 @@
         primary key (id)
     );
 
-    create table gamegrinder.public.player_avail (
+    create table player_avail (
         id int8 not null,
         playerName varchar(255),
         dayDate timestamp,
         locator int4,
         game_id int8,
+        setting_id int8,
         primary key (id)
     );
 
-    alter table gamegrinder.public.game 
+    alter table game 
         add constraint FK304BF21DF3691B 
         foreign key (setting_id) 
-        references gamegrinder.public.Setting;
+        references Setting;
 
-    alter table gamegrinder.public.player_avail 
+    alter table player_avail 
+        add constraint FK46796111DF3691B 
+        foreign key (setting_id) 
+        references Setting;
+
+    alter table player_avail 
         add constraint FK4679611625F9EB9 
         foreign key (game_id) 
-        references gamegrinder.public.game;
+        references game;
+
+    create sequence hibernate_sequence;

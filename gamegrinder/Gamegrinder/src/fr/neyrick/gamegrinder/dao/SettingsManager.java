@@ -2,14 +2,14 @@ package fr.neyrick.gamegrinder.dao;
 
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import fr.neyrick.gamegrinder.entities.Setting;
 
-@RequestScoped
+@Stateless
 public class SettingsManager {
 
 	@PersistenceContext

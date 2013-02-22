@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -20,6 +21,7 @@ import javax.persistence.Table;
 public class Note implements Serializable {
 
 	@Id
+	@GeneratedValue
 	private Long id;
 	
 	private String author;

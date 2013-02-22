@@ -18,7 +18,7 @@ import javax.inject.Named;
 
 import fr.neyrick.gamegrinder.dao.GameManager;
 import fr.neyrick.gamegrinder.entities.Day;
-import fr.neyrick.gamegrinder.entities.Game;
+import fr.neyrick.gamegrinder.entities.PlayerAvailability;
 
 @Named("calendarDisplay")
 @SessionScoped
@@ -66,13 +66,16 @@ public class CalendarDisplay implements Serializable {
 				day.getGames().clear();
 			}
 		}
-		List<Game> games = gameManagerInstance.get().fetchGames(startDate, endDate);
-		
+		List<PlayerAvailability> avails = gameManagerInstance.get().fetchPlayers(startDate, endDate);
+
 		for (List<Day> dayList : months.values()) {
 			for (Day day : dayList) {
-				for(Game game : games) {
-					if (day.getDate().equals(game.getTimeFrame().getDayDate())) {
-						day.addGame(game);
+				for(PlayerAvailability pa : avails) {
+					if (day.getDate().equals(pa.getTimeFrame().getDayDate())) {
+						day.addPlayerAvailability(pa);
+						if (pa.getGame() != null) {
+							day.addGame(pa.getGame());
+						}
 					}
 				}
 			}

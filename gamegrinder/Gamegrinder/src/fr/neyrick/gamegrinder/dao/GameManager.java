@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -13,7 +13,7 @@ import javax.persistence.TypedQuery;
 import fr.neyrick.gamegrinder.entities.Game;
 import fr.neyrick.gamegrinder.entities.PlayerAvailability;
 
-@RequestScoped
+@Stateless
 public class GameManager {
 
 	@PersistenceContext
@@ -37,6 +37,13 @@ public class GameManager {
 		
 		em.persist(game);
 		em.flush();
+	}
+	
+	public List<PlayerAvailability> fetchPlayers(Date minDate, Date maxDate) {
+		TypedQuery<PlayerAvailability> query = em.createNamedQuery("fetchPlayers", PlayerAvailability.class);
+		query.setParameter(1, minDate);
+		query.setParameter(2, maxDate);
+		return query.getResultList();
 	}
 	
 	public List<Game> fetchGames(Date minDate, Date maxDate) {

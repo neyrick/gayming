@@ -15,6 +15,7 @@ public class Setting implements Serializable {
 
 	   
 	@Id
+	@GeneratedValue
 	private Long id;
 	
 	private String name;

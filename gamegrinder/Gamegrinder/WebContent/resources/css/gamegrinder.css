@@ -46,24 +46,46 @@ body {
 }
 .settingsCell {
 	padding: 3px;
-	height: 15px;
+	height: 30px;
 	padding-top: 6px;
+	text-decoration: none;
 }
 .settingsPanel {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	width: 250px;
 }
+.settingsRow:HOVER {
+	background-color: #CCFFCC;
+}
+.settingsPanel a {
+	text-decoration: none;
+	color: black;
+}
 .settingsIconCell {
 	width: 15px;
 	text-align: center;
+}
+.settingsNameCell {
+	font-size: 14px;
 }
 .calendarPanel td {
 	  vertical-align: top;
 	  padding: 0px;
 }
+.settingsPanel td {
+	padding: 3px;
+	padding-top: 5px;
+}
+.calendarGlobalColumn {
+	width: 615px;
+}
 .calendarMonthPanel {
 	  border-collapse: separate;
+}
+.calendarMonthPanel td {
+	  vertical-align: middle;
+	  padding: 3px;
 }
 .notPlayDay {
 	  font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -95,10 +117,20 @@ body {
 	  border-bottom: 1px solid #707070;
 	  border-right: 1px solid #707070;
 }
-.calendarDayCell {
+.calendarIconCell {
 	  border: 0; 
-	  padding: 0px;
+	  padding: 3px;
+	  width: 19px; 
+	  color:black;
 	  background-color:inherit;
+	  text-align: center;
+}
+.calendarContentCell {
+	  border: 0; 
+	  padding: 3px;
+      width: 93px; 
+	  color:black;
+      background-color:inherit;
 }
 .calendarDaySubCell {
 	  font-family: Verdana, Arial, Helvetica, sans-serif;
