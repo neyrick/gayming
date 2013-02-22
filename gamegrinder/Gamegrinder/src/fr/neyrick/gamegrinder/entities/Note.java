@@ -1,9 +1,13 @@
 package fr.neyrick.gamegrinder.entities;
 
 import java.io.Serializable;
-import java.lang.Long;
-import java.lang.String;
-import javax.persistence.*;
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * Entity implementation class for Entity: Note
@@ -11,6 +15,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "notes")
+@NamedQueries({@NamedQuery(name = "fetchNotesInterval", query = "select n from Note n where n.postDate between ?1 and ?2"),
+	@NamedQuery(name = "fetchNotesDate", query = "select n from Note n where n.postDate = ?1")})
 public class Note implements Serializable {
 
 	@Id
@@ -20,14 +26,22 @@ public class Note implements Serializable {
 	
 	private String text;
 	
-	@ManyToOne
-	private Game game;
+	private Date postDate;
 	
 	private static final long serialVersionUID = 1L;
 
 	public Note() {
 		super();
 	}
+
+	public Date getPostDate() {
+		return postDate;
+	}
+
+	public void setPostDate(Date postDate) {
+		this.postDate = postDate;
+	}
+
 
 	public Long getId() {
 		return this.id;
@@ -53,11 +67,11 @@ public class Note implements Serializable {
 		this.text = text;
 	}
 
-	public Note(String author, String text, Game game) {
+	public Note(String author, String text, Date postDate) {
 		super();
 		this.author = author;
 		this.text = text;
-		this.game = game;
+		this.postDate = postDate;
 	}
 
 }

@@ -40,7 +40,7 @@ public class GameManager {
 	}
 	
 	public List<Game> fetchGames(Date minDate, Date maxDate) {
-		TypedQuery<Game> query = em.createNamedQuery("Game.fetchGames", Game.class);
+		TypedQuery<Game> query = em.createNamedQuery("fetchGames", Game.class);
 		query.setParameter(1, minDate);
 		query.setParameter(2, maxDate);
 		return query.getResultList();

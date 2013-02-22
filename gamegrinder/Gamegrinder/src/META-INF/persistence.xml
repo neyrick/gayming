@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-	<persistence-unit name="Gamegrinder" transaction-type="RESOURCE_LOCAL">
-		<properties>
-			<property name="hibernate.connection.username" value="devel"/>
-			<property name="hibernate.connection.password" value="devel"/>
-			<property name="hibernate.connection.url" value="jdbc:postgresql://jafar:5432/gamegrinder"/>
-			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://jafar:5432/gamegrinder"/>
-			<property name="javax.persistence.jdbc.user" value="devel"/>
-			<property name="javax.persistence.jdbc.password" value="devel"/>
-			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-		</properties>
+	<persistence-unit name="karax">
+      <jta-data-source>java:jboss/datasources/GamegrinderDS</jta-data-source>
+      <properties>
+         <!-- Properties for Hibernate -->
+         <property name="hibernate.hbm2ddl.auto" value="validate" />
+         <property name="hibernate.show_sql" value="true" />
+      </properties>
 	</persistence-unit>
 </persistence>

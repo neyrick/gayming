@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:grind="http://java.sun.com/jsf/composite/components/grind">
+      
+		<h:head>
+		<title>Rêves et Légendes - Planning</title>
+		</h:head>
+	<f:event type="preRenderView" listener="#{calendarDisplay.loadGames}"/>
+
+<h:body bgcolor="#ffffff">
+<h:form id="topForm">
+<h:outputStylesheet library="css" name="gamegrinder.css"/>
+<table style="border:1px solid #CAD6E0"  align="center" cellpadding="0" cellspacing="0" border="0" width="1200">
+<tbody>
+	<tr>
+		<td width="100%" bgcolor="#E4EBEB">
+				<rich:panel style="text-align:right" rendered="#{visitor.known}">			
+						Salut <h:outputText value="#{visitor.name}" /> ! <h:commandButton action="#{visitor.clear}" value="Changer d'utilisateur"/>
+				</rich:panel>
+		</td>
+	</tr>
+	<tr>
+		<td height="1" width="100%" bgcolor="#CAD6E0"></td>
+	</tr>	
+
+	<tr>
+		<td width="100%"  colspan="2" id="bodyCell">
+		  <h:panelGrid columns="3" width="100%" rowClasses="calendarPanel">
+		  
+		  	<h:panelGroup>
+		  		<h:inputHidden id="selectedSetting" value="#{planningUpdater.currentSetting}" />
+		  		<rich:dataTable var="setting" value="#{settingsDisplay.openSettings}" styleClass="settingsPanel" >
+					<f:facet name="header">Chroniques Ouvertes</f:facet>
+		  			<rich:column width="50px"  >
+		  				<h:panelGrid columns="2" border="0" cellpadding="0" cellspacing="0">
+		  					<h:panelGroup layout="block" style="#{settingsDisplay.getStyle(setting)}" styleClass="settingsCell settingsIconCell"><h:outputText value="#{setting.letter}"/></h:panelGroup>
+		  					<h:panelGroup layout="block" styleClass="settingsCell"><h:outputText value="#{setting.name}"/></h:panelGroup>
+		  				</h:panelGrid>
+		  			</rich:column>
+		  		</rich:dataTable>
+			  		
+		  		<rich:dataTable var="setting" value="#{settingsDisplay.closedSettings}" styleClass="settingsPanel" columnClasses="settingsCell settingsIconCell,settingsCell">
+					<f:facet name="header">Chroniques Fermées</f:facet>
+		  			<rich:column width="30px" style="#{settingsDisplay.getStyle(setting)}"><h:outputText value="#{setting.letter}"/></rich:column>
+		  			<rich:column><h:outputText value="#{setting.name}"/></rich:column>
+		  		</rich:dataTable>
+
+		  	</h:panelGroup>
+		
+		  	<rich:panel>
+		  		<f:facet name="header">Calendrier</f:facet>
+			  JSF:
+			  <h:messages />
+			  <br/>
+			  Rich: <rich:messages globalOnly="true"/>
+			<h:panelGrid columns="2">
+			  <rich:dataGrid value="#{calendarDisplay.monthsList}" var="month" columns="#{calendarDisplay.monthsList.size()}" elements="#{calendarDisplay.monthsList.size()}" width="100%"
+			  styleClass="calendarPanel">
+			  	<rich:panel bodyClass="nopad" headerClass="calendarMonthHeader">
+			  		<f:facet name="header">
+						<h:outputFormat value="#{month}" >
+							<f:convertDateTime pattern="MMMM"/>
+						</h:outputFormat>
+			  		</f:facet>
+			  		<rich:dataTable var="day" value="#{calendarDisplay.months.get(month)}" width="150"
+			  		rowClasses="#{calendarDisplay.getMonthStyleClasses(month)}" styleClass="calendarMonthPanel">
+			  			<rich:column style="padding: 0px;" styleClass="calendarMonthColumn">
+					 	  <a4j:commandLink styleClass="quietLink" render="@form">
+					 	  	<f:setPropertyActionListener target="#{calendarDisplay.currentDay}" value="#{day}"/>
+					 	  	<h:panelGrid columns="3" border="0" cellpadding="0" cellspacing="0" width="100%">
+					 	    	<rich:panel bodyClass="calendarDaySubCell centered" styleClass="calendarDayCell" style="width: 30px;">#{day.dayLetter}
+					 	    	</rich:panel>
+					 	    	<rich:panel bodyClass="calendarDaySubCell centered" styleClass="calendarDayCell" style="width: 30px;">#{day.dayNumber}</rich:panel>
+					 	    	<rich:panel bodyClass="calendarDaySubCell" styleClass="calendarDayCell" style="width: 100px;">
+					 	    		<h:outputText value="#{day.games}"/>
+					 	    	</rich:panel>
+					 	  	</h:panelGrid>
+					 	    	<rich:tooltip>
+		 	    					Date: <h:outputText value="#{day.date}" >
+		 	    						<f:convertDateTime pattern="E dd MMMM yyyy"/>
+		 	    					</h:outputText>
+	 	    					<br/>
+					 	    	</rich:tooltip>
+					 	  </a4j:commandLink>
+			  			</rich:column>
+			  		</rich:dataTable>
+			  	</rich:panel>
+			  </rich:dataGrid>
+			  <grind:daydetailspanel day="#{calendarDisplay.currentDay}" rendered="#{calendarDisplay.editDayMode}"/>   			  
+			</h:panelGrid>
+			</rich:panel>
+			
+			<rich:panel>
+				Bloc d'édition
+			</rich:panel>
+
+		  </h:panelGrid>
+
+		</td>
+	</tr>	
+	
+</tbody>
+</table>
+</h:form>
+	    <rich:panel id="namePopupContainer">
+	    	<ui:include src="/includes/visitorpopup.xhtml" />
+	    </rich:panel>
+</h:body>
+		
+</html>

@@ -43,8 +43,8 @@ public class NewSingleGameEditor implements Serializable {
 	}
 
 	public String saveGame() {
-		game.getNotes().clear();
-		game.addNote(game.getGmname(), initialNote);
+//		game.getNotes().clear();
+//		game.addNote(game.getGmname(), initialNote);
 		setActive(false);
 		return null;
 	}

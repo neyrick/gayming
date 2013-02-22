@@ -19,6 +19,8 @@ public class Day {
 	
 	private static final List<Integer> PLAY_DAYS = Arrays.asList(Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY);
 
+	private List<Note> notes = new ArrayList<Note>();
+	
 	public Date getDate() {
 		return date.getTime();
 	}
@@ -84,4 +86,13 @@ public class Day {
 	public Day(Date date) {
 		setDate(date);
 	}
+
+	public List<Note> getNotes() {
+		return notes;
+	}
+
+	public void setNotes(List<Note> notes) {
+		this.notes = notes;
+	}
+	
 }

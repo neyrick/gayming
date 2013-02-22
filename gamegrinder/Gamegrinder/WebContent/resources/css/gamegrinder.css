@@ -41,13 +41,30 @@ body {
 .centered {
 	  text-align: center;
 }
+.middle {
+	vertical-align: middle !important;
+}
+.settingsCell {
+	padding: 3px;
+	height: 15px;
+	padding-top: 6px;
+}
+.settingsPanel {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	width: 250px;
+}
+.settingsIconCell {
+	width: 15px;
+	text-align: center;
+}
 .calendarPanel td {
 	  vertical-align: top;
 	  padding: 0px;
 }
 .calendarMonthPanel {
 	  border-collapse: separate;
-}			
+}
 .notPlayDay {
 	  font-family: Verdana, Arial, Helvetica, sans-serif;
 	  font-size: 14px;
