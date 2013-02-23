@@ -19,11 +19,17 @@ import javax.inject.Named;
 import fr.neyrick.gamegrinder.dao.GameManager;
 import fr.neyrick.gamegrinder.entities.Day;
 import fr.neyrick.gamegrinder.entities.PlayerAvailability;
+import fr.neyrick.gamegrinder.entities.Setting;
+import fr.neyrick.gamegrinder.entities.TimeFrame;
 
 @Named("calendarDisplay")
 @SessionScoped
 public class CalendarDisplay implements Serializable {
 
+	private static final String BUTTON_MODE_OFF = "OFF";
+	private static final String BUTTON_MODE_ADD = "ADD";
+	private static final String BUTTON_MODE_SUB = "SUB";
+	
 	/**
 	 * 
 	 */
@@ -33,7 +39,9 @@ public class CalendarDisplay implements Serializable {
 	
 	private Map<Date, List<Day>> months = new HashMap<Date, List<Day>>();
 
-	private Date startDate, endDate; 
+	private Map<TimeFrame, List<Setting>> userAvails = new HashMap<TimeFrame, List<Setting>>();
+
+	private Date startDate, endDate, calendarStartDate; 
 	
 	private int width = DEFAULT_WIDTH;
 	
@@ -43,6 +51,12 @@ public class CalendarDisplay implements Serializable {
 	
 	@Inject
 	private Instance<GameManager> gameManagerInstance;
+	
+	@Inject
+	private Visitor visitor;
+	
+	@Inject
+	private PlanningUpdater planningUpdater;
 	
 	private void computeEndDate() {
 		Calendar cal = Calendar.getInstance();
@@ -64,10 +78,14 @@ public class CalendarDisplay implements Serializable {
 		for (List<Day> dayList : months.values()) {
 			for (Day day : dayList) {
 				day.getGames().clear();
+				day.clearPlayerAvailabilities();
 			}
 		}
-		List<PlayerAvailability> avails = gameManagerInstance.get().fetchPlayers(startDate, endDate);
+		userAvails.clear();
+		
+		List<PlayerAvailability> avails = gameManagerInstance.get().fetchPlayers(calendarStartDate, endDate);
 
+		List<Setting> userSettings = null;
 		for (List<Day> dayList : months.values()) {
 			for (Day day : dayList) {
 				for(PlayerAvailability pa : avails) {
@@ -75,6 +93,14 @@ public class CalendarDisplay implements Serializable {
 						day.addPlayerAvailability(pa);
 						if (pa.getGame() != null) {
 							day.addGame(pa.getGame());
+						}
+						if (pa.getPlayerName().equals(visitor.getName())) {
+							userSettings = userAvails.get(pa.getTimeFrame());
+							if (userSettings == null) {
+								userSettings = new ArrayList<Setting>();
+								userAvails.put(pa.getTimeFrame(), userSettings);								
+							}
+							userSettings.add(pa.getSetting());
 						}
 					}
 				}
@@ -91,6 +117,7 @@ public class CalendarDisplay implements Serializable {
 		currentCal.set(Calendar.MINUTE, 0);
 		currentCal.set(Calendar.SECOND, 0);
 		currentCal.set(Calendar.MILLISECOND, 0);
+		calendarStartDate = currentCal.getTime();
 		List<Day> dayList;
 		while(currentCal.getTime().before(endDate)) {
 			int monthHeight = currentCal.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -139,6 +166,27 @@ public class CalendarDisplay implements Serializable {
 		monthsList.addAll(months.keySet());
 		Collections.sort(monthsList);
 		return monthsList;
+	}
+	
+	public boolean isAvailable(TimeFrame timeFrame, Setting setting) {
+		List<Setting> userList = userAvails.get(timeFrame);
+		if (userList == null) return false;
+		return userList.contains(setting);
+	}
+	
+	public List<PlayerAvailability> getFilteredList(List<PlayerAvailability> sourceList, Setting setting) {
+		List<PlayerAvailability> result = new ArrayList<PlayerAvailability>();
+		for (PlayerAvailability pa : sourceList) {
+			if (pa.getSetting().equals(setting)) {
+				result.add(pa);
+			}
+		}
+		return result;
+	}
+	
+	public String getButtonMode(TimeFrame timeFrame) {
+		if (planningUpdater.getCurrentSetting() == null) return BUTTON_MODE_OFF;
+		return (isAvailable(timeFrame, planningUpdater.getCurrentSetting()) ? BUTTON_MODE_SUB : BUTTON_MODE_ADD);
 	}
 	
 	public String getMonthStyleClasses(Date monthStart) {

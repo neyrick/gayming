@@ -8,10 +8,13 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import fr.neyrick.gamegrinder.entities.Game;
 import fr.neyrick.gamegrinder.entities.PlayerAvailability;
+import fr.neyrick.gamegrinder.entities.Setting;
+import fr.neyrick.gamegrinder.entities.TimeFrame;
 
 @Stateless
 public class GameManager {
@@ -23,6 +26,14 @@ public class GameManager {
 		
 		em.persist(avail);
 		em.flush();
+	}
+	
+	public void deleteAvailability(String playerName, Setting setting, TimeFrame timeframe) {
+		Query query = em.createNamedQuery("deletePlayerAvailability");
+		query.setParameter(1, playerName);
+		query.setParameter(2, setting);
+		query.setParameter(3, timeframe);
+		query.executeUpdate();
 	}
 	
 	public void storeAvailabilities(Collection<PlayerAvailability> avails) {

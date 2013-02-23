@@ -58,9 +58,16 @@ body {
 .settingsRow:HOVER {
 	background-color: #CCFFCC;
 }
+.settingsSelectedRow {
+	background-color: #000000;
+	color: #FFFFFF;
+}
 .settingsPanel a {
 	text-decoration: none;
 	color: black;
+}
+.settingsSelectedRow a {
+	color: #FFFFFF;
 }
 .settingsIconCell {
 	width: 15px;
@@ -86,6 +93,15 @@ body {
 .calendarMonthPanel td {
 	  vertical-align: middle;
 	  padding: 3px;
+}
+.calendarContentCell td {
+	  vertical-align: middle;
+	  padding: 0;
+}
+.settingIcon {
+	height: 15px;
+	width: 15px;
+	text-align: center;
 }
 .notPlayDay {
 	  font-family: Verdana, Arial, Helvetica, sans-serif;

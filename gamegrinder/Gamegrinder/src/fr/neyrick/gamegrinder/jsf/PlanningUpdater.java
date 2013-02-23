@@ -51,6 +51,11 @@ public class PlanningUpdater implements Serializable {
 		return null;
 	}
 	
+	public String removeAvailability() {
+		gameManager.deleteAvailability(visitor.getName(), currentSetting, currentTimeFrame);
+		return null;
+	}
+	
 	public PlanningUpdater() {
 	}
 

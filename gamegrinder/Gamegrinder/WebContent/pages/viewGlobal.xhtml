@@ -39,7 +39,8 @@
 		  
 		  	<h:panelGroup>
 		  		<h:inputHidden id="selectedSetting" value="#{planningUpdater.currentSetting}" />
-		  		<rich:dataTable var="setting" value="#{settingsDisplay.openSettings}" styleClass="settingsPanel" columnClasses="settingsRow">
+		  		
+		  		<rich:dataTable var="setting" value="#{settingsDisplay.openSettings}" styleClass="settingsPanel" rowClasses="#{settingsDisplay.openRowClasses}">
 					<f:facet name="header"><span class="settingsPanel">Chroniques Ouvertes</span></f:facet>
 		  			<rich:column width="50px"  >
 		  				<a4j:commandLink styleClass="settingsCellLink" id="settingsCellLink" render="@form" execute="@this">
@@ -52,7 +53,7 @@
 		  			</rich:column>
 		  		</rich:dataTable>
 			  		
-		  		<rich:dataTable var="setting" value="#{settingsDisplay.closedSettings}" styleClass="settingsPanel" columnClasses="settingsCell settingsIconCell,settingsCell">
+		  		<rich:dataTable var="setting" value="#{settingsDisplay.closedSettings}" styleClass="settingsPanel" columnClasses="#{settingsDisplay.closedRowClasses}">
 					<f:facet name="header">Chroniques Fermées</f:facet>
 		  			<rich:column width="30px" style="#{settingsDisplay.getStyle(setting)}"><h:outputText value="#{setting.letter}"/></rich:column>
 		  			<rich:column><h:outputText value="#{setting.name}"/></rich:column>
@@ -91,29 +92,13 @@
 					 	    	<h:panelGroup styleClass="calendarIconCell">#{day.dayLetter}</h:panelGroup>
 					 	    	<h:panelGroup styleClass="calendarIconCell">#{day.dayNumber}</h:panelGroup>
 					 	    	<h:panelGroup styleClass="calendarIconCell">N</h:panelGroup>
-						 	    <h:panelGroup styleClass="calendarContentCell">
-							 	    <a4j:commandLink action="#{planningUpdater.addAvailability()}" styleClass="quietLink" render="dayGrid" execute="@this">+
-								 	  	<f:setPropertyActionListener target="#{planningUpdater.currentTimeFrame}" value="#{day.afternoonTimeFrame}"/>
-								 	 </a4j:commandLink>
-						 	   		<a4j:repeat var="setting" value="#{day.afternoonSettings}">
-					  					<h:panelGroup layout="block" style="#{settingsDisplay.getStyle(setting)};height:15px;"><h:outputText value="#{setting.letter}"/></h:panelGroup>
-						 	    	</a4j:repeat>
-						 	 	</h:panelGroup>
-						 	    <h:panelGroup styleClass="calendarContentCell">
-							 	    <a4j:commandLink action="#{planningUpdater.addAvailability()}" styleClass="quietLink" render="dayGrid" execute="@this">+
-								 	  	<f:setPropertyActionListener target="#{planningUpdater.currentTimeFrame}" value="#{day.eveningTimeFrame}"/>
-								 	 </a4j:commandLink>
-						 	   		<a4j:repeat var="setting" value="#{day.eveningSettings}">
-					  					<h:panelGroup layout="block" style="#{settingsDisplay.getStyle(setting)};height:15px;"><h:outputText value="#{setting.letter}"/></h:panelGroup>
-						 	    	</a4j:repeat>
-						 	 	</h:panelGroup>
+				 	    		<a4j:region>
+					 	    		<grind:timeFrameDetail players="#{day.afternoonPlayers}" timeframe="#{day.afternoonTimeFrame}" settings="#{day.afternoonSettings}" buttonmode="#{calendarDisplay.getButtonMode(day.afternoonTimeFrame)}"/>
+				 	    		</a4j:region>
+				 	    		<a4j:region>
+					 	    		<grind:timeFrameDetail players="#{day.eveningPlayers}" timeframe="#{day.eveningTimeFrame}" settings="#{day.eveningSettings}" buttonmode="#{calendarDisplay.getButtonMode(day.eveningTimeFrame)}"/>
+				 	    		</a4j:region>
 						 	  	</h:panelGrid>
-					 	    	<rich:tooltip>
-		 	    					Date: <h:outputText value="#{day.date}" >
-		 	    						<f:convertDateTime pattern="E dd MMMM yyyy"/>
-		 	    					</h:outputText>
-	 	    					<br/>
-					 	    	</rich:tooltip>
 			  			</rich:column>
 			  		</rich:dataTable>
 			  	</rich:panel>

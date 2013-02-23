@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.faces.context.FacesContext;
@@ -17,9 +19,7 @@ public class Day {
 
 	private Calendar date = Calendar.getInstance();
 	
-	private List<PlayerAvailability> afternoonPlayers = new ArrayList<PlayerAvailability>();
-
-	private List<PlayerAvailability> eveningPlayers = new ArrayList<PlayerAvailability>();
+	private Map<TimeFrameLocator, List<PlayerAvailability>> players = new HashMap<TimeFrameLocator, List<PlayerAvailability>>();
 
 	private List<Game> games = new ArrayList<Game>();
 	
@@ -35,12 +35,21 @@ public class Day {
 		this.date.setTime(date);
 	}
 	
+	public List<PlayerAvailability> getPlayers(TimeFrameLocator locator) {
+		List<PlayerAvailability> pa = players.get(locator);
+		if (pa == null) {
+			pa = new ArrayList<PlayerAvailability>();
+			players.put(locator, pa);
+		}
+		return pa;
+	}
+	
 	public List<PlayerAvailability> getAfternoonPlayers() {
-		return afternoonPlayers;
+		return getPlayers(TimeFrameLocator.AFTERNOON);
 	}
 
 	public List<PlayerAvailability> getEveningPlayers() {
-		return eveningPlayers;
+		return getPlayers(TimeFrameLocator.EVENING);
 	}
 
 	public void addGame(Game game) {
@@ -48,12 +57,7 @@ public class Day {
 	}
 	
 	public void addPlayerAvailability(PlayerAvailability pa) {
-		if (TimeFrameLocator.AFTERNOON.equals(pa.getTimeFrame().getLocator())) {
-			afternoonPlayers.add(pa);
-		}
-		else {
-			eveningPlayers.add(pa);
-		}
+		getPlayers(pa.getTimeFrame().getLocator()).add(pa);
 	}
 	
 	public List<Game> getGames() {
@@ -85,11 +89,11 @@ public class Day {
 	}
 	
 	public List<Setting> getAfternoonSettings() {
-		return getDistinctSettings(afternoonPlayers);
+		return getDistinctSettings(getPlayers(TimeFrameLocator.AFTERNOON));
 	}
 	
 	public List<Setting> getEveningSettings() {
-		return getDistinctSettings(eveningPlayers);
+		return getDistinctSettings(getPlayers(TimeFrameLocator.EVENING));
 	}
 	
 	private List<Game> getGames(TimeFrameLocator locator) {
@@ -132,6 +136,10 @@ public class Day {
 
 	public void setNotes(List<Note> notes) {
 		this.notes = notes;
+	}
+
+	public void clearPlayerAvailabilities() {
+		players.clear();		
 	}
 	
 }

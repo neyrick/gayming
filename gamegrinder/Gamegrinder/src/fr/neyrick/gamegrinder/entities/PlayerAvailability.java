@@ -11,7 +11,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "player_avail")
-@NamedQuery(name = "fetchPlayers", query = "select pa from PlayerAvailability pa left join fetch pa.game where pa.timeFrame.dayDate between ?1 and ?2")
+@NamedQueries({@NamedQuery(name = "fetchPlayers", query = "select pa from PlayerAvailability pa left join fetch pa.game where pa.timeFrame.dayDate between ?1 and ?2"),
+	@NamedQuery(name = "deletePlayerAvailability", query = "DELETE FROM PlayerAvailability pa WHERE pa.playerName = ?1 and pa.setting = ?2 and pa.timeFrame = ?3"),
+})
 public class PlayerAvailability implements Serializable {
 
 	@Id
