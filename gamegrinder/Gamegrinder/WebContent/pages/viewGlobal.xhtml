@@ -43,8 +43,7 @@
 		  		<rich:dataTable var="setting" value="#{settingsDisplay.openSettings}" styleClass="settingsPanel" rowClasses="#{settingsDisplay.openRowClasses}">
 					<f:facet name="header"><span class="settingsPanel">Chroniques Ouvertes</span></f:facet>
 		  			<rich:column width="50px"  >
-		  				<a4j:commandLink styleClass="settingsCellLink" id="settingsCellLink" render="@form" execute="@this">
-		  					<f:setPropertyActionListener target="#{planningUpdater.currentSetting}" value="#{setting}"/>
+		  				<a4j:commandLink action="#{planningUpdater.toggleCurrentSetting(setting)}" styleClass="settingsCellLink" id="settingsCellLink" render="@form" execute="@this">
 			  				<h:panelGrid columns="2" border="0" cellpadding="0" cellspacing="0" width="100%" columnClasses="settingsCell settingsIconCell,settingsCell settingsNameCell" rowClasses="middle">
 			  					<h:panelGroup layout="block" style="#{settingsDisplay.getStyle(setting)};height:15px;"><h:outputText value="#{setting.letter}"/></h:panelGroup>
 			  					<h:panelGroup id="settingsNameCell" ><h:outputText value="#{setting.name}"/></h:panelGroup>
@@ -80,18 +79,25 @@
 			  		rowClasses="#{calendarDisplay.getMonthStyleClasses(month)}" styleClass="calendarMonthPanel">
 			  			<rich:column style="padding: 0px;" styleClass="calendarMonthColumn">
 			  				<f:facet name="header">
-						 	  	<h:panelGrid columns="5" border="0" cellpadding="0" cellspacing="0" width="100%" columnClasses="calendarIconCell,calendarIconCell,calendarIconCell,calendarContentCell,calendarContentCell">
+						 	  	<h:panelGrid columns="4" border="0" cellpadding="0" cellspacing="0" width="100%" columnClasses="calendarIconCell,calendarIconCell,calendarIconCell,calendarContentCell,calendarContentCell">
 						 	    	<h:outputText styleClass="calendarIconCell" value="&nbsp;"/>
 						 	    	<h:outputText styleClass="calendarIconCell" value="&nbsp;"/>
-						 	    	<h:outputText styleClass="calendarIconCell" value="&nbsp;"/>
-						 	    	<h:outputText styleClass="calendarIconCell" value="Après-midi"/>
+						 	    	<h:outputText styleClass="calendarContentCell" value="Après-midi"/>
 						 	    	<h:outputText styleClass="calendarContentCell" value="Soir"/>
 						 	  	</h:panelGrid>
 			  				</f:facet>
 					 	  	<h:panelGrid id="dayGrid" columns="5" border="0" cellpadding="0" cellspacing="0" columnClasses="calendarIconCell,calendarIconCell,calendarIconCell,calendarContentCell,calendarContentCell" >
-					 	    	<h:panelGroup styleClass="calendarIconCell">#{day.dayLetter}</h:panelGroup>
-					 	    	<h:panelGroup styleClass="calendarIconCell">#{day.dayNumber}</h:panelGroup>
-					 	    	<h:panelGroup styleClass="calendarIconCell">N</h:panelGroup>
+					 	    	<a4j:commandLink value="" styleClass="calendarIconCell" render="editBlockPanel" execute="@this">
+					 	    		<f:setPropertyActionListener target="#{calendarDisplay.editBlockMode}" value="NOTES"/>
+					 	    		<h:panelGrid columns="2">
+					 	    			<h:outputText value="#{day.dayLetter}" />
+					 	    			<h:outputText value="#{day.dayNumber}" />
+					 	    		</h:panelGrid>
+					 	    	</a4j:commandLink>
+					 	    	<a4j:commandLink value="" styleClass="calendarIconCell" render="editBlockPanel" execute="@this">
+					 	    		<f:setPropertyActionListener target="#{calendarDisplay.editBlockMode}" value="NOTES"/>
+					 	    		N
+					 	    	</a4j:commandLink>
 				 	    		<a4j:region>
 					 	    		<grind:timeFrameDetail players="#{day.afternoonPlayers}" timeframe="#{day.afternoonTimeFrame}" settings="#{day.afternoonSettings}" buttonmode="#{calendarDisplay.getButtonMode(day.afternoonTimeFrame)}"/>
 				 	    		</a4j:region>
@@ -107,9 +113,31 @@
 			</h:panelGrid>
 			</rich:panel>
 			
-			<rich:panel style="width:100%" bodyClass="nopad">
-				Bloc d'édition
-			</rich:panel>
+			<h:panelGroup id="editBlockPanel" style="width: 100%" styleClass="nopad" layout="block" >
+				<rich:panel style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'EMPTY'}">
+					Vide !
+				</rich:panel>
+				<rich:panel style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'NOTES'}">
+					<f:facet name="header">
+						<h:panelGroup>
+							--Date-- Tableau de Messages
+						</h:panelGroup>
+					</f:facet>
+				</rich:panel>
+				<rich:panel style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'GAMES'}">
+					<f:facet name="header">
+						<h:panelGroup>
+							--Date-- --Setting--
+						</h:panelGroup>
+					</f:facet>
+						Bloc d'édition
+						Liste des parties, avec pour chaque partie:
+						- la liste des joueurs et le MJ.
+							- 
+						- Un bouton pour supprimer la partie
+						Le MJ est celui qui a organisé la partie.
+				</rich:panel>
+			</h:panelGroup>
 
 		  </h:panelGrid>
 

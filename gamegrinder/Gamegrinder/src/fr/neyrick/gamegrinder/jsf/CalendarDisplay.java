@@ -26,9 +26,9 @@ import fr.neyrick.gamegrinder.entities.TimeFrame;
 @SessionScoped
 public class CalendarDisplay implements Serializable {
 
-	private static final String BUTTON_MODE_OFF = "OFF";
-	private static final String BUTTON_MODE_ADD = "ADD";
-	private static final String BUTTON_MODE_SUB = "SUB";
+	public static final String EDIT_BLOCK_MODE_EMPTY = "EMPTY";
+	public static final String EDIT_BLOCK_MODE_NOTES = "NOTES";
+	public static final String EDIT_BLOCK_MODE_GAMES = "GAMES";
 	
 	/**
 	 * 
@@ -48,6 +48,8 @@ public class CalendarDisplay implements Serializable {
 	private boolean editMode = false;
 	
 	private Day currentDay = null;
+	
+	private String editBlockMode = EDIT_BLOCK_MODE_EMPTY;
 	
 	@Inject
 	private Instance<GameManager> gameManagerInstance;
@@ -144,6 +146,14 @@ public class CalendarDisplay implements Serializable {
 		this.currentDay = currentDay;
 	}
 
+	public String getEditBlockMode() {
+		return editBlockMode;
+	}
+
+	public void setEditBlockMode(String editBlockMode) {
+		this.editBlockMode = editBlockMode;
+	}
+
 	public int getWidth() {
 		return width;
 	}
@@ -182,11 +192,6 @@ public class CalendarDisplay implements Serializable {
 			}
 		}
 		return result;
-	}
-	
-	public String getButtonMode(TimeFrame timeFrame) {
-		if (planningUpdater.getCurrentSetting() == null) return BUTTON_MODE_OFF;
-		return (isAvailable(timeFrame, planningUpdater.getCurrentSetting()) ? BUTTON_MODE_SUB : BUTTON_MODE_ADD);
 	}
 	
 	public String getMonthStyleClasses(Date monthStart) {

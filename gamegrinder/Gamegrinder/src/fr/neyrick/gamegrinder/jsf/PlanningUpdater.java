@@ -1,6 +1,8 @@
 package fr.neyrick.gamegrinder.jsf;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -16,7 +18,7 @@ import fr.neyrick.gamegrinder.entities.TimeFrame;
 @SessionScoped
 public class PlanningUpdater implements Serializable {
 
-	private Setting currentSetting;
+	private Set<Setting> currentSettings = new HashSet<Setting>();
 
 	private TimeFrame currentTimeFrame;
 	
@@ -26,14 +28,14 @@ public class PlanningUpdater implements Serializable {
 	@Inject
 	private GameManager gameManager;
 	
-	public Setting getCurrentSetting() {
-		return currentSetting;
+	public void toggleCurrentSetting(Setting setting) {
+		if (!currentSettings.remove(setting)) currentSettings.add(setting);
 	}
-
-	public void setCurrentSetting(Setting currentSetting) {
-		this.currentSetting = currentSetting;
+	
+	public boolean isSettingActive(Setting setting) {
+		return currentSettings.contains(setting);
 	}
-
+	
 	public TimeFrame getCurrentTimeFrame() {
 		return currentTimeFrame;
 	}
@@ -43,16 +45,13 @@ public class PlanningUpdater implements Serializable {
 	}
 
 	public String addAvailability() {
-		PlayerAvailability pa = new PlayerAvailability();
-		pa.setPlayerName(visitor.getName());
-		pa.setSetting(currentSetting);
-		pa.setTimeFrame(currentTimeFrame);
-		gameManager.storeAvailability(pa);
-		return null;
-	}
-	
-	public String removeAvailability() {
-		gameManager.deleteAvailability(visitor.getName(), currentSetting, currentTimeFrame);
+		for (Setting setting : currentSettings) {
+			PlayerAvailability pa = new PlayerAvailability();
+			pa.setPlayerName(visitor.getName());
+			pa.setSetting(setting);
+			pa.setTimeFrame(currentTimeFrame);
+			gameManager.storeAvailability(pa);
+		}
 		return null;
 	}
 	

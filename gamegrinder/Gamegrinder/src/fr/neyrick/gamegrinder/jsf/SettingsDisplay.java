@@ -48,7 +48,7 @@ public class SettingsDisplay {
 	private String getRowClasses(List<Setting> settings) {
 		StringBuilder builder = new StringBuilder();
 		for(Setting setting : settings) {
-			if(setting.equals(planningUpdater.getCurrentSetting())) builder.append(STYLE_SELECTED_ROW);
+			if(planningUpdater.isSettingActive(setting)) builder.append(STYLE_SELECTED_ROW);
 			else builder.append(STYLE_CLEAR_ROW);
 			builder.append(",");
 		}
