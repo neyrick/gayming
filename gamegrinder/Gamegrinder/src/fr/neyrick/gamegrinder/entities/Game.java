@@ -1,7 +1,9 @@
 package fr.neyrick.gamegrinder.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -39,8 +41,8 @@ public class Game implements Serializable {
 
 	private String gmname;
 
-	@OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-	private Set<PlayerAvailability> players = new HashSet<PlayerAvailability>();
+	@OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<PlayerAvailability> players = new ArrayList<PlayerAvailability>();
 	
 	@Embedded
 	private TimeFrame timeFrame = new TimeFrame();
@@ -69,7 +71,7 @@ public class Game implements Serializable {
 		this.gmname = gmname;
 	}
 
-	public Set<PlayerAvailability> getPlayers() {
+	public List<PlayerAvailability> getPlayers() {
 		return players;
 	}
 
@@ -83,6 +85,28 @@ public class Game implements Serializable {
 
 	public Game() {
 		super();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Game other = (Game) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 }

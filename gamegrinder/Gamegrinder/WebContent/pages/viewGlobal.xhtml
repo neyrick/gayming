@@ -5,7 +5,8 @@
       xmlns:rich="http://richfaces.org/rich"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:grind="http://java.sun.com/jsf/composite/components/grind">
+      xmlns:grind="http://java.sun.com/jsf/composite/components/grind"
+      xmlns:richcp="http://richfaces.org/sandbox/colorpicker">
       
 		<h:head>
 		<title>Test page</title>
@@ -37,27 +38,27 @@
 		<td width="100%"  colspan="2" id="bodyCell">
 		  <h:panelGrid columns="3" width="100%" rowClasses="calendarPanel" columnClasses="settingsPanel,calendarPanel calendarGlobalColumn">
 		  
-		  	<h:panelGroup>
-		  		<h:inputHidden id="selectedSetting" value="#{planningUpdater.currentSetting}" />
+		  	<h:panelGroup id="settingsPanel">
 		  		
-		  		<rich:dataTable var="setting" value="#{settingsDisplay.openSettings}" styleClass="settingsPanel" rowClasses="#{settingsDisplay.openRowClasses}">
-					<f:facet name="header"><span class="settingsPanel">Chroniques Ouvertes</span></f:facet>
-		  			<rich:column width="50px"  >
-		  				<a4j:commandLink action="#{planningUpdater.toggleCurrentSetting(setting)}" styleClass="settingsCellLink" id="settingsCellLink" render="@form" execute="@this">
-			  				<h:panelGrid columns="2" border="0" cellpadding="0" cellspacing="0" width="100%" columnClasses="settingsCell settingsIconCell,settingsCell settingsNameCell" rowClasses="middle">
-			  					<h:panelGroup layout="block" style="#{settingsDisplay.getStyle(setting)};height:15px;"><h:outputText value="#{setting.letter}"/></h:panelGroup>
-			  					<h:panelGroup id="settingsNameCell" ><h:outputText value="#{setting.name}"/></h:panelGroup>
-			  				</h:panelGrid>
-		  				</a4j:commandLink>
-		  			</rich:column>
-		  		</rich:dataTable>
-			  		
-		  		<rich:dataTable var="setting" value="#{settingsDisplay.closedSettings}" styleClass="settingsPanel" columnClasses="#{settingsDisplay.closedRowClasses}">
-					<f:facet name="header">Chroniques Fermées</f:facet>
-		  			<rich:column width="30px" style="#{settingsDisplay.getStyle(setting)}"><h:outputText value="#{setting.letter}"/></rich:column>
-		  			<rich:column><h:outputText value="#{setting.name}"/></rich:column>
-		  		</rich:dataTable>
-
+		  		<grind:settingslist classes="#{settingsDisplay.openRowClasses}" title="Chroniques Ouvertes" settings="#{settingsDisplay.openSettings}"/>
+		  		<grind:settingslist classes="#{settingsDisplay.closedRowClasses}" title="Chroniques Fermées" settings="#{settingsDisplay.closedSettings}"/>
+		  		
+		  		<rich:panel id="addSettingPanel">
+		  			<f:facet name="header">Ajouter une chronique:</f:facet>
+		  			<rich:messages for="addSettingPanel" />
+					<h:panelGrid columns="3">
+						<h:outputText value="Nom" /><h:inputText id="inputNewSettingName" value="#{settingsDisplay.newSettingName}" required="true" requiredMessage="Obligatoire !"/><rich:message for="inputNewSettingName"/>
+						<h:outputText value="Couleur" /><richcp:colorPicker id="inputNewSettingColor" value="#{settingsDisplay.newSettingColor}" required="true" requiredMessage="Obligatoire !"/><rich:message for="inputNewSettingColor"/>
+					</h:panelGrid>
+					<h:selectOneRadio id="inputNewSettingOpen" value="#{settingsDisplay.newSettingOpen}" layout="lineDirection" required="true">
+						<f:selectItem itemLabel="Ouverte" itemValue="true"/>
+						<f:selectItem itemLabel="Fermée" itemValue="false"/>
+					</h:selectOneRadio>
+					<rich:message for="inputNewSettingOpen"/>
+					<br/>					
+					<a4j:commandButton action="#{settingsDisplay.addNewSetting()}" value="Enregistrer la Chronique" render="settingsPanel" execute="addSettingPanel"/>
+		  		</rich:panel>
+				
 		  	</h:panelGroup>
 		
 		  	<rich:panel styleClass="calendarGlobalColumn" bodyClass="nopad" >
@@ -79,37 +80,51 @@
 			  		rowClasses="#{calendarDisplay.getMonthStyleClasses(month)}" styleClass="calendarMonthPanel">
 			  			<rich:column style="padding: 0px;" styleClass="calendarMonthColumn">
 			  				<f:facet name="header">
-						 	  	<h:panelGrid columns="4" border="0" cellpadding="0" cellspacing="0" width="100%" columnClasses="calendarIconCell,calendarIconCell,calendarIconCell,calendarContentCell,calendarContentCell">
+						 	  	<h:panelGrid columns="5" border="0" cellpadding="0" cellspacing="0" width="100%" columnClasses="calendarIconCell,calendarIconCell,calendarIconCell,calendarContentCell,calendarContentCell">
 						 	    	<h:outputText styleClass="calendarIconCell" value="&nbsp;"/>
 						 	    	<h:outputText styleClass="calendarIconCell" value="&nbsp;"/>
-						 	    	<h:outputText styleClass="calendarContentCell" value="Après-midi"/>
+						 	    	<h:outputText styleClass="calendarIconCell" value="&nbsp;"/>
+						 	    	<h:outputText styleClass="calendarIconCell" value="Après-midi"/>
 						 	    	<h:outputText styleClass="calendarContentCell" value="Soir"/>
 						 	  	</h:panelGrid>
 			  				</f:facet>
 					 	  	<h:panelGrid id="dayGrid" columns="5" border="0" cellpadding="0" cellspacing="0" columnClasses="calendarIconCell,calendarIconCell,calendarIconCell,calendarContentCell,calendarContentCell" >
+					 	    	<h:panelGroup styleClass="calendarIconCell">#{day.dayLetter}</h:panelGroup>
+					 	    	<h:panelGroup styleClass="calendarIconCell">#{day.dayNumber}</h:panelGroup>
 					 	    	<a4j:commandLink value="" styleClass="calendarIconCell" render="editBlockPanel" execute="@this">
 					 	    		<f:setPropertyActionListener target="#{calendarDisplay.editBlockMode}" value="NOTES"/>
-					 	    		<h:panelGrid columns="2">
-					 	    			<h:outputText value="#{day.dayLetter}" />
-					 	    			<h:outputText value="#{day.dayNumber}" />
-					 	    		</h:panelGrid>
-					 	    	</a4j:commandLink>
-					 	    	<a4j:commandLink value="" styleClass="calendarIconCell" render="editBlockPanel" execute="@this">
-					 	    		<f:setPropertyActionListener target="#{calendarDisplay.editBlockMode}" value="NOTES"/>
+					 	    		<f:setPropertyActionListener target="#{planningUpdater.currentDay}" value="#{day}"/>
+									<rich:tooltip id="settingTooltip" followMouse="false" mode="client" showDelay="200" render="@this">
+										<rich:panel>
+											<f:facet name="header">
+												<h:panelGroup>								
+													Messages du
+						 	    					<h:outputText value="#{day.date}" >
+						 	    						<f:convertDateTime pattern="EEEE dd MMMM yyyy"/>
+						 	    					</h:outputText>
+												</h:panelGroup>
+											</f:facet>
+											<h:outputText rendered="#{not(day.withNotes)}" value="Aucun message enregistré"/>
+											<h:dataTable var="note" value="#{day.notes}" columnClasses="noTab" rendered="#{day.withNotes}">
+												<h:column>
+													<b><h:outputText value="#{note.author}"/></b>: <h:outputText value="#{note.text}" style="whitespace: pre;"/>
+												</h:column>
+											</h:dataTable>
+										</rich:panel>
+									</rich:tooltip>
 					 	    		N
 					 	    	</a4j:commandLink>
 				 	    		<a4j:region>
-					 	    		<grind:timeFrameDetail players="#{day.afternoonPlayers}" timeframe="#{day.afternoonTimeFrame}" settings="#{day.afternoonSettings}" buttonmode="#{calendarDisplay.getButtonMode(day.afternoonTimeFrame)}"/>
+					 	    		<grind:timeFrameDetail day="#{day}" players="#{day.afternoonPlayers}" timeframe="#{day.afternoonTimeFrame}" settings="#{day.afternoonSettings}"/>
 				 	    		</a4j:region>
 				 	    		<a4j:region>
-					 	    		<grind:timeFrameDetail players="#{day.eveningPlayers}" timeframe="#{day.eveningTimeFrame}" settings="#{day.eveningSettings}" buttonmode="#{calendarDisplay.getButtonMode(day.eveningTimeFrame)}"/>
+					 	    		<grind:timeFrameDetail day="#{day}" players="#{day.eveningPlayers}" timeframe="#{day.eveningTimeFrame}" settings="#{day.eveningSettings}"/>
 				 	    		</a4j:region>
 						 	  	</h:panelGrid>
 			  			</rich:column>
 			  		</rich:dataTable>
 			  	</rich:panel>
 			  </rich:dataGrid>
-			  <grind:daydetailspanel day="#{calendarDisplay.currentDay}" rendered="#{calendarDisplay.editDayMode}"/>   			  
 			</h:panelGrid>
 			</rich:panel>
 			
@@ -117,25 +132,62 @@
 				<rich:panel style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'EMPTY'}">
 					Vide !
 				</rich:panel>
-				<rich:panel style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'NOTES'}">
+				<rich:panel id="editNotePanel" style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'NOTES'}">
 					<f:facet name="header">
 						<h:panelGroup>
-							--Date-- Tableau de Messages
+ 	    					Messages du <h:outputText value="#{planningUpdater.currentDay.date}" >
+ 	    						<f:convertDateTime pattern="EEEE dd MMMM yyyy"/>
+ 	    					</h:outputText>
 						</h:panelGroup>
 					</f:facet>
+					<h:dataTable var="note" value="#{planningUpdater.currentDay.notes}" columnClasses="noTab">
+						<h:column>
+							<f:facet name="header"><h:outputText value="#{note.author}"/></f:facet>
+							<b><h:outputText value="#{note.author}"/></b> (<h:outputText value="#{note.postDate}">
+							<f:convertDateTime pattern="HH:mm"/>
+ 	    					</h:outputText>) :<br/>
+							<h:outputText value="#{note.text}" style="white-space: pre;"/>
+							<br/>
+						</h:column>
+					</h:dataTable>
+					<br/>
+					<rich:panel>
+						<f:facet name="header">Taper un nouveau message</f:facet>
+						<h:inputTextarea value="#{planningUpdater.newNoteText}" style="width: 100%" />
+						<a4j:commandButton action="#{planningUpdater.addNote()}" execute="editNotePanel" render="editNotePanel"/>
+					</rich:panel>
 				</rich:panel>
-				<rich:panel style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'GAMES'}">
+				<rich:panel id="editGamePanel" style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'GAMES'}">
 					<f:facet name="header">
 						<h:panelGroup>
-							--Date-- --Setting--
+							<h:outputText value="#{planningUpdater.currentDetailSetting.name}" />
+							- <h:outputText value="#{planningUpdater.currentDay.date}" >
+ 	    						<f:convertDateTime pattern="dd/MM/yyyy"/>
+ 	    					</h:outputText>
+ 	    					- <h:outputText value="Après-midi" rendered="#{planningUpdater.currentTimeFrame.locator == 'AFTERNOON'}"/>
+ 	    					<h:outputText value="Soir" rendered="#{planningUpdater.currentTimeFrame.locator == 'EVENING'}"/>
 						</h:panelGroup>
 					</f:facet>
-						Bloc d'édition
-						Liste des parties, avec pour chaque partie:
-						- la liste des joueurs et le MJ.
-							- 
-						- Un bouton pour supprimer la partie
-						Le MJ est celui qui a organisé la partie.
+					<rich:dataGrid columns="1" var="game" value="#{planningUpdater.currentDay.getGamesList(planningUpdater.currentTimeFrame.locator)}" style="width:100%">
+						<f:facet name="header">Parties validées</f:facet>
+						<rich:panel>
+							<f:facet name="header"><h:panelGroup>MJ - <h:outputText value="#{game.gmname}" /></h:panelGroup></f:facet>
+							<rich:list value="#{game.players}" var="player">
+								<h:outputText value="#{player.playerName}" />
+							</rich:list>
+							<a4j:commandButton action="#{planningUpdater.removeGame(game)}" value="Annuler la partie"
+							render="@form" execute="editGamePanel"/>
+						</rich:panel>
+					</rich:dataGrid>
+					<rich:panel>
+						<f:facet name="header">Joueurs Disponibles</f:facet>
+						<h:selectManyCheckbox value="#{planningUpdater.selectedPlayers}" layout="pageDirection">
+							<f:converter converterId="javax.faces.Long"/>
+							<f:selectItems value="#{calendarDisplay.availablePlayersForCurrentEdit}"/>
+						</h:selectManyCheckbox>
+						<a4j:commandButton action="#{planningUpdater.storeNewGame}" value="Valider une partie avec les joueurs cochés" render="@form"
+						execute="editGamePanel" />
+					</rich:panel>
 				</rich:panel>
 			</h:panelGroup>
 

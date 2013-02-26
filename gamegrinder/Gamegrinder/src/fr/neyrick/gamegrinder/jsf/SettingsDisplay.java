@@ -1,13 +1,13 @@
 package fr.neyrick.gamegrinder.jsf;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import fr.neyrick.gamegrinder.dao.SettingsManager;
 import fr.neyrick.gamegrinder.entities.Setting;
 
 @Named
@@ -18,27 +18,29 @@ public class SettingsDisplay {
 	private static final String STYLE_SELECTED_ROW = "settingsSelectedRow";
 	
 	@Inject
-	private SettingsManager manager;
-
-	@Inject
 	private PlanningUpdater planningUpdater;
 	
-	private List<Setting> openSettings;
+	@Inject
+	private SettingsStore settingsStore;
 	
-	private List<Setting> closedSettings;
+	private Map<Long, Setting> allSettings = new TreeMap<Long, Setting>();
 	
-	@PostConstruct
-	private void init() {
-		openSettings = manager.fetchSettings(true);
-		closedSettings = manager.fetchSettings(false);
+	private String newSettingName;
+	
+	private String newSettingColor;
+	
+	private boolean newSettingOpen;
+	
+	public Setting getSetting(Long id) {
+		return allSettings.get(id);
 	}
 	
 	public List<Setting> getOpenSettings() {
-		return openSettings;
+		return settingsStore.getOpenSettings();
 	}
 	
 	public List<Setting> getClosedSettings() {
-		return closedSettings;
+		return settingsStore.getClosedSettings();
 	}
 	
 	public String getStyle(Setting setting) {
@@ -56,11 +58,43 @@ public class SettingsDisplay {
 	}
 	
 	public String getOpenRowClasses() {
-		return getRowClasses(openSettings);
+		return getRowClasses(getOpenSettings());
 	}
 	
 	public String getClosedRowClasses() {
-		return getRowClasses(closedSettings);
+		return getRowClasses(getClosedSettings());
+	}
+	
+	public String getNewSettingName() {
+		return newSettingName;
+	}
+
+	public void setNewSettingName(String newSettingName) {
+		this.newSettingName = newSettingName;
+	}
+
+	public String getNewSettingColor() {
+		return newSettingColor;
+	}
+
+	public void setNewSettingColor(String newSettingColor) {
+		this.newSettingColor = newSettingColor;
+	}
+
+	public boolean isNewSettingOpen() {
+		return newSettingOpen;
+	}
+
+	public void setNewSettingOpen(boolean newSettingOpen) {
+		this.newSettingOpen = newSettingOpen;
+	}
+
+	public void addNewSetting() {
+		Setting setting = new Setting();
+		setting.setName(newSettingName);
+		setting.setColor(newSettingColor);
+		setting.setOpen(newSettingOpen);
+		settingsStore.createSetting(setting);
 	}
 	
 	public SettingsDisplay() {

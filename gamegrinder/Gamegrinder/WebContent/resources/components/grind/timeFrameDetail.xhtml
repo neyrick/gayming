@@ -13,29 +13,26 @@
 </head>
 <body>
 <composite:interface>
+	<composite:attribute name="day" required="true"/>
 	<composite:attribute name="players" required="true"/>
 	<composite:attribute name="timeframe" required="true"/>
 	<composite:attribute name="settings" required="true"/>
-	<composite:attribute name="buttonmode" required="true"/>
 </composite:interface>
 <composite:implementation>
 	<h:panelGrid styleClass="nopad" columns="2">
- 	   	 <a4j:commandLink action="#{planningUpdater.addAvailability()}" styleClass="quietLink" render="dayGrid" execute="@this"
- 	   	 rendered="#{cc.attrs.buttonmode == 'ADD'}">
+ 	   	 <a4j:commandLink action="#{planningUpdater.updateAvailability()}" styleClass="quietLink" render="dayGrid" execute="@this">
 	 	  	<f:setPropertyActionListener target="#{planningUpdater.currentTimeFrame}" value="#{cc.attrs.timeframe}"/>
 	 	  	+
 	 	 </a4j:commandLink>
- 	   	 <a4j:commandLink action="#{planningUpdater.removeAvailability()}" styleClass="quietLink" render="dayGrid" execute="@this"
- 	   	 rendered="#{cc.attrs.buttonmode == 'SUB'}">
-	 	  	<f:setPropertyActionListener target="#{planningUpdater.currentTimeFrame}" value="#{cc.attrs.timeframe}"/>
-	 	  	-
-	 	 </a4j:commandLink>
-	 	 <h:outputText value="X" rendered="#{cc.attrs.buttonmode == 'OFF'}"/>
-	 	 <rich:dataGrid var="setting" value="#{cc.attrs.settings}" styleClass="nopad" style="margin-left:3px">
-	 		<a4j:commandLink render="editBlockPanel" execute="@this">
+	 	 <rich:dataGrid var="setting" value="#{cc.attrs.settings}" styleClass="nopad noborder" style="margin-left:3px" columns="#{cc.attrs.settings.size() > 4 ? 4 : cc.attrs.settings.size()}"
+	 	  >
+	 		<a4j:commandLink render="editBlockPanel" execute="@this" styleClass="noborder" >
 	 			<f:setPropertyActionListener target="#{calendarDisplay.editBlockMode}" value="GAMES"/> 
+	 			<f:setPropertyActionListener target="#{planningUpdater.currentDay}" value="#{cc.attrs.day}"/> 
+	 			<f:setPropertyActionListener target="#{planningUpdater.currentTimeFrame}" value="#{cc.attrs.timeframe}"/> 
+	 			<f:setPropertyActionListener target="#{planningUpdater.currentDetailSetting}" value="#{setting}"/> 
 				<h:panelGroup id="settingPanel" layout="block" style="#{settingsDisplay.getStyle(setting)}" styleClass="settingIcon">
-					<rich:tooltip id="settingTooltip" followMouse="false" mode="ajax" showDelay="200">
+					<rich:tooltip id="settingTooltip" followMouse="false" mode="client" showDelay="200">
 						<rich:panel>
 							<f:facet name="header">
 								<h:panelGroup>								

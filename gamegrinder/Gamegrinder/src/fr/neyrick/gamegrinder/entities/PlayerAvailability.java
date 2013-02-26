@@ -11,8 +11,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "player_avail")
-@NamedQueries({@NamedQuery(name = "fetchPlayers", query = "select pa from PlayerAvailability pa left join fetch pa.game where pa.timeFrame.dayDate between ?1 and ?2"),
+@NamedQueries({@NamedQuery(name = "fetchPlayers", query = "select pa from PlayerAvailability pa left join fetch pa.game left join fetch pa.setting where pa.timeFrame.dayDate between ?1 and ?2"),
 	@NamedQuery(name = "deletePlayerAvailability", query = "DELETE FROM PlayerAvailability pa WHERE pa.playerName = ?1 and pa.setting = ?2 and pa.timeFrame = ?3"),
+	@NamedQuery(name = "deletePlayerAvailabilityForTimeFrame", query = "DELETE FROM PlayerAvailability pa WHERE pa.playerName = ?1 and pa.timeFrame = ?2"),
 })
 public class PlayerAvailability implements Serializable {
 
@@ -25,7 +26,7 @@ public class PlayerAvailability implements Serializable {
 	@ManyToOne
 	private Game game;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Setting setting;
 	
 	private static final long serialVersionUID = 1L;

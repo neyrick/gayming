@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:grind="http://java.sun.com/jsf/composite/components/grind">
+<head>
+<title>Not present in rendered output</title>
+</head>
+<body>
+<composite:interface>
+	<composite:attribute name="title" required="true"/>
+	<composite:attribute name="settings" required="true"/>
+	<composite:attribute name="classes" required="true"/>
+</composite:interface>
+<composite:implementation>
+	
+  		<rich:dataTable var="setting" value="#{cc.attrs.settings}" styleClass="settingsPanel" rowClasses="#{cc.attrs.classes}">
+			<f:facet name="header"><h:outputText styleClass="settingsPanel" value="#{cc.attrs.title}" /></f:facet>
+  			<rich:column width="50px"  >
+  				<a4j:commandLink action="#{planningUpdater.toggleCurrentSetting(setting)}" styleClass="settingsCellLink" id="settingsCellLink" render="settingsPanel" execute="@this">
+	  				<h:panelGrid columns="2" border="0" cellpadding="0" cellspacing="0" width="100%" columnClasses="settingsCell settingsIconCell,settingsCell settingsNameCell" rowClasses="middle">
+	  					<h:panelGroup layout="block" style="#{settingsDisplay.getStyle(setting)};height:15px;"><h:outputText value="#{setting.letter}"/></h:panelGroup>
+	  					<h:panelGroup id="settingsNameCell" ><h:outputText value="#{setting.name}"/></h:panelGroup>
+	  				</h:panelGrid>
+  				</a4j:commandLink>
+  			</rich:column>
+  		</rich:dataTable>
+	
+</composite:implementation>
+</body>
+</html>

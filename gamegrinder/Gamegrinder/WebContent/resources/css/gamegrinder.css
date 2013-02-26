@@ -6,6 +6,10 @@ body {
 .nopad {
 	padding: 0;
 }
+.noborder {
+	border: 0;
+	empty-cells: hide;
+}
 .quietLink {
 	text-decoration: none;
 	color: black;

@@ -21,7 +21,7 @@ public class Day {
 	
 	private Map<TimeFrameLocator, List<PlayerAvailability>> players = new HashMap<TimeFrameLocator, List<PlayerAvailability>>();
 
-	private List<Game> games = new ArrayList<Game>();
+	private Map<TimeFrameLocator, Set<Game>> games = new HashMap<TimeFrameLocator, Set<Game>>();
 	
 	private static final List<Integer> PLAY_DAYS = Arrays.asList(Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY);
 
@@ -44,6 +44,19 @@ public class Day {
 		return pa;
 	}
 	
+	public Set<Game> getGames(TimeFrameLocator locator) {
+		Set<Game> gamesSet = games.get(locator);
+		if (gamesSet == null) {
+			gamesSet = new HashSet<Game>();
+			games.put(locator, gamesSet);
+		}
+		return gamesSet;
+	}
+	
+	public List<Game> getGamesList(TimeFrameLocator locator) {
+		return new ArrayList<Game>(getGames(locator));
+	}
+	
 	public List<PlayerAvailability> getAfternoonPlayers() {
 		return getPlayers(TimeFrameLocator.AFTERNOON);
 	}
@@ -52,18 +65,18 @@ public class Day {
 		return getPlayers(TimeFrameLocator.EVENING);
 	}
 
+	public void clearGames() {
+		games.clear();
+	}
+	
 	public void addGame(Game game) {
-		this.games.add(game);
+		getGames(game.getTimeFrame().getLocator()).add(game);
 	}
 	
 	public void addPlayerAvailability(PlayerAvailability pa) {
 		getPlayers(pa.getTimeFrame().getLocator()).add(pa);
 	}
 	
-	public List<Game> getGames() {
-		return games;
-	}
-
 	public TimeFrame getAfternoonTimeFrame() {
 		return new TimeFrame(getDate(), TimeFrameLocator.AFTERNOON);
 	}
@@ -73,11 +86,11 @@ public class Day {
 	}
 	
 	public List<Game> getAfternoonGames() {
-		return getGames(TimeFrameLocator.AFTERNOON);
+		return getGamesList(TimeFrameLocator.AFTERNOON);
 	}
 	
 	public List<Game> getEveningGames() {
-		return getGames(TimeFrameLocator.EVENING);
+		return getGamesList(TimeFrameLocator.EVENING);
 	}
 	
 	private List<Setting> getDistinctSettings(List<PlayerAvailability> players) {
@@ -96,16 +109,6 @@ public class Day {
 		return getDistinctSettings(getPlayers(TimeFrameLocator.EVENING));
 	}
 	
-	private List<Game> getGames(TimeFrameLocator locator) {
-		List<Game> result = new ArrayList<Game>();
-		for(Game game : games) {
-			if (locator.equals(game.getTimeFrame().getLocator())) {
-				result.add(game);
-			}
-		}
-		return result;
-	}
-
 	public String getDayLetter(Locale locale) {
 		return date.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, locale).substring(0,  1).toUpperCase();
 	}
@@ -138,8 +141,16 @@ public class Day {
 		this.notes = notes;
 	}
 
+	public void addNote(Note note) {
+		notes.add(note);
+	}
+	
 	public void clearPlayerAvailabilities() {
 		players.clear();		
+	}
+	
+	public boolean isWithNotes() {
+		return (notes.size() > 0);
 	}
 	
 }

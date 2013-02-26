@@ -28,13 +28,13 @@ public class NotesManager {
 	}
 
 	public List<Note> fetchNotes(Date date) {
-		TypedQuery<Note> query = em.createNamedQuery("Note.fetchNotesDate", Note.class);
+		TypedQuery<Note> query = em.createNamedQuery("fetchNotesDate", Note.class);
 		query.setParameter(1, date);
 		return query.getResultList();
 	}
 
 	public List<Note> fetchNotes(Date minDate, Date maxDate) {
-		TypedQuery<Note> query = em.createNamedQuery("Note.fetchNotesInterval", Note.class);
+		TypedQuery<Note> query = em.createNamedQuery("fetchNotesInterval", Note.class);
 		query.setParameter(1, minDate);
 		query.setParameter(2, maxDate);
 		return query.getResultList();
