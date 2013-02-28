@@ -48,7 +48,7 @@
 		  			<rich:messages for="addSettingPanel" />
 					<h:panelGrid columns="3">
 						<h:outputText value="Nom" /><h:inputText id="inputNewSettingName" value="#{settingsDisplay.newSettingName}" required="true" requiredMessage="Obligatoire !"/><rich:message for="inputNewSettingName"/>
-						<h:outputText value="Couleur" /><richcp:colorPicker id="inputNewSettingColor" value="#{settingsDisplay.newSettingColor}" required="true" requiredMessage="Obligatoire !"/><rich:message for="inputNewSettingColor"/>
+						<h:outputText value="Couleur" /><richcp:colorPicker id="inputNewSettingColor" value="#{settingsDisplay.newSettingColor}" required="true" requiredMessage="Obligatoire !" style="border:1px solid #C4C0B9;" /><rich:message for="inputNewSettingColor"/>
 					</h:panelGrid>
 					<h:selectOneRadio id="inputNewSettingOpen" value="#{settingsDisplay.newSettingOpen}" layout="lineDirection" required="true">
 						<f:selectItem itemLabel="Ouverte" itemValue="true"/>

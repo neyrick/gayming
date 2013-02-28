@@ -64,6 +64,7 @@ public class SettingsStore implements Serializable {
 	
 	public void createSetting(Setting setting) {
 		settingsManager.storeSetting(setting);
+		refreshMap();
 	}
 	
 	public SettingsStore() {
