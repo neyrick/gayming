@@ -26,7 +26,7 @@
 	<tr>
 		<td width="100%" bgcolor="#E4EBEB">
 				<rich:panel style="text-align:right" rendered="#{visitor.known}">			
-						Salut <h:outputText value="#{visitor.name}" /> ! <h:commandButton action="#{visitor.clear}" value="Changer d'utilisateur"/>
+						Salut <h:outputText value="#{visitor.name}" /> ! <h:commandButton action="#{visitor.clear}" value="Changer d'utilisateur" immediate="true" />
 				</rich:panel>
 		</td>
 	</tr>
@@ -63,10 +63,8 @@
 		
 		  	<rich:panel styleClass="calendarGlobalColumn" bodyClass="nopad" >
 		  		 
-			  JSF:
-			  <h:messages />
-			  <br/>
-			  Rich: <rich:messages globalOnly="true"/> 
+			  <h:messages rendered="false"/>
+			  <rich:messages globalOnly="true" rendered="false"/> 
 			<h:panelGrid columns="2">
 			  <rich:dataGrid value="#{calendarDisplay.monthsList}" var="month" columns="#{calendarDisplay.monthsList.size()}" elements="#{calendarDisplay.monthsList.size()}" width="100%"
 			  styleClass="calendarPanel">
@@ -76,22 +74,13 @@
 							<f:convertDateTime pattern="MMMM"/>
 						</h:outputFormat>
 			  		</f:facet>
-			  		<rich:dataTable var="day" value="#{calendarDisplay.months.get(month)}" width="260"
+			  		<rich:dataTable var="day" value="#{calendarDisplay.months.get(month)}" 
 			  		rowClasses="#{calendarDisplay.getMonthStyleClasses(month)}" styleClass="calendarMonthPanel">
-			  			<rich:column style="padding: 0px;" styleClass="calendarMonthColumn">
-			  				<f:facet name="header">
-						 	  	<h:panelGrid columns="5" border="0" cellpadding="0" cellspacing="0" width="100%" columnClasses="calendarIconCell,calendarIconCell,calendarIconCell,calendarContentCell,calendarContentCell">
-						 	    	<h:outputText styleClass="calendarIconCell" value="&nbsp;"/>
-						 	    	<h:outputText styleClass="calendarIconCell" value="&nbsp;"/>
-						 	    	<h:outputText styleClass="calendarIconCell" value="&nbsp;"/>
-						 	    	<h:outputText styleClass="calendarIconCell" value="Après-midi"/>
-						 	    	<h:outputText styleClass="calendarContentCell" value="Soir"/>
-						 	  	</h:panelGrid>
-			  				</f:facet>
-					 	  	<h:panelGrid id="dayGrid" columns="5" border="0" cellpadding="0" cellspacing="0" columnClasses="calendarIconCell,calendarIconCell,calendarIconCell,calendarContentCell,calendarContentCell" >
+			  			<rich:column style="padding: 0px; width: 70px" styleClass="calendarMonthColumn">
+					 	  	<h:panelGrid id="dayGrid" columns="3" border="0" cellpadding="0" cellspacing="0" columnClasses="calendarIconCell,calendarIconCell,calendarIconCell,calendarContentCell,calendarContentCell" >
 					 	    	<h:panelGroup styleClass="calendarIconCell">#{day.dayLetter}</h:panelGroup>
 					 	    	<h:panelGroup styleClass="calendarIconCell">#{day.dayNumber}</h:panelGroup>
-					 	    	<a4j:commandLink value="" styleClass="calendarIconCell" render="editBlockPanel" execute="@this">
+					 	    	<a4j:commandLink value="" styleClass="calendarIconCell" render=":editBlockPanel" execute="@this">
 					 	    		<f:setPropertyActionListener target="#{calendarDisplay.editBlockMode}" value="NOTES"/>
 					 	    		<f:setPropertyActionListener target="#{planningUpdater.currentDay}" value="#{day}"/>
 									<rich:tooltip id="settingTooltip" followMouse="false" mode="client" showDelay="200" render="@this">
@@ -112,15 +101,21 @@
 											</h:dataTable>
 										</rich:panel>
 									</rich:tooltip>
-					 	    		N
+					 	    		<h:graphicImage name="notepad.png" library="images" width="20"/>
 					 	    	</a4j:commandLink>
-				 	    		<a4j:region>
-					 	    		<grind:timeFrameDetail day="#{day}" players="#{day.afternoonPlayers}" timeframe="#{day.afternoonTimeFrame}" settings="#{day.afternoonSettings}"/>
-				 	    		</a4j:region>
-				 	    		<a4j:region>
-					 	    		<grind:timeFrameDetail day="#{day}" players="#{day.eveningPlayers}" timeframe="#{day.eveningTimeFrame}" settings="#{day.eveningSettings}"/>
-				 	    		</a4j:region>
 						 	  	</h:panelGrid>
+			  			</rich:column>
+			  			<rich:column style="padding: 0px;" styleClass="calendarMonthColumn">
+			  				<f:facet name="header">Après-midi</f:facet>
+			 	    		<a4j:region>
+				 	    		<grind:timeFrameDetail day="#{day}" players="#{day.afternoonPlayers}" timeframe="#{day.afternoonTimeFrame}" settings="#{day.afternoonSettings}"/>
+			 	    		</a4j:region>
+			  			</rich:column>
+			  			<rich:column style="padding: 0px;" styleClass="calendarMonthColumn">
+			  				<f:facet name="header">Soir</f:facet>
+			 	    		<a4j:region>
+				 	    		<grind:timeFrameDetail day="#{day}" players="#{day.eveningPlayers}" timeframe="#{day.eveningTimeFrame}" settings="#{day.eveningSettings}"/>
+			 	    		</a4j:region>
 			  			</rich:column>
 			  		</rich:dataTable>
 			  	</rich:panel>
@@ -135,7 +130,7 @@
 				<rich:panel id="editNotePanel" style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'NOTES'}">
 					<f:facet name="header">
 						<h:panelGroup>
- 	    					Messages du <h:outputText value="#{planningUpdater.currentDay.date}" >
+ 	    					Messages pour le <h:outputText value="#{planningUpdater.currentDay.date}" >
  	    						<f:convertDateTime pattern="EEEE dd MMMM yyyy"/>
  	    					</h:outputText>
 						</h:panelGroup>
@@ -144,7 +139,7 @@
 						<h:column>
 							<f:facet name="header"><h:outputText value="#{note.author}"/></f:facet>
 							<b><h:outputText value="#{note.author}"/></b> (<h:outputText value="#{note.postDate}">
-							<f:convertDateTime pattern="HH:mm"/>
+							<f:convertDateTime pattern="dd/MM/yy HH:mm"/>
  	    					</h:outputText>) :<br/>
 							<h:outputText value="#{note.text}" style="white-space: pre;"/>
 							<br/>
@@ -160,8 +155,7 @@
 				<rich:panel id="editGamePanel" style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'GAMES'}">
 					<f:facet name="header">
 						<h:panelGroup>
-							<h:outputText value="#{planningUpdater.currentDetailSetting.name}" />
-							- <h:outputText value="#{planningUpdater.currentDay.date}" >
+							<h:outputText value="#{planningUpdater.currentDay.date}" >
  	    						<f:convertDateTime pattern="dd/MM/yyyy"/>
  	    					</h:outputText>
  	    					- <h:outputText value="Après-midi" rendered="#{planningUpdater.currentTimeFrame.locator == 'AFTERNOON'}"/>
@@ -171,23 +165,28 @@
 					<rich:dataGrid columns="1" var="game" value="#{planningUpdater.currentDay.getGamesList(planningUpdater.currentTimeFrame.locator)}" style="width:100%">
 						<f:facet name="header">Parties validées</f:facet>
 						<rich:panel>
-							<f:facet name="header"><h:panelGroup>MJ - <h:outputText value="#{game.gmname}" /></h:panelGroup></f:facet>
+							<f:facet name="header"><h:panelGroup><h:outputText value="#{game.setting.name}" /> - <h:outputText value="#{game.gmname}" /></h:panelGroup></f:facet>
 							<rich:list value="#{game.players}" var="player">
 								<h:outputText value="#{player.playerName}" />
 							</rich:list>
-							<a4j:commandButton action="#{planningUpdater.removeGame(game)}" value="Annuler la partie"
-							render="@form" execute="editGamePanel"/>
+							<a4j:commandButton action="#{planningUpdater.removeGame(game)}" value="Quitter / Annuler la partie"
+							render="@form" execute="editGamePanel" rendered="#{calendarDisplay.isVisitorInGame(game)}"/>
 						</rich:panel>
 					</rich:dataGrid>
-					<rich:panel>
+					<rich:dataGrid columns="1" var="setting" value="#{planningUpdater.currentDay.getDistinctSettings(planningUpdater.currentTimeFrame.locator)}" style="width:100%">
 						<f:facet name="header">Joueurs Disponibles</f:facet>
-						<h:selectManyCheckbox value="#{planningUpdater.selectedPlayers}" layout="pageDirection">
-							<f:converter converterId="javax.faces.Long"/>
-							<f:selectItems value="#{calendarDisplay.availablePlayersForCurrentEdit}"/>
-						</h:selectManyCheckbox>
-						<a4j:commandButton action="#{planningUpdater.storeNewGame}" value="Valider une partie avec les joueurs cochés" render="@form"
-						execute="editGamePanel" />
-					</rich:panel>
+						<rich:panel id="editSingleGame">
+							<f:facet name="header"><h:outputText value="#{setting.name}"/></f:facet>
+							<h:selectManyCheckbox value="#{planningUpdater.selectedPlayers}" layout="pageDirection">
+								<f:converter converterId="javax.faces.Long"/>
+								<f:selectItems value="#{calendarDisplay.getAvailablePlayersForCurrentEdit(setting)}" />
+							</h:selectManyCheckbox>
+							<a4j:commandButton action="#{planningUpdater.storeNewGame}" value="Valider une partie avec les joueurs cochés" render="@form"
+							execute="editSingleGame" disabled="#{calendarDisplay.visitorBusyForCurrentEdit}">
+								<f:setPropertyActionListener target="#{planningUpdater.currentDetailSetting}" value="#{setting}"/>
+							</a4j:commandButton>
+						</rich:panel>
+					</rich:dataGrid>
 				</rich:panel>
 			</h:panelGroup>
 

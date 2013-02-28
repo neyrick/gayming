@@ -23,6 +23,7 @@ import javax.inject.Named;
 import fr.neyrick.gamegrinder.dao.GameManager;
 import fr.neyrick.gamegrinder.dao.NotesManager;
 import fr.neyrick.gamegrinder.entities.Day;
+import fr.neyrick.gamegrinder.entities.Game;
 import fr.neyrick.gamegrinder.entities.Note;
 import fr.neyrick.gamegrinder.entities.PlayerAvailability;
 import fr.neyrick.gamegrinder.entities.Setting;
@@ -51,8 +52,6 @@ public class CalendarDisplay implements Serializable {
 
 	private Map<TimeFrame, Set<Setting>> userAvails = new HashMap<TimeFrame, Set<Setting>>();
 	
-	private List<SelectItem> availablePlayers = null;
-
 	private Date startDate, endDate, calendarStartDate; 
 	
 	private int width = DEFAULT_WIDTH;
@@ -121,6 +120,13 @@ public class CalendarDisplay implements Serializable {
 			}
 		}
 
+		
+		for (List<Day> dayList : months.values()) {
+			for (Day day : dayList) {
+				day.checksConflicts();
+			}
+		}
+		
 		List<Note> notes = notesManagerInstance.get().fetchNotes(calendarStartDate, endDate);
 		Calendar noteCal = Calendar.getInstance();
 		Date noteDate = null;
@@ -243,22 +249,37 @@ public class CalendarDisplay implements Serializable {
 		return builder.toString();
 	}
 	
-	public void clearAvailablePlayers() {
-		availablePlayers = null;
-	}
-	
-	public List<SelectItem> getAvailablePlayersForCurrentEdit() {
-		if (availablePlayers == null) {
-			availablePlayers = new ArrayList<SelectItem>();
-			for(PlayerAvailability pa : planningUpdater.getCurrentDay().getPlayers(planningUpdater.getCurrentTimeFrame().getLocator())) {
-				if (pa.getSetting().equals(planningUpdater.getCurrentDetailSetting()) && (pa.getGame() == null)) {
-					availablePlayers.add(new SelectItem(pa.getId(), pa.getPlayerName()));
-				}
+	public List<SelectItem> getAvailablePlayersForCurrentEdit(Setting setting) {
+		List<SelectItem> availablePlayers = new ArrayList<SelectItem>();
+		for(PlayerAvailability pa : planningUpdater.getCurrentDay().getPlayers(planningUpdater.getCurrentTimeFrame().getLocator())) {
+			if (pa.getSetting().equals(setting) && (pa.getGame() == null)) {
+					availablePlayers.add(new SelectItem(pa.getId(), pa.getPlayerName(), pa.getPlayerName(), pa.getPlayerName().equals(visitor.getName())));
 			}
 		}
 		return availablePlayers;
 	}
 	
+	public String getPlayerNameStyle(PlayerAvailability pa) {
+		return (pa.isCanceled() ? "text-decoration: line-through" : "");
+	}
+	
+	public boolean isVisitorBusyForCurrentEdit() {
+		for(PlayerAvailability pa : planningUpdater.getCurrentDay().getPlayers(planningUpdater.getCurrentTimeFrame().getLocator())) {
+			if (pa.getPlayerName().equals(visitor.getName()) && (pa.getGame() != null)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isVisitorInGame(Game game) {
+		for(PlayerAvailability pa : game.getPlayers()) {
+			if (pa.getPlayerName().equals(visitor.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
 /*	
 	public void saveDay() {
 		editMode = false;

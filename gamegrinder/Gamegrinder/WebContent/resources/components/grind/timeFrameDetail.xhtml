@@ -19,18 +19,17 @@
 	<composite:attribute name="settings" required="true"/>
 </composite:interface>
 <composite:implementation>
-	<h:panelGrid styleClass="nopad" columns="2">
- 	   	 <a4j:commandLink action="#{planningUpdater.updateAvailability()}" styleClass="quietLink" render="dayGrid" execute="@this">
+	<h:panelGrid styleClass="nopad" columns="2" id="tfBlockPanel">
+ 	   	 <a4j:commandLink action="#{planningUpdater.updateAvailability()}" styleClass="quietLink" render="tfBlockPanel" execute="@this">
 	 	  	<f:setPropertyActionListener target="#{planningUpdater.currentTimeFrame}" value="#{cc.attrs.timeframe}"/>
-	 	  	+
+	 			<h:graphicImage name="rightarrow.png" library="images" width="20"/>
 	 	 </a4j:commandLink>
-	 	 <rich:dataGrid var="setting" value="#{cc.attrs.settings}" styleClass="nopad noborder" style="margin-left:3px" columns="#{cc.attrs.settings.size() > 4 ? 4 : cc.attrs.settings.size()}"
+	 	 <rich:dataGrid id="tfDataGrid" var="setting" value="#{cc.attrs.settings}" styleClass="nopad noborder" style="margin-left:3px" columns="#{cc.attrs.settings.size() > 4 ? 4 : cc.attrs.settings.size()}"
 	 	  >
 	 		<a4j:commandLink render="editBlockPanel" execute="@this" styleClass="noborder" >
 	 			<f:setPropertyActionListener target="#{calendarDisplay.editBlockMode}" value="GAMES"/> 
 	 			<f:setPropertyActionListener target="#{planningUpdater.currentDay}" value="#{cc.attrs.day}"/> 
 	 			<f:setPropertyActionListener target="#{planningUpdater.currentTimeFrame}" value="#{cc.attrs.timeframe}"/> 
-	 			<f:setPropertyActionListener target="#{planningUpdater.currentDetailSetting}" value="#{setting}"/> 
 				<h:panelGroup id="settingPanel" layout="block" style="#{settingsDisplay.getStyle(setting)}" styleClass="settingIcon">
 					<rich:tooltip id="settingTooltip" followMouse="false" mode="client" showDelay="200">
 						<rich:panel>
@@ -44,7 +43,8 @@
 							</f:facet>
 							Joueurs disponibles:
 							<rich:list var="player" value="#{calendarDisplay.getFilteredList(cc.attrs.players, setting)}">
-								<h:outputText value="#{player.playerName}" />
+								<h:outputText value="#{player.playerName}" style="#{calendarDisplay.getPlayerNameStyle(player)}">
+								</h:outputText>
 							</rich:list>
 						</rich:panel>
 					</rich:tooltip>

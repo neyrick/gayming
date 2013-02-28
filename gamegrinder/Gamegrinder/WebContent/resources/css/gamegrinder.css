@@ -96,7 +96,7 @@ body {
 }
 .calendarMonthPanel td {
 	  vertical-align: middle;
-	  padding: 3px;
+	  padding: 1px;
 }
 .calendarContentCell td {
 	  vertical-align: middle;
@@ -106,6 +106,12 @@ body {
 	height: 15px;
 	width: 15px;
 	text-align: center;
+	text-decoration: none;
+	color:black;
+}
+.settingIcon:HOVER {
+    background-color: black !important; 
+	color:white;
 }
 .notPlayDay {
 	  font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -136,6 +142,7 @@ body {
 .calendarMonthColumn {
 	  border-bottom: 1px solid #707070;
 	  border-right: 1px solid #707070;
+	  width: 110px;
 }
 .calendarIconCell {
 	  border: 0; 

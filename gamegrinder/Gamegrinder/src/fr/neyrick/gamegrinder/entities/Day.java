@@ -92,6 +92,10 @@ public class Day {
 	public List<Game> getEveningGames() {
 		return getGamesList(TimeFrameLocator.EVENING);
 	}
+
+	public List<Setting> getDistinctSettings(TimeFrameLocator locator) {
+		return getDistinctSettings(getPlayers(locator));
+	}
 	
 	private List<Setting> getDistinctSettings(List<PlayerAvailability> players) {
 		Set<Setting> settings = new HashSet<Setting>();
@@ -151,6 +155,23 @@ public class Day {
 	
 	public boolean isWithNotes() {
 		return (notes.size() > 0);
+	}
+
+	private void checksConflicts(Set<Game> games, List<PlayerAvailability> pas) {
+		if ((games == null) || games.isEmpty()) return;
+		if ((pas == null) || pas.isEmpty()) return;
+		for(Game game : games) {
+			for (PlayerAvailability gamepa : game.getPlayers()) {
+				for (PlayerAvailability daypa : pas) {
+					if (gamepa.getPlayerName().equals(daypa.getPlayerName())) daypa.setCanceled(true);
+				}
+			}
+		}
+	}
+	
+	public void checksConflicts() {
+		checksConflicts(games.get(TimeFrameLocator.AFTERNOON), players.get(TimeFrameLocator.AFTERNOON));
+		checksConflicts(games.get(TimeFrameLocator.EVENING), players.get(TimeFrameLocator.EVENING));		
 	}
 	
 }

@@ -63,7 +63,6 @@ public class PlanningUpdater implements Serializable {
 
 	public void setCurrentTimeFrame(TimeFrame currentTimeFrame) {
 		this.currentTimeFrame = currentTimeFrame;
-		calendarDisplay.clearAvailablePlayers();
 	}
 
 	public String updateAvailability() {
@@ -107,7 +106,6 @@ public class PlanningUpdater implements Serializable {
 
 	public void setCurrentDay(Day currentDay) {
 		this.currentDay = currentDay;
-		calendarDisplay.clearAvailablePlayers();
 	}
 
 	public String addNote() {
@@ -142,13 +140,17 @@ public class PlanningUpdater implements Serializable {
 
 	public void setCurrentDetailSetting(Setting currentDetailSetting) {
 		this.currentDetailSetting = currentDetailSetting;
-		calendarDisplay.clearAvailablePlayers();
 	}
 
 	public String removeGame(Game game) {
-		gameManager.removeGame(game);
+		if (visitor.getName().equals(game.getGmname())) {
+			gameManager.removeGame(game);			
+		}
+		else {
+			gameManager.removePlayerFromGame(visitor.getName(), game);
+		}
 		return null;
-	}
+	}	
 	
 	public String storeNewGame() {
 		Game game = new Game();

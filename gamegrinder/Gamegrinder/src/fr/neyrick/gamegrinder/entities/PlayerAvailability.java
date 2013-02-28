@@ -34,6 +34,9 @@ public class PlayerAvailability implements Serializable {
 	@Embedded
 	private TimeFrame timeFrame;
 
+	@Transient
+	private boolean canceled = false;
+	
 	public PlayerAvailability() {
 		super();
 	}
@@ -76,6 +79,14 @@ public class PlayerAvailability implements Serializable {
 
 	public void setSetting(Setting setting) {
 		this.setting = setting;
+	}
+
+	public boolean isCanceled() {
+		return canceled;
+	}
+
+	public void setCanceled(boolean canceled) {
+		this.canceled = canceled;
 	}
 
 }

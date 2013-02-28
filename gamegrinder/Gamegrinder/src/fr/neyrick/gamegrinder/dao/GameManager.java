@@ -103,4 +103,11 @@ public class GameManager {
 		query.setParameter(1, game.getId());
 		query.executeUpdate();
 	}
+
+	public void removePlayerFromGame(String playerName, Game game) {
+		Query query = em.createQuery("UPDATE PlayerAvailability pa SET pa.game = null WHERE pa.game = ?1 and pa.playerName = ?2");
+		query.setParameter(1, game);
+		query.setParameter(2, playerName);
+		query.executeUpdate();
+	}
 }
