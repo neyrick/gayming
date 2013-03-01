@@ -26,7 +26,7 @@
 	<tr>
 		<td width="100%" bgcolor="#E4EBEB">
 				<rich:panel style="text-align:right" rendered="#{visitor.known}">			
-						Salut <h:outputText value="#{visitor.name}" /> ! <h:commandButton action="#{visitor.clear}" value="Changer d'utilisateur" immediate="true" />
+						Salut <h:outputText value="#{visitor.name}" /> ! <h:commandButton styleClass="ggButton" action="#{visitor.clear}" value="Changer d'utilisateur" immediate="true" />
 				</rich:panel>
 		</td>
 	</tr>
@@ -124,8 +124,9 @@
 			</rich:panel>
 			
 			<h:panelGroup id="editBlockPanel" style="width: 100%" styleClass="nopad" layout="block" >
-				<rich:panel style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'EMPTY'}">
-					Vide !
+				<rich:panel style="width:100%" bodyClass="centered ggButton" rendered="#{calendarDisplay.editBlockMode == 'EMPTY'}" onclick="#{rich:component('helpPopup')}.show()">
+						<h:graphicImage name="help.png" library="images" /><br/>
+						 J'suis paumé(e) ! Comment ça marche ?"
 				</rich:panel>
 				<rich:panel id="editNotePanel" style="width:100%" bodyClass="nopad" rendered="#{calendarDisplay.editBlockMode == 'NOTES'}">
 					<f:facet name="header">
@@ -224,6 +225,9 @@ function resetSettingsCells() {
 </h:form>
 	    <rich:panel id="namePopupContainer" style="height:1;border:0">
 	    	<ui:include src="/includes/visitorpopup.xhtml" />
+	    </rich:panel>
+	    <rich:panel id="lepPopupContainer" style="height:1;border:0">
+	    	<ui:include src="/includes/helppopup.xhtml" />
 	    </rich:panel>
 </h:body>
 		
