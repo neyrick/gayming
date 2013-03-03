@@ -18,7 +18,7 @@ public class SkillCalculator extends AbstractNumericFeatureCalculator implements
 		int result = baseAptitude.getBase();
 		targetFeature.setAptitudeMorphBonus(baseAptitude.getEffectiveMorphBonus());
 		result += super.calculateFromRegularCost(targetFeature);
-		if (result > 60) result -= (result - 60) / 2;
+		if (result > 60) result -= Math.ceil((result - 60) / 2.);
 		result += targetFeature.getModifier();
 		if (result < 0) return 0;
 		return result;
