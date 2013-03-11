@@ -678,7 +678,14 @@
  
            <fo:block-container absolute-position="absolute" top="221.8mm" left="10mm" width="55mm" text-align="left" >
            	<xsl:for-each select="currentMorph/traits/trait">
-	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="@display"/></fo:block>
+	            <fo:block space-before="-0.2mm" font-size="8pt"><xsl:value-of select="@display"/>
+	            <xsl:if test="@descriptor">
+	            	- <xsl:value-of select="@descriptor"></xsl:value-of>
+	            </xsl:if>
+	            <xsl:if test="@level">
+	            	(<xsl:value-of select="@level"></xsl:value-of>)
+	            </xsl:if>
+	            </fo:block>
            	</xsl:for-each>
            	<fo:block/>
           </fo:block-container>
