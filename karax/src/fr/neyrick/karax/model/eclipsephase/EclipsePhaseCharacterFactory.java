@@ -1,6 +1,8 @@
 package fr.neyrick.karax.model.eclipsephase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -9,6 +11,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
+import fr.neyrick.karax.entities.generic.CharacterEdit;
 import fr.neyrick.karax.entities.generic.MetaCharacter;
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
 import fr.neyrick.karax.model.CharacterFactory;
@@ -25,6 +28,8 @@ import fr.neyrick.karax.model.VariableFeaturesCollection;
 @RequestScoped
 public class EclipsePhaseCharacterFactory extends CharacterFactory {
 
+	public static final String FILTER_MORPH = "MORPH";
+	
 	@Inject
 	private FacesContext facesContext;
 	
@@ -196,5 +201,21 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		return character;
 	}
 
+	private void filterMorph(MetaCharacter character, String morphKey) {
+		// TODO: FETCH MORPH EDITS
+		character.removeEditsByKey("MORPH_TYPE");
+		List<CharacterEdit> morphEdits = new ArrayList<>();
+		character.getEdits().addAll(morphEdits);
+	}
+	
+	public void filterEdits(MetaCharacter character, Map<String, String[]> filterData) {
+		String[] values = filterData.get(FILTER_MORPH);
+		if ((values != null) && (values.length > 0)) {
+			String morphKey = values[0];
+			if ((morphKey != null) && (!"".equals(morphKey))) {
+				filterMorph(character, morphKey);
+			}
+		}
+	}
 
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
@@ -95,7 +96,7 @@ public class FopServlet extends HttpServlet {
         //Subclass and override this method to perform additional configuration
     }
 
-    public GameCharacter lookupCharacterById( long id, Locale locale) {
+    public GameCharacter lookupCharacterById( long id, Locale locale, Map<String, String[]> filterParams) {
     	MetaCharacter metaCharacter = repository.findCompleteById(id);
         if (metaCharacter == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -105,7 +106,7 @@ public class FopServlet extends HttpServlet {
 		if (factory == null) {
 			throw new WebApplicationException(new IllegalArgumentException("No factory for this character"));
 		}
-        return factory.createCharacter(metaCharacter, locale);
+        return factory.createCharacter(metaCharacter, locale, filterParams);
     }
     
     /**
@@ -118,7 +119,9 @@ public class FopServlet extends HttpServlet {
             String charIdParam = request.getParameter(CHARID_REQUEST_PARAM);
 
             if (charIdParam != null) {
-                renderXML(Long.parseLong(charIdParam), request.getLocale(), response);
+            	Map<String, String[]> params = request.getParameterMap();
+            	params.remove(CHARID_REQUEST_PARAM);
+                renderXML(Long.parseLong(charIdParam), request.getLocale(), params, response);
             } else {
                 response.setContentType("text/html");
                 PrintWriter out = response.getWriter();
@@ -170,10 +173,11 @@ public class FopServlet extends HttpServlet {
      * transformation
      * @throws IOException In case of an I/O problem
      */
-    protected void renderXML(long charId, Locale locale, HttpServletResponse response)
+    protected void renderXML(long charId, Locale locale, Map<String, String[]> params, HttpServletResponse response)
                 throws FOPException, TransformerException, IOException {
 
-    	GameCharacter character = lookupCharacterById(charId, locale);
+    	GameCharacter character = lookupCharacterById(charId, locale, params);
+
     	
         // Source
         JAXBSource xmlSrc;
