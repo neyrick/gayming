@@ -26,7 +26,7 @@ public class MetaCharacterRepository {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<MetaCharacter> criteria = cb.createQuery(MetaCharacter.class);
         Root<MetaCharacter> character = criteria.from(MetaCharacter.class);
-        character.fetch("edits", JoinType.LEFT);
+        character.fetch("edits", JoinType.LEFT).fetch("consequences", JoinType.LEFT);
         character.fetch("experienceGains", JoinType.LEFT);
         criteria.select(character).where(cb.equal(character.get("id"), id));
         return em.createQuery(criteria).getSingleResult();

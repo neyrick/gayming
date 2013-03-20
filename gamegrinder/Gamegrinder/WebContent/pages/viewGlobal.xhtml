@@ -36,9 +36,10 @@
 
 	<tr>
 		<td width="100%"  colspan="2" id="bodyCell">
-		  <h:panelGrid columns="3" width="100%" rowClasses="calendarPanel" columnClasses="settingsPanel,calendarPanel calendarGlobalColumn">
+		  <h:panelGrid id="mainPanel" columns="3" width="100%" rowClasses="calendarPanel" columnClasses="settingsPanel,calendarPanel calendarGlobalColumn">
 		  
 		  	<h:panelGroup id="settingsPanel">
+		  		<a4j:region>
 		  		
 		  		<grind:settingslist classes="#{settingsDisplay.openRowClasses}" title="Chroniques Ouvertes" settings="#{settingsDisplay.openSettings}"/>
 		  		<grind:settingslist classes="#{settingsDisplay.closedRowClasses}" title="Chroniques Fermées" settings="#{settingsDisplay.closedSettings}"/>
@@ -58,6 +59,7 @@
 					<br/>					
 					<a4j:commandButton action="#{settingsDisplay.addNewSetting()}" value="Enregistrer la Chronique" render="settingsPanel" execute="addSettingPanel"/>
 		  		</rich:panel>
+			</a4j:region>
 				
 		  	</h:panelGroup>
 		
@@ -198,31 +200,23 @@
 	
 </tbody>
 </table>
-<f:verbatim>
-<script>
-<!-- 
+ </h:form>
+<a4j:status>
 
-function activateSettingCell(component, setting) {
-//	window.alert('Component: ' + component);
-//	window.alert('Setting: ' + setting);
-	resetSettingsCells();
-	component.style.backgroundColor = 'cyan';
-	component.style.fontWeight = 'bold';	
-	#{rich:element('selectedSetting')}.value = setting;
-}
+    <f:facet name="start">
+        <rich:componentControl event="start" operation="show" target="statusPopup" />
+    </f:facet>   
 
-function resetSettingsCells() {
-  	var panels = document.getElementsByClassName('settingsRow');
-  	for(var i=0; i<panels.length;i++) {
-  		panels[i].style.backgroundColor = '';
-  		panels[i].style.fontWeight = '';
-	}
-}
+    <f:facet name="stop">
+        <rich:componentControl event="stop" operation="hide" target="statusPopup" />
+    </f:facet>
 
- -->
- </script>
-</f:verbatim>
-</h:form>
+</a4j:status>
+	    	<rich:popupPanel id="statusPopup" modal="true" styleClass="centered" >
+	    		<h:graphicImage library="images" name="loading.gif" /><br/>
+	    		<h:outputText value="Je sais, c'est long..." />
+	    	</rich:popupPanel>
+
 	    <rich:panel id="namePopupContainer" style="height:1;border:0">
 	    	<ui:include src="/includes/visitorpopup.xhtml" />
 	    </rich:panel>

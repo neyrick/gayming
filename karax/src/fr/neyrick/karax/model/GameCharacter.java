@@ -87,6 +87,5 @@ public abstract class GameCharacter {
 
 	public void setAvailableExperience(int availableExperience) {
 		this.availableExperience = availableExperience;
-	}
-	
+	}	
 }

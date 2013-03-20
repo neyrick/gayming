@@ -1,11 +1,36 @@
 set search_path to 'public';
 
+drop table if exists EP_MorphEdit;
+drop table if exists MorphDefinition;
 drop table if exists charhistory;
 drop table if exists expgains;
 drop table if exists metachars;
 drop table if exists games;
 
 drop sequence if exists hibernate_sequence;
+
+    create table EP_MorphEdit (
+        id int8 not null,
+        amount int4 not null,
+        amountType varchar(255),
+        multiplier float4 not null,
+        targetKey varchar(255),
+        targetSubKey1 varchar(255),
+        targetSubKey2 varchar(255),
+        targetSubKey3 varchar(255),
+        value varchar(255),
+        cause_id int8,
+        morph_id int8,
+        primary key (id)
+    );
+
+    create table EP_MorphDefinition (
+        id int8 not null,
+        description varchar(255),
+        key varchar(255),
+        type varchar(255),
+        primary key (id)
+    );
 
     create table games (
     	ruleset varchar(255) not null,
@@ -49,6 +74,16 @@ drop sequence if exists hibernate_sequence;
         character_id int8,
         primary key (id)
     );
+
+    alter table EP_MorphEdit 
+        add constraint FK3851D87E9AE7FF46 
+        foreign key (cause_id) 
+        references EP_MorphEdit;
+
+    alter table EP_MorphEdit 
+        add constraint FK3851D87E6A5D7D50 
+        foreign key (morph_id) 
+        references EP_MorphDefinition;
 
     alter table metachars 
         add constraint FKC076BCF83A5077B4 

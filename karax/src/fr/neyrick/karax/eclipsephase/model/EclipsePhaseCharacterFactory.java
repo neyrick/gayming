@@ -9,6 +9,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
+import fr.neyrick.karax.eclipsephase.entities.MorphDefinition;
 import fr.neyrick.karax.entities.generic.MetaCharacter;
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
 import fr.neyrick.karax.model.CharacterFactory;
@@ -25,13 +26,15 @@ import fr.neyrick.karax.model.VariableFeaturesCollection;
 @RequestScoped
 public class EclipsePhaseCharacterFactory extends CharacterFactory {
 
+	public static final String FILTER_MORPH = "MORPH";
+	
 	@Inject
 	private FacesContext facesContext;
 	
 	private ResourceBundle resourceBundle;
 	
 	public ResourceBundle getResourceBundle(Locale locale) {
-		if (resourceBundle == null ) resourceBundle = ResourceBundle.getBundle("fr.neyrick.karax.model.eclipsephase.eclipsephase", locale);
+		if (resourceBundle == null ) resourceBundle = ResourceBundle.getBundle("fr.neyrick.karax.eclipsephase.model.eclipsephase", locale);
 		return resourceBundle;
 	}
 
@@ -196,5 +199,15 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		return character;
 	}
 
+	public void remorph(MetaCharacter character, MorphDefinition morph) {
+		character.removeEditsByKey("MORPH_TYPE");
+		character.getEdits().addAll(morph.getEdits());
+		
+	}
 
+	@Override
+	protected void filterEdits(MetaCharacter character,
+			Map<String, String[]> filterMap) {
+	}
+	
 }

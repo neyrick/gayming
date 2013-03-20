@@ -33,7 +33,7 @@ public class MetaCharacter {
 	
 	@OneToMany(mappedBy="character", fetch=FetchType.LAZY)
 	@OrderBy("editDate")
-	private List<CharacterEdit> edits = new ArrayList<CharacterEdit>();
+	private List<BaseCharacterEdit> edits = new ArrayList<BaseCharacterEdit>();
 	
 	@OneToMany(mappedBy="character")
 	private Set<ExperienceGain> experienceGains;
@@ -81,10 +81,10 @@ public class MetaCharacter {
 	}
 
 	public List<CharacterEdit> getEdits() {
-		return edits;
+		return new ArrayList<CharacterEdit>(edits);
 	}
 
-	public void setEdits(List<CharacterEdit> edits) {
+	public void setEdits(List<BaseCharacterEdit> edits) {
 		this.edits = edits;
 	}
 
@@ -112,5 +112,24 @@ public class MetaCharacter {
 			else if (result.before(edit.getEditDate())) result = edit.getEditDate();
 		}
 		return result;
+	}
+	
+	public void removeEditAndChildren(CharacterEdit edit) {
+		for(CharacterEdit child : edit.getConsequences()) {
+			removeEditAndChildren(child);
+		}
+		edits.remove(edit);
+	}
+	
+	public void removeEditsByKey(String key) {
+		List<CharacterEdit> toDelete = new ArrayList<>();
+		for(CharacterEdit edit : edits) {
+			if (key.equals(edit.getTargetKey())) {
+				toDelete.add(edit);
+			}
+		}
+		for(CharacterEdit edit : toDelete) {
+			removeEditAndChildren(edit);
+		}
 	}
 }

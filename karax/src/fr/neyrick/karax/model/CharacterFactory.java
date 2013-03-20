@@ -27,6 +27,15 @@ public abstract class CharacterFactory {
 		return character;
 	}
 	
+	public GameCharacter createCharacter(MetaCharacter metaCharacter, Locale locale, Map<String, String[]> filterData)  {
+		setLocale(locale);
+	    GameCharacter character = initCharacter(metaCharacter);
+		setMetadata(character, metaCharacter);
+		filterEdits(metaCharacter, filterData);
+		processEdits(metaCharacter.getEdits(), character);
+		return character;
+	}
+	
 	protected abstract GameCharacter initCharacter(MetaCharacter metaCharacter);
 
 	protected abstract ResourceBundle getResourceBundle(Locale locale);
@@ -61,6 +70,17 @@ public abstract class CharacterFactory {
 			if (listener != null) listener.recordEdit(edit);
 		}
 		character.setAvailableExperience(character.getExperience() - spentExperience);
+	}
+	
+	protected abstract void filterEdits(MetaCharacter character, Map<String, String[]> filterMap);
+
+	
+	public Locale getLocale() {
+		return locale;
+	}
+
+	public void setLocale(Locale locale) {
+		this.locale = locale;
 	}
 	
 }
