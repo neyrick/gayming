@@ -1,4 +1,4 @@
-package fr.neyrick.karax.model.eclipsephase;
+package fr.neyrick.karax.eclipsephase.model;
 
 import java.util.HashMap;
 import java.util.Map;

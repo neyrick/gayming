@@ -1,4 +1,4 @@
-package fr.neyrick.karax.model.eclipsephase;
+package fr.neyrick.karax.eclipsephase.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

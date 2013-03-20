@@ -1,4 +1,4 @@
-package fr.neyrick.karax.model.eclipsephase;
+package fr.neyrick.karax.eclipsephase.model;
 
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
 import fr.neyrick.karax.model.CharacterFeature;
