@@ -201,7 +201,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 
 	public void remorph(MetaCharacter character, MorphDefinition morph) {
 		character.removeEditsByKey("MORPH_TYPE");
-		character.getEdits().addAll(morph.getEdits());
+		character.addExtraEdits(morph.getEdits());
 		
 	}
 

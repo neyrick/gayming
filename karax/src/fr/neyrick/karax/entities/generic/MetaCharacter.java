@@ -1,7 +1,9 @@
 package fr.neyrick.karax.entities.generic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -33,7 +36,10 @@ public class MetaCharacter {
 	
 	@OneToMany(mappedBy="character", fetch=FetchType.LAZY)
 	@OrderBy("editDate")
-	private List<BaseCharacterEdit> edits = new ArrayList<BaseCharacterEdit>();
+	private Set<BaseCharacterEdit> edits = new HashSet<BaseCharacterEdit>();
+	
+	@Transient
+	private List<CharacterEdit> extraEdits = new ArrayList<>();
 	
 	@OneToMany(mappedBy="character")
 	private Set<ExperienceGain> experienceGains;
@@ -81,10 +87,16 @@ public class MetaCharacter {
 	}
 
 	public List<CharacterEdit> getEdits() {
-		return new ArrayList<CharacterEdit>(edits);
+		List<CharacterEdit> result = new ArrayList<CharacterEdit>(edits);
+		result.addAll(extraEdits);
+		return result;
 	}
 
-	public void setEdits(List<BaseCharacterEdit> edits) {
+	public void addExtraEdits(Collection<? extends CharacterEdit> newEdits) {
+		extraEdits.addAll(newEdits);
+	}
+
+	public void setEdits(Set<BaseCharacterEdit> edits) {
 		this.edits = edits;
 	}
 
