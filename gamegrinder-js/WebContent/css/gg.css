@@ -1,0 +1,53 @@
+.dayPanel {
+	float: left;
+}
+.dayBodyPanel {
+
+}
+.day1 {
+	background-color: #E0E0FF;
+}
+.day2 {
+	background-color: #D0D0FF;
+}
+.day3 {
+	background-color: #C0C0FF;
+}
+.day4 {
+	background-color: #B0B0FF;
+}
+.day5 {
+	background-color: #A0A0FF;
+}
+.day6 {
+	background-color: #9090FF;
+}
+.day7 {
+	background-color: #8080FF;
+}
+.datePanel {
+	float: left;
+	height: 62px;
+	font-weight: bold;
+	text-align: center;
+}
+.timeFramesPanel {
+	float: right;
+}
+.timeFramePanel {
+	margin-top: 3px;
+	margin-bottom: 0px;
+	margin-left: 10px;
+	display: inline-block;
+}
+.timeFrameBodyPanel {
+	padding: 2px;
+}
+.timeFrameItem {
+	float: left;
+	vertical-align: middle;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+.weekPanel {
+}

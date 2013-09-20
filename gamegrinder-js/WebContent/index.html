@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tests Gamegrinder</title>
+  <link rel="stylesheet" href="css/gg.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <script src="lib/angular/angular.js"></script>
+  <script src="js/controllers.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+  <div class="gg-container" ng-app>
+    <div class="gg-container" ng-controller="GameGrinderCtrl">
+	  <ul>
+	    <li ng-repeat="month in months">
+	      {{month.index}}
+	      <p>{{month.name}}</p>
+	    </li>
+	  </ul>
+    </div>
+  </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <div>
+	<div class="panel panel-default weekPanel">
+		<div class="panel-body">
+
+	<div class="panel panel-default day1 dayPanel">
+		<div class="panel-body day1 dayBodyPanel">
+			<div class="datePanel">LU<br/>17<br/>03</div>
+			<div class="timeFramesPanel">
+				<div class="panel panel-default timeFramePanel">
+					<div class="timeFrameBodyPanel panel-body">
+						<img class="timeFrameItem" src="images/aprem.gif"/>
+						<span class="badge">EP</span>
+						<span class="badge">7TH</span>
+						<span class="badge">SR</span>
+						<span class="badge">TB</span>
+					</div>
+				</div>
+				<br/>
+				<div class="panel panel-default timeFramePanel">
+					<div class="timeFrameBodyPanel panel-body">
+						<img class="timeFrameItem" src="images/soir.gif"/>
+						<span class="badge">EP</span>
+						<span class="badge">7TH</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default day2 dayPanel">
+		<div class="panel-body day2 dayBodyPanel">
+			<div class="datePanel">MA<br/>18<br/>03</div>
+		</div>
+	</div>
+	<div class="panel panel-default day3 dayPanel">
+		<div class="panel-body day3 dayBodyPanel">
+			<div class="datePanel">ME<br/>19<br/>03</div>
+		</div>
+	</div>
+	<div class="panel panel-default day4 dayPanel">
+		<div class="panel-body day4 dayBodyPanel">
+			<div class="datePanel">JE<br/>20<br/>03</div>
+		</div>
+	</div>
+	<div class="panel panel-default day5 dayPanel">
+		<div class="panel-body day5 dayBodyPanel">
+			<div class="datePanel">VE<br/>21<br/>03</div>
+		</div>
+	</div>
+	<div class="panel panel-default day6 dayPanel">
+		<div class="panel-body day6 dayBodyPanel">
+			<div class="datePanel">SA<br/>22<br/>03</div>
+		</div>
+	</div>
+	<div class="panel panel-default day7 dayPanel">
+		<div class="panel-body day7 dayBodyPanel">
+			<div class="datePanel">DI<br/>23<br/>03</div>
+		</div>
+	</div>
+		</div>
+	</div>
+    </div>
+
+</body>
+</html>
+
