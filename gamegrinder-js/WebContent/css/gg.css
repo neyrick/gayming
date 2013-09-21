@@ -1,3 +1,25 @@
+.mainColumn {
+	float: left;
+	margin: 10px;
+}
+.containerPanel {
+	padding: 0;
+}
+.availFormRow {
+	margin: 0;
+	border: solid 1px #DDDDDD;
+	padding: 5px 10px;
+}
+.innerHeading {
+	margin: 0;
+	border: solid 1px #DDDDDD;
+	padding: 5px 10px;
+    background-color: #F5F5F5;
+}
+.filterFormRow {
+	padding: 5px 10px;
+	margin-bottom: 0px;
+}
 .dayPanel {
 	float: left;
 }

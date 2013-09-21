@@ -1,94 +1,177 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Tests Gamegrinder</title>
-  <link rel="stylesheet" href="css/gg.css">
-  <link rel="stylesheet" href="css/bootstrap.css">
-  <script src="lib/angular/angular.js"></script>
-  <script src="js/controllers.js"></script>
+<meta charset="utf-8">
+<title>Tests Gamegrinder</title>
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="css/gg.css">
+<!-- link rel="stylesheet" href="css/bootstrap.css"-->
+<script src="lib/angular/angular.js"></script>
+<script src="js/controllers.js"></script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="//code.jquery.com/jquery.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
 </head>
 <body>
-  <div class="gg-container" ng-app>
-    <div class="gg-container" ng-controller="GameGrinderCtrl">
-	  <ul>
-	    <li ng-repeat="month in months">
-	      {{month.index}}
-	      <p>{{month.name}}</p>
-	    </li>
-	  </ul>
-    </div>
-  </div>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="//code.jquery.com/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <div>
-	<div class="panel panel-default weekPanel">
-		<div class="panel-body">
-
-	<div class="panel panel-default day1 dayPanel">
-		<div class="panel-body day1 dayBodyPanel">
-			<div class="datePanel">LU<br/>17<br/>03</div>
-			<div class="timeFramesPanel">
-				<div class="panel panel-default timeFramePanel">
-					<div class="timeFrameBodyPanel panel-body">
-						<img class="timeFrameItem" src="images/aprem.gif"/>
-						<span class="badge">EP</span>
-						<span class="badge">7TH</span>
-						<span class="badge">SR</span>
-						<span class="badge">TB</span>
+	<div class="mainColumn">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Je suis dispo pour...</div>
+			<div class="panel-body containerPanel">
+			      <div class="row availFormRow">
+				<div class="col-lg-9">
+					<button type="button" class="btn btn-default">Jouer à:</button>
+					<span class="badge">EP</span> <span class="badge">7TH</span>
+				</div>
+				<div class="col-lg-3">
+					<button type="button" class="btn btn-default">Modifier</button>
+				</div>
+			       </div>
+			      <div class="row availFormRow">
+				<div class="col-lg-9">
+					<button type="button" class="btn btn-default">Maîtriser à:</button>
+					<span class="badge">EP</span>
+				</div>
+				<div class="col-lg-3">
+					<button type="button" class="btn btn-default">Modifier</button>
+				</div>
+			      </div>
+			</div>
+		</div>
+		<div class="panel panel-primary">
+			<div class="panel-heading">Filtres</div>
+			<div class="panel-body containerPanel">
+				<form class="form-horizontal" role="form">
+				<div class="innerHeading">Raccourcis</div>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default">Mes dispos</button>
+					<button type="button" class="btn btn-default">Toutes les parties</button>
+					<button type="button" class="btn btn-default">Mes dispos</button>
+					<button type="button" class="btn btn-default">Les MJ dispos</button>
+				</div>
+				<div class="innerHeading">Paramètres détaillés</div>
+				<div class="form-group filterFormRow">
+					<label class="col-lg-3 control-label" for="inputFilterGameStatus">Parties</label>
+					<div class="col-lg-9">
+						<select class="form-control" id="inputFilterGameStatus">
+						  <option>Toutes</option>
+						  <option>Validées</option>
+						  <option>Potentielles - MJ Dispo</option>
+						  <option>Potentielles - Pas de MJ</option>
+						</select>
 					</div>
 				</div>
-				<br/>
-				<div class="panel panel-default timeFramePanel">
-					<div class="timeFrameBodyPanel panel-body">
-						<img class="timeFrameItem" src="images/soir.gif"/>
-						<span class="badge">EP</span>
-						<span class="badge">7TH</span>
+				<div class="form-group filterFormRow">
+					<label class="col-lg-3 control-label" for="inputFilterSetting">Chronique</label>
+					<div class="col-lg-9">
+						<select class="form-control" id="inputFilterSetting">
+						  <option>Toutes</option>
+						  <option>Chronique 1</option>
+						  <option>Chronique 2</option>
+						  <option>Chronique 3</option>
+						</select>
+					</div>
+				</div>
+				<div class="filterFormRow">
+					<label class="col-lg-3 control-label">Joueur</label>
+					<div class="col-lg-9">
+						<label class="checkbox-inline">
+						  <input type="checkbox" id="inlineCheckbox1" value="option1"> Tous les joueurs
+						</label>
+						<label class="checkbox-inline">
+						  <input type="checkbox" id="inlineCheckbox2" value="option2"> Seulement Moi
+						</label>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div>
+		<div class="panel panel-default weekPanel">
+			<div class="panel-body">
+
+				<div class="panel panel-default day1 dayPanel">
+					<div class="panel-body day1 dayBodyPanel">
+						<div class="datePanel">
+							LU<br />17<br />03
+						</div>
+						<div class="timeFramesPanel">
+							<div class="panel panel-default timeFramePanel">
+								<div class="timeFrameBodyPanel panel-body">
+									<img class="timeFrameItem" src="images/aprem.gif" /> <span
+										class="badge">EP</span> <span class="badge">7TH</span> <span
+										class="badge">SR</span> <span class="badge">TB</span>
+								</div>
+							</div>
+							<br />
+							<div class="panel panel-default timeFramePanel">
+								<div class="timeFrameBodyPanel panel-body">
+									<img class="timeFrameItem" src="images/soir.gif" /> <span
+										class="badge">EP</span> <span class="badge">7TH</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default day2 dayPanel">
+					<div class="panel-body day2 dayBodyPanel">
+						<div class="datePanel">
+							MA<br />18<br />03
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default day3 dayPanel">
+					<div class="panel-body day3 dayBodyPanel">
+						<div class="datePanel">
+							ME<br />19<br />03
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default day4 dayPanel">
+					<div class="panel-body day4 dayBodyPanel">
+						<div class="datePanel">
+							JE<br />20<br />03
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default day5 dayPanel">
+					<div class="panel-body day5 dayBodyPanel">
+						<div class="datePanel">
+							VE<br />21<br />03
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default day6 dayPanel">
+					<div class="panel-body day6 dayBodyPanel">
+						<div class="datePanel">
+							SA<br />22<br />03
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default day7 dayPanel">
+					<div class="panel-body day7 dayBodyPanel">
+						<div class="datePanel">
+							DI<br />23<br />03
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="panel panel-default day2 dayPanel">
-		<div class="panel-body day2 dayBodyPanel">
-			<div class="datePanel">MA<br/>18<br/>03</div>
+
+	<div class="gg-container" ng-app>
+		<div class="gg-container" ng-controller="GameGrinderCtrl">
+			<ul>
+				<li ng-repeat="month in months">{{month.index}}
+					<p>{{month.name}}</p>
+				</li>
+			</ul>
 		</div>
 	</div>
-	<div class="panel panel-default day3 dayPanel">
-		<div class="panel-body day3 dayBodyPanel">
-			<div class="datePanel">ME<br/>19<br/>03</div>
-		</div>
-	</div>
-	<div class="panel panel-default day4 dayPanel">
-		<div class="panel-body day4 dayBodyPanel">
-			<div class="datePanel">JE<br/>20<br/>03</div>
-		</div>
-	</div>
-	<div class="panel panel-default day5 dayPanel">
-		<div class="panel-body day5 dayBodyPanel">
-			<div class="datePanel">VE<br/>21<br/>03</div>
-		</div>
-	</div>
-	<div class="panel panel-default day6 dayPanel">
-		<div class="panel-body day6 dayBodyPanel">
-			<div class="datePanel">SA<br/>22<br/>03</div>
-		</div>
-	</div>
-	<div class="panel panel-default day7 dayPanel">
-		<div class="panel-body day7 dayBodyPanel">
-			<div class="datePanel">DI<br/>23<br/>03</div>
-		</div>
-	</div>
-		</div>
-	</div>
-    </div>
 
 </body>
 </html>
