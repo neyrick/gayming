@@ -6,33 +6,42 @@ function GameGrinderCtrl($scope) {
   $scope.settings = [
     {"id": 1,
      "name": "Eclipse Phase",
+     "code": "EP",
      "open": true},
     {"id": 2,
      "name": "7th Sea: Pirates",
+     "code": "7SP",
      "open": true},
     {"id": 3,
      "name": "Terres Balafrées",
+     "code": "TB",
+     "open": true},
+    {"id": 4,
+     "name": "Shadowrun Québec",
+     "code": "SRQ",
      "open": true},
   ];
 
-  $scope.months = [
-    {"index": 9,
-     "name": "Septembre",
-     "days": [
-         {"index": 1, "dow": 7},
-         {"index": 2, "dow": 1},
-         {"index": 3, "dow": 2},
-         {"index": 4, "dow": 3},
-         {"index": 5, "dow": 4},
+  $scope.weeks = [
+    {"id": 1, "days": [
+         {"dow": 1, "dom": 23, "month": 9, "year": 2013},
+         {"dow": 2, "dom": 24, "month": 9, "year": 2013},
+         {"dow": 3, "dom": 25, "month": 9, "year": 2013},
+         {"dow": 4, "dom": 26, "month": 9, "year": 2013},
+         {"dow": 5, "dom": 27, "month": 9, "year": 2013},
+         {"dow": 6, "dom": 28, "month": 9, "year": 2013},
+         {"dow": 7, "dom": 29, "month": 9, "year": 2013},
     ]},
-    {"index": 10,
-     "name": "Octobre",
-     "days": [
-         {"index": 1, "dow": 2},
-         {"index": 2, "dow": 3},
-         {"index": 3, "dow": 4},
-         {"index": 4, "dow": 5},
+    {"id": 2, "days": [
+         {"dow": 1, "dom": 30, "month": 9, "year": 2013},
+         {"dow": 2, "dom": 1, "month": 10, "year": 2013},
+         {"dow": 3, "dom": 2, "month": 10, "year": 2013},
+         {"dow": 4, "dom": 3, "month": 10, "year": 2013},
+         {"dow": 5, "dom": 4, "month": 10, "year": 2013},
+         {"dow": 6, "dom": 5, "month": 10, "year": 2013},
+         {"dow": 7, "dom": 6, "month": 10, "year": 2013},
     ]},
   ];
 
 }
+
