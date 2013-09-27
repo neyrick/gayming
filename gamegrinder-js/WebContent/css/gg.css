@@ -1,3 +1,22 @@
+.myPABadge {
+	border: solid 2px #FF0000;
+}
+.withoutGmBadge {
+	background-color: #999999;
+}
+.withGmBadge {
+	background-color: #C06000;
+}
+.withGameBadge {
+	background-color: #006000;
+}
+.plusBox {
+	display: inline-block;
+}
+.plusButton {
+	top: 3px;
+	color: #000080;
+}
 .massDispoStatusButton{
 }
 .massDispoSettingButton{
@@ -71,6 +90,7 @@
 }
 .timeFrameBodyPanel {
 	padding: 2px;
+	vertical-align: middle;
 }
 .timeFrameItem {
 	float: left;
