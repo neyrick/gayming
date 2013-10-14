@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="gamegrinderApp">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="css/gg.css">
 <!-- link rel="stylesheet" href="css/bootstrap.css"-->
 <script src="lib/angular/angular.js"></script>
+<script src="lib/angular/angular-cookies.js"></script>
 <script src="js/controllers.js"></script>
 <script src="js/filters.js"></script>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -21,6 +22,7 @@
 <script type="text/javascript">
     $(function () {
         $('body').tooltip({
+		    trigger: 'click',
                     selector: '[data-toggle="tooltip"]',
 		    title: function() { 
 			var tooltipId = '#tfSettingTooltip-' + $(this).data('dayid') + '-' + $(this).data('timeframe') + '-' + $(this).data('settingcode');
@@ -58,6 +60,24 @@
 	}
 
 </script>
+	<div id="loginModal" class="modal" ng-hide="currentUser">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+		<h4 class="modal-title">C'est qui ?</h4>
+	      </div>
+	      <div class="modal-body">
+		<div class="input-group input-group-lg">
+			<span class="input-group-addon">Tape ton pseudo</span>
+			<input type="text" class="form-control input-lg" placeholder="Username">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button">Valider</button>
+			</span>
+		</div>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div>
 	<div style="display:none">
 
 		<div ng-repeat="week in weeks">
@@ -67,9 +87,23 @@
 						<div class="panel panel-default" id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}">
 							<div class="panel-body list-group tfSettingTooltipBox">
 								<div class="list-group-item tfSettingTooltipHeader">Campagne: {{settingsList[settingtf.code].name}}</div>
-								<div class="list-group-item tfSettingTooltipItem">Parties confirmées:</div>
-								<div class="list-group-item tfSettingTooltipItem">MJ Disponible(s):</div>
-								<div class="list-group-item tfSettingTooltipItem">Joueur(s) Disponible(s):</div>
+								<div class="list-group-item tfSettingTooltipItem" ng-repeat="game in settingtf.games">
+									<span class="confirmedgame">Partie confirmée:</span>
+									<ul>
+										<li>{{ game.gm }} (MJ)</li>
+										<li ng-repeat="player in game.players">{{ player.name }}</li>
+									</ul>
+								</div>
+								<div class="list-group-item tfSettingTooltipItem">MJ Disponible(s):
+									<ul>
+										<li ng-repeat="player in settingtf.availablegms">{{ player.name }}</li>
+									</ul>
+								</div>
+								<div class="list-group-item tfSettingTooltipItem">Joueur(s) Disponible(s):
+									<ul>
+										<li ng-repeat="player in settingtf.availableplayers">{{ player.name }}</li>
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>

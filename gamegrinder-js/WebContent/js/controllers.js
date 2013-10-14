@@ -1,11 +1,17 @@
 'use strict';
 
+var gamegrinderApp = angular.module('gamegrinderApp', ['ngCookies']);
 /* Controllers */
 
-function GameGrinderCtrl($scope) {
+gamegrinderApp.controller('GameGrinderCtrl', function GameGrinderCtrl($scope, $cookies) {
 
   $scope.currentDay = 0;
 
+  $scope.currentUser = function() { 
+	return $cookieStore.get("ggUser"); 
+};
+
+//	$scope.currentUser = "toto";
   $scope.dowcodes = { "1":"LU","2":"MA","3":"ME","4":"JE","5":"VE","6":"SA","7":"DI"};
 
   $scope.timeframesDesc = {
@@ -36,7 +42,11 @@ function GameGrinderCtrl($scope) {
     {"days": [
          {"id":"20130923", "dow": 1, "dom": 23, "month": 9, "year": 2013, "timeframes" : [
 	{"code":"AFTERNOON", "settings": [
-	{"code": "TB"},
+	{"code": "TB",
+		"games": [ { "gm": "GM1", "players": [{"name": "PJ1"}, {"name": "PJ2"}, {"name": "PJ3"}]}, { "gm": "GM2", "players": [ {"name": "PJ4"}, {"name": "PJ5"}, {"name": "PJ6"}]}],
+		"availablegms": [ {"name": "MJD1"}, {"name": "MJD2"}],
+		"availableplayers": [ {"name": "PJD2"}, {"name": "PJD1"}, {"name": "PJD3"}, {"name": "PJD4"}],
+	},
 	{"code": "7SP"}]},
 	{"code":"EVENING", "settings": [
 	{"code": "TB"},
@@ -63,5 +73,6 @@ function GameGrinderCtrl($scope) {
 		$scope.currentDay = newDay;
 		$scope.currentTimeframe = newTimeframe;
 	}
-}
+});
+
 
