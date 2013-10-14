@@ -1,3 +1,34 @@
+.width100p {
+	width: 100%;
+}
+.plusHeader {
+	background-color:#404040;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 0px 5px;
+	min-width: 200px;
+}
+.popover {
+	max-width: none;
+}
+.popover-title {
+	background-color:#404040;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+.tfSettingTooltipBox {
+	padding: 4px;
+}
+.tfSettingTooltipHeader {
+	background-color:#404040;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+.tfSettingTooltipItem {
+	background-color:#FFFFFF;
+	color: #000000;
+	text-align: left;
+}
 .tfSetting  {
 	margin-right: 3px;
 }
@@ -19,6 +50,10 @@
 .plusButton {
 	top: 3px;
 	color: #000080;
+}
+.chatButton {
+	top: 3px;
+	color: #B03000;
 }
 .massDispoStatusButton{
 }
@@ -89,7 +124,7 @@
 	margin-top: 3px;
 	margin-bottom: 0px;
 	margin-left: 10px;
-	display: inline-block;
+	display: block;
 }
 .timeFrameBodyPanel {
 	padding: 2px;

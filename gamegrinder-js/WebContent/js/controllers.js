@@ -3,6 +3,16 @@
 /* Controllers */
 
 function GameGrinderCtrl($scope) {
+
+  $scope.currentDay = 0;
+
+  $scope.dowcodes = { "1":"LU","2":"MA","3":"ME","4":"JE","5":"VE","6":"SA","7":"DI"};
+
+  $scope.timeframesDesc = {
+    "AFTERNOON": {"key":"AFTERNOON", pic:"images/aprem.gif"},
+    "EVENING": {"key":"EVENING", pic:"images/soir.gif"},
+  };
+
   $scope.settingsList =  {
     "EP": {"id": 1,
      "name": "Eclipse Phase",
@@ -24,11 +34,13 @@ function GameGrinderCtrl($scope) {
 
   $scope.weeks = [
     {"days": [
-         {"id":"20130923", "dow": 1, "dom": 23, "month": 9, "year": 2013,
-	"afternoon": [ 
+         {"id":"20130923", "dow": 1, "dom": 23, "month": 9, "year": 2013, "timeframes" : [
+	{"code":"AFTERNOON", "settings": [
 	{"code": "TB"},
-	{"code": "7SP"},
-	]},
+	{"code": "7SP"}]},
+	{"code":"EVENING", "settings": [
+	{"code": "TB"},
+	{"code": "7SP"}]}]},
          {"id":"20130924", "dow": 2, "dom": 24, "month": 9, "year": 2013,},
          {"id":"20130925", "dow": 3, "dom": 25, "month": 9, "year": 2013,},
          {"id":"20130926", "dow": 4, "dom": 26, "month": 9, "year": 2013,},
@@ -47,5 +59,9 @@ function GameGrinderCtrl($scope) {
     ]},
   ];
 
+	$scope.selectTimeframe = function(newDay, newTimeframe) {
+		$scope.currentDay = newDay;
+		$scope.currentTimeframe = newTimeframe;
+	}
 }
 
