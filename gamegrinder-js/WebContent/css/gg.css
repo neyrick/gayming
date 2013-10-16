@@ -147,3 +147,14 @@
 .confirmedgame {
 	font-weight: bold;
 }
+.pageColumn {
+	float:left;
+	margin: 20px;
+}
+.legendBadge {
+	width: 50px;
+}
+#inputName {
+	width: 200px;
+	margin-left: 10px;
+}

@@ -6,19 +6,21 @@
 <title>Tests Gamegrinder</title>
 <link href="css/bootstrap.css" rel="stylesheet" media="screen">
 <link rel="stylesheet" href="css/gg.css">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery.js"></script>
 <!-- link rel="stylesheet" href="css/bootstrap.css"-->
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular/angular-cookies.js"></script>
 <script src="js/controllers.js"></script>
+<script src="js/services.js"></script>
 <script src="js/filters.js"></script>
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="js/jquery.js"></script>
+<script src="js/gg.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
 
 <!-- Bootstrap -->
 </head>
-<body  ng-controller="GameGrinderCtrl">
+<body ng-controller="GameGrinderCtrl">
 <script type="text/javascript">
     $(function () {
         $('body').tooltip({
@@ -31,6 +33,12 @@
                 });
 	$('.plusButton').tooltip({placement: 'auto', title: 'Maîtriser une partie'});
 	$('.chatButton').tooltip({placement: 'auto', title: 'Discussions'});
+	if (typeof angular.element('body').scope().currentUser == 'undefined') {
+		$('#loginModal').modal('show');
+	}
+	$('#loginForm').submit(function( event ) {
+		$('#loginModal').modal('hide');
+	});
 /*
         $('body').popover({
                     selector: '[data-toggle="popover"]',
@@ -60,20 +68,23 @@
 	}
 
 </script>
-	<div id="loginModal" class="modal" ng-hide="currentUser">
+
+	<div id="loginModal" class="modal fade">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
 		<h4 class="modal-title">C'est qui ?</h4>
 	      </div>
 	      <div class="modal-body">
-		<div class="input-group input-group-lg">
-			<span class="input-group-addon">Tape ton pseudo</span>
-			<input type="text" class="form-control input-lg" placeholder="Username">
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="button">Valider</button>
-			</span>
-		</div>
+		<form class="form-inline" id="loginForm" role="form" name="loginForm" ng-submit="login()">
+			<div class="form-group">
+				<label for="inputName" class="control-label">Tape ton pseudo:</label>
+				<input type="text" class="form-control" id="inputName" name="userinput" placeholder="Ton pseudo sur le forum" ng-model="currentUser" required/>
+			</div>
+			<div class="form-group">
+				<button id="nameButton" class="btn btn-default" ng-disabled="loginForm.$invalid" type="submit">Valider</button>
+			</div>
+		</form>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
@@ -132,7 +143,28 @@
 		    </div><!-- /.modal-dialog -->
 	     </div>
 	</div>
-	<div>
+
+	<div id="toolbar" class="pageColumn">
+		<div id="greetingsDiv" class="panel panel-default" ng-show="currentUser">
+			<div class="panel-heading">Salut {{ currentUser }} !</div>
+			<div class="panel-body"><button type="button" ng-click="logout()" class="btn btn-default">Changer d'utilisateur</button></div>
+		</div>
+
+		<div id="LegendContainer" class="panel panel-default">
+			<div class="panel-heading">Chroniques Ouvertes</div>
+			<table class="table">
+				<tr ng-repeat="setting in settingsList">
+					<td class="legendBadge"><span class="badge">{{ setting.code }}</span></td>
+					<td>{{ setting.name }}</td>
+				</tr>
+			</table>
+			<div class="panel-heading">Chroniques Fermées</div>
+		</div>	
+	</div>
+
+
+
+	<div class="pageColumn">
 		<div class="panel panel-default weekPanel" ng-repeat="week in weeks">
 			<div class="panel-body">
 
@@ -166,6 +198,7 @@
 			</div>
 		</div>
 	</div>
+
 
 <!--
 	<div class="mainColumn">

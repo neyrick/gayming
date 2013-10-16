@@ -3,13 +3,19 @@
 var gamegrinderApp = angular.module('gamegrinderApp', ['ngCookies']);
 /* Controllers */
 
-gamegrinderApp.controller('GameGrinderCtrl', function GameGrinderCtrl($scope, $cookies) {
+gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userService', function GameGrinderCtrl($scope, $cookieStore, userService) {
 
   $scope.currentDay = 0;
 
-  $scope.currentUser = function() { 
-	return $cookieStore.get("ggUser"); 
-};
+  $scope.currentUser =  "Neyrick";// cookies['ggUser'];
+
+  $scope.login = function() { cookies['ggUser'] = $scope.currentUser; };
+  $scope.logout = function() { delete cookies['ggUser']; };
+
+
+//  $scope.login = function() { userService.login($scope.currentUser); };
+//  $scope.logout = function() { currentUser = undefined; userService.logout(); };
+
 
 //	$scope.currentUser = "toto";
   $scope.dowcodes = { "1":"LU","2":"MA","3":"ME","4":"JE","5":"VE","6":"SA","7":"DI"};
@@ -73,6 +79,6 @@ gamegrinderApp.controller('GameGrinderCtrl', function GameGrinderCtrl($scope, $c
 		$scope.currentDay = newDay;
 		$scope.currentTimeframe = newTimeframe;
 	}
-});
+}]);
 
 
