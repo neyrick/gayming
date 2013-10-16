@@ -11,6 +11,7 @@
 <!-- link rel="stylesheet" href="css/bootstrap.css"-->
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular/angular-cookies.js"></script>
+<script src="js/app.js"></script>
 <script src="js/controllers.js"></script>
 <script src="js/services.js"></script>
 <script src="js/filters.js"></script>
@@ -21,98 +22,120 @@
 <!-- Bootstrap -->
 </head>
 <body ng-controller="GameGrinderCtrl">
-<script type="text/javascript">
-    $(function () {
-        $('body').tooltip({
-		    trigger: 'click',
-                    selector: '[data-toggle="tooltip"]',
-		    title: function() { 
-			var tooltipId = '#tfSettingTooltip-' + $(this).data('dayid') + '-' + $(this).data('timeframe') + '-' + $(this).data('settingcode');
-			return $(tooltipId).html();
-		    }
-                });
-	$('.plusButton').tooltip({placement: 'auto', title: 'Maîtriser une partie'});
-	$('.chatButton').tooltip({placement: 'auto', title: 'Discussions'});
-	if (typeof angular.element('body').scope().currentUser == 'undefined') {
-		$('#loginModal').modal('show');
-	}
-	$('#loginForm').submit(function( event ) {
-		$('#loginModal').modal('hide');
-	});
-/*
-        $('body').popover({
-                    selector: '[data-toggle="popover"]',
-		    content: function() {
+	<script type="text/javascript">
+		$(function() {
+			$('body').tooltip(
+					{
+						trigger : 'hover',
+						selector : '[data-toggle="tooltip"]',
+						title : function() {
+							var tooltipId = '#tfSettingTooltip-'
+									+ $(this).data('dayid') + '-'
+									+ $(this).data('timeframe') + '-'
+									+ $(this).data('settingcode');
+							return $(tooltipId).html();
+						}
+					});
+			$('.plusButton').tooltip({
+				placement : 'auto',
+				title : 'Maîtriser une partie'
+			});
+			$('.chatButton').tooltip({
+				placement : 'auto',
+				title : 'Discussions'
+			});
+			if (typeof angular.element('body').scope().currentUser == 'undefined') {
+				$('#loginModal').modal('show');
+			}
+			$('#loginForm').submit(function(event) {
+				$('#loginModal').modal('hide');
+			});
+			/*
+			 $('body').popover({
+			 selector: '[data-toggle="popover"]',
+			 content: function() {
 			 $('.closePopover').click(function() { $(this).popover('destroy'); });
 			 return $('#timeframePopover').html();
-		    }
-*/
-/*
-	$('.tfSetting').hover(function () {
-		var tooltipId = '#tfSettingTooltip-' + $(this).attr('data-dayid') + '-' + $(this).attr('data-timeframe') + '-' + $(this).attr('data-settingcode');
-		$(this).tooltip('hide')
-			  .attr('data-original-title', $( tooltipId ).html())
-			  .tooltip('fixTitle')
-			  .tooltip('show');
+			 }
+			 */
+			/*
+			 $('.tfSetting').hover(function () {
+			 var tooltipId = '#tfSettingTooltip-' + $(this).attr('data-dayid') + '-' + $(this).attr('data-timeframe') + '-' + $(this).attr('data-settingcode');
+			 $(this).tooltip('hide')
+			 .attr('data-original-title', $( tooltipId ).html())
+			 .tooltip('fixTitle')
+			 .tooltip('show');
+			 });
+			 */
 		});
-*/
-    });
 
-	function addAvailablePlayer() {
-	}
+		function addAvailablePlayer() {
+		}
 
-	function addAvailableGM() {
-	}
+		function addAvailableGM() {
+		}
 
-	function addMessage() {
-	}
-
-</script>
+		function addMessage() {
+		}
+	</script>
 
 	<div id="loginModal" class="modal fade">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-		<h4 class="modal-title">C'est qui ?</h4>
-	      </div>
-	      <div class="modal-body">
-		<form class="form-inline" id="loginForm" role="form" name="loginForm" ng-submit="login()">
-			<div class="form-group">
-				<label for="inputName" class="control-label">Tape ton pseudo:</label>
-				<input type="text" class="form-control" id="inputName" name="userinput" placeholder="Ton pseudo sur le forum" ng-model="currentUser" required/>
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">C'est qui ?</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-inline" id="loginForm" role="form"
+						name="loginForm" ng-submit="login()">
+						<div class="form-group">
+							<label for="inputName" class="control-label">Tape ton
+								pseudo:</label> <input type="text" class="form-control" id="inputName"
+								name="userinput" placeholder="Ton pseudo sur le forum"
+								ng-model="currentUser" required />
+						</div>
+						<div class="form-group">
+							<button id="nameButton" class="btn btn-default"
+								ng-disabled="loginForm.$invalid" type="submit">Valider</button>
+						</div>
+					</form>
+				</div>
 			</div>
-			<div class="form-group">
-				<button id="nameButton" class="btn btn-default" ng-disabled="loginForm.$invalid" type="submit">Valider</button>
-			</div>
-		</form>
-	      </div>
-	    </div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
 	</div>
-	<div style="display:none">
+	<div style="display: none">
 
 		<div ng-repeat="week in weeks">
 			<div ng-repeat="day in week.days">
 				<div ng-repeat="timeframe in day.timeframes">
 					<div ng-repeat="settingtf in timeframe.settings">
-						<div class="panel panel-default" id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}">
+						<div class="panel panel-default"
+							id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}">
 							<div class="panel-body list-group tfSettingTooltipBox">
-								<div class="list-group-item tfSettingTooltipHeader">Campagne: {{settingsList[settingtf.code].name}}</div>
-								<div class="list-group-item tfSettingTooltipItem" ng-repeat="game in settingtf.games">
+								<div class="list-group-item tfSettingTooltipHeader">Campagne:
+									{{settingsList[settingtf.code].name}}</div>
+								<div class="list-group-item tfSettingTooltipItem"
+									ng-repeat="game in settingtf.games">
 									<span class="confirmedgame">Partie confirmée:</span>
 									<ul>
 										<li>{{ game.gm }} (MJ)</li>
 										<li ng-repeat="player in game.players">{{ player.name }}</li>
 									</ul>
 								</div>
-								<div class="list-group-item tfSettingTooltipItem">MJ Disponible(s):
+								<div class="list-group-item tfSettingTooltipItem">
+									MJ Disponible(s):
 									<ul>
-										<li ng-repeat="player in settingtf.availablegms">{{ player.name }}</li>
+										<li ng-repeat="player in settingtf.availablegms">{{
+											player.name }}</li>
 									</ul>
 								</div>
-								<div class="list-group-item tfSettingTooltipItem">Joueur(s) Disponible(s):
+								<div class="list-group-item tfSettingTooltipItem">
+									Joueur(s) Disponible(s):
 									<ul>
-										<li ng-repeat="player in settingtf.availableplayers">{{ player.name }}</li>
+										<li ng-repeat="player in settingtf.availableplayers">{{
+											player.name }}</li>
 									</ul>
 								</div>
 							</div>
@@ -123,84 +146,117 @@
 		</div>
 	</div>
 
-	    <div id="chatModal" class="modal fade" tabIndex="-1" role="dialog" aria-hidden="true">
-		    <div class="modal-dialog">
-		      <div class="modal-content">
-			<div class="modal-header">
-			  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			  <h4 class="modal-title">Discussions concernant le {{ currentDay }} {{ currentTimeframe }}</h4>
+	<div id="chatModal" class="modal fade" tabIndex="-1" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Discussions concernant le {{
+						currentDay }}</h4>
+				</div>
+				<div class="modal-body list-group">
+					<div class="list-group-item">Message 1 ...</div>
+					<div class="list-group-item">Message 2 ...</div>
+					<textarea class="form-control list-group-item" rows="3"
+						placeholder="Tape ton message ici puis clique sur &quot;Enregistrer&quot;"></textarea>
+				</div>
+				<div class="modal-footer button-group">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
+				</div>
 			</div>
-			<div class="modal-body list-group">
-				<div class="list-group-item">Message 1 ...</div>
-				<div class="list-group-item">Message 2 ...</div>
-				<textarea class="form-control list-group-item" rows="3" placeholder="Tape ton message ici puis clique sur &quot;Enregistrer&quot;"></textarea>
-			</div>
-			<div class="modal-footer button-group">
-			  <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
-			  <button type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
-			</div>
-		      </div><!-- /.modal-content -->
-		    </div><!-- /.modal-dialog -->
-	     </div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
 	</div>
 
 	<div id="toolbar" class="pageColumn">
-		<div id="greetingsDiv" class="panel panel-default" ng-show="currentUser">
+		<div id="greetingsDiv" class="panel panel-default"
+			ng-show="currentUser">
 			<div class="panel-heading">Salut {{ currentUser }} !</div>
-			<div class="panel-body"><button type="button" ng-click="logout()" class="btn btn-default">Changer d'utilisateur</button></div>
+			<div class="panel-body">
+				<button type="button" ng-click="logout()" class="btn btn-default">Changer
+					d'utilisateur</button>
+			</div>
 		</div>
 
 		<div id="LegendContainer" class="panel panel-default">
 			<div class="panel-heading">Chroniques Ouvertes</div>
 			<table class="table">
 				<tr ng-repeat="setting in settingsList">
-					<td class="legendBadge"><span class="badge">{{ setting.code }}</span></td>
-					<td>{{ setting.name }}</td>
+					<td class="legendBadge settingCell"><span class="badge">{{
+							setting.code }}</span></td>
+					<td class="settingCell">{{ setting.name }}</td>
 				</tr>
 			</table>
 			<div class="panel-heading">Chroniques Fermées</div>
-		</div>	
+		</div>
 	</div>
 
 
 
 	<div class="pageColumn">
-		<div class="panel panel-default weekPanel" ng-repeat="week in weeks">
-			<div class="panel-body">
+		<div class="panel panel-default panel-body weekPanel"
+			ng-repeat="week in weeks">
 
-				<div class="panel panel-default day{{day.dow}} dayPanel" ng-repeat="day in week.days">
-					<div class="panel-body day{{day.dow}} dayBodyPanel">
-						<div class="datePanel">
-							{{ dowcodes[day.dow] }}<br /> {{ day.dom }} <br /> {{ day.month }}
+			<div class="panel panel-default day{{day.dow}} dayPanel"
+				ng-repeat="day in week.days">
+				<div class="panel-body day{{day.dow}} dayBodyPanel">
+					<div class="datePanel"></div>
+					<div class="timeFramesPanel">
+						<div class="panel-default timeFramePanel">
+							<div class="timeFrameBodyPanel panel-body datePanel">
+
+								{{ dowcodes[day.dow] }} <a
+									id="chatButton-{{day.id}}-{{timeframe.code}}" href="#chatModal"
+									class="tfExtra" data-toggle="modal" data-day="{{day.id}}"
+									ng-click="selectTimeframe(day.id, timeframe.code)"> <span
+									class="glyphicon glyphicon-comment chatButton"></span>
+								</a> <br />{{ day.dom }} / {{ day.month }}
+							</div>
 						</div>
-						<div class="timeFramesPanel">
-							<div class="panel panel-default timeFramePanel" ng-repeat="timeframe in day.timeframes">
-								<div class="timeFrameBodyPanel panel-body">
-									<img class="timeFrameItem" src="{{timeframesDesc[timeframe.code].pic}}" data-test="{{timeframe.code}}" /> 
-	<a href="#" class="tfSetting" data-toggle="tooltip" data-delay="0" data-placement="auto" data-html="true" data-animation="false" data-title="Et hop !" data-selector="body" data-settingcode="{{settingtf.code}}" data-dayid="{{day.id}}" data-timeframe="{{timeframe.code}}" ng-repeat="settingtf in timeframe.settings">
-		<span class="badge">{{settingtf.code}}</span>
-	</a>
-<div class="dropdown plusBox">
-	<a id="plusButton-{{day.id}}-{{timeframe.code}}" href="#plusDrop-{{day.id}}-{{timeframe.code}}" class="tfExtra" data-toggle="dropdown" data-day="{{day.id}}" data-timeframe="{{timeframe.code}}"> <span class="glyphicon glyphicon-plus-sign plusButton"></span> </a>
-  <ul class="dropdown-menu" role="menu" aria-labelledby="plusButton-{{day.id}}-{{timeframe.code}}">
-	<li class="plusHeader">Je propose de maîtriser...</li>
-	<li ng-repeat="setting in settingsList"><a tabindex="-1" href="#">{{setting.name}}</a></li>
-  </ul>
-</div>
-	<a id="chatButton-{{day.id}}-{{timeframe.code}}" href="#chatModal" class="tfExtra" data-toggle="modal" data-day="{{day.id}}" data-timeframe="{{timeframe.code}}" ng-click="selectTimeframe(day.id, timeframe.code)"> <span class="glyphicon glyphicon-comment chatButton"></span> </a>
-
-
+						<div class="panel panel-default timeFramePanel"
+							ng-repeat="timeframe in day.timeframes">
+							<div class="timeFrameBodyPanel panel-body">
+								<img class="timeFrameItem"
+									src="{{timeframesDesc[timeframe.code].pic}}"
+									data-test="{{timeframe.code}}" /> <a href="#"
+									class="tfSetting" data-toggle="tooltip" data-delay="0"
+									data-placement="auto" data-html="true" data-animation="false"
+									data-title="Et hop !" data-selector="body"
+									data-settingcode="{{settingtf.code}}" data-dayid="{{day.id}}"
+									data-timeframe="{{timeframe.code}}"
+									ng-repeat="settingtf in timeframe.settings"> <span
+									class="{{settingtf|settingBadgeStyle:currentUser}}">{{settingtf.code}}</span>
+								</a>
+								<div class="dropdown plusBox">
+									<a id="plusButton-{{day.id}}-{{timeframe.code}}"
+										href="#plusDrop-{{day.id}}-{{timeframe.code}}" class="tfExtra"
+										data-toggle="dropdown" data-day="{{day.id}}"
+										data-timeframe="{{timeframe.code}}"> <span
+										class="glyphicon glyphicon-plus-sign plusButton"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu"
+										aria-labelledby="plusButton-{{day.id}}-{{timeframe.code}}">
+										<li class="plusHeader">Je propose de maîtriser...</li>
+										<li ng-repeat="setting in settingsList"><a tabindex="-1"
+											href="#">{{setting.name}}</a></li>
+									</ul>
 								</div>
+
+							</div>
 						</div>
 					</div>
 				</div>
 
 			</div>
 		</div>
-	</div>
 
 
-<!--
+		<!--
 	<div class="mainColumn">
 
 

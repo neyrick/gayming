@@ -8,6 +8,9 @@
 	padding: 0px 5px;
 	min-width: 200px;
 }
+.panel {
+	margin-bottom: 10px;
+}
 .tooltip-inner {
 	max-width:none;
 	white-space:nowrap;
@@ -36,10 +39,16 @@
 	text-align: left;
 }
 .tfSetting  {
-	margin-right: 3px;
+	margin-right: 0px;
 }
-.myPABadge {
+.badge {
+	border: solid 2px #FFFFFF;
+}
+.withMyPABadge {
 	border: solid 2px #FF0000;
+}
+.withMyGameBadge {
+	background-color: #00A000;
 }
 .withoutGmBadge {
 	background-color: #999999;
@@ -48,7 +57,7 @@
 	background-color: #C06000;
 }
 .withGameBadge {
-	background-color: #006000;
+	background-color: #3030F0;
 }
 .plusBox {
 	display: inline-block;
@@ -94,7 +103,7 @@
 	float: left;
 }
 .dayBodyPanel {
-
+	padding: 2px;
 }
 .day1 {
 	background-color: #E0E0FF;
@@ -118,8 +127,6 @@
 	background-color: #8080FF;
 }
 .datePanel {
-	float: left;
-	height: 62px;
 	font-weight: bold;
 	text-align: center;
 }
@@ -129,7 +136,7 @@
 .timeFramePanel {
 	margin-top: 3px;
 	margin-bottom: 0px;
-	margin-left: 10px;
+	margin-left: 3px;
 	display: block;
 }
 .timeFrameBodyPanel {
@@ -143,16 +150,20 @@
 	margin-right: 2px;
 }
 .weekPanel {
+	margin-bottom: 10px;
+	padding: 5px 5px 0px 5px;
 }
 .confirmedgame {
 	font-weight: bold;
 }
 .pageColumn {
 	float:left;
-	margin: 20px;
+	margin: 10px;
 }
 .legendBadge {
 	width: 50px;
+}
+.settingCell {
 }
 #inputName {
 	width: 200px;
