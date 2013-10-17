@@ -64,7 +64,8 @@
 }
 .plusButton {
 	top: 3px;
-	color: #000080;
+	color: #FFFFFF;
+	background-color: #000080;
 }
 .chatButton {
 	top: 3px;
@@ -101,6 +102,7 @@
 }
 .dayPanel {
 	float: left;
+	margin: 1px;
 }
 .dayBodyPanel {
 	padding: 2px;
@@ -162,6 +164,9 @@
 }
 .legendBadge {
 	width: 50px;
+}
+.gmColumn {
+	margin: 0px;
 }
 .settingCell {
 }

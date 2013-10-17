@@ -105,6 +105,50 @@
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
+
+	<div id="mjModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Organisation des parties</h4>
+				</div>
+				<div class="modal-body row">
+					<div class="col-md-6">
+						<div class="panel panel-default gmColumn">
+							<div class="panel-body">
+								<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">Je propose de maîtriser... <span class="caret"></span></button>
+								<ul class="dropdown-menu" role="menu">
+									<li ng-repeat="setting in settingsList"><a tabindex="-1"
+										href="#">{{setting.name}}</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="panel panel-default gmColumn">
+							<div class="panel-body">							
+								<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">Je valide une partie de... <span class="caret"></span></button>
+								<ul class="dropdown-menu" role="menu">
+									<li ng-repeat="settingtf in currentTimeframe.settings"><a tabindex="-1" href="#" ng-click="selectTimeframeSetting(settingtf)">{{setting.name}}</a></li>
+								</ul>
+								<ul class="list-group">
+									<li class="list-group-item" ng-repeat="player in currentSettingTf.availableplayers">  {{ player.name }}</li>
+								</ul>
+								Timeframe : {{ currentTimeframe }}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer button-group">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+
 	<div style="display: none">
 
 		<div ng-repeat="week in weeks">
@@ -199,6 +243,8 @@
 
 
 	<div class="pageColumn">
+		TF: '{{ currentTimeframe}}'
+										<button ng-click="selectTimeframe()">button</button>
 		<div class="panel panel-default panel-body weekPanel"
 			ng-repeat="week in weeks">
 
@@ -234,17 +280,20 @@
 								</a>
 								<div class="dropdown plusBox">
 									<a id="plusButton-{{day.id}}-{{timeframe.code}}"
-										href="#plusDrop-{{day.id}}-{{timeframe.code}}" class="tfExtra"
-										data-toggle="dropdown" data-day="{{day.id}}"
-										data-timeframe="{{timeframe.code}}"> <span
-										class="glyphicon glyphicon-plus-sign plusButton"></span>
+										href="#mjModal" class="tfExtra"
+										data-toggle="modal" data-day="{{day.id}}"
+										data-timeframe="{{timeframe.code}}" ng-click="selectTimeframe(timeframe)"> <span
+										class="badge plusButton">MJ</span>
 									</a>
+									
+									<!--
 									<ul class="dropdown-menu" role="menu"
 										aria-labelledby="plusButton-{{day.id}}-{{timeframe.code}}">
 										<li class="plusHeader">Je propose de maîtriser...</li>
 										<li ng-repeat="setting in settingsList"><a tabindex="-1"
 											href="#">{{setting.name}}</a></li>
 									</ul>
+									-->
 								</div>
 
 							</div>

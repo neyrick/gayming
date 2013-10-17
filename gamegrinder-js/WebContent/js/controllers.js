@@ -5,13 +5,22 @@
 gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userService', function GameGrinderCtrl($scope, $cookies, userService) {
 
   $scope.currentDay = 0;
+	
+  $scope.currentTimeframe = 0;
 
   $scope.currentUser =  "PJ1";// cookies['ggUser'];
 
-  $scope.login = function() { $cookies['ggUser'] = $scope.currentUser; };
-  $scope.logout = function() { delete $cookies['ggUser']; };
+  $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; };
+  $scope.logout=function() { delete $cookies['ggUser']; };
 
-
+  $scope.selectTimeframe=function() {
+     $scope.currentTimeframe='toto';
+  }
+  
+  $scope.selectTimeframeSetting = function(val) {
+     $scope.currentSettingTf = val;
+  }
+  
 //  $scope.login = function() { userService.login($scope.currentUser); };
 //  $scope.logout = function() { currentUser = undefined; userService.logout(); };
 
