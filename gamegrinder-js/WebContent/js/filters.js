@@ -67,3 +67,12 @@ gamegrinderApp.filter('settingBadgeStyle', function() {
 	    return style;
     };
 });
+
+gamegrinderApp.filter('recruitPlayersStyle', function() {
+    return function(player, playerlist) {
+	    for (var key in playerlist) {
+		    if (key == player.name) return "btn-success";
+	    }
+	    return "btn-default";
+    };
+});

@@ -6,19 +6,29 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
 
   $scope.currentDay = 0;
 	
-  $scope.currentTimeframe = 0;
-
   $scope.currentUser =  "PJ1";// cookies['ggUser'];
 
+  $scope.currentRecruits = [];
+	
   $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; };
   $scope.logout=function() { delete $cookies['ggUser']; };
 
-  $scope.selectTimeframe=function() {
-     $scope.currentTimeframe='toto';
+   $scope.selectTimeframe=function(val) {
+     $scope.currentTimeframe=val;
   }
   
   $scope.selectTimeframeSetting = function(val) {
      $scope.currentSettingTf = val;
+  }
+  
+  $scope.toggleRecruit = function(player) {
+	for (var key in $scope.currentRecruits) {
+	    if (key == player.name) {
+		    delete $scope.currentRecruits[key];
+		    return;
+	    }
+	}
+	$scope.currentRecruits[player.name] = player;
   }
   
 //  $scope.login = function() { userService.login($scope.currentUser); };
@@ -109,10 +119,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
     ]},
   ];
 
-	$scope.selectTimeframe = function(newDay, newTimeframe) {
-		$scope.currentDay = newDay;
-		$scope.currentTimeframe = newTimeframe;
-	}
+
 }]);
 
 
