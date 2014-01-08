@@ -23,19 +23,40 @@
 </head>
 <body ng-controller="GameGrinderCtrl">
 	<script type="text/javascript">
+		var ttlock = null;
+		
+		function getTfSettingCode(item) {
+			return item.data('dayid') + '-' + item.data('timeframe') + '-' + item.data('settingcode');
+		}
+
 		$(function() {
-			$('body').tooltip(
+			$('body').popover(
 					{
-						trigger : 'hover',
-						selector : '[data-toggle="tooltip"]',
-						title : function() {
-							var tooltipId = '#tfSettingTooltip-'
-									+ $(this).data('dayid') + '-'
-									+ $(this).data('timeframe') + '-'
-									+ $(this).data('settingcode');
-							return $(tooltipId).html();
-						}
+						trigger : 'manual',
+						selector : '[data-toggle="popover"]',
+						content : function() {
+							var popoverId = '#tfSettingTooltip-' + getTfSettingCode($(this));
+							return $(popoverId).html();
+						}						
 					});
+
+			$('body').on('click', function (e) {
+			    $('[data-toggle="popover"]').each(function () {
+				if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+				    $(this).popover('hide');
+				}
+				else {
+					if (this.id != ttlock) {
+						ttlock = this.id;
+						$(this).popover('show');
+					}
+					else {
+						ttlock = null;
+						$(this).popover('hide');
+					}
+				}
+			    });
+			});
 			$('.plusButton').tooltip({
 				placement : 'auto',
 				title : 'Maîtriser une partie'
@@ -50,23 +71,11 @@
 			$('#loginForm').submit(function(event) {
 				$('#loginModal').modal('hide');
 			});
-			/*
-			 $('body').popover({
-			 selector: '[data-toggle="popover"]',
-			 content: function() {
-			 $('.closePopover').click(function() { $(this).popover('destroy'); });
-			 return $('#timeframePopover').html();
-			 }
-			 */
-			/*
-			 $('.tfSetting').hover(function () {
-			 var tooltipId = '#tfSettingTooltip-' + $(this).attr('data-dayid') + '-' + $(this).attr('data-timeframe') + '-' + $(this).attr('data-settingcode');
-			 $(this).tooltip('hide')
-			 .attr('data-original-title', $( tooltipId ).html())
-			 .tooltip('fixTitle')
-			 .tooltip('show');
-			 });
-			 */
+			$('.tfSetting').hover(function (e) {
+				 if (ttlock == null) $(this).popover('show');
+			},function (e) {
+				 if (ttlock == null) $(this).popover('hide');
+			});
 		});
 
 		function addAvailablePlayer() {
@@ -273,9 +282,10 @@
 								<img class="timeFrameItem"
 									src="{{timeframesDesc[timeframe.code].pic}}"
 									data-test="{{timeframe.code}}" /> <a href="#"
-									class="tfSetting" data-toggle="tooltip" data-delay="0"
+									id="tfSettinglink-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" 
+									class="tfSetting" data-toggle="popover" data-delay="0"
 									data-placement="auto" data-html="true" data-animation="false"
-									data-title="Et hop !" data-selector="body"
+									data-title="{{settingsList[settingtf.code].name}}" data-selector="body"
 									data-settingcode="{{settingtf.code}}" data-dayid="{{day.id}}"
 									data-timeframe="{{timeframe.code}}"
 									ng-repeat="settingtf in timeframe.settings"> <span
@@ -283,20 +293,18 @@
 								</a>
 								<div class="dropdown plusBox">
 									<a id="plusButton-{{day.id}}-{{timeframe.code}}"
-										href="#mjModal" class="tfExtra"
-										data-toggle="modal" data-day="{{day.id}}"
+										href="#" class="tfExtra"
+										data-toggle="dropdown" data-day="{{day.id}}"
 										data-timeframe="{{timeframe.code}}" ng-click="selectTimeframe(timeframe)"> <span
 										class="badge plusButton">MJ</span>
 									</a>
 									
-									<!--
 									<ul class="dropdown-menu" role="menu"
 										aria-labelledby="plusButton-{{day.id}}-{{timeframe.code}}">
-										<li class="plusHeader">Je propose de maîtriser...</li>
+										<li class="plusHeader">Je propose une partie de...</li>
 										<li ng-repeat="setting in settingsList"><a tabindex="-1"
 											href="#">{{setting.name}}</a></li>
 									</ul>
-									-->
 								</div>
 
 							</div>
