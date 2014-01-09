@@ -17,12 +17,21 @@
 <script src="js/filters.js"></script>
 <script src="js/gg.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap.js"></script>
 
 <!-- Bootstrap -->
 </head>
 <body ng-controller="GameGrinderCtrl">
 	<script type="text/javascript">
+		var popParams = {
+			trigger : 'manual',
+			container: '#tfpop-container',
+			selector : '.tfSetting',
+			content : function() {
+				var popoverId = '#tfSettingTooltip-' + getTfSettingCode($(this));
+				return $(popoverId).html();
+			}						
+		};
 		var ttlock = null;
 		
 		function getTfSettingCode(item) {
@@ -30,28 +39,30 @@
 		}
 
 		$(function() {
-			$('body').popover(
-					{
-						trigger : 'manual',
-						selector : '[data-toggle="popover"]',
-						content : function() {
-							var popoverId = '#tfSettingTooltip-' + getTfSettingCode($(this));
-							return $(popoverId).html();
-						}						
-					});
+			$('.tfSetting').hover(function (e) {
+				 if (ttlock == null) $(this).popover('show');
+			},function (e) {
+				 if (ttlock == null) $(this).popover('hide');
+			});
+			$('.tfSetting').popover(popParams);
+			$('tfSettingTooltipBox .tfSettingForm').collapse( { toggle : false } );
 
 			$('body').on('click', function (e) {
-			    $('[data-toggle="popover"]').each(function () {
+			    $('.tfSetting').each(function () {
+				var setcode = getTfSettingCode($(this));
 				if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-				    $(this).popover('hide');
+					if (this.id == ttlock) ttlock = null;
+					$(this).popover('hide');
 				}
 				else {
 					if (this.id != ttlock) {
 						ttlock = this.id;
 						$(this).popover('show');
+						$('.tfSettingForm').collapse('show');
 					}
 					else {
 						ttlock = null;
+						$('.tfSettingForm').collapse('hide');
 						$(this).popover('hide');
 					}
 				}
@@ -70,11 +81,6 @@
 			}
 			$('#loginForm').submit(function(event) {
 				$('#loginModal').modal('hide');
-			});
-			$('.tfSetting').hover(function (e) {
-				 if (ttlock == null) $(this).popover('show');
-			},function (e) {
-				 if (ttlock == null) $(this).popover('hide');
 			});
 		});
 
@@ -169,35 +175,46 @@
 			<div ng-repeat="day in week.days">
 				<div ng-repeat="timeframe in day.timeframes">
 					<div ng-repeat="settingtf in timeframe.settings">
-						<div class="panel panel-default"
-							id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}">
-							<div class="panel-body list-group tfSettingTooltipBox">
-								<div class="list-group-item tfSettingTooltipHeader">Campagne:
-									{{settingsList[settingtf.code].name}}</div>
-								<div class="list-group-item tfSettingTooltipItem"
+							<div id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="panel-group tfSettingTooltipBox">
+								<div class="panel-collapse collapse tfSettingTooltipItem tfSettingForm">
+									<div class="panel-body list-group">
+										<div class="list-group-item">
+											Collapsible 1
+										</div>
+										<div class="list-group-item">
+											Collapsible 2
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default tfSettingTooltipItem"
 									ng-repeat="game in settingtf.games">
-									<span class="confirmedgame">Partie confirmée:</span>
-									<ul>
-										<li>{{ game.gm }} (MJ)</li>
-										<li ng-repeat="player in game.players">{{ player.name }}</li>
-									</ul>
+									<div class="panel-body">
+										<span class="confirmedgame">Partie confirmée:</span>
+										<ul>
+											<li>{{ game.gm }} (MJ)</li>
+											<li ng-repeat="player in game.players">{{ player.name }}</li>
+										</ul>
+									</div>
 								</div>
-								<div class="list-group-item tfSettingTooltipItem">
+								<div class="panel panel-default tfSettingTooltipItem">
+									<div class="panel-body">
 									MJ Disponible(s):
-									<ul>
-										<li ng-repeat="player in settingtf.availablegms">{{
-											player.name }}</li>
-									</ul>
+										<ul>
+											<li ng-repeat="player in settingtf.availablegms">{{
+												player.name }}</li>
+										</ul>
+									</div>
 								</div>
-								<div class="list-group-item tfSettingTooltipItem">
+								<div class="panel panel-default tfSettingTooltipItem">
+									<div class="panel-body">
 									Joueur(s) Disponible(s):
-									<ul>
-										<li ng-repeat="player in settingtf.availableplayers">{{
-											player.name }}</li>
-									</ul>
+										<ul>
+											<li ng-repeat="player in settingtf.availableplayers">{{
+												player.name }}</li>
+										</ul>
+									</div>
 								</div>
 							</div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -255,6 +272,7 @@
 	</div>
 
 
+	<div id="tfpop-container"></div>			
 
 	<div class="pageColumn">
 		<div class="panel panel-default panel-body weekPanel"
@@ -285,7 +303,7 @@
 									id="tfSettinglink-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" 
 									class="tfSetting" data-toggle="popover" data-delay="0"
 									data-placement="auto" data-html="true" data-animation="false"
-									data-title="{{settingsList[settingtf.code].name}}" data-selector="body"
+									data-title="{{settingsList[settingtf.code].name}}"
 									data-settingcode="{{settingtf.code}}" data-dayid="{{day.id}}"
 									data-timeframe="{{timeframe.code}}"
 									ng-repeat="settingtf in timeframe.settings"> <span
