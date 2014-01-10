@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="gamegrinderApp">
 <head>
-<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
 <title>Tests Gamegrinder</title>
-<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+<!--<link href="css/bootstrap.css" rel="stylesheet" media="screen"> -->
+<link rel="stylesheet" href="css/mint-choc/jquery-ui-1.10.3.custom.css" rel="stylesheet">
 <link rel="stylesheet" href="css/gg.css">
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="js/jquery.js"></script>
+<script src="js/jquery-1.9.1.js"></script>
+<script src="js/jquery-ui-1.10.3.custom.js"></script>
 <!-- link rel="stylesheet" href="css/bootstrap.css"-->
+
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular/angular-cookies.js"></script>
 <script src="js/app.js"></script>
@@ -16,13 +18,14 @@
 <script src="js/services.js"></script>
 <script src="js/filters.js"></script>
 <script src="js/gg.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.js"></script>
 
-<!-- Bootstrap -->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!--<script src="js/bootstrap.js"></script> -->
+
 </head>
 <body ng-controller="GameGrinderCtrl">
 	<script type="text/javascript">
+/*
 		var popParams = {
 			trigger : 'manual',
 			container: '#tfpop-container',
@@ -38,14 +41,43 @@
 			return item.data('dayid') + '-' + item.data('timeframe') + '-' + item.data('settingcode');
 		}
 
+		function openTfSettingForm(code) {
+			$('.pouetclass').css("height", "5000px");
+			var $container = $('#tfSettingTooltip-' + code + ' .tfSettingForm').first();
+			$container.css("max-height", "200");
+			setTimeout( function() {
+				$container.find('.tfSettingFormItem').each( function() {
+					$(this).css("display", "block");
+				});
+			}, 200); 
+		}
+*/
 		$(function() {
+
+			$( "#logindialog" ).dialog({
+				autoOpen: true,
+				width: 500,
+				height: 100,
+				buttons: [],
+				modal: true,
+				resizable: false
+			});
+
+			if (typeof angular.element('body').scope().currentUser == 'undefined') {
+				$( "#logindialog" ).dialog( "open" );
+			}
+			$('#loginForm').submit(function(event) {
+				$( "#logindialog" ).dialog( "close" );
+				event.preventDefault();
+			});
+
+/*
 			$('.tfSetting').hover(function (e) {
 				 if (ttlock == null) $(this).popover('show');
 			},function (e) {
 				 if (ttlock == null) $(this).popover('hide');
 			});
 			$('.tfSetting').popover(popParams);
-			$('tfSettingTooltipBox .tfSettingForm').collapse( { toggle : false } );
 
 			$('body').on('click', function (e) {
 			    $('.tfSetting').each(function () {
@@ -58,11 +90,10 @@
 					if (this.id != ttlock) {
 						ttlock = this.id;
 						$(this).popover('show');
-						$('.tfSettingForm').collapse('show');
+						openTfSettingForm(setcode);
 					}
 					else {
 						ttlock = null;
-						$('.tfSettingForm').collapse('hide');
 						$(this).popover('hide');
 					}
 				}
@@ -76,12 +107,7 @@
 				placement : 'auto',
 				title : 'Discussions'
 			});
-			if (typeof angular.element('body').scope().currentUser == 'undefined') {
-				$('#loginModal').modal('show');
-			}
-			$('#loginForm').submit(function(event) {
-				$('#loginModal').modal('hide');
-			});
+*/
 		});
 
 		function addAvailablePlayer() {
@@ -94,33 +120,20 @@
 		}
 	</script>
 
-	<div id="loginModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">C'est qui ?</h4>
-				</div>
-				<div class="modal-body">
-					<form class="form-inline" id="loginForm" role="form"
-						name="loginForm" ng-submit="login()">
-						<div class="form-group">
-							<label for="inputName" class="control-label">Tape ton
-								pseudo:</label> <input type="text" class="form-control" id="inputName"
-								name="userinput" placeholder="Ton pseudo sur le forum"
-								ng-model="currentUser" required />
-						</div>
-						<div class="form-group">
-							<button id="nameButton" class="btn btn-default"
-								ng-disabled="loginForm.$invalid" type="submit">Valider</button>
-						</div>
-					</form>
-				</div>
+	<div id="logindialog" class="no-close" title="C'est qui ?" >
+		<form class="form-inline" id="loginForm" role="form"
+			name="loginForm" ng-submit="login()">
+			<div class="ggboxrow">
+				<label for="inputName">Tape ton
+					pseudo:</label> <input type="text" id="inputName"
+					name="userinput" placeholder="Ton pseudo sur le forum"
+					ng-model="currentUser" required />
+				<button id="nameButton" ng-disabled="loginForm.$invalid" type="submit">Valider</button>
 			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
+		</form>
 	</div>
 
+<!--
 	<div id="mjModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -164,11 +177,10 @@
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
 				</div>
 			</div>
-			<!-- /.modal-content -->
 		</div>
-		<!-- /.modal-dialog -->
 	</div>
-
+-->
+<!--
 	<div style="display: none">
 
 		<div ng-repeat="week in weeks">
@@ -176,15 +188,13 @@
 				<div ng-repeat="timeframe in day.timeframes">
 					<div ng-repeat="settingtf in timeframe.settings">
 							<div id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="panel-group tfSettingTooltipBox">
-								<div class="panel-collapse collapse tfSettingTooltipItem tfSettingForm">
-									<div class="panel-body list-group">
-										<div class="list-group-item">
+								<div class="panel panel-default list-group tfSettingTooltipItem tfSettingForm">Hello
+										<div class="list-group-item tfSettingFormItem">
 											Collapsible 1
 										</div>
-										<div class="list-group-item">
+										<div class="list-group-item tfSettingFormItem">
 											Collapsible 2
 										</div>
-									</div>
 								</div>
 								<div class="panel panel-default tfSettingTooltipItem"
 									ng-repeat="game in settingtf.games">
@@ -220,7 +230,8 @@
 			</div>
 		</div>
 	</div>
-
+-->
+<!--
 	<div id="chatModal" class="modal fade" tabIndex="-1" role="dialog"
 		aria-hidden="true">
 		<div class="modal-dialog">
@@ -242,36 +253,34 @@
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
 				</div>
 			</div>
-			<!-- /.modal-content -->
 		</div>
-		<!-- /.modal-dialog -->
 	</div>
 	</div>
+-->
 
 	<div id="toolbar" class="pageColumn">
-		<div id="greetingsDiv" class="panel panel-default"
+		<div id="greetingsDiv" class="ui-widget ui-widget-content ui-corner-all ui-front"
 			ng-show="currentUser">
-			<div class="panel-heading">Salut {{ currentUser }} !</div>
-			<div class="panel-body">
-				<button type="button" ng-click="logout()" class="btn btn-default">Changer
-					d'utilisateur</button>
+			<div class="ui-widget-header">Salut {{ currentUser }} !</div>
+			<div class="ui-widget-content">
+				<button type="button" ng-click="logout()">Changer d'utilisateur</button>
 			</div>
 		</div>
 
-		<div id="LegendContainer" class="panel panel-default">
-			<div class="panel-heading">Chroniques Ouvertes</div>
-			<table class="table">
+		<div id="LegendContainer" class="ui-widget ui-widget-content ui-corner-all ui-front">
+			<div class="ui-widget-header">Chroniques Ouvertes</div>
+			<table class="ui-widget-content">
 				<tr ng-repeat="setting in settingsList">
 					<td class="legendBadge settingCell"><span class="badge">{{
 							setting.code }}</span></td>
 					<td class="settingCell">{{ setting.name }}</td>
 				</tr>
 			</table>
-			<div class="panel-heading">Chroniques Fermées</div>
+			<div class="ui-widget-header">Chroniques Fermées</div>
 		</div>
 	</div>
 
-
+<!--
 	<div id="tfpop-container"></div>			
 
 	<div class="pageColumn">
@@ -332,148 +341,7 @@
 
 			</div>
 		</div>
-
-
-		<!--
-	<div class="mainColumn">
-
-
-		<script>
-		 $(function() {
-		// run the currently selected effect
-			$( "#dispoModal" ).on('show.bs.modal', function () {
-				$( "#dispoCarousel" ).carousel(0);
-			});
-			$( ".massDispoStatusButton" ).click(function() {
-				$( "#dispoCarousel" ).carousel(1);				
-				return false;
-			});
-			$( ".massDispoSettingButton" ).click(function() {
-				$(this).addClass("btn-primary");
-				$( "#dispoCarousel" ).carousel(2);
-				
-				return false;
-			});
-		});
-		</script>
-	
-	<div id="dispoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dispoModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="dispoModalLabel">Je suis dispo pour...</h3>
-		</div>
-		<div class="modal-body">
-		    <div id="dispoCarousel" class="carousel slide" data-interval="false">
-
-			    <div class="carousel-inner">
-				<div class="active item btn-group-vertical">
-				  <button type="button" class="btn btn-primary massDispoStatusButton">... jouer à...</button>
-				  <button type="button" class="btn btn-primary massDispoStatusButton">... maîtriser à...</button>
-				</div>
-				<div class="item btn-group-vertical">
-				  <button type="button" class="btn btn-primary massDispoSettingButton"><span class="badge">EP</span> Eclipse Phase</button>
-				  <button type="button" class="btn btn-primary massDispoSettingButton"><span class="badge">7SP</span> 7th Sea: Pirates</button>
-				  <button type="button" class="btn btn-primary massDispoSettingButton"><span class="badge">SRQ</span> Shadowrun: Québec</button>
-				</div>
-				<div class="item" id="dispoSlide3">DIV 3</div>
-			    </div>
-		    </div>		
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-			<button type="button" class="btn btn-primary">Save changes</button>
-		</div>
-	     </div>
-	  </div>
-	</div>
-
-	<a data-toggle="modal" href="#dispoModal" class="btn btn-primary btn-lg">Donner mes disponibilités</a>
-	<div class="panel panel-primary">
-		<div class="panel-heading">Je suis dispo pour...</div>
-		<div class="panel-body containerPanel">
-		      <div class="row availFormRow">
-			<div class="col-lg-9">
-				<button type="button" class="btn btn-default">Jouer à:</button>
-				<span class="badge">EP</span> <span class="badge">7TH</span>
-			</div>
-			<div class="col-lg-3">
-				<button type="button" class="btn btn-default">Modifier</button>
-			</div>
-		       </div>
-		      <div class="row availFormRow">
-			<div class="col-lg-9">
-				<button type="button" class="btn btn-default">Maîtriser à:</button>
-				<span class="badge">EP</span>
-			</div>
-			<div class="col-lg-3">
-				<button type="button" class="btn btn-default">Modifier</button>
-			</div>
-		      </div>
-		</div>
-	</div>
-	
-		<div class="panel panel-primary">
-			<div class="panel-heading">Filtres</div>
-			<div class="panel-body containerPanel">
-				<form class="form-horizontal" role="form">
-				<div class="innerHeading">Raccourcis</div>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default">Mes dispos</button>
-					<button type="button" class="btn btn-default">Toutes les parties</button>
-					<button type="button" class="btn btn-default">Mes dispos</button>
-					<button type="button" class="btn btn-default">Les MJ dispos</button>
-				</div>
-				<div class="innerHeading">Paramètres détaillés</div>
-				<div class="form-group filterFormRow">
-					<label class="col-lg-3 control-label" for="inputFilterGameStatus">Parties</label>
-					<div class="col-lg-9">
-						<select class="form-control" id="inputFilterGameStatus">
-						  <option>Toutes</option>
-						  <option>Validées</option>
-						  <option>Potentielles - MJ Dispo</option>
-						  <option>Potentielles - Pas de MJ</option>
-						</select>
-					</div>
-				</div>
-				<div class="form-group filterFormRow">
-					<label class="col-lg-3 control-label" for="inputFilterSetting">Chronique</label>
-					<div class="col-lg-9">
-						<select class="form-control" id="inputFilterSetting">
-						  <option>Toutes</option>
-						  <option>Chronique 1</option>
-						  <option>Chronique 2</option>
-						  <option>Chronique 3</option>
-						</select>
-					</div>
-				</div>
-				<div class="filterFormRow">
-					<label class="col-lg-3 control-label">Joueur</label>
-					<div class="col-lg-9">
-						<label class="checkbox-inline">
-						  <input type="checkbox" id="inlineCheckbox1" value="option1"> Tous les joueurs
-						</label>
-						<label class="checkbox-inline">
-						  <input type="checkbox" id="inlineCheckbox2" value="option2"> Seulement Moi
-						</label>
-					</div>
-				</div>
-				</form>
-			</div>
-		</div>
-	</div>
-
-
-		<div class="gg-container">
-			<ul>
-				<li ng-repeat="week in weeks">
-					<p ng-repeat="day in week.days">{{day.dow}}</p>
-				</li>
-			</ul>
-		</div>
-	</div>
-	-->
+-->
 </body>
 </html>
 

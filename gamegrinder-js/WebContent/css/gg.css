@@ -1,3 +1,19 @@
+.ui-dialog-titlebar-close {
+	display: none;
+}
+#logindialog {
+	width: auto;
+	min-height: 52px;
+	max-height: none;
+	height: auto;
+}
+.ggboxrow {
+	padding: 3px;
+}
+body {
+	font: 15px/22.5px "Helvetica Neue",HelveticaNeue,Helvetica,Arial,sans-serif;
+}
+
 .width100p {
 	width: 100%;
 }
@@ -37,9 +53,25 @@
 	background-color:#FFFFFF;
 	color: #000000;
 	text-align: left;
+	margin-bottom: 3px;
 }
 .tfSetting  {
 	margin-right: 0px;
+}
+#tfpop-container>.popover>.popover-content {
+	padding: 0px;
+	background-color:#C0C0C0;
+}
+.tfSettingFormItem {
+	display: none;
+}
+.tfSettingForm {
+    max-height: 200px;
+    -webkit-transition: max-height .2s ease-out;
+    -moz-transition:  max-height .2s ease-out;
+    -ms-transition:  max-height .2s ease-out;
+    -o-transition:  max-height .2s ease-out;
+    transition:  max-height .2s ease-out;
 }
 .badge {
 	border: solid 2px #FFFFFF;
