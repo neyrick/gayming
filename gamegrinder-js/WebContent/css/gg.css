@@ -1,11 +1,11 @@
-.ui-dialog-titlebar-close {
-	display: none;
-}
-#logindialog {
+.logindialog {
 	width: auto;
-	min-height: 52px;
 	max-height: none;
 	height: auto;
+	max-width:none;
+}
+.ggbuttonbox {
+	text-align: 
 }
 .ggboxrow {
 	padding: 3px;
@@ -13,7 +13,103 @@
 body {
 	font: 15px/22.5px "Helvetica Neue",HelveticaNeue,Helvetica,Arial,sans-serif;
 }
-
+.settingCell {
+	text-align: center;
+}
+.ggpanel {
+	padding: 0px;
+	margin: 10px;
+	border-top-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-bottom-left-radius: 6px;
+	border: 2px solid #000050;
+	font: 15px/22.5px "Helvetica Neue",HelveticaNeue,Helvetica,Arial,sans-serif;
+	background-color:#000050;
+}
+.ggpanel .qtip-content{
+	padding: 0px;
+	margin: 0px;
+}
+.ggpanelItem {
+	padding: 3px;
+	background-color:#E0E0FF;
+	border-top: 1px solid #000050;
+	color: #000050;
+}
+.ggpanelTable {
+	border: 0px;
+	border-collapse: collapse;	
+}
+.ggpanelCell {
+	padding: 3px;
+	border: 0px;
+}
+.ggpanelItem:first-child {
+	border-top-right-radius: 6px;
+	border-top-left-radius: 6px;
+}
+.ggpanelItem:last-child {
+	border-bottom-right-radius: 6px;
+	border-bottom-left-radius: 6px;
+}
+.ggpanelHeader {
+	padding: 10px;
+	background-color:#000050;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+.day1 {
+	background-color: #E0E0FF;
+}
+.day2 {
+	background-color: #D0D0FF;
+}
+.day3 {
+	background-color: #C0C0FF;
+}
+.day4 {
+	background-color: #B0B0FF;
+}
+.day5 {
+	background-color: #A0A0FF;
+}
+.day6 {
+	background-color: #9090FF;
+}
+.day7 {
+	background-color: #8080FF;
+}
+.dayPanel {
+	float: left;
+	margin: 1px;
+}
+.datePanel {
+	color: #000050;
+	font-weight: bold;
+	text-align: center;
+	padding: 2px;
+}
+.timeFramePanel {
+	padding: 2px;
+	background-color:#FFFFFF;
+}
+.timeFrameItem {
+	vertical-align: middle;
+}
+.ggdropdown {
+	display: none;
+}
+.ggdropdownitem {
+    background-color: #E0E0FF;
+    cursor: pointer;
+    
+    transition: background-color .2s ease-in-out;
+}
+.ggdropdownitem:hover {
+    background-color: #000050;
+    color: #FFFFFF;
+}
 .width100p {
 	width: 100%;
 }
@@ -23,9 +119,6 @@ body {
 	font-weight: bold;
 	padding: 0px 5px;
 	min-width: 200px;
-}
-.panel {
-	margin-bottom: 10px;
 }
 .tooltip-inner {
 	max-width:none;
@@ -57,6 +150,7 @@ body {
 }
 .tfSetting  {
 	margin-right: 0px;
+	text-decoration: none;
 }
 #tfpop-container>.popover>.popover-content {
 	padding: 0px;
@@ -74,6 +168,17 @@ body {
     transition:  max-height .2s ease-out;
 }
 .badge {
+	display: inline-block;
+	min-width: 10px;
+	padding: 3px 7px;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	background-color: rgb(153, 153, 153);
+	border-radius: 10px;
 	border: solid 2px #FFFFFF;
 }
 .withMyPABadge {
@@ -93,11 +198,6 @@ body {
 }
 .plusBox {
 	display: inline-block;
-}
-.plusButton {
-	top: 3px;
-	color: #FFFFFF;
-	background-color: #000080;
 }
 .chatButton {
 	top: 3px;
@@ -132,61 +232,7 @@ body {
 	padding: 5px 10px;
 	margin-bottom: 0px;
 }
-.dayPanel {
-	float: left;
-	margin: 1px;
-}
-.dayBodyPanel {
-	padding: 2px;
-}
-.day1 {
-	background-color: #E0E0FF;
-}
-.day2 {
-	background-color: #D0D0FF;
-}
-.day3 {
-	background-color: #C0C0FF;
-}
-.day4 {
-	background-color: #B0B0FF;
-}
-.day5 {
-	background-color: #A0A0FF;
-}
-.day6 {
-	background-color: #9090FF;
-}
-.day7 {
-	background-color: #8080FF;
-}
-.datePanel {
-	font-weight: bold;
-	text-align: center;
-}
-.timeFramesPanel {
-	float: right;
-}
-.timeFramePanel {
-	margin-top: 3px;
-	margin-bottom: 0px;
-	margin-left: 3px;
-	display: block;
-}
-.timeFrameBodyPanel {
-	padding: 2px;
-	vertical-align: middle;
-}
-.timeFrameItem {
-	float: left;
-	vertical-align: middle;
-	margin-left: 2px;
-	margin-right: 2px;
-}
-.weekPanel {
-	margin-bottom: 10px;
-	padding: 5px 5px 0px 5px;
-}
+
 .confirmedgame {
 	font-weight: bold;
 }
@@ -199,8 +245,6 @@ body {
 }
 .gmColumn {
 	margin: 0px;
-}
-.settingCell {
 }
 #inputName {
 	width: 200px;

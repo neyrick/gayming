@@ -5,10 +5,12 @@
 <meta charset="utf-8">
 <title>Tests Gamegrinder</title>
 <!--<link href="css/bootstrap.css" rel="stylesheet" media="screen"> -->
-<link rel="stylesheet" href="css/mint-choc/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+<!--<link rel="stylesheet" href="css/mint-choc/jquery-ui-1.10.3.custom.css" rel="stylesheet"> -->
+<link rel="stylesheet" href="css/jquery.qtip.css" rel="stylesheet">
 <link rel="stylesheet" href="css/gg.css">
 <script src="js/jquery-1.9.1.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
+<!--<script src="js/jquery-ui-1.10.3.custom.js"></script> -->
+<script type="text/javascript" src="js/jquery.qtip.js"></script>
 <!-- link rel="stylesheet" href="css/bootstrap.css"-->
 
 <script src="lib/angular/angular.js"></script>
@@ -18,9 +20,6 @@
 <script src="js/services.js"></script>
 <script src="js/filters.js"></script>
 <script src="js/gg.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<!--<script src="js/bootstrap.js"></script> -->
 
 </head>
 <body ng-controller="GameGrinderCtrl">
@@ -53,22 +52,65 @@
 		}
 */
 		$(function() {
-
-			$( "#logindialog" ).dialog({
-				autoOpen: true,
-				width: 500,
-				height: 100,
-				buttons: [],
-				modal: true,
-				resizable: false
+			$('#logindialogcontainer').qtip({
+			    style: {
+				classes: 'ggpanel logindialog'
+			    },
+			    content: {
+				text: $('#logindialog')
+			    },
+			    position: {
+				my: 'center',
+				at: 'center',
+				target: $(window)
+			    },
+			    show: {
+				event: false,
+				modal: {
+				    on: true,
+				    blur: false,
+				    escape: false
+				}
+			    },
+			    hide: false
 			});
-
-			if (typeof angular.element('body').scope().currentUser == 'undefined') {
-				$( "#logindialog" ).dialog( "open" );
+			$('.plusButton').qtip({
+				content: { text: 'Proposer une partie' },
+				position: {
+					my: 'bottom center',
+					at: 'top center'
+				},
+				show: { event: 'hover' },
+				hide: { event: 'hover' }
+			});
+			$('.tfExtra').each(function() {
+				$(this).qtip({
+				    style: {
+					classes: 'ggpanel'
+				    },
+				    content: {
+					text: $(this).next('div')
+				    },
+				    position: {
+					my: 'top center',
+					at: 'bottom center'
+				    },
+				    show: {
+					event: 'mouseenter click',
+					solo: '.tfExtra'
+				    },
+				    hide: {
+					delay: 100,
+					fixed: 'true',
+					event: 'mouseleave',
+				    }
+				});
+			});
+			if (typeof angular.element('body').scope().currentUser != 'undefined') {
+				$( "#logindialogcontainer" ).qtip( "toggle", true );
 			}
 			$('#loginForm').submit(function(event) {
-				$( "#logindialog" ).dialog( "close" );
-				event.preventDefault();
+				$( "#logindialogcontainer" ).qtip( "toggle", false );
 			});
 
 /*
@@ -119,11 +161,12 @@
 		function addMessage() {
 		}
 	</script>
-
-	<div id="logindialog" class="no-close" title="C'est qui ?" >
+   <div id="logindialogcontainer" style="display: none">
+	<div id="logindialog">
 		<form class="form-inline" id="loginForm" role="form"
 			name="loginForm" ng-submit="login()">
-			<div class="ggboxrow">
+			<div class="ggpanelHeader ggpanelItem">C'est qui ?</div>
+			<div class="ggpanelItem">
 				<label for="inputName">Tape ton
 					pseudo:</label> <input type="text" id="inputName"
 					name="userinput" placeholder="Ton pseudo sur le forum"
@@ -132,6 +175,7 @@
 			</div>
 		</form>
 	</div>
+    </div>
 
 <!--
 	<div id="mjModal" class="modal fade">
@@ -259,53 +303,47 @@
 -->
 
 	<div id="toolbar" class="pageColumn">
-		<div id="greetingsDiv" class="ui-widget ui-widget-content ui-corner-all ui-front"
-			ng-show="currentUser">
-			<div class="ui-widget-header">Salut {{ currentUser }} !</div>
-			<div class="ui-widget-content">
+		<div id="greetingsDiv" class="ggpanel" ng-show="currentUser">
+			<div class="ggpanelItem ggpanelHeader">Salut {{ currentUser }} !</div>
+			<div class="ggpanelItem ggbuttonbox">
 				<button type="button" ng-click="logout()">Changer d'utilisateur</button>
 			</div>
 		</div>
 
-		<div id="LegendContainer" class="ui-widget ui-widget-content ui-corner-all ui-front">
-			<div class="ui-widget-header">Chroniques Ouvertes</div>
-			<table class="ui-widget-content">
-				<tr ng-repeat="setting in settingsList">
-					<td class="legendBadge settingCell"><span class="badge">{{
+		<div id="LegendContainer" class="ggpanel">
+			<div class="ggpanelItem ggpanelHeader">Chroniques Ouvertes</div>
+			<table class="ggpanelTable">
+				<tr class="ggpanelItem" ng-repeat="setting in settingsList">
+					<td class="legendBadge settingCell ggpanelCell"><span class="badge">{{
 							setting.code }}</span></td>
-					<td class="settingCell">{{ setting.name }}</td>
+					<td class="settingCell ggpanelCell">{{ setting.name }}</td>
+					<td class="settingCell ggpanelCell"><a href="#" title="Visible dans le planning ?" class="ggqtip"><img src="images/{{ setting.id|settingVisiblePic:'' }}"/></a></td>
 				</tr>
 			</table>
-			<div class="ui-widget-header">Chroniques Fermées</div>
+			<div class="ggpanelItem ggpanelHeader">Chroniques Fermées</div>
 		</div>
 	</div>
 
-<!--
+
 	<div id="tfpop-container"></div>			
 
 	<div class="pageColumn">
 		<div class="panel panel-default panel-body weekPanel"
 			ng-repeat="week in weeks">
 
-			<div class="panel panel-default day{{day.dow}} dayPanel"
+			<div class="dayPanel ggpanel"
 				ng-repeat="day in week.days">
-				<div class="panel-body day{{day.dow}} dayBodyPanel">
-					<div class="datePanel"></div>
-					<div class="timeFramesPanel">
-						<div class="panel-default timeFramePanel">
-							<div class="timeFrameBodyPanel panel-body datePanel">
+						<div class="ggpanelItem datePanel day{{day.dow}}">
 
 								{{ dowcodes[day.dow] }} <a
 									id="chatButton-{{day.id}}-{{timeframe.code}}" href="#chatModal"
-									class="tfExtra" data-toggle="modal" data-day="{{day.id}}"
+									data-toggle="modal" data-day="{{day.id}}"
 									ng-click="selectTimeframe(day.id, timeframe.code)"> <span
 									class="glyphicon glyphicon-comment chatButton"></span>
 								</a> <br />{{ day.dom }} / {{ day.month }}
-							</div>
 						</div>
-						<div class="panel panel-default timeFramePanel"
+						<div class="ggpanelItem timeFramePanel"
 							ng-repeat="timeframe in day.timeframes">
-							<div class="timeFrameBodyPanel panel-body">
 								<img class="timeFrameItem"
 									src="{{timeframesDesc[timeframe.code].pic}}"
 									data-test="{{timeframe.code}}" /> <a href="#"
@@ -318,30 +356,21 @@
 									ng-repeat="settingtf in timeframe.settings"> <span
 									class="{{settingtf|settingBadgeStyle:currentUser}}">{{settingtf.code}}</span>
 								</a>
-								<div class="dropdown plusBox">
-									<a id="plusButton-{{day.id}}-{{timeframe.code}}"
-										href="#" class="tfExtra"
-										data-toggle="dropdown" data-day="{{day.id}}"
-										data-timeframe="{{timeframe.code}}" ng-click="selectTimeframe(timeframe)"> <span
-										class="badge plusButton">MJ</span>
-									</a>
-									
-									<ul class="dropdown-menu" role="menu"
-										aria-labelledby="plusButton-{{day.id}}-{{timeframe.code}}">
-										<li class="plusHeader">Je propose une partie de...</li>
-										<li ng-repeat="setting in settingsList"><a tabindex="-1"
-											href="#">{{setting.name}}</a></li>
-									</ul>
+								<div class="timeFrameItem dropdown plusBox">
+									<img id="plusButton-{{day.id}}-{{timeframe.code}}" class="tfExtra timeFrameItem plusButton" src="images/plus.gif"
+										data-day="{{day.id}}"
+										data-timeframe="{{timeframe.code}}" ng-click="selectTimeframe(timeframe)">
+									<div class="ggdropdown">
+										<div class="ggpanelItem ggpanelHeader">Je propose une partie de...</div>
+										<div class="ggpanelItem ggdropdownitem" ng-repeat="setting in settingsList">{{setting.name}}</div>
+									</div>
 								</div>
 
-							</div>
 						</div>
-					</div>
-				</div>
 
 			</div>
 		</div>
--->
+
 </body>
 </html>
 

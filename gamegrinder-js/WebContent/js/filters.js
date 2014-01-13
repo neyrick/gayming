@@ -68,6 +68,14 @@ gamegrinderApp.filter('settingBadgeStyle', function() {
     };
 });
 
+gamegrinderApp.filter('settingVisiblePic', function() {
+    return function(settingid, hiddenlist) {
+	    var hiddenArray = hiddenlist.split("|");
+	    if (hiddenArray.indexOf(settingid) != -1) return "hiddenSetting.gif";
+	    else return  "visibleSetting.gif";
+    };
+});
+
 gamegrinderApp.filter('recruitPlayersStyle', function() {
     return function(player, playerlist) {
 	    for (var key in playerlist) {
