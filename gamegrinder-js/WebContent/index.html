@@ -35,22 +35,15 @@
 			}						
 		};
 		var ttlock = null;
-		
+*/		
 		function getTfSettingCode(item) {
 			return item.data('dayid') + '-' + item.data('timeframe') + '-' + item.data('settingcode');
 		}
 
-		function openTfSettingForm(code) {
-			$('.pouetclass').css("height", "5000px");
-			var $container = $('#tfSettingTooltip-' + code + ' .tfSettingForm').first();
-			$container.css("max-height", "200");
-			setTimeout( function() {
-				$container.find('.tfSettingFormItem').each( function() {
-					$(this).css("display", "block");
-				});
-			}, 200); 
+		function toggleTfSettingForm(code) {
+			$('#tfSettingEditBox-' + code).slideToggle(300);
 		}
-*/
+
 		$(function() {
 			$('#logindialogcontainer').qtip({
 			    style: {
@@ -73,6 +66,14 @@
 				}
 			    },
 			    hide: false
+			});
+			$('[ttip!=""]').qtip({
+				style: { classes: 'infoTooltip' },
+				content: { attr: 'ttip' },
+				position: {
+					my: 'bottom left',
+					at: 'top right'
+				},
 			});
 			$('.plusButton').qtip({
 				content: { text: 'Proposer une partie' },
@@ -106,11 +107,42 @@
 				    }
 				});
 			});
-			if (typeof angular.element('body').scope().currentUser != 'undefined') {
+			$('.tfSetting').each(function() {
+				$(this).qtip({
+				    style: {
+					classes: 'ggpanel'
+				    },
+				    content: {
+					text: $(this).children('div').first()
+				    },
+				    position: {
+					my: 'top center',
+					at: 'bottom center'
+				    },
+				    show: {
+					event: 'mouseenter click',
+					solo: '.tfExtra'
+				    },
+				    hide: {
+					delay: 100,
+					fixed: 'true',
+					event: 'mouseleave',
+				    },
+				    events: {
+					hide: function(event, api) {
+						$(this).find('.collapsed').hide();
+					}
+				    }
+				});
+			});
+			if (typeof angular.element('body').scope().currentUser == 'undefined') {
 				$( "#logindialogcontainer" ).qtip( "toggle", true );
 			}
 			$('#loginForm').submit(function(event) {
 				$( "#logindialogcontainer" ).qtip( "toggle", false );
+			});
+			$('.tfSetting').click(function(event) {
+				toggleTfSettingForm(getTfSettingCode($(this)));
 			});
 
 /*
@@ -310,7 +342,29 @@
 			</div>
 		</div>
 
-		<div id="LegendContainer" class="ggpanel">
+		<div id="legendContainer" class="ggpanel">
+			<div class="ggpanelItem ggpanelHeader">Légende</div>
+			<table class="ggpanelTable">
+				<tr class="ggpanelItem">
+					<td class="legendBadge settingCell ggpanelCell"><span class="badge notAvailableBadge">ABC</span></td>
+					<td class="settingCell ggpanelCell legendCell">Pas dispo / intéressé</td>
+				</tr>
+				<tr class="ggpanelItem">
+					<td class="legendBadge settingCell ggpanelCell"><span class="badge availableBadge">ABC</span></td>
+					<td class="settingCell ggpanelCell legendCell">Je suis dispo</td>
+				</tr>
+				<tr class="ggpanelItem">
+					<td class="legendBadge settingCell ggpanelCell"><span class="badge playBadge">ABC</span></td>
+					<td class="settingCell ggpanelCell legendCell">Je joue !</td>
+				</tr>
+				<tr class="ggpanelItem">
+					<td class="legendBadge settingCell ggpanelCell"><span class="badge noPlayBadge">ABC</span></td>
+					<td class="settingCell ggpanelCell legendCell">Partie sans moi</td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="campaignsContainer" class="ggpanel">
 			<div class="ggpanelItem ggpanelHeader">Chroniques Ouvertes</div>
 			<table class="ggpanelTable">
 				<tr class="ggpanelItem" ng-repeat="setting in settingsList">
@@ -344,7 +398,7 @@
 						</div>
 						<div class="ggpanelItem timeFramePanel"
 							ng-repeat="timeframe in day.timeframes">
-								<img class="timeFrameItem"
+								<img class="timeFrameItem" ttip="{{timeframesDesc[timeframe.code].name}}"
 									src="{{timeframesDesc[timeframe.code].pic}}"
 									data-test="{{timeframe.code}}" /> <a href="#"
 									id="tfSettinglink-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" 
@@ -355,7 +409,40 @@
 									data-timeframe="{{timeframe.code}}"
 									ng-repeat="settingtf in timeframe.settings"> <span
 									class="{{settingtf|settingBadgeStyle:currentUser}}">{{settingtf.code}}</span>
+							<div id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="ggdropdown">
+								<div class="ggpanelItem ggpanelHeader">{{settingsList[settingtf.code].name}}</div>
+								<div id="tfSettingEditBox-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="dummyContainer collapsed">
+										<div class="ggpanelItem">Dispo pour jouer</div>
+										<div class="ggpanelItem">Dispo pour maîtriser</div>
+										<div class="ggpanelItem">Valider une partie</div>
+										<div class="ggpanelItem">Annuler la partie</div>
+								</div>
+								<div id="tfSettingEditBox-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="dummyContainer collapsed">
+										<div class="ggpanelItem ggPanelHeader">Participants</div>
+										<div class="ggpanelItem" ng-repeat="player in settingtf.availableplayers">{{ player.name }}</div>
+								</div>
+								<div class="ggpanelItem" ng-repeat="game in settingtf.games">
+										<span class="confirmedgame">Partie confirmée:</span>
+										<ul>
+											<li>{{ game.gm }} (MJ)</li>
+											<li ng-repeat="player in game.players">{{ player.name }}</li>
+										</ul>
+								</div>
+								<div class="ggpanelItem">
+									MJ Disponible(s):
+										<ul>
+											<li ng-repeat="player in settingtf.availablegms">{{ player.name }}</li>
+										</ul>
+								</div>
+								<div class="ggpanelItem">
+									Joueur(s) Disponible(s):
+										<ul>
+											<li ng-repeat="player in settingtf.availableplayers">{{ player.name }}</li>
+										</ul>
+								</div>
+							</div>
 								</a>
+
 								<div class="timeFrameItem dropdown plusBox">
 									<img id="plusButton-{{day.id}}-{{timeframe.code}}" class="tfExtra timeFrameItem plusButton" src="images/plus.gif"
 										data-day="{{day.id}}"

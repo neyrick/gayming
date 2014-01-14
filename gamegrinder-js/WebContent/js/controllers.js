@@ -39,8 +39,8 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
   $scope.dowcodes = { "1":"LU","2":"MA","3":"ME","4":"JE","5":"VE","6":"SA","7":"DI"};
 
   $scope.timeframesDesc = {
-    "AFTERNOON": {"key":"AFTERNOON", pic:"images/aprem.gif"},
-    "EVENING": {"key":"EVENING", pic:"images/soir.gif"},
+    "AFTERNOON": {"key":"AFTERNOON", pic:"images/aprem.gif", name:"Après-midi"},
+    "EVENING": {"key":"EVENING", pic:"images/soir.gif", name:"Soirée"},
   };
 
   $scope.settingsList =  {

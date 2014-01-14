@@ -46,23 +46,22 @@ function isPlaying(settingtf, username) {
 gamegrinderApp.filter('settingBadgeStyle', function() {
     return function(settingtf, username) {
 	    var hasGame = ((typeof settingtf.games != 'undefined') && (settingtf.games.length > 0));
-	    var hasGM = ((typeof settingtf.availablegms != 'undefined') && (settingtf.availablegms.length > 0));
+//	    var hasGM = ((typeof settingtf.availablegms != 'undefined') && (settingtf.availablegms.length > 0));
 	    var style = 'badge';
 	    if (hasGame) {
 		    if (isPlaying(settingtf, username))
-			style = style + '  withMyPABadge withMyGameBadge';
+			style = style + '  playBadge';
+/*
 		    else if (isAvailable(settingtf, username))
-			style = style + '  withMyPABadge withGameBadge';
+			style = style + '  withMyPABadge withGameBadge';*/
 		    else
-			style = style + '  withGameBadge';
+			style = style + '  noPlayBadge';
 	    }
 	    else {
 		    if (isAvailable(settingtf, username))
-			style = style + '  withMyPABadge';
-		    if (hasGM)
-			style = style + '  withGmBadge';
+			style = style + '  availableBadge';
 		    else
-			style = style + '  withoutGmBadge';
+			style = style + '  notAvailableBadge';
 	    }	    
 	    return style;
     };

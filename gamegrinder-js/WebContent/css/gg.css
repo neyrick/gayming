@@ -39,7 +39,8 @@ body {
 }
 .ggpanelTable {
 	border: 0px;
-	border-collapse: collapse;	
+	border-collapse: collapse;
+	width: 100%;	
 }
 .ggpanelCell {
 	padding: 3px;
@@ -110,43 +111,18 @@ body {
     background-color: #000050;
     color: #FFFFFF;
 }
-.width100p {
-	width: 100%;
+
+.dummyContainer {
+	margin: 0px;
+	padding: 0px;
 }
-.plusHeader {
-	background-color:#404040;
-	color: #FFFFFF;
-	font-weight: bold;
-	padding: 0px 5px;
-	min-width: 200px;
+.collapsed {
+	display: none;
 }
-.tooltip-inner {
-	max-width:none;
-	white-space:nowrap;
-	padding: 2px;
-}
-.popover {
-	max-width: none;
-}
-.popover-title {
-	background-color:#404040;
-	color: #FFFFFF;
-	font-weight: bold;
-}
-.tfSettingTooltipBox {
-	padding: 4px;
-	margin-bottom: 0px;
-}
-.tfSettingTooltipHeader {
-	background-color:#404040;
-	color: #FFFFFF;
-	font-weight: bold;
-}
-.tfSettingTooltipItem {
-	background-color:#FFFFFF;
-	color: #000000;
-	text-align: left;
-	margin-bottom: 3px;
+.infoTooltip {
+	background-color: #E0E0FF;
+	border-color: #000050;
+	color: #000050;
 }
 .tfSetting  {
 	margin-right: 0px;
@@ -179,22 +155,26 @@ body {
 	vertical-align: baseline;
 	background-color: rgb(153, 153, 153);
 	border-radius: 10px;
-	border: solid 2px #FFFFFF;
+	border: solid 1px #000000;
 }
-.withMyPABadge {
-	border: solid 2px #FF0000;
+.legendBadge {
+	width: 50px;
 }
-.withMyGameBadge {
-	background-color: #00A000;
+.legendCell {
+	text-align: left;
 }
-.withoutGmBadge {
-	background-color: #999999;
+.playBadge {
+	background-color: #00FF00;
 }
-.withGmBadge {
-	background-color: #C06000;
+.noPlayBadge {
+	background-color: #C0C0FF;
 }
-.withGameBadge {
-	background-color: #3030F0;
+.availableBadge {
+	background-color: #FFFF00;
+}
+.notAvailableBadge {
+	background-color: #606060;
+	color: #FFFFFF;
 }
 .plusBox {
 	display: inline-block;
@@ -239,9 +219,6 @@ body {
 .pageColumn {
 	float:left;
 	margin: 10px;
-}
-.legendBadge {
-	width: 50px;
 }
 .gmColumn {
 	margin: 0px;
