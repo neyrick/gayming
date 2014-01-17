@@ -8,6 +8,9 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
 	
   $scope.currentUser =  "PJ1";// cookies['ggUser'];
 
+  $scope.invisibleOpenSettings = (typeof $cookies.ggInvisibleOpen != 'undefined')?$cookies.ggInvisibleOpen.split("|"):new Array();
+  $scope.visibleClosedSettings = (typeof $cookies.ggVisibleClosed != 'undefined')?$cookies.ggVisibleClosed.split("|"):new Array();
+
   $scope.currentRecruits = [];
 	
   $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; };
@@ -30,12 +33,30 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
 	}
 	$scope.currentRecruits[player.name] = player;
   }
-  
-//  $scope.login = function() { userService.login($scope.currentUser); };
-//  $scope.logout = function() { currentUser = undefined; userService.logout(); };
 
+  $scope.toggleSettingVisibility = function(settingid, isOpen) {
+  	var settingsArray;
+	if (isOpen) {
+		settingsArray = $scope.invisibleOpenSettings;
+	}
+	else {
+		settingsArray = $scope.visibleClosedSettings;
+	}
+	var index = settingsArray.indexOf('' + settingid);
+	if (index != -1) {
+		settingsArray.splice(index, 1);
+	}
+	else {
+		settingsArray.push('' + settingid)
+	}
+	$scope.updateSettingsCookies();
+  }
 
-//	$scope.currentUser = "toto";
+  $scope.updateSettingsCookies = function() {
+	$cookies.ggInvisibleOpen = $scope.invisibleOpenSettings.join("|");
+	$cookies.ggVisibleClosed = $scope.visibleClosedSettings.join("|");
+  }
+
   $scope.dowcodes = { "1":"LU","2":"MA","3":"ME","4":"JE","5":"VE","6":"SA","7":"DI"};
 
   $scope.timeframesDesc = {

@@ -36,10 +36,6 @@
 		};
 		var ttlock = null;
 */		
-		function getTfSettingCode(item) {
-			return item.data('dayid') + '-' + item.data('timeframe') + '-' + item.data('settingcode');
-		}
-
 		function toggleTfSettingForm(code) {
 			$('#tfSettingEditBox-' + code).slideToggle(300);
 		}
@@ -143,6 +139,12 @@
 			});
 			$('.tfSetting').click(function(event) {
 				toggleTfSettingForm(getTfSettingCode($(this)));
+			});
+			$('.dayPanel').hover(function(event) {
+				$(this).find(".datePanel").addClass("hoverDay");
+			},
+			function(event) {
+				$(this).find(".datePanel").removeClass("hoverDay");
 			});
 
 /*
@@ -343,7 +345,7 @@
 		</div>
 
 		<div id="legendContainer" class="ggpanel">
-			<div class="ggpanelItem ggpanelHeader">Légende</div>
+			<div class="ggpanelItem ggpanelHeader glossyHeader">Légende</div>
 			<table class="ggpanelTable">
 				<tr class="ggpanelItem">
 					<td class="legendBadge settingCell ggpanelCell"><span class="badge notAvailableBadge">ABC</span></td>
@@ -365,16 +367,14 @@
 		</div>
 
 		<div id="campaignsContainer" class="ggpanel">
-			<div class="ggpanelItem ggpanelHeader">Chroniques Ouvertes</div>
+			<div class="ggpanelItem ggpanelHeader glossyHeader">Chroniques Ouvertes&nbsp;<img src="images/help.png" ttip="Cliquez sur une chronique pour la rendre visible/invisible dans le planning"></div>
 			<table class="ggpanelTable">
-				<tr class="ggpanelItem" ng-repeat="setting in settingsList">
-					<td class="legendBadge settingCell ggpanelCell"><span class="badge">{{
-							setting.code }}</span></td>
+				<tr class="ggpanelItem {{ setting.id|settingVisibleStyle:true:invisibleOpenSettings }} ggclickablelistitem" ng-repeat="setting in settingsList" ng-click="toggleSettingVisibility(setting.id, true)">
+					<td class="legendBadge ggpanelCell"><span class="badge">{{setting.code }}</span></td>
 					<td class="settingCell ggpanelCell">{{ setting.name }}</td>
-					<td class="settingCell ggpanelCell"><a href="#" title="Visible dans le planning ?" class="ggqtip"><img src="images/{{ setting.id|settingVisiblePic:'' }}"/></a></td>
 				</tr>
 			</table>
-			<div class="ggpanelItem ggpanelHeader">Chroniques Fermées</div>
+			<div class="ggpanelItem ggpanelHeader glossyHeader">Chroniques Fermées</div>
 		</div>
 	</div>
 
@@ -387,14 +387,9 @@
 
 			<div class="dayPanel ggpanel"
 				ng-repeat="day in week.days">
-						<div class="ggpanelItem datePanel day{{day.dow}}">
+						<div class="ggpanelItem datePanel day{{day.dow}} glossyHeader">
 
-								{{ dowcodes[day.dow] }} <a
-									id="chatButton-{{day.id}}-{{timeframe.code}}" href="#chatModal"
-									data-toggle="modal" data-day="{{day.id}}"
-									ng-click="selectTimeframe(day.id, timeframe.code)"> <span
-									class="glyphicon glyphicon-comment chatButton"></span>
-								</a> <br />{{ day.dom }} / {{ day.month }}
+								<span>{{ dowcodes[day.dow] }}</span> <br /><span>{{ day.dom }} / {{ day.month }}<span>
 						</div>
 						<div class="ggpanelItem timeFramePanel"
 							ng-repeat="timeframe in day.timeframes">
@@ -410,12 +405,12 @@
 									ng-repeat="settingtf in timeframe.settings"> <span
 									class="{{settingtf|settingBadgeStyle:currentUser}}">{{settingtf.code}}</span>
 							<div id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="ggdropdown">
-								<div class="ggpanelItem ggpanelHeader">{{settingsList[settingtf.code].name}}</div>
+								<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">{{settingsList[settingtf.code].name}}</div>
 								<div id="tfSettingEditBox-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="dummyContainer collapsed">
-										<div class="ggpanelItem">Dispo pour jouer</div>
-										<div class="ggpanelItem">Dispo pour maîtriser</div>
-										<div class="ggpanelItem">Valider une partie</div>
-										<div class="ggpanelItem">Annuler la partie</div>
+										<div class="ggpanelItem ggclickablelistitem">Dispo pour jouer</div>
+										<div class="ggpanelItem ggclickablelistitem">Dispo pour maîtriser</div>
+										<div class="ggpanelItem ggclickablelistitem">Valider une partie</div>
+										<div class="ggpanelItem ggclickablelistitem">Annuler la partie</div>
 								</div>
 								<div id="tfSettingEditBox-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="dummyContainer collapsed">
 										<div class="ggpanelItem ggPanelHeader">Participants</div>
@@ -449,7 +444,7 @@
 										data-timeframe="{{timeframe.code}}" ng-click="selectTimeframe(timeframe)">
 									<div class="ggdropdown">
 										<div class="ggpanelItem ggpanelHeader">Je propose une partie de...</div>
-										<div class="ggpanelItem ggdropdownitem" ng-repeat="setting in settingsList">{{setting.name}}</div>
+										<div class="ggpanelItem ggclickablelistitem" ng-repeat="setting in settingsList">{{setting.name}}</div>
 									</div>
 								</div>
 

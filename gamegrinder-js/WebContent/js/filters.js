@@ -67,11 +67,12 @@ gamegrinderApp.filter('settingBadgeStyle', function() {
     };
 });
 
-gamegrinderApp.filter('settingVisiblePic', function() {
-    return function(settingid, hiddenlist) {
-	    var hiddenArray = hiddenlist.split("|");
-	    if (hiddenArray.indexOf(settingid) != -1) return "hiddenSetting.gif";
-	    else return  "visibleSetting.gif";
+gamegrinderApp.filter('settingVisibleStyle', function() {
+    return function(settingid, defaultShow, toggledlist) {
+            var show = defaultShow;
+	    if (toggledlist.indexOf('' + settingid) != -1) show = !defaultShow;
+	    if (show) return "ggEnabledItem";
+	    else return "ggDisabledItem";
     };
 });
 
