@@ -6,7 +6,7 @@
 <title>Tests Gamegrinder</title>
 <!--<link href="css/bootstrap.css" rel="stylesheet" media="screen"> -->
 <!--<link rel="stylesheet" href="css/mint-choc/jquery-ui-1.10.3.custom.css" rel="stylesheet"> -->
-<link rel="stylesheet" href="css/jquery.qtip.css" rel="stylesheet">
+<link rel="stylesheet" href="css/jquery.qtip.css">
 <link rel="stylesheet" href="css/gg.css">
 <script src="js/jquery-1.9.1.js"></script>
 <!--<script src="js/jquery-ui-1.10.3.custom.js"></script> -->
@@ -140,12 +140,11 @@
 			$('#loginForm').submit(function(event) {
 				$( "#logindialogcontainer" ).qtip( "toggle", false );
 			});
+/*
 			$('.tfSetting').click(function(event) {
 				toggleTfSettingForm(getTfSettingCode($(this)));
 			});
-			$('.dayEditHeader').click(function(event) {
-				$(this).next("div").slideToggle(300);
-			});            
+*/
 			$('.dayPanel').hover(function(event) {
 				$(this).find(".datePanel").addClass("hoverDay");
 			},
@@ -385,19 +384,15 @@
 	</div>
 
 
-	<div id="tfpop-container"></div>			
-
 	<div class="pageColumn">
-		<div class="panel panel-default panel-body weekPanel"
-			ng-repeat="week in weeks">
+		<div class="weekPanel" ng-repeat="week in weeks">
 
-			<div class="dayPanel ggpanel"
-				ng-repeat="day in week.days">
-						<div class="ggpanelItem datePanel day{{day.dow}} glossyHeader">
+			<div class="day{{day.dow}} dayPanel" ng-repeat="day in week.days">
+						<div class="datePanel glossyHeader">
 
-								<span>{{ dowcodes[day.dow] }}</span> <br /><span>{{ day.dom }} / {{ day.month }}<span>
+								<span>{{ dowcodes[day.dow] }}</span> <br /><span>{{ day.dom }} / {{ day.month }}</span>
 						</div>
-						<div class="ggpanelItem timeFramePanel"
+						<div class="timeFramePanel"
 							ng-repeat="timeframe in day.timeframes">
 								<img class="timeFrameItem" ttip="{{timeframesDesc[timeframe.code].name}}"
 									src="{{timeframesDesc[timeframe.code].pic}}"
@@ -412,7 +407,7 @@
 									class="{{settingtf|settingBadgeStyle:currentUser}}">{{settingtf.code}}</span>
 							<div id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="ggdropdown">
 								<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay dayEditHeader">{{settingsList[settingtf.code].name}}</div>
-								<div id="tfSettingEditBox-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="dummyContainer collapsed">
+								<div id="tfSettingEditBox-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="dummyContainer">
 										<div class="ggpanelItem ggclickablelistitem"><img src="images/visibleSetting.gif" ng-show="userIsInPlayers(settingtf.availableplayers)">Dispo pour jouer</div>
 										<div class="ggpanelItem ggclickablelistitem"><img src="images/visibleSetting.gif" ng-show="userIsInPlayers(settingtf.availablegms)">Dispo pour maîtriser</div>
 										<div class="ggpanelItem ggclickablelistitem" ng-show="userIsInPlayers(settingtf.availablegms)">Valider une partie</div>
@@ -455,6 +450,7 @@
 								</div>
 
 						</div>
+			</div>
 
 			</div>
 		</div>

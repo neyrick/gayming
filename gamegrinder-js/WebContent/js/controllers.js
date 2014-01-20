@@ -4,17 +4,17 @@
 
 gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userService', function GameGrinderCtrl($scope, $cookies, userService) {
 
-  $scope.currentDay = 0;
+    $scope.currentDay = 0;
 	
-  $scope.currentUser =  "PJ1";// cookies['ggUser'];
+    $scope.currentUser =  "MJD1";// cookies['ggUser'];
 
-  $scope.invisibleOpenSettings = (typeof $cookies.ggInvisibleOpen != 'undefined')?$cookies.ggInvisibleOpen.split("|"):new Array();
-  $scope.visibleClosedSettings = (typeof $cookies.ggVisibleClosed != 'undefined')?$cookies.ggVisibleClosed.split("|"):new Array();
+    $scope.invisibleOpenSettings = (typeof $cookies.ggInvisibleOpen != 'undefined')?$cookies.ggInvisibleOpen.split("|"):new Array();
+    $scope.visibleClosedSettings = (typeof $cookies.ggVisibleClosed != 'undefined')?$cookies.ggVisibleClosed.split("|"):new Array();
 
-  $scope.currentRecruits = [];
+    $scope.currentRecruits = [];
 	
-  $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; };
-  $scope.logout=function() { delete $cookies['ggUser']; };
+    $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; };
+    $scope.logout=function() { delete $cookies['ggUser']; $( "#logindialogcontainer" ).qtip( "toggle", true ); };
 
    $scope.selectTimeframe=function(val) {
      $scope.currentTimeframe=val;
@@ -57,6 +57,31 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
 	$cookies.ggVisibleClosed = $scope.visibleClosedSettings.join("|");
   }
 
+  $scope.userIsInPlayers = function(playerslist) {
+        var i,player;
+        if (typeof playerslist == "undefined") return false;
+        for (i = 0; i < playerslist.length; i++) {
+            player = playerslist[i];
+            if (player.name == $scope.currentUser) return true;            
+        }
+        return false;
+  }
+  
+  $scope.userIsIn = function(itemlist) {
+      if (typeof itemlist == "undefined") return false;
+      return (itemlist.indexOf($scope.currentUser) != -1);
+  }
+  
+  $scope.userIsGMing = function(settingtf) {
+        var i,game;
+        if (typeof settingtf.games == "undefined") return false;
+        for (i = 0; i < settingtf.games.length; i++) {
+            game = settingtf.games[i];
+            if (game.gm == $scope.currentUser) return true;            
+        }
+        return false;
+  }
+  
   $scope.dowcodes = { "1":"LU","2":"MA","3":"ME","4":"JE","5":"VE","6":"SA","7":"DI"};
 
   $scope.timeframesDesc = {

@@ -61,40 +61,31 @@ body {
 }
 .day1 {
 	background-color: #E0E0FF;
+	z-index: 17;
 }
 .day2 {
 	background-color: #D0D0FF;
+	z-index: 16;
 }
 .day3 {
 	background-color: #C0C0FF;
+	z-index: 15;
 }
 .day4 {
 	background-color: #B0B0FF;
+	z-index: 14;
 }
 .day5 {
 	background-color: #A0A0FF;
+	z-index: 13;
 }
 .day6 {
 	background-color: #9090FF;
+	z-index: 12;
 }
 .day7 {
 	background-color: #8080FF;
-}
-.dayPanel {
-	float: left;
-	margin: 1px;
-}
-.datePanel {
-	color: #000050;
-	text-align: center;
-	padding: 2px;
-}
-.timeFramePanel {
-	padding: 2px;
-	background-color:#FFFFFF;
-}
-.timeFrameItem {
-	vertical-align: middle;
+	z-index: 11;
 }
 .ggdropdown {
 	display: none;
@@ -199,9 +190,9 @@ body {
 	top: 0px; 
         left: 0px;  
       
-        -webkit-border-radius: 8px;  
-        -moz-border-radius: 8px;  
-        border-radius: 8px;  
+        -webkit-border-radius: 9px;  
+        -moz-border-radius: 9px;  
+        border-radius: 9px;  
       
         background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 8%, rgba(255,255,255,0) 100%);  
         background: -webkit-gradient(linear, left top, left bottombottom, color-stop(0%,rgba(255,255,255,1)), color-stop(8%,rgba(255,255,255,0.7)), color-stop(100%,rgba(255,255,255,0)));  
@@ -239,7 +230,54 @@ body {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5883f8', endColorstr='#57a9fb',GradientType=0 );
 	color: #FFFFFF;
 }
-
+.weekPanel {
+	overflow: hidden;
+	height: auto;
+	padding-left: 14px;
+	margin-bottom: 10px;
+}
+.dayPanel {
+	overflow: visible;
+	float: left;
+	border-top-right-radius: 9px;
+	border-bottom-right-radius: 9px;
+	border-left: 0px;
+	border-right: 1px solid #000000;
+	border-top: 1px solid #000000;
+	border-bottom: 1px solid #000000;
+	position: relative;
+	margin-left: -12px;
+}
+.dayPanel > div {
+	padding-right: 2px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 14px;
+}
+.dayPanel:first-child > div {
+	padding: 2px;
+}
+.dayPanel:first-child {
+	border-left: 1px solid #000000;
+}
+.datePanel:before {
+	border-top-left-radius: 0px;
+}
+.datePanel {
+	border-top-left-radius: 0px;
+	border-top-right-radius: 9px;
+	color: #000050;
+	text-align: center;
+}
+.timeFramePanel:last-child {
+	border-bottom-right-radius: 9px;
+}
+.timeFramePanel {
+	background-color:#FFFFFF;
+}
+.timeFrameItem {
+	vertical-align: middle;
+}
 .chatButton {
 	top: 3px;
 	color: #B03000;
