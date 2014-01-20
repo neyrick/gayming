@@ -25,6 +25,7 @@ body {
 	border-bottom-left-radius: 9px;
 	font: 15px/22.5px "Helvetica Neue",HelveticaNeue,Helvetica,Arial,sans-serif;
 	background-color:#000050;
+    border: 0px;
 }
 .ggpanel .qtip-content{
 	padding: 0px;

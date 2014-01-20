@@ -70,6 +70,9 @@
 					my: 'bottom left',
 					at: 'top right'
 				},
+                show: {
+                    delay: '40'
+                }
 			});
 			$('.plusButton').qtip({
 				content: { text: 'Proposer une partie' },
@@ -140,6 +143,9 @@
 			$('.tfSetting').click(function(event) {
 				toggleTfSettingForm(getTfSettingCode($(this)));
 			});
+			$('.dayEditHeader').click(function(event) {
+				$(this).next("div").slideToggle(300);
+			});            
 			$('.dayPanel').hover(function(event) {
 				$(this).find(".datePanel").addClass("hoverDay");
 			},
@@ -199,7 +205,7 @@
 	<div id="logindialog">
 		<form class="form-inline" id="loginForm" role="form"
 			name="loginForm" ng-submit="login()">
-			<div class="ggpanelHeader ggpanelItem">C'est qui ?</div>
+			<div class="ggpanelHeader ggpanelItem glossyHeader">C'est qui ?</div>
 			<div class="ggpanelItem">
 				<label for="inputName">Tape ton
 					pseudo:</label> <input type="text" id="inputName"
@@ -338,7 +344,7 @@
 
 	<div id="toolbar" class="pageColumn">
 		<div id="greetingsDiv" class="ggpanel" ng-show="currentUser">
-			<div class="ggpanelItem ggpanelHeader">Salut {{ currentUser }} !</div>
+			<div class="ggpanelItem ggpanelHeader glossyHeader">Salut {{ currentUser }} !</div>
 			<div class="ggpanelItem ggbuttonbox">
 				<button type="button" ng-click="logout()">Changer d'utilisateur</button>
 			</div>
@@ -367,7 +373,7 @@
 		</div>
 
 		<div id="campaignsContainer" class="ggpanel">
-			<div class="ggpanelItem ggpanelHeader glossyHeader">Chroniques Ouvertes&nbsp;<img src="images/help.png" ttip="Cliquez sur une chronique pour la rendre visible/invisible dans le planning"></div>
+			<div class="ggpanelItem ggpanelHeader glossyHeader" ttip="Cliquez sur une chronique pour la rendre visible/invisible dans le planning">Chroniques Ouvertes</div>
 			<table class="ggpanelTable">
 				<tr class="ggpanelItem {{ setting.id|settingVisibleStyle:true:invisibleOpenSettings }} ggclickablelistitem" ng-repeat="setting in settingsList" ng-click="toggleSettingVisibility(setting.id, true)">
 					<td class="legendBadge ggpanelCell"><span class="badge">{{setting.code }}</span></td>
@@ -405,12 +411,12 @@
 									ng-repeat="settingtf in timeframe.settings"> <span
 									class="{{settingtf|settingBadgeStyle:currentUser}}">{{settingtf.code}}</span>
 							<div id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="ggdropdown">
-								<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">{{settingsList[settingtf.code].name}}</div>
+								<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay dayEditHeader">{{settingsList[settingtf.code].name}}</div>
 								<div id="tfSettingEditBox-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="dummyContainer collapsed">
-										<div class="ggpanelItem ggclickablelistitem">Dispo pour jouer</div>
-										<div class="ggpanelItem ggclickablelistitem">Dispo pour maîtriser</div>
-										<div class="ggpanelItem ggclickablelistitem">Valider une partie</div>
-										<div class="ggpanelItem ggclickablelistitem">Annuler la partie</div>
+										<div class="ggpanelItem ggclickablelistitem"><img src="images/visibleSetting.gif" ng-show="userIsInPlayers(settingtf.availableplayers)">Dispo pour jouer</div>
+										<div class="ggpanelItem ggclickablelistitem"><img src="images/visibleSetting.gif" ng-show="userIsInPlayers(settingtf.availablegms)">Dispo pour maîtriser</div>
+										<div class="ggpanelItem ggclickablelistitem" ng-show="userIsInPlayers(settingtf.availablegms)">Valider une partie</div>
+										<div class="ggpanelItem ggclickablelistitem" ng-show="userIsGMing(settingtf)">Annuler la partie</div>
 								</div>
 								<div id="tfSettingEditBox-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="dummyContainer collapsed">
 										<div class="ggpanelItem ggPanelHeader">Participants</div>
@@ -443,7 +449,7 @@
 										data-day="{{day.id}}"
 										data-timeframe="{{timeframe.code}}" ng-click="selectTimeframe(timeframe)">
 									<div class="ggdropdown">
-										<div class="ggpanelItem ggpanelHeader">Je propose une partie de...</div>
+										<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">Je propose une partie de...</div>
 										<div class="ggpanelItem ggclickablelistitem" ng-repeat="setting in settingsList">{{setting.name}}</div>
 									</div>
 								</div>
