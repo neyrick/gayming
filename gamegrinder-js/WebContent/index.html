@@ -15,11 +15,11 @@
 
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular/angular-cookies.js"></script>
+<script src="js/gg.js"></script>
 <script src="js/app.js"></script>
 <script src="js/controllers.js"></script>
 <script src="js/services.js"></script>
 <script src="js/filters.js"></script>
-<script src="js/gg.js"></script>
 
 </head>
 <body ng-controller="GameGrinderCtrl">
@@ -70,9 +70,13 @@
 					my: 'bottom left',
 					at: 'top right'
 				},
-                show: {
-                    delay: '40'
-                }
+				show: {
+					event: 'mouseenter click',
+				},
+				hide: {
+					delay: 10,
+					event: 'mouseleave',
+				}
 			});
 			$('.plusButton').qtip({
 				content: { text: 'Proposer une partie' },
@@ -152,6 +156,13 @@
 				$(this).find(".datePanel").removeClass("hoverDay");
 			});
 
+			$('.questionDiv').hover(function(event) {
+				$(this).data("old-text", $(this).text());
+				$(this).text($(this).attr("alt-text"));
+			},
+			function(event) {
+				$(this).text($(this).data("old-text"));
+			});
 /*
 			$('.tfSetting').hover(function (e) {
 				 if (ttlock == null) $(this).popover('show');
@@ -204,7 +215,7 @@
 	<div id="logindialog">
 		<form class="form-inline" id="loginForm" role="form"
 			name="loginForm" ng-submit="login()">
-			<div class="ggpanelHeader ggpanelItem glossyHeader">C'est qui ?</div>
+			<div class="ggpanelHeader ggpanelItem">C'est qui ?</div>
 			<div class="ggpanelItem">
 				<label for="inputName">Tape ton
 					pseudo:</label> <input type="text" id="inputName"
@@ -372,7 +383,7 @@
 		</div>
 
 		<div id="campaignsContainer" class="ggpanel">
-			<div class="ggpanelItem ggpanelHeader glossyHeader" ttip="Cliquez sur une chronique pour la rendre visible/invisible dans le planning">Chroniques Ouvertes</div>
+			<div class="ggpanelItem ggpanelHeader glossyHeader" ttip="Cliquez sur une chronique pour la rendre visible/invisible dans votre planning">Chroniques Ouvertes&nbsp;</div>
 			<table class="ggpanelTable">
 				<tr class="ggpanelItem {{ setting.id|settingVisibleStyle:true:invisibleOpenSettings }} ggclickablelistitem" ng-repeat="setting in settingsList" ng-click="toggleSettingVisibility(setting.id, true)">
 					<td class="legendBadge ggpanelCell"><span class="badge">{{setting.code }}</span></td>
@@ -404,24 +415,26 @@
 									data-settingcode="{{settingtf.code}}" data-dayid="{{day.id}}"
 									data-timeframe="{{timeframe.code}}"
 									ng-repeat="settingtf in timeframe.settings"> <span
-									class="{{settingtf|settingBadgeStyle:currentUser}}">{{settingtf.code}}</span>
+									class="{{settingtf|settingBadgeStyle:getTfSettingStatus(day.id, timeframe.code, settingtf.code):settingsList[settingtf.code]:invisibleOpenSettings:visibleClosedSettings}}">{{settingtf.code}}</span>
 							<div id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="ggdropdown">
-								<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay dayEditHeader">{{settingsList[settingtf.code].name}}</div>
-								<div id="tfSettingEditBox-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="dummyContainer">
-										<div class="ggpanelItem ggclickablelistitem"><img src="images/visibleSetting.gif" ng-show="userIsInPlayers(settingtf.availableplayers)">Dispo pour jouer</div>
-										<div class="ggpanelItem ggclickablelistitem"><img src="images/visibleSetting.gif" ng-show="userIsInPlayers(settingtf.availablegms)">Dispo pour maîtriser</div>
-										<div class="ggpanelItem ggclickablelistitem" ng-show="userIsInPlayers(settingtf.availablegms)">Valider une partie</div>
-										<div class="ggpanelItem ggclickablelistitem" ng-show="userIsGMing(settingtf)">Annuler la partie</div>
-								</div>
+								<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">{{settingsList[settingtf.code].name}}</div>
+								<div class="ggpanelItem ggclickablelistitem dispoDiv questionDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).dispoPJ" alt-text="Pas dispo pour jouer ?">Dispo pour jouer</div>
+								<div class="ggpanelItem ggclickablelistitem pasDispoDiv questionDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).showNotDispoPJ()" alt-text="Dispo pour jouer ?">Pas dispo pour jouer</div>
+								<div class="ggpanelItem ggclickablelistitem dispoDiv questionDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).dispoMJ" alt-text="Pas dispo pour maîtriser ?">Dispo pour maîtriser</div>
+								<div class="ggpanelItem ggclickablelistitem pasDispoDiv questionDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).showNotDispoMJ()" alt-text="Dispo pour maîtriser ?">Pas dispo pour maîtriser</div>
+								<div class="ggpanelItem warningDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).busy">Déjà sur une autre partie !</div>
+								<div class="ggpanelItem ggclickablelistitem validateDiv questionDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).dispoMJ">Valider une partie</div>
+								<div class="ggpanelItem ggclickablelistitem cancelDiv questionDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).pj">Quitter la partie</div>
+								<div class="ggpanelItem ggclickablelistitem cancelDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).mj">Annuler la partie</div>
 								<div id="tfSettingEditBox-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="dummyContainer collapsed">
 										<div class="ggpanelItem ggPanelHeader">Participants</div>
 										<div class="ggpanelItem" ng-repeat="player in settingtf.availableplayers">{{ player.name }}</div>
 								</div>
 								<div class="ggpanelItem" ng-repeat="game in settingtf.games">
 										<span class="confirmedgame">Partie confirmée:</span>
-										<ul>
-											<li>{{ game.gm }} (MJ)</li>
-											<li ng-repeat="player in game.players">{{ player.name }}</li>
+										<ul class="gameRoster">
+											<li class="nomMJ">{{ game.gm }} (MJ)</li>
+											<li ng-repeat="player in game.players" class="nomPJ">{{ player.name }}</li>
 										</ul>
 								</div>
 								<div class="ggpanelItem">

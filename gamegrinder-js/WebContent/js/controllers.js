@@ -13,7 +13,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
 
     $scope.currentRecruits = [];
 	
-    $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; };
+    $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; $scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);  };
     $scope.logout=function() { delete $cookies['ggUser']; $( "#logindialogcontainer" ).qtip( "toggle", true ); };
 
    $scope.selectTimeframe=function(val) {
@@ -24,6 +24,8 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
      $scope.currentSettingTf = val;
   }
   
+  $scope.mystatus = new Array();
+
   $scope.toggleRecruit = function(player) {
 	for (var key in $scope.currentRecruits) {
 	    if (key == player.name) {
@@ -56,7 +58,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
 	$cookies.ggInvisibleOpen = $scope.invisibleOpenSettings.join("|");
 	$cookies.ggVisibleClosed = $scope.visibleClosedSettings.join("|");
   }
-
+/*
   $scope.userIsInPlayers = function(playerslist) {
         var i,player;
         if (typeof playerslist == "undefined") return false;
@@ -71,17 +73,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
       if (typeof itemlist == "undefined") return false;
       return (itemlist.indexOf($scope.currentUser) != -1);
   }
-  
-  $scope.userIsGMing = function(settingtf) {
-        var i,game;
-        if (typeof settingtf.games == "undefined") return false;
-        for (i = 0; i < settingtf.games.length; i++) {
-            game = settingtf.games[i];
-            if (game.gm == $scope.currentUser) return true;            
-        }
-        return false;
-  }
-  
+  */
   $scope.dowcodes = { "1":"LU","2":"MA","3":"ME","4":"JE","5":"VE","6":"SA","7":"DI"};
 
   $scope.timeframesDesc = {
@@ -165,6 +157,10 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
     ]},
   ];
 
+	$scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);
+	$scope.getTfSettingStatus = function(dayid, timeframecode, settingcode) {
+		return $scope.mystatus.status[dayid][timeframecode][settingcode];
+	  }
 
 }]);
 

@@ -9,60 +9,93 @@ gamegrinderApp.filter('dowCode', function() {
     };
 });
 */
+  
+  
+  function userIsInNameList(username, itemlist) {
+      if (typeof itemlist == "undefined") return false;
+      return (itemlist.indexOf(username) != -1);
+  }
+  
+  function userIsInGame(username, settingtf) {
+        if (typeof settingtf.games == "undefined") return false;
+	return (userIsGMing(username, settingtf) || userIsPlaying(username, settingtf));
+  }
 
-function isAvailable(settingtf, username) {
-	    var i, player;
-	    if (typeof settingtf.availablegms != 'undefined') {
-		    for (i = 0; i < settingtf.availablegms.length; i++) {
-			player = settingtf.availablegms[i];
-			if (player.name == username) return true;
-		    }
-	    }
-	    if (typeof settingtf.availableplayers != 'undefined') {
-		    for (i = 0; i < settingtf.availableplayers.length; i++) {
-			player = settingtf.availableplayers[i];
-			if (player.name == username) return true;
-		    }
-	    }
-	    return false;
+
+  function userIsGMing(username, settingtf) {
+        var i,game;
+        if (typeof settingtf.games == "undefined") return false;
+        for (i = 0; i < settingtf.games.length; i++) {
+            game = settingtf.games[i];
+            if (game.gm == username) return true;            
+        }
+        return false;
+  }
+    
+  function userIsPlaying(username, settingtf) {
+        var i,game;
+        if (typeof settingtf.games == "undefined") return false;
+        for (i = 0; i < settingtf.games.length; i++) {
+            game = settingtf.games[i];
+	    if (userIsIn(username, game.players)) return true;
+        }
+        return false;
+  }
+
+  function userIsBusy(username, timeframe) {
+        var t, settingtf;
+        if (typeof timeframe.settings == "undefined") return false;
+	for (t = 0; t < timeframe.settings.length; t++) {
+		settingtf = timeframe.settings[t];
+		if (typeof settingtf.games == "undefined") continue;
+		if (userIsGMing(username, settingtf)) return true;
+		if (userIsPlaying(username, settingtf)) return true;
+	}
+        return false;
+  }
+
+  function userIsInOtherSetting(username, currentsettingtf, timeframe) {
+        var i,j,t, settingtf, game;
+        if (typeof timeframe.settings == "undefined") return false;
+	for (t = 0; t < timeframe.settings.length; t++) {
+		settingtf = timeframe.settings[t];
+		if (typeof settingtf.games == "undefined") continue;
+		for (i = 0; i < settingtf.games.length; i++) {
+			if (settingtf.code == currentsettingtf.code) continue;
+		    	game = settingtf.games[i];
+		    	if (game.gm == username) return true;
+			if (userIsIn(username, game.players)) return true;
+		}
+	}
+        return false;
+  }
+    
+function userCanPlay(username, settingtf) {
+	return (userIsIn(settingtf.availableplayers));
 }
 
-function isPlaying(settingtf, username) {
-	    var i, j;
-	    var game, player;
-	    if (typeof settingtf.games != 'undefined') {
-		    for (i = 0; i < settingtf.games.length; i++) {
-			game = settingtf.games[i];
-			if (game.gm == username) return true;
-			    for (j = 0; j < game.players.length; j++) {
-				player = game.players[j];
-				if (player.name == username) return true;
-			    }
-		    }
-	    }
-	    return false;
+function userCanGM(username, settingtf) {
+	return (userIsIn(settingtf.availablegms));
+}
+
+function isAvailable(username, settingtf) {
+	return (userCanPlay(username, settingtf) || userCanGM(username, settingtf));
 }
 
 gamegrinderApp.filter('settingBadgeStyle', function() {
-    return function(settingtf, username) {
-	    var hasGame = ((typeof settingtf.games != 'undefined') && (settingtf.games.length > 0));
-//	    var hasGM = ((typeof settingtf.availablegms != 'undefined') && (settingtf.availablegms.length > 0));
-	    var style = 'badge';
-	    if (hasGame) {
-		    if (isPlaying(settingtf, username))
-			style = style + '  playBadge';
-/*
-		    else if (isAvailable(settingtf, username))
-			style = style + '  withMyPABadge withGameBadge';*/
-		    else
-			style = style + '  noPlayBadge';
+    return function(settingtf, tfSettingStatus, settingInfo, invisibleOpen, visibleClosed) {
+	    if (settingInfo.open) {
+	        if (invisibleOpen.indexOf('' + settingInfo.id) != -1) return 'collapsed';
 	    }
 	    else {
-		    if (isAvailable(settingtf, username))
-			style = style + '  availableBadge';
-		    else
-			style = style + '  notAvailableBadge';
-	    }	    
+	        if (visibleClosed.indexOf('' + settingInfo.id) == -1) return 'collapsed';
+	    }
+
+	    var style = 'badge';
+	    if (tfSettingStatus.ongame())	style = style + '  playBadge';
+	    else if (tfSettingStatus.dumped) style = style + '  noPlayBadge';
+	    else if (tfSettingStatus.dispoPJ || tfSettingStatus.dispoMJ) style = style + '  availableBadge';
+	    else style = style + '  notAvailableBadge';
 	    return style;
     };
 });
@@ -75,7 +108,7 @@ gamegrinderApp.filter('settingVisibleStyle', function() {
 	    else return "ggDisabledItem";
     };
 });
-
+/*
 gamegrinderApp.filter('recruitPlayersStyle', function() {
     return function(player, playerlist) {
 	    for (var key in playerlist) {
@@ -84,3 +117,4 @@ gamegrinderApp.filter('recruitPlayersStyle', function() {
 	    return "btn-default";
     };
 });
+*/
