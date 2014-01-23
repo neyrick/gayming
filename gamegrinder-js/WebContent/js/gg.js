@@ -42,7 +42,7 @@ function UserStatus(username, weeks) {
 				for (g = 0; g < setting.games.length; g++) {
 					hasgames = true;
 					game = setting.games[g];
-					if (game.gm == this.username) {
+					if (game.gm.name == this.username) {
 						settingStatus.mj = true;
 						busy = true;
 						break;

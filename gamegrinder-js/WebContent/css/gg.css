@@ -1,10 +1,15 @@
-.logindialog {
-	width: auto;
-	max-height: none;
-	height: auto;
-	max-width:none;
+body {
+	font: 15px/22.5px "Helvetica Neue",HelveticaNeue,Helvetica,Arial,sans-serif;
 }
-.commentdialog {
+input {
+	width: 100%;
+}
+span.inputContainer {
+	overflow: hidden;
+	display: block;
+	padding-right: 10px;
+}
+.logindialog {
 	width: auto;
 	max-height: none;
 	height: auto;
@@ -15,9 +20,6 @@
 }
 .ggboxrow {
 	padding: 3px;
-}
-body {
-	font: 15px/22.5px "Helvetica Neue",HelveticaNeue,Helvetica,Arial,sans-serif;
 }
 .settingCell {
 	text-align: left;
@@ -128,6 +130,10 @@ body {
 	margin-right: 0px;
 	text-decoration: none;
 }
+.tfSettingEditBox {
+	max-width: 800px;
+	min-width: 400px;
+}
 #tfpop-container>.popover>.popover-content {
 	padding: 0px;
 	background-color:#C0C0C0;
@@ -231,17 +237,6 @@ body {
 	position: relative;  
 	z-index: 1;
 }
-.hoverDay {
-	background: #5883f8;
-	background: -moz-linear-gradient(top, #5883f8 0%, #5c78e8 10%, #596cd7 25%, #5365df 37%, #4e63e8 50%, #4159dd 51%, #5685ec 83%, #57a9fb 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5883f8), color-stop(10%,#5c78e8), color-stop(25%,#596cd7), color-stop(37%,#5365df), color-stop(50%,#4e63e8), color-stop(51%,#4159dd), color-stop(83%,#5685ec), color-stop(100%,#57a9fb));
-	background: -webkit-linear-gradient(top, #5883f8 0%,#5c78e8 10%,#596cd7 25%,#5365df 37%,#4e63e8 50%,#4159dd 51%,#5685ec 83%,#57a9fb 100%);
-	background: -o-linear-gradient(top, #5883f8 0%,#5c78e8 10%,#596cd7 25%,#5365df 37%,#4e63e8 50%,#4159dd 51%,#5685ec 83%,#57a9fb 100%);
-	background: -ms-linear-gradient(top, #5883f8 0%,#5c78e8 10%,#596cd7 25%,#5365df 37%,#4e63e8 50%,#4159dd 51%,#5685ec 83%,#57a9fb 100%);
-	background: linear-gradient(to bottom, #5883f8 0%,#5c78e8 10%,#596cd7 25%,#5365df 37%,#4e63e8 50%,#4159dd 51%,#5685ec 83%,#57a9fb 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5883f8', endColorstr='#57a9fb',GradientType=0 );
-	color: #FFFFFF;
-}
 .weekPanel {
 	overflow: hidden;
 	height: auto;
@@ -291,6 +286,17 @@ body {
 .timeFrameItem {
 	vertical-align: middle;
 }
+.hoverDay {
+	background: #5883f8;
+	background: -moz-linear-gradient(top, #5883f8 0%, #5c78e8 10%, #596cd7 25%, #5365df 37%, #4e63e8 50%, #4159dd 51%, #5685ec 83%, #57a9fb 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5883f8), color-stop(10%,#5c78e8), color-stop(25%,#596cd7), color-stop(37%,#5365df), color-stop(50%,#4e63e8), color-stop(51%,#4159dd), color-stop(83%,#5685ec), color-stop(100%,#57a9fb));
+	background: -webkit-linear-gradient(top, #5883f8 0%,#5c78e8 10%,#596cd7 25%,#5365df 37%,#4e63e8 50%,#4159dd 51%,#5685ec 83%,#57a9fb 100%);
+	background: -o-linear-gradient(top, #5883f8 0%,#5c78e8 10%,#596cd7 25%,#5365df 37%,#4e63e8 50%,#4159dd 51%,#5685ec 83%,#57a9fb 100%);
+	background: -ms-linear-gradient(top, #5883f8 0%,#5c78e8 10%,#596cd7 25%,#5365df 37%,#4e63e8 50%,#4159dd 51%,#5685ec 83%,#57a9fb 100%);
+	background: linear-gradient(to bottom, #5883f8 0%,#5c78e8 10%,#596cd7 25%,#5365df 37%,#4e63e8 50%,#4159dd 51%,#5685ec 83%,#57a9fb 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5883f8', endColorstr='#57a9fb',GradientType=0 );
+	color: #FFFFFF;
+}
 .infoPic {
 	vertical-align: middle;
 	padding: 2px;
@@ -308,23 +314,23 @@ body {
 	background-image: url("../images/unchecked.png");
 }
 .questionDiv {
-	background-position:5px 3px;
+	background-position:12px 3px;
 	background-repeat: no-repeat;
-	padding-left: 30px;
+	padding-left: 45px;
 }
 .questionDiv:hover {
 	background-image: url("../images/question.png");
 }
 .warningDiv {
-	background-position:5px 3px;
+	background-position:12px 3px;
 	background-repeat: no-repeat;
-	padding-left: 30px;
+	padding-left: 45px;
 	background-image: url("../images/warning.png");
 }
 .noteDiv {
-	background-position:5px 3px;
+	background-position:12px 3px;
 	background-repeat: no-repeat;
-	padding-left: 30px;
+	padding-left: 45px;
 	background-image: url("../images/note.png");
 }
 ul.gameRoster {
@@ -334,9 +340,9 @@ ul.gameRoster {
 }
 ul.gameRoster li {
 	background-repeat: no-repeat;
-	background-position: 0px 5px;
+	background-position: 10px 5px;
 	padding-top: 4px;
-	padding-left: 30px;
+	padding-left: 45px;
 	min-height: 22px;
 }
 ul.gameRoster li.nomMJ {
@@ -344,6 +350,16 @@ ul.gameRoster li.nomMJ {
 }
 ul.gameRoster li.nomPJ {
 	background-image: url("../images/dice.png");
+}
+.commentDisplay {
+	font-style: italic;
+	font-size: 12px;
+}
+.rightbutton {
+	float: right;
+}
+.tfSettingSubbox {
+	padding-left: 10px;
 }
 .chatButton {
 	top: 3px;

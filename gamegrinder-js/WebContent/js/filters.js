@@ -27,7 +27,7 @@ gamegrinderApp.filter('dowCode', function() {
         if (typeof settingtf.games == "undefined") return false;
         for (i = 0; i < settingtf.games.length; i++) {
             game = settingtf.games[i];
-            if (game.gm == username) return true;            
+            if (game.gm.name == username) return true;            
         }
         return false;
   }
@@ -63,7 +63,7 @@ gamegrinderApp.filter('dowCode', function() {
 		for (i = 0; i < settingtf.games.length; i++) {
 			if (settingtf.code == currentsettingtf.code) continue;
 		    	game = settingtf.games[i];
-		    	if (game.gm == username) return true;
+		    	if (game.gm.name == username) return true;
 			if (userIsIn(username, game.players)) return true;
 		}
 	}

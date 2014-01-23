@@ -19,14 +19,18 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
 	
     $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; $scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);  };
     $scope.logout=function() { delete $cookies['ggUser']; $( "#logindialogcontainer" ).qtip( "toggle", true ); };
-    
+
+    $scope.setComment=function() {  };
+
+/*    
+
     $scope.openCommentDialog=function(day, timeframe, setting) {
         $scope.currentDay = day;
         $scope.currentTimeframe = timeframe;
         $scope.currentSettingTf = setting;
         $( "#commentdialogcontainer" ).qtip( "toggle", true );
     }
-
+*/
    $scope.selectTimeframe=function(val) {
      $scope.currentTimeframe=val;
   }
@@ -116,9 +120,10 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
          {"id":"20130923", "dow": 1, "dom": 23, "month": 9, "year": 2013, "timeframes" : [
 	{"code":"AFTERNOON", "settings": [
 	{"code": "TB",
-		"games": [ { "gm": "GM1", "players": [{"name": "PJ1"}, {"name": "PJ2"}, {"name": "PJ3"}]}, { "gm": "GM2", "players": [ {"name": "PJ4"}, {"name": "PJ5"}, {"name": "PJ6"}]}],
-		"availablegms": [ {"name": "MJD1"}, {"name": "MJD2"}],
-		"availableplayers": [ {"name": "PJD2"}, {"name": "PJD1"}, {"name": "PJD3"}, {"name": "PJD4"}],
+		"games": [ { "gm": {"name": "GM1", "comment": "Comment-GM1"}, "players": [{"name": "PJ1"}, {"name": "PJ2", "comment": "Comment-PJ2"}, {"name": "PJ3"}]}, { "gm": {"name": "GM2", "comment": "Comment-GM2"}, "players": [ {"name": "PJ4", "comment": "Comment-PJ4"}, {"name": "PJ5"}, {"name": "PJ6"}]}],
+		"availablegms": [ {"name": "MJD1", "comment": "Comment-MJD1"}, {"name": "MJD2"}],
+		"availableplayers": [ {"name": "PJD2", "comment": "Comment-PJD2"}, {"name": "PJD1"}, {"name": "PJD3", "comment": "Comment-PJD3"}, {"name": "PJD4"}],
+		"unavailable": [ { "name": "UA1", "comment": "Comment-UA1"}, { "name": "UA2", "comment": "Comment-UA2"}, { "name": "UA3", "comment": "Comment-UA3"}]
 	},
 	{"code": "7SP"}]},
 	{"code":"EVENING", "settings": [
