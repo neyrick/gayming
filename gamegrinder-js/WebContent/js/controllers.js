@@ -5,8 +5,12 @@
 gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userService', function GameGrinderCtrl($scope, $cookies, userService) {
 
     $scope.currentDay = 0;
-	
+
+    $scope.currentTimeframe = 0;
+
     $scope.currentUser =  "MJD1";// cookies['ggUser'];
+    
+    $scope.currentComment = '';
 
     $scope.invisibleOpenSettings = (typeof $cookies.ggInvisibleOpen != 'undefined')?$cookies.ggInvisibleOpen.split("|"):new Array();
     $scope.visibleClosedSettings = (typeof $cookies.ggVisibleClosed != 'undefined')?$cookies.ggVisibleClosed.split("|"):new Array();
@@ -15,6 +19,13 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
 	
     $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; $scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);  };
     $scope.logout=function() { delete $cookies['ggUser']; $( "#logindialogcontainer" ).qtip( "toggle", true ); };
+    
+    $scope.openCommentDialog=function(day, timeframe, setting) {
+        $scope.currentDay = day;
+        $scope.currentTimeframe = timeframe;
+        $scope.currentSettingTf = setting;
+        $( "#commentdialogcontainer" ).qtip( "toggle", true );
+    }
 
    $scope.selectTimeframe=function(val) {
      $scope.currentTimeframe=val;

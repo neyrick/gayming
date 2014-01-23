@@ -4,6 +4,12 @@
 	height: auto;
 	max-width:none;
 }
+.commentdialog {
+	width: auto;
+	max-height: none;
+	height: auto;
+	max-width:none;
+}
 .ggbuttonbox {
 	text-align: center;
 }
@@ -314,6 +320,12 @@ body {
 	background-repeat: no-repeat;
 	padding-left: 30px;
 	background-image: url("../images/warning.png");
+}
+.noteDiv {
+	background-position:5px 3px;
+	background-repeat: no-repeat;
+	padding-left: 30px;
+	background-image: url("../images/note.png");
 }
 ul.gameRoster {
 	list-style-type: none;

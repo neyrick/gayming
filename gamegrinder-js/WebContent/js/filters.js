@@ -100,6 +100,17 @@ gamegrinderApp.filter('settingBadgeStyle', function() {
     };
 });
 
+gamegrinderApp.filter('dateFromId', function() {
+    return function(dayid) {
+        if (typeof dayid == "undefined") return '';
+        var year = dayid.substring(0, 4);
+        var month = dayid.substring(4, 6);
+        var day = dayid.substring(6, 8);
+        var resdate = new Date(year, month, day, 0, 0, 0, 0);
+        return resdate.toLocaleDateString();
+    };
+});
+
 gamegrinderApp.filter('settingVisibleStyle', function() {
     return function(settingid, defaultShow, toggledlist) {
             var show = defaultShow;
