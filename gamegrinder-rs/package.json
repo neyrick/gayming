@@ -7,7 +7,7 @@
   "contributors": [ ],
   "bin": { },
   "scripts": {
-    "start": "node ./server",
+    "start": "node ./server"
   },
   "main": "./server",
   "repository": {
