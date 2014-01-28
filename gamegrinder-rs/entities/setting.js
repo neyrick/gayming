@@ -35,12 +35,7 @@ var connection;
     },
 
     exports.create = function(req, res, next) {
-            if (!req.params.setting) {
-                req.log.warn('create: missing setting');
-                next();
-                return;
-            }
-            var item = new setting(req.params.setting);
+            var item = new setting(req.body);
             item.save(connection, function(err) {
                if (err) res.send("Error: " + err);
                else res.send(item);

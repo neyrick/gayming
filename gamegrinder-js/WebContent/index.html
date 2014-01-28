@@ -491,6 +491,8 @@
 								<div class="ggpanelItem ggclickablelistitem pasDispoDiv questionDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).showNotDispoMJ()" alt-text="Dispo pour maîtriser ?">Pas dispo pour maîtriser</div>
 								<div class="ggpanelItem warningDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).busy">Déjà sur une autre partie !</div>
 								<div class="ggpanelItem ggclickablelistitem validateDiv questionDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).dispoMJ">Valider une partie</div>
+								<div class="dummyContainer gameEditor collapsed">
+								</div>
 								<div class="ggpanelItem ggclickablelistitem cancelDiv questionDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).pj">Quitter la partie</div>
 								<div class="ggpanelItem ggclickablelistitem cancelDiv" ng-show="getTfSettingStatus(day.id, timeframe.code, settingtf.code).mj">Annuler la partie</div>
 								<div id="tfSettingEditBox-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="dummyContainer collapsed">

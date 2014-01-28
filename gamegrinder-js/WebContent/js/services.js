@@ -26,7 +26,7 @@ gamegrinderApp.factory('logger', [function() {
 gamegrinderApp.factory('config', [function() {
 
 	return {
-		urlbase : "http://localhost:8080/gg"
+		urlbase : "http://localhost/rs/gg"
 			
 		}
 }]);
