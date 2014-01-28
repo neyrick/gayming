@@ -43,3 +43,21 @@ gamegrinderApp.factory('settingsService', ['$http', 'config', function($http, co
 	}
 }]);
 
+gamegrinderApp.factory('plannerService', ['$http', 'config', function($http, config) {
+
+	return {
+				
+		validateGame : function(pm_dayid, pm_timeframecode, pm_settingid, pm_gmname, callback) {
+			var game = {
+				dayid: pm_dayid,
+				timeframe: pm_timeframecode,
+				setting: pm_settingid,
+				gm: pm_gmname
+			};
+			$http.put(config.urlbase + '/game').success(callback);
+		}
+		
+		
+	}
+}]);
+

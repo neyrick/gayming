@@ -12,6 +12,9 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
     
     $scope.currentComment = '';
 
+    $scope.settingsReady = false;
+
+    $scope.invisibleStatus = (typeof $cookies.ggInvisibleStatus != 'undefined')?$cookies.ggInvisibleStatus.split("|"):new Array();
     $scope.invisibleOpenSettings = (typeof $cookies.ggInvisibleOpen != 'undefined')?$cookies.ggInvisibleOpen.split("|"):new Array();
     $scope.visibleClosedSettings = (typeof $cookies.ggVisibleClosed != 'undefined')?$cookies.ggVisibleClosed.split("|"):new Array();
 
@@ -51,6 +54,19 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 	$scope.currentRecruits[player.name] = player;
   }
 
+  $scope.toggleStatusVisibility = function(status) {
+  	var settingsArray;
+	settingsArray = $scope.invisibleStatus;
+	var index = settingsArray.indexOf('' + status);
+	if (index != -1) {
+		settingsArray.splice(index, 1);
+	}
+	else {
+		settingsArray.push('' + status)
+	}
+	$scope.updateSettingsCookies();
+  }
+
   $scope.toggleSettingVisibility = function(settingid, isOpen) {
   	var settingsArray;
 	if (isOpen) {
@@ -72,6 +88,11 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
   $scope.updateSettingsCookies = function() {
 	$cookies.ggInvisibleOpen = $scope.invisibleOpenSettings.join("|");
 	$cookies.ggVisibleClosed = $scope.visibleClosedSettings.join("|");
+	$cookies.ggInvisibleStatus = $scope.invisibleStatus.join("|");
+  }
+
+  $scope.isInArray = function(item, list) {
+	return (list.indexOf('' + item) > -1);
   }
 /*
   $scope.userIsInPlayers = function(playerslist) {
@@ -96,16 +117,33 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
     "EVENING": {"key":"EVENING", pic:"images/soir.gif", name:"Soirée"},
   };
 
+  $scope.tfSettingStatus = [
+    { id: 0, desc : "Pas dispo / intéressé", style: "notAvailableBadge" },
+    { id: 1, desc : "Je suis dispo", style: "availableBadge" },
+    { id: 2, desc : "Je joue !", style: "playBadge" },
+    { id: 3, desc : "Partie sans moi", style: "noPlayBadge" }
+  ];
+
+  $scope.isTfSettingVisible = function(settingcode, tfstatus) {
+    if (typeof $scope.settingsHash == "undefined") return false;
+    var setting = $scope.settingsHash[settingcode];
+    if (typeof setting == "undefined") return false;
+    if ((setting.mode == 0) && ($scope.invisibleOpenSettings.indexOf('' + setting.id) > -1)) return false;
+    if ((setting.mode == 1) && ($scope.visibleClosedSettings.indexOf('' + setting.id) == -1)) return false;
+    if ($scope.invisibleStatus.indexOf('' + tfstatus.code()) > -1) return false;
+    return true;
+  }
 
   settingsService.updateSettings(function(response) {
           var i, result = new Object();
-          for (i = 0; i < response.length; i++) {
-              result[response[i].code] = response[i];
-          }
-          $scope.settingsHash = result; 
-          $scope.settingsList = response; 
+		  for (i = 0; i < response.length; i++) {
+		      result[response[i].code] = response[i];
+		  }
+		  $scope.settingsHash = result; 
+		  $scope.settingsList = response; 
+		  $scope.settingsReady = true;
 	  }, function(error) {
-          window.alert(error); 
+	          window.alert(error); 
 	  });
   
   /*

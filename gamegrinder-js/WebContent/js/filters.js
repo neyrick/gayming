@@ -111,7 +111,7 @@ gamegrinderApp.filter('dateFromId', function() {
         return resdate.toLocaleDateString();
     };
 });
-
+/*
 gamegrinderApp.filter('settingVisibleStyle', function() {
     return function(settingid, defaultShow, toggledlist) {
             var show = defaultShow;
@@ -120,6 +120,7 @@ gamegrinderApp.filter('settingVisibleStyle', function() {
 	    else return "ggDisabledItem";
     };
 });
+*/
 /*
 gamegrinderApp.filter('recruitPlayersStyle', function() {
     return function(player, playerlist) {

@@ -55,6 +55,15 @@ span.inputContainer {
 	color: #000050;
     overflow: hidden;
 }
+.ggpanelSubitem {
+	border-left: 1px solid #000050;
+	border-right: 1px solid #000050;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 6px;
+	padding-right: 6px;
+	color: #000050;
+}
 .ggpanelCell {
 	padding: 1px;
 	border: 0px;
@@ -72,6 +81,11 @@ span.inputContainer {
 	padding: 10px;
 	color: #000050;
 	border-bottom: none;
+}
+.ggpanelSubheader {
+	padding: 6px;
+	border-top: 1px solid #000050;
+	border-bottom: 1px solid #000050;
 }
 .day1 {
 	background-color: #E0E0FF;
@@ -123,9 +137,6 @@ span.inputContainer {
 .dummyContainer {
 	margin: 0px;
 	padding: 0px;
-}
-.collapsed {
-	display: none;
 }
 .infoTooltip {
 	background-color: #E0E0FF;
@@ -372,6 +383,9 @@ ul.gameRoster li.nomPJ {
 }
 .tfSettingSubbox {
 	padding-left: 10px;
+}
+.collapsed {
+	display: none;
 }
 .chatButton {
 	top: 3px;

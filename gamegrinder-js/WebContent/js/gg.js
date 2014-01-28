@@ -19,6 +19,13 @@ function tfSettingStatus() {
 	this.ongame = function() { return (this.pj || this.mj); }
 	this.showNotDispoPJ = function() {return !(this.dispoPJ || this.ongame() || this.busy);}
 	this.showNotDispoMJ = function() {return !(this.dispoMJ || this.ongame() || this.busy); }
+
+	this.code = function() {
+	    if (this.ongame()) return 2;
+	    else if (this.dumped) return 3;
+	    else if (this.dispoPJ || this.dispoMJ) return 1;
+	    else return 0;
+	}
 }
 
 function UserStatus(username, weeks) {
