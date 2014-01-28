@@ -25,6 +25,7 @@ server.use(restify.gzipResponse());
 server.use(restify.bodyParser());
 
 server.get('/gg/setting', settingsModule.fetchAll);
+server.get('/gg/setting/:code', settingsModule.findByCode);
 server.put('/gg/setting', settingsModule.create);
 server.post('/gg/setting', settingsModule.update);
 server.del('/gg/setting/:setting', settingsModule.delete);

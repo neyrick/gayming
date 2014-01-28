@@ -24,6 +24,16 @@ var connection;
             });
     },
 
+    exports.findByCode = function(req, res, next) {
+            var result = new Array();
+            setting.using(connection).where({ code: req.params.code}).each(function(err, setting) {
+                result.push(setting);
+            }, function() {
+              res.send(result);
+              next();
+            });
+    },
+
     exports.create = function(req, res, next) {
             if (!req.params.setting) {
                 req.log.warn('create: missing setting');
