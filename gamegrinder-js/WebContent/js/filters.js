@@ -84,10 +84,11 @@ function isAvailable(username, settingtf) {
 
 gamegrinderApp.filter('settingBadgeStyle', function() {
     return function(settingtf, tfSettingStatus, settingInfo, invisibleOpen, visibleClosed) {
-	    if (settingInfo.open) {
+        if (typeof settingInfo == "undefined") return 'collapsed';
+	    if (settingInfo.mode == 0) {
 	        if (invisibleOpen.indexOf('' + settingInfo.id) != -1) return 'collapsed';
 	    }
-	    else {
+	    else if (settingInfo.mode == 1){
 	        if (visibleClosed.indexOf('' + settingInfo.id) == -1) return 'collapsed';
 	    }
 

@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userService', function GameGrinderCtrl($scope, $cookies, userService) {
+gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsService', function GameGrinderCtrl($scope, $cookies, settingsService) {
 
     $scope.currentDay = 0;
 
@@ -21,7 +21,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
     $scope.logout=function() { delete $cookies['ggUser']; $( "#logindialogcontainer" ).qtip( "toggle", true ); };
 
     $scope.setComment=function() {  };
-
+    
 /*    
 
     $scope.openCommentDialog=function(day, timeframe, setting) {
@@ -96,6 +96,19 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
     "EVENING": {"key":"EVENING", pic:"images/soir.gif", name:"Soirée"},
   };
 
+
+  settingsService.updateSettings(function(response) {
+          var i, result = new Object();
+          for (i = 0; i < response.length; i++) {
+              result[response[i].code] = response[i];
+          }
+          $scope.settingsHash = result; 
+          $scope.settingsList = response; 
+	  }, function(error) {
+          window.alert(error); 
+	  });
+  
+  /*
   $scope.settingsList =  {
     "EP": {"id": 1,
      "name": "Eclipse Phase",
@@ -114,7 +127,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'userServic
      "code": "SRQ",
      "open": true},
   };
-
+*/
   $scope.weeks = [
     {"days": [
          {"id":"20130923", "dow": 1, "dom": 23, "month": 9, "year": 2013, "timeframes" : [

@@ -17,8 +17,6 @@ module.exports = {
 
     fetchAll : function(req, res, next) {
             var result = new Array();
-	    console.log('Em: ' + this.em);
-	    console.log('This: ' + this);
             em.using(connection).each(function(err, setting) {
                 result.push(setting);
             }, function() {

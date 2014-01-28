@@ -22,7 +22,14 @@ span.inputContainer {
 	padding: 3px;
 }
 .settingCell {
+    float: left;
 	text-align: left;
+    padding: 0px;
+}
+.ggpanelTable {
+	border: 0px;
+	border-collapse: collapse;
+	width: 100%;	
 }
 .ggpanel {
 	padding: 0px;
@@ -40,20 +47,16 @@ span.inputContainer {
 	margin: 0px;
 }
 .ggpanelItem {
-	padding: 3px;
+	padding: 1px;
 	background-color:#F0F0F0;
 	border-left: 1px solid #000050;
 	border-right: 1px solid #000050;
 	border-top: 1px solid #000050;
 	color: #000050;
-}
-.ggpanelTable {
-	border: 0px;
-	border-collapse: collapse;
-	width: 100%;	
+    overflow: hidden;
 }
 .ggpanelCell {
-	padding: 3px;
+	padding: 1px;
 	border: 0px;
 }
 .ggpanelItem:first-child {
@@ -112,6 +115,10 @@ span.inputContainer {
     color: #FFFFFF;
     text-decoration: none;
 }
+.dropdownItem {
+	padding-left: 6px;
+	padding-right: 6px;
+}
 
 .dummyContainer {
 	margin: 0px;
@@ -165,11 +172,13 @@ span.inputContainer {
 	color: #000050;
 }
 .legendBadge {
-	width: 50px;
+	width: 44px;
 	text-align: center;
+    clear: left;
 }
 .legendCell {
 	text-align: left;
+    float: none;
 }
 .playBadge {
 	background-color: #00FF00;
@@ -192,6 +201,9 @@ span.inputContainer {
 .ggDisabledItem {
 	background-color: #F0F0F0;
 	color: #909090;
+}
+.ggDisabledItem span{
+	color: #808080;
 	text-decoration: line-through;
 }
 .ggDisabledItem .badge{
