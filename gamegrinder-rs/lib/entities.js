@@ -1,0 +1,33 @@
+var persist = require("persist");
+var type = persist.type;
+
+var setting = persist.define("setting", {
+          "name": type.STRING,
+          "code": type.STRING,
+          "mode": type.INTEGER,
+          "status": type.INTEGER
+    }, { tableName: "setting" });
+    
+var game = persist.define("game", {
+          "dayid": type.INTEGER,
+          "timeframe": type.STRING,
+    }, { tableName: "game" }).hasOne(setting, { createHasMany: false});
+    
+var schedule = persist.define("schedule", {
+          "dayid": type.INTEGER,
+          "timeframe": type.STRING,
+          "player": type.STRING,
+          "role": type.STRING
+    }, { tableName: "schedule" }).hasOne(setting, { createHasMany: false}).hasOne(game, { createHasMany: false});
+    
+var comment = persist.define("comment", {
+          "dayid": type.INTEGER,
+          "timeframe": type.STRING,
+          "player": type.STRING,
+          "message": type.STRING
+    }, { tableName: "schedule" }).hasOne(setting, { createHasMany: false});
+
+exports.setting = setting;
+exports.game = game;
+exports.schedule = schedule;
+exports.comment = comment;

@@ -1,3 +1,0 @@
-
-exports.Setting = require("./setting");
-

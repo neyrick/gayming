@@ -1,18 +1,6 @@
-var persist = require("persist");
-
-var entities = require("./entities");
-var settingsModule = entities.Setting;
+var serv = require("./lib/services");
 
 var restify = require('restify');
-
-function respond(req, res, next) {
-  res.send('Parametres: ' + req.params);
-}
-
-persist.connect(
-  function(err, connection) {
-    settingsModule.init(connection);
-});
 
 var server = restify.createServer();
 
@@ -24,11 +12,11 @@ server.use(restify.jsonp());
 server.use(restify.gzipResponse());
 server.use(restify.bodyParser());
 
-server.get('/gg/setting', settingsModule.fetchAll);
-server.get('/gg/setting/:code', settingsModule.findByCode);
-server.put('/gg/setting', settingsModule.create);
-server.post('/gg/setting', settingsModule.update);
-server.del('/gg/setting/:setting', settingsModule.delete);
+server.get('/gg/setting', serv.fetchAllSettings);
+server.get('/gg/setting/:code', serv.findSettingByCode);
+server.put('/gg/setting', serv.createSetting);
+server.post('/gg/setting', serv.updateSetting);
+server.del('/gg/setting/:setting', serv.deleteSetting);
 server.on('uncaughtException', function (request, response, route, error) {
     console.log('Erreur !!! %j', error);
 });
