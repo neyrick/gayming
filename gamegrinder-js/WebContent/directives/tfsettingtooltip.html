@@ -8,15 +8,15 @@
 	<div class="ggpanelItem ggclickablelistitem validateDiv questionDiv" ng-show="status.dispoMJ" ng-click="validateGame(day.id, timeframe.code, setting.id, $event)">Valider une partie</div>
 	<div class="ggpanelItem ggclickablelistitem cancelDiv questionDiv" ng-show="status.pj">Quitter la partie</div>
 	<div class="ggpanelItem ggclickablelistitem cancelDiv" ng-show="status.mj">Annuler la partie</div>
-	<div class="gameEditor dummyContainer collapsed">
-	  <div class="ggpanelHeader ggpanelSubheader hoverDay">Participants</div>
+	<div class="gameEditor ggpanelItem dummyContainer collapsed">
+	  <div class="ggpanelSubheader hoverDay">Participants</div>
 	  <div class="ggclickablelistitem ggpanelSubitem" ng-repeat="player in schedule.availableplayers">{{ player.name }}</div>
 	</div>
 	<div class="ggpanelItem ggclickablelistitem noteDiv commentTrigger collapsible">Ajouter un commentaire</div>
 	<div class="ggpanelItem commentEdit collapsed">
-          <form class="form-inline" id="commentForm" role="form" name="commentForm" ng-submit="setComment()">
+          <form id="commentForm" role="form" name="commentForm" ng-submit="setComment()" novalidate>
 	    <button class="commentButton rightbutton" ng-disabled="commentForm.$invalid" type="submit">Valider</button>
-	    <span class="inputContainer"><input type="text" class="inputComment" name="comment" placeholder="Tape ton commentaire" ng-model="comment"/><span>
+	    <span class="inputContainer"><input type="text" class="inputComment expand" name="comment" placeholder="Tape ton commentaire" ng-model="comment"/><span>
 	  </form>
         </div>
 	<div class="ggpanelItem" ng-repeat="game in schedule.games">

@@ -4,14 +4,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <title>Tests Gamegrinder</title>
-<!--<link href="css/bootstrap.css" rel="stylesheet" media="screen"> -->
-<!--<link rel="stylesheet" href="css/mint-choc/jquery-ui-1.10.3.custom.css" rel="stylesheet"> -->
+
 <link rel="stylesheet" href="css/jquery.qtip.css">
 <link rel="stylesheet" href="css/gg.css">
+
 <script src="js/jquery-1.9.1.js"></script>
-<!--<script src="js/jquery-ui-1.10.3.custom.js"></script> -->
 <script type="text/javascript" src="js/jquery.qtip.js"></script>
-<!-- link rel="stylesheet" href="css/bootstrap.css"-->
 
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular/angular-cookies.js"></script>
@@ -25,21 +23,6 @@
 </head>
 <body ng-controller="GameGrinderCtrl">
 	<script type="text/javascript">
-/*
-		var popParams = {
-			trigger : 'manual',
-			container: '#tfpop-container',
-			selector : '.tfSetting',
-			content : function() {
-				var popoverId = '#tfSettingTooltip-' + getTfSettingCode($(this));
-				return $(popoverId).html();
-			}						
-		};
-		var ttlock = null;
-		function toggleTfSettingForm(code) {
-			$('#tfSettingEditBox-' + code).slideToggle(300);
-		}
-*/		
 
 		$(function() {
 			$('#logindialogcontainer').qtip({
@@ -65,31 +48,6 @@
 			    },
 			    hide: false
 			});
-/*
-			$('#commentdialogcontainer').qtip({
-			    style: {
-                    classes: 'ggpanel commentdialog'
-			    },
-			    content: {
-				    text: $('#commentdialog')
-			    },
-			    position: {
-                    my: 'center',
-				    at: 'center',
-				    target: $(window)
-			    },
-			    show: {
-                    autofocus: '#inputComment',
-				    event: false,
-				    modal: {
-                        on: true,
-				        blur: false,
-				        escape: false
-				    }
-			    },
-			    hide: false
-			});
-*/
 			$('[ttip!=""]').qtip({
 				style: { classes: 'infoTooltip' },
 				content: { attr: 'ttip' },
@@ -105,17 +63,6 @@
 					event: 'mouseleave',
 				}
 			});
-/*
-			$('.plusButton').qtip({
-				content: { text: 'Proposer une partie' },
-				position: {
-					my: 'bottom center',
-					at: 'top center'
-				},
-				show: { event: 'hover' },
-				hide: { event: 'hover' }
-			});
-*/
 			$('.tfExtra').each(function() {
 				$(this).qtip({
 				    style: {
@@ -123,30 +70,6 @@
 				    },
 				    content: {
 					text: $(this).next('div')
-				    },
-				    position: {
-					my: 'top center',
-					at: 'bottom center'
-				    },
-				    show: {
-					event: 'mouseenter click',
-					solo: '.tfExtra'
-				    },
-				    hide: {
-					delay: 100,
-					fixed: 'true',
-					event: 'mouseleave',
-				    }
-				});
-			});
-/*
-			$('.tfSetting').each(function() {
-				$(this).qtip({
-				    style: {
-					classes: 'ggpanel tfSettingEditBox'
-				    },
-				    content: {
-					text: $(this).find('.ggdropdown').first()
 				    },
 				    position: {
 					my: 'top center',
@@ -169,7 +92,6 @@
 				    }
 				});
 			});
-*/
 			if (typeof angular.element('body').scope().currentUser == 'undefined') {
 				$( "#logindialogcontainer" ).qtip( "toggle", true );
 			}
@@ -182,54 +104,18 @@
 			function(event) {
 				$(this).find(".datePanel").removeClass("hoverDay");
 			});
-
-/*
-			$('.tfSetting').hover(function (e) {
-				 if (ttlock == null) $(this).popover('show');
-			},function (e) {
-				 if (ttlock == null) $(this).popover('hide');
+			$('.settingTrigger').click(function(event) {
+				$(this).slideUp(200);
+				var $box=$(this).next('.settingEditor');
+				$box.slideDown(200);
+				$box.find('.inputSetting').focus();
 			});
-			$('.tfSetting').popover(popParams);
-
-			$('body').on('click', function (e) {
-			    $('.tfSetting').each(function () {
-				var setcode = getTfSettingCode($(this));
-				if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-					if (this.id == ttlock) ttlock = null;
-					$(this).popover('hide');
-				}
-				else {
-					if (this.id != ttlock) {
-						ttlock = this.id;
-						$(this).popover('show');
-						openTfSettingForm(setcode);
-					}
-					else {
-						ttlock = null;
-						$(this).popover('hide');
-					}
-				}
-			    });
+			$('.settingButton').click(function(event) {
+				var $box = $(this).parents('.settingEditor');
+				$box.slideUp(200);
+				$box.prev('.settingTrigger').slideDown(200);
 			});
-			$('.plusButton').tooltip({
-				placement : 'auto',
-				title : 'Maîtriser une partie'
-			});
-			$('.chatButton').tooltip({
-				placement : 'auto',
-				title : 'Discussions'
-			});
-*/
 		});
-
-		function addAvailablePlayer() {
-		}
-
-		function addAvailableGM() {
-		}
-
-		function addMessage() {
-		}
 	</script>
    <div id="logindialogcontainer" style="display: none">
 	<div id="logindialog">
@@ -245,147 +131,6 @@
 		</form>
 	</div>
     </div>
-<!--
-   <div id="commentdialogcontainer" style="display: none">
-	<div id="commentdialog">
-		<form class="form-inline" id="commentForm" role="form"
-			name="commentForm" ng-submit="setComment()">
-			<div class="ggpanelHeader ggpanelItem glossyHeader hoverDay">Partie de {{settingsList[currentSettingTf.code].name}} le {{currentDay.id|dateFromId}} {{timeframesDesc[currentTimeframe.code].name}} </div>
-			<div class="ggpanelItem">
-				<input type="text" id="inputComment"
-					name="comment" placeholder="Tape ton commentaire"
-					ng-model="currentComment" required />
-				<button id="commentButton" ng-disabled="commentForm.$invalid" type="submit">Valider</button>
-				<button id="commentCancelButton">Annuler</button>
-			</div>
-		</form>
-	</div>
-    </div>
--->
-<!--
-	<div id="mjModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Organisation des parties</h4>
-				</div>
-				<div class="modal-body row">
-					<div class="col-md-6">
-						<div class="panel panel-default gmColumn">
-							<div class="panel-body">
-								<div class="btn-group width100p">
-									<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Je propose de maîtriser... <span class="caret"></span></button>
-									<ul class="dropdown-menu" role="menu">
-										<li ng-repeat="setting in settingsList"><a tabindex="-1"
-											href="#">{{setting.name}}</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="panel panel-default gmColumn">
-							<div class="panel-body">							
-								<div class="btn-group width100p">
-									<button type="button" class="btn btn-primary dropdown-toggle width100p" data-toggle="dropdown">Je valide une partie de... <span class="caret"></span></button>
-									<ul class="dropdown-menu width100p" role="menu">
-										<li ng-repeat="settingtf in currentTimeframe.settings"><a tabindex="-1" href="#" ng-click="selectTimeframeSetting(settingtf)">{{settingsList[settingtf.code].name}}</a></li>
-									</ul>
-								</div>
-								<div class="btn-group-vertical width100p" ng-show="currentSettingTf">
-									<span class="btn btn-default">{{settingsList[currentSettingTf.code].name}}</span>
-									<span class="btn btn-primary">Avec quels joueurs ?</span>
-									<button type="button" class="btn {{player|recruitPlayersStyle:currentRecruits}}" ng-repeat="player in currentSettingTf.availableplayers" ng-click="toggleRecruit(player)">{{ player.name }}</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer button-group">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
-				</div>
-			</div>
-		</div>
-	</div>
--->
-<!--
-	<div style="display: none">
-
-		<div ng-repeat="week in weeks">
-			<div ng-repeat="day in week.days">
-				<div ng-repeat="timeframe in day.timeframes">
-					<div ng-repeat="settingtf in timeframe.settings">
-							<div id="tfSettingTooltip-{{day.id}}-{{timeframe.code}}-{{settingtf.code}}" class="panel-group tfSettingTooltipBox">
-								<div class="panel panel-default list-group tfSettingTooltipItem tfSettingForm">Hello
-										<div class="list-group-item tfSettingFormItem">
-											Collapsible 1
-										</div>
-										<div class="list-group-item tfSettingFormItem">
-											Collapsible 2
-										</div>
-								</div>
-								<div class="panel panel-default tfSettingTooltipItem"
-									ng-repeat="game in settingtf.games">
-									<div class="panel-body">
-										<span class="confirmedgame">Partie confirmée:</span>
-										<ul>
-											<li>{{ game.gm }} (MJ)</li>
-											<li ng-repeat="player in game.players">{{ player.name }}</li>
-										</ul>
-									</div>
-								</div>
-								<div class="panel panel-default tfSettingTooltipItem">
-									<div class="panel-body">
-									MJ Disponible(s):
-										<ul>
-											<li ng-repeat="player in settingtf.availablegms">{{
-												player.name }}</li>
-										</ul>
-									</div>
-								</div>
-								<div class="panel panel-default tfSettingTooltipItem">
-									<div class="panel-body">
-									Joueur(s) Disponible(s):
-										<ul>
-											<li ng-repeat="player in settingtf.availableplayers">{{
-												player.name }}</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
--->
-<!--
-	<div id="chatModal" class="modal fade" tabIndex="-1" role="dialog"
-		aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Discussions concernant le {{
-						currentDay }}</h4>
-				</div>
-				<div class="modal-body list-group">
-					<div class="list-group-item">Message 1 ...</div>
-					<div class="list-group-item">Message 2 ...</div>
-					<textarea class="form-control list-group-item" rows="3"
-						placeholder="Tape ton message ici puis clique sur &quot;Enregistrer&quot;"></textarea>
-				</div>
-				<div class="modal-footer button-group">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	</div>
--->
 
 	<div id="toolbar" class="pageColumn">
 		<div id="greetingsDiv" class="ggpanel" ng-show="currentUser">
@@ -454,6 +199,24 @@
 									<img id="plusButton-{{day.id}}-{{timeframe.code}}" class="tfExtra timeFrameItem plusButton" src="images/plus.gif"	data-day="{{day.id}}" data-timeframe="{{timeframe.code}}" ng-click="selectTimeframe(timeframe)">
 									<div class="ggdropdown">
 										<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">Je propose une partie de...</div>
+<div class="ggpanelItem ggclickablelistitem dropdownItem settingTrigger hoverDay collapsible">Créer une Chronique / One-Shot</div>
+										<div class="ggpanelItem dropdownItem settingEditor collapsed dummyContainer" >
+<form class="form-inline" role="form" name="createSettingForm" ng-submit="createSetting()" novalidate>
+	<div class="ggpanelSubheader hoverDay">
+	    Nouvelle Chronique / One-Shot
+	</div>
+	<div class="ggpanelSubitem"><span class="inputLabel">Nom:</span> 
+	    <span class="inputContainer"><input type="text" class="inputSettingName expand" name="settingName" placeholder="Nom de la chronique" ng-model="newsetting.name" required maxlength="32"/></span>
+	</div>
+	<div class="ggpanelSubitem">
+	<input type="radio" ng-model="newsetting.mode" value="0" required> Ouverte <input type="radio" ng-model="newsetting.mode" value="1" required> Fermée <input type="radio" ng-model="newsetting.mode" value="2" required> One-Shot
+	</div>
+	<div class="ggpanelSubitem">
+	    Code (3 lettres max) <input type="text" class="inputSettingCode" name="settingCode" placeholder="XXX" ng-model="newsetting.code" required size="3" maxlength="3"/>
+		<button class="settingButton rightbutton" ng-disabled="createSettingForm.$invalid" type="submit">Valider</button>
+	</div>
+ </form>
+										</div>
 										<div class="ggpanelItem ggclickablelistitem dropdownItem" ng-repeat="setting in settingsList | filter: {status: 0} | orderBy: 'name'">{{setting.name}}</div>
 									</div>
 								</div>

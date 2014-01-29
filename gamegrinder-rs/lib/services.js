@@ -13,10 +13,15 @@ persist.connect(
     connection = conn;
 });
 
+function genericSendJson(res, data) {
+    res.charSet('UTF-8');
+    res.send(data);
+}
+
 function genericCreate(req, res, next, entity) {
             entity.save(connection, function(err) {
                if (err) res.send("Error: " + err);
-               else res.send(item);
+               else genericSendJson(res, entity);
               next();
             });
 }
@@ -48,7 +53,7 @@ function genericDelete(req, res, next, entity) {
             setting.using(connection).each(function(err, setting) {
                 result.push(setting);
             }, function() {
-              res.send(result);
+              genericSendJson(res, result);
               next();
             });
     };
@@ -58,7 +63,7 @@ function genericDelete(req, res, next, entity) {
             setting.using(connection).where({ code: req.params.code}).each(function(err, setting) {
                 result.push(setting);
             }, function() {
-              res.send(result);
+              genericSendJson(res, result);
               next();
             });
     };

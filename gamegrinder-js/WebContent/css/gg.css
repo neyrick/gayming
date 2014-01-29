@@ -1,8 +1,15 @@
+input[type="text"].ng-invalid {}
+
 body {
 	font: 15px/22.5px "Helvetica Neue",HelveticaNeue,Helvetica,Arial,sans-serif;
 }
-input {
+input.expand {
 	width: 100%;
+}
+.inputLabel {
+	float: left;
+	margin-right: 5px;
+	margin-top: 3px;
 }
 span.inputContainer {
 	overflow: hidden;
@@ -56,8 +63,6 @@ span.inputContainer {
     overflow: hidden;
 }
 .ggpanelSubitem {
-	border-left: 1px solid #000050;
-	border-right: 1px solid #000050;
 	padding-top: 1px;
 	padding-bottom: 1px;
 	padding-left: 6px;
@@ -83,9 +88,11 @@ span.inputContainer {
 	border-bottom: none;
 }
 .ggpanelSubheader {
-	padding: 6px;
-	border-top: 1px solid #000050;
 	border-bottom: 1px solid #000050;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 .day1 {
 	background-color: #E0E0FF;
