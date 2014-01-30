@@ -4,7 +4,7 @@
 
 gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsService', 'plannerService', 'planningBuilderService', 'config', function GameGrinderCtrl($scope, $cookies, settingsService, plannerService, planningBuilderService, config) {
 
-    var dayCount = 56;
+    var dayCount = 42;
 
     $scope.currentDay = 0;
 
@@ -123,36 +123,17 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
     { id: 3, desc : "Partie sans moi", style: "noPlayBadge" }
   ];
 
-  $scope.isTfSettingVisible = function(settingcode, tfstatus) {
-    if (typeof $scope.settingsHash == "undefined") return false;
-    var setting = $scope.settingsHash[settingcode];
-    if (typeof setting == "undefined") return false;
-    if ((setting.mode == 0) && ($scope.invisibleOpenSettings.indexOf('' + setting.id) > -1)) return false;
-    if ((setting.mode == 1) && ($scope.visibleClosedSettings.indexOf('' + setting.id) == -1)) return false;
-    if ($scope.invisibleStatus.indexOf('' + tfstatus.code()) > -1) return false;
-    return true;
-  }
-
   $scope.weeks = Array();
 
-  settingsService.updateSettings(function(response) {
-          var i, result = new Object();
-		  for (i = 0; i < response.length; i++) {
-		      result[response[i].code] = response[i];
-		  }
-		  $scope.settingsHash = result; 
-		  $scope.settingsList = response; 
-		  $scope.settingsReady = true;
+  settingsService.getSettings( function(settings) {
+	  $scope.settingsList = settings;
+	  var minday = planningBuilderService.getDefaultMinDay();
+	  plannerService.getPlanning(minday, dayCount, function(planning) {
+			$scope.weeks = planningBuilderService.buildWeeksPlanning(minday, dayCount, settings, planning.schedule,  planning.games, planning.comments);
+			  $scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);
+		});
+  }); 
 
-		  var minday = planningBuilderService.getDefaultMinDay();
-		  plannerService.getPlanning(minday, dayCount, function(result) {
-			$scope.weeks = planningBuilderService.buildWeeksPlanning(minday, dayCount, $scope.settingsHash, result.schedule, result.games, result.comments);
-			$scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);
-		  });
-		  
-	  }, function(error) {
-	          window.alert(error); 
-	  });
 
   /*
   $scope.settingsList =  {

@@ -119,9 +119,7 @@ function genericDelete(req, res, next, entity) {
         var conflict = false;
         var querySchedule = { dayid : newSchedule.dayid, timeframe : newSchedule.timeframe, player : newSchedule.player};
         schedule.using(connection).where(querySchedule).each(function(err, sameschedule) {
-            console.log("Erreur: " + err);
-            console.log(sameschedule);
-            if (sameschedule.game) conflict = true;
+            if (sameschedule._game != null) conflict = true;
         }, function(err) {
             if (conflict) {
                 console.log("Conflit détecté !");
@@ -162,6 +160,12 @@ function genericDelete(req, res, next, entity) {
 	var params = [ minday, maxday ];
 
 	var paramindex = 3;
+	if (req.params.timeframe) {
+		basequery = basequery + ' and timeframe = $' + paramindex;
+		paramindex++;
+		params.push(req.params.timeframe);
+	}
+
 	if (req.params.setting) {
 		basequery = basequery + ' and setting = $' + paramindex;
 		paramindex++;

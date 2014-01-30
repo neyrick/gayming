@@ -34,6 +34,7 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 			schedule: '=schedule',
 			comment: '=comment',
 			statusdesc: '=statusdec',
+			refreshTimeframe: '=refreshtimeframe'
 		},
 		link: function(scope, element, attrs) {
 			$(element).parent().qtip({
@@ -74,12 +75,16 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 				$box.slideUp(200);
 				$box.prev('.commentTrigger').slideDown(200);
 			});
-			$('.questionDiv').hover(function(event) {
-				$(this).data("old-text", $(this).text());
-				$(this).text($(this).attr("alt-text"));
-			},
-			function(event) {
-				$(this).text($(this).data("old-text"));
+			$('.questionDiv').each(function() {
+				$(this).hover(function(event) {
+					$(this).text($(this).attr("alt-text"));
+				},
+				function(event) {
+					$(this).text($(this).attr("norm-text"));
+				})
+			});
+			$('.questionDiv').show(function() {
+					$(this).text($(this).attr("norm-text"));
 			});
 			scope.validateGame = function($event) {
 				$($event.target).slideUp(200);
@@ -87,18 +92,18 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 			}
 	            scope.toggleDispo = function(role, isAvailable) {
                 	plannerService.toggleDispo(scope.user, scope.dayid, scope.timeframe.code, scope.schedule.id, role, isAvailable, function() {
-	                    $window.alert('Done !');
+	                    scope.refreshTimeframe();
 	                });
 	            };
 		}
 	};
 });
 
-gamegrinderApp.directive('ggTimeframeBox', function(plannerService) {
+gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuilderService) {
 
 	var timeframesDesc = {
-			    "AFTERNOON": {"key":"AFTERNOON", pic:"images/aprem.gif", name:"Après-midi"},
-			    "EVENING": {"key":"EVENING", pic:"images/soir.gif", name:"Soirée"},
+			    "AFTERNOON": {"code":"AFTERNOON", pic:"images/aprem.gif", name:"Après-midi"},
+			    "EVENING": {"code":"EVENING", pic:"images/soir.gif", name:"Soirée"},
 			};
 
 	return {
@@ -109,8 +114,11 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService) {
 			dayid: '=dayid',
 			timeframe: '=timeframe',
 			user: '=user',
-			statusDesc: '=statusDesc',
-			status: '=status'
+			statusDesc: '=statusdesc',
+			status: '=status',
+ 			invisibleOpenSettings: '=invisibleopen',
+ 			visibleClosedSettings: '=visibleclosed',
+ 			invisibleStatus: '=invisiblestatus'
 		},
 		link: function(scope, element, attrs) {
 			scope.timeframesDesc = timeframesDesc;
@@ -174,6 +182,18 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService) {
 				    window.alert('Done !');
 				});
 			};
+			scope.isTfSettingVisible = function(setting, tfstatus) {
+			    if ((setting.mode == 0) && (scope.invisibleOpenSettings.indexOf('' + setting.id) > -1)) return false;
+			    if ((setting.mode == 1) && (scope.visibleClosedSettings.indexOf('' + setting.id) == -1)) return false;
+			    if (scope.invisibleStatus.indexOf('' + tfstatus.code()) > -1) return false;
+			    return true;
+			  };
+			scope.refreshTimeframe = function() {
+				plannerService.getTimeframePlanning(scope.dayid, scope.timeframe.code, function(result) {
+					planningBuilderService.refreshTimeframeInWeeksPlanning(scope.settingsList, result.schedule, result.games, result.comments, scope.timeframe.settings);
+					scope.status.update(scope.timeframe);
+				});
+			}
 		}
 	};
 });
@@ -189,8 +209,11 @@ gamegrinderApp.directive('ggDayTab', function() {
 			settings: '=settings',
 			day: '=day',
 			user: '=user',
-			statusDesc: '=statusDesc',
-			status: '=status'
+			statusDesc: '=statusdesc',
+			status: '=status',
+ 			invisibleopen: '=invisibleopen',
+ 			visibleclosed: '=visibleclosed',
+ 			invisiblestatus: '=invisiblestatus'
 		},
 		link: function(scope, element, attrs) {
 			$(element).hover(function(event) {

@@ -27,24 +27,60 @@ gamegrinderApp.factory('config', [function() {
 
 	return {
 		urlbase : "http://jafar/rs/gg",
-		FIRST_DAY_OF_WEEK : 5,		
-			
+		FIRST_DAY_OF_WEEK : 5,				
 		}
 }]);
 
 gamegrinderApp.factory('settingsService', ['$http', 'config', function($http, config) {
 
+	var settings = { ready : false };
+	var updateSettings = function(callback, callback2) {
+		$http.get(config.urlbase + '/setting').success(callback).error(callback2);
+	};
+
 	return {
-				
-		updateSettings : function(callback, callback2) {
-			$http.get(config.urlbase + '/setting').success(callback).error(callback2);
-		}
 		
+		getSettings : function(callback) {
+			if (!settings.ready) {
+				updateSettings(function(result) {
+					settings = result;
+					settings.ready = true;
+					callback(settings);
+				}, function(error) {
+					window.alert("Impossible de récupérer les chroniques: " + error);
+				});
+			}
+			else callback(settings);
+		}
 		
 	}
 }]);
 
 gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
+
+	var timeframeIndex = {
+		'AFTERNOON' : 0,
+		'EVENING' : 1
+	};
+
+	var mergeSetting = function (allSettings, currentArray, settingid) {
+		var i;
+		for (i = 0; i < currentArray.length; i++) {
+			if (currentArray[i].id == settingid) return currentArray[i];
+		}
+		for (i = 0; i < allSettings.length; i++) {
+			if (allSettings[i].id == settingid) {
+				var settingref = allSettings[i];
+				var newsetting = { id : settingref.id , code : settingref.code , name : settingref.name,
+					mode : settingref.mode, status : settingref.status, games : [], availableplayers : [],
+					availablegms : [], unavailable : []};
+				currentArray.push(newsetting);
+				return newsetting;
+			}
+		}
+		return undefined;
+		
+	}
 
 	return {
 		MS_IN_DAY : 1000 * 60 * 60 * 24,
@@ -80,6 +116,25 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 			return currtime;
 		},
 
+		refreshTimeframeInWeeksPlanning : function(settings, schedules, games, comments, tfSettings) {
+			var i, rawschedule, tfSetting;
+
+			for (i = 0; i < tfSettings.length; i++) {
+				tfSetting = tfSettings[i];
+				tfSetting.availablegms.length=0;
+				tfSetting.availableplayers.length=0;
+				tfSetting.unavailable.length=0;
+				tfSetting.games.length=0;
+			}
+
+			for (i = 0; i < schedules.length; i++) {
+				rawschedule = schedules[i];
+				tfSetting = mergeSetting(settings, tfSettings, rawschedule.setting);
+				if (rawschedule.role == 'GM') tfSetting.availablegms.push( { name : rawschedule.player });
+				else if (rawschedule.role == 'PLAYER') tfSetting.availableplayers.push( { name : rawschedule.player });
+			}
+		},
+
 		buildWeeksPlanning : function(mindaytime, daycount, settings, schedules, games, comments) {
 			
 			// Initialisation des semaines
@@ -103,6 +158,17 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 			}
 
 			// ajouter les schedule dans availablepj / available mj
+
+			var i, rawschedule;
+			var tfSettings, tfSetting;
+			for (i = 0; i < schedules.length; i++) {
+				rawschedule = schedules[i];
+				tfSettings = dayMap[rawschedule.dayid].timeframes[timeframeIndex[rawschedule.timeframe]].settings;
+				tfSetting = mergeSetting(settings, tfSettings, rawschedule.setting);
+				if (rawschedule.role == 'GM') tfSetting.availablegms.push( { name : rawschedule.player });
+				else if (rawschedule.role == 'PLAYER') tfSetting.availableplayers.push( { name : rawschedule.player });
+			}
+
 			// ajouter les game
 			// parcourir les comment et les ajouter
 			return weeks;
@@ -124,6 +190,10 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 		    }
 		},
 
+		getTimeframePlanning : function(dayid, timeframecode, callback) {
+			$http.get(config.urlbase + '/planning?minday=' + dayid + '&maxday=' + dayid + '&timeframe=' + timeframecode).success(callback);
+		},
+				
 		getPlanning : function(mindaytime, daycount, callback) {
 			var minday = planningBuilderService.getDayId(new Date(mindaytime));
 			var maxdaytime = mindaytime + daycount * planningBuilderService.MS_IN_DAY;

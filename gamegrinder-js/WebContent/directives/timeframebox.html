@@ -1,7 +1,7 @@
-								<img class="timeFrameItem timeFramePic" ttip="{{timeframesDesc[timeframe.code].name}}" src="{{timeframesDesc[timeframe.code].pic}}"/>
-								<a href="#" class="tfSetting" ng-repeat="settingtf in timeframe.settings" ng-show="isTfSettingVisible(settingtf.code, status)">
-									<span class="badge {{statusDesc[status[settingtf.code].code()].style}}">{{settingtf.code}}</span>
-									<gg-tf-setting-tooltip dayid="dayid" timeframe="timeframesDesc[timeframe.code]" status="status[settingtf.code]" user="user" schedule="settingtf" comment="comment"></gg-tf-setting-tooltip>
+								<img class="timeFrameItem timeFramePic" ttip="{{timeframesDesc[timeframe.code].name}}" ng-src="{{timeframesDesc[timeframe.code].pic}}"/>
+								<a href="#" class="tfSetting" ng-repeat="settingtf in timeframe.settings" ng-show="isTfSettingVisible(settingtf, status.settings[settingtf.code])">
+									<span class="badge {{statusDesc[status.settings[settingtf.code].code()].style}}">{{settingtf.code}}</span>
+									<gg-tf-setting-tooltip dayid="dayid" timeframe="timeframesDesc[timeframe.code]" status="status.settings[settingtf.code]" user="user" schedule="settingtf" comment="comment" refreshtimeframe="refreshTimeframe"></gg-tf-setting-tooltip>
 								</a>
 
 								<div class="timeFrameItem dropdown plusBox">
