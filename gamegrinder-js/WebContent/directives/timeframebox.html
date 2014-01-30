@@ -1,0 +1,33 @@
+								<img class="timeFrameItem timeFramePic" ttip="{{timeframesDesc[timeframe.code].name}}" src="{{timeframesDesc[timeframe.code].pic}}"/>
+								<a href="#" class="tfSetting" ng-repeat="settingtf in timeframe.settings" ng-show="isTfSettingVisible(settingtf.code, status)">
+									<span class="badge {{statusDesc[status[settingtf.code].code()].style}}">{{settingtf.code}}</span>
+									<gg-tf-setting-tooltip dayid="dayid" timeframe="timeframesDesc[timeframe.code]" status="status[settingtf.code]" user="user" schedule="settingtf" comment="comment"></gg-tf-setting-tooltip>
+								</a>
+
+								<div class="timeFrameItem dropdown plusBox">
+									<img id="plusButton-{{day.id}}-{{timeframe.code}}" class="tfExtra timeFrameItem plusButton" src="images/plus.gif"	data-day="{{day.id}}" data-timeframe="{{timeframe.code}}" ng-click="selectTimeframe(timeframe)">
+									<div class="ggdropdown addSettingDropdown">
+										<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">Je propose une partie de...</div>
+<div class="ggpanelItem ggclickablelistitem dropdownItem settingTrigger hoverDay collapsible">Créer une Chronique / One-Shot</div>
+										<div class="ggpanelItem dropdownItem settingEditor collapsed dummyContainer" >
+<form class="form-inline" role="form" name="createSettingForm" ng-submit="createSetting()" novalidate>
+	<div class="ggpanelSubheader hoverDay">
+	    Nouvelle Chronique / One-Shot
+	</div>
+	<div class="ggpanelSubitem"><input type="text" class="inputSettingName expand" name="settingName" placeholder="Nom de la chronique" ng-model="newsetting.name" required maxlength="32"/></span>
+	</div>
+	<div class="ggpanelSubitem centered">
+        <span class="badge" ng-click="newsetting.mode=0" ng-class="{ noPlayBadge : newsetting.mode == 0 }">Ouverte</span>
+        <span class="badge" ng-click="newsetting.mode=1" ng-class="{ noPlayBadge : newsetting.mode == 1 }">Fermée</span>
+        <span class="badge" ng-click="newsetting.mode=2" ng-class="{ noPlayBadge : newsetting.mode == 2 }">One-Shot</span>
+	</div>
+	<div class="ggpanelSubitem">
+	    Code (3 lettres max) <input type="text" class="inputSettingCode" name="settingCode" placeholder="XXX" ng-model="newsetting.code" required size="3" maxlength="3"/>
+		<button class="settingButton rightbutton" ng-disabled="createSettingForm.$invalid || (newsetting.mode<0)" type="submit">Valider</button>
+	</div>
+ </form>
+										</div>
+										<div class="ggpanelItem ggclickablelistitem dropdownItem" ng-repeat="setting in settingsList | filter: {status: 0} | orderBy: 'name'" ng-click="addSetting(setting)">{{setting.name}}</div>
+									</div>
+								</div>
+

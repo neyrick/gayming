@@ -25,7 +25,7 @@ var comment = persist.define("comment", {
           "timeframe": type.STRING,
           "player": type.STRING,
           "message": type.STRING
-    }, { tableName: "schedule" }).hasOne(setting, { createHasMany: false, foreignKey : "setting"});
+    }, { tableName: "comment" }).hasOne(setting, { createHasMany: false, foreignKey : "setting"});
 
 exports.setting = setting;
 exports.game = game;

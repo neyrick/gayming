@@ -288,13 +288,7 @@ span.inputContainer {
 	position: relative;
 	margin-left: -12px;
 }
-.dayPanel > div {
-	padding-right: 2px;
-	padding-top: 2px;
-	padding-bottom: 2px;
-	padding-left: 14px;
-}
-.dayPanel:first-child > div {
+.dayPanel:first-child > gg-day-tab > div {
 	padding: 2px;
 }
 .dayPanel:first-child {
@@ -308,6 +302,10 @@ span.inputContainer {
 	border-top-right-radius: 9px;
 	color: #000050;
 	text-align: center;
+	padding-right: 2px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 14px;
 }
 .timeFramePanel:last-child {
 	border-bottom-right-radius: 9px;
@@ -315,6 +313,10 @@ span.inputContainer {
 .timeFramePanel {
 	background-color:#FFFFFF;
 	border-top: 1px solid #000000;
+	padding-right: 2px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 14px;
 }
 .timeFrameItem {
 	vertical-align: middle;

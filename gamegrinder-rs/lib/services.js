@@ -13,6 +13,43 @@ persist.connect(
     connection = conn;
 });
 
+function genericFetchInterval(req, res, next, entity) {
+	var basequery = '1=1';
+	var params = Array();
+	if (req.params.player) params.push(req.params.player);
+	if (req.params.minday) params.push(req.params.minday);
+	if (req.params.maxday) params.push(req.params.maxday);
+
+	var paramindex = 1;
+	if (req.params.player) {
+		basequery = basequery + ' and player = $' + paramindex;
+		paramindex++;
+	}
+	if (req.params.setting) {
+		basequery = basequery + ' and setting = $' + paramindex;
+		paramindex++;
+	}
+	if (req.params.minday) {
+		if (req.params.maxday) {
+			basequery = basequery + ' and dayid >= $' + paramindex + ' and dayid <= $' + (paramindex+1);
+			paramindex += 2;
+		}
+		else {
+			basequery = basequery + ' and dayid >= $' + paramindex;
+			paramindex++;
+		}
+	}
+	else if (req.params.maxday) {
+		basequery = basequery + ' and dayid <= $' + paramindex;
+		paramindex++;
+	}
+        entity.where(basequery, params).all(connection, function(err, result) {
+		        if (err) console.log("Erreur: " + err);
+			res.send(result);
+			next();
+	});
+}
+
 function genericSendJson(res, data) {
     res.charSet('UTF-8');
     res.send(data);
@@ -104,7 +141,53 @@ function genericDelete(req, res, next, entity) {
         });
     };
 
+    exports.fetchSchedule = function(req, res, next) {
+	genericFetchInterval(req, res, next, schedule);
+    }
 
+    exports.fetchComment = function(req, res, next) {
+	genericFetchInterval(req, res, next, comment);
+    }
+
+    exports.fetchGame = function(req, res, next) {
+	genericFetchInterval(req, res, next, game);
+    }
+
+    exports.fetchPlanning = function(req, res, next) {
+	var minday = req.params.minday;
+	if (typeof minday == "undefined") minday = 0;
+	var maxday = req.params.maxday;
+	if (typeof maxday == "undefined") maxday = 99999999;
+	var basequery = 'dayid >= $1 and dayid <= $2';
+	var params = [ minday, maxday ];
+
+	var paramindex = 3;
+	if (req.params.setting) {
+		basequery = basequery + ' and setting = $' + paramindex;
+		paramindex++;
+		params.push(req.params.setting);
+	}
+
+	var gamesparams = params.slice();
+	var gamesquery = basequery;
+
+	if (req.params.player) {
+		basequery = basequery + ' and player = $' + paramindex;
+		paramindex++;
+		params.push(req.params.player);
+	}
+	
+	connection.chain({
+		schedule: schedule.where(basequery, params).all,
+		comments: comment.where(basequery, params).all,
+		games: game.where(gamesquery, gamesparams).all,
+	}, function(err, results) {
+	        if (err) console.log("Erreur: " + err);
+		res.send(results);
+		next();
+	});
+	next();
+    }
 
     exports.createComment = function(req, res, next) {
 	    genericCreate(req, res, next, new comment(req.body));

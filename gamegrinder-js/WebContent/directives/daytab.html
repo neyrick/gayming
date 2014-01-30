@@ -1,0 +1,7 @@
+<div class="datePanel glossyHeader">
+	<span>{{ dowcodes[day.dow] }}</span> <br /><span>{{ day.dom }} / {{ day.month }}</span>
+</div>
+
+<div class="timeFramePanel" ng-repeat="timeframe in day.timeframes">
+  <gg-timeframe-box dayid="day.id" timeframe="timeframe" user="user" settings="settings" statusDesc="statusDesc" status="status[timeframe.code]">
+</div>

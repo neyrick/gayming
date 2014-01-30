@@ -2,7 +2,9 @@
 
 /* Controllers */
 
-gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsService', function GameGrinderCtrl($scope, $cookies, settingsService) {
+gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsService', 'plannerService', 'planningBuilderService', 'config', function GameGrinderCtrl($scope, $cookies, settingsService, plannerService, planningBuilderService, config) {
+
+    var dayCount = 56;
 
     $scope.currentDay = 0;
 
@@ -113,12 +115,6 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
       return (itemlist.indexOf($scope.currentUser) != -1);
   }
   */
-  $scope.dowcodes = { "1":"LU","2":"MA","3":"ME","4":"JE","5":"VE","6":"SA","7":"DI"};
-
-  $scope.timeframesDesc = {
-    "AFTERNOON": {"key":"AFTERNOON", pic:"images/aprem.gif", name:"Après-midi"},
-    "EVENING": {"key":"EVENING", pic:"images/soir.gif", name:"Soirée"},
-  };
 
   $scope.tfSettingStatus = [
     { id: 0, desc : "Pas dispo / intéressé", style: "notAvailableBadge" },
@@ -137,6 +133,8 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
     return true;
   }
 
+  $scope.weeks = Array();
+
   settingsService.updateSettings(function(response) {
           var i, result = new Object();
 		  for (i = 0; i < response.length; i++) {
@@ -145,10 +143,17 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 		  $scope.settingsHash = result; 
 		  $scope.settingsList = response; 
 		  $scope.settingsReady = true;
+
+		  var minday = planningBuilderService.getDefaultMinDay();
+		  plannerService.getPlanning(minday, dayCount, function(result) {
+			$scope.weeks = planningBuilderService.buildWeeksPlanning(minday, dayCount, $scope.settingsHash, result.schedule, result.games, result.comments);
+			$scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);
+		  });
+		  
 	  }, function(error) {
 	          window.alert(error); 
 	  });
-  
+
   /*
   $scope.settingsList =  {
     "EP": {"id": 1,
@@ -169,6 +174,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
      "open": true},
   };
 */
+/*
   $scope.weeks = [
     {"days": [
          {"id":"20130923", "dow": 1, "dom": 23, "month": 9, "year": 2013, "timeframes" : [
@@ -226,12 +232,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 	{"code":"EVENING", "settings": []}]},
     ]},
   ];
-
-	$scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);
-	$scope.getTfSettingStatus = function(dayid, timeframecode, settingcode) {
-		return $scope.mystatus.status[dayid][timeframecode][settingcode];
-	  }
-
+*/
 }]);
 
 

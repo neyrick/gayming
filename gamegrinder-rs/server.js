@@ -17,8 +17,18 @@ server.put('/gg/setting', serv.createSetting);
 server.post('/gg/setting', serv.updateSetting);
 //server.del('/gg/setting/:setting', serv.deleteSetting);
 
+server.get('/gg/schedule', serv.fetchSchedule);
+server.get('/gg/schedule/:player', serv.fetchSchedule);
 server.put('/gg/schedule', serv.createSchedule);
 server.del('/gg/schedule', serv.deleteSchedule);
+
+server.get('/gg/comment', serv.fetchComment);
+server.get('/gg/comment/:player', serv.fetchComment);
+
+server.get('/gg/game', serv.fetchGame);
+
+server.get('/gg/planning', serv.fetchPlanning);
+
 
 server.on('uncaughtException', function (request, response, route, error) {
     console.log('Erreur !!! %j', error);
