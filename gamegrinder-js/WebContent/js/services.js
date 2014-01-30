@@ -46,6 +46,15 @@ gamegrinderApp.factory('settingsService', ['$http', 'config', function($http, co
 gamegrinderApp.factory('plannerService', ['$http', 'config', function($http, config) {
 
 	return {
+        toggleDispo : function(pm_player, pm_dayid, pm_timeframe, pm_setting, pm_role, isAvailable, callback) {
+            var schedule = { dayid : pm_dayid, timeframe : pm_timeframe, player : pm_player, role : pm_role, setting : pm_setting};
+            if (isAvailable) {
+                $http.put(config.urlbase + '/schedule', schedule).success(callback);
+            }
+            else {
+                $http.delete(config.urlbase + '/schedule', {data : schedule}).success(callback);
+            }
+        },
 				
 		validateGame : function(pm_dayid, pm_timeframecode, pm_settingid, pm_gmname, callback) {
 			var game = {

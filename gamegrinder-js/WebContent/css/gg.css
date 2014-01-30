@@ -1,5 +1,7 @@
 input[type="text"].ng-invalid {}
-
+.centered {
+    text-align: center;
+}
 body {
 	font: 15px/22.5px "Helvetica Neue",HelveticaNeue,Helvetica,Arial,sans-serif;
 }
@@ -48,6 +50,7 @@ span.inputContainer {
 	font: 15px/22.5px "Helvetica Neue",HelveticaNeue,Helvetica,Arial,sans-serif;
 	background-color:#000050;
 	border: 0px none;
+    max-width: none;
 }
 .ggpanel .qtip-content{
 	padding: 0px;
@@ -63,10 +66,10 @@ span.inputContainer {
     overflow: hidden;
 }
 .ggpanelSubitem {
-	padding-top: 1px;
-	padding-bottom: 1px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 	padding-left: 6px;
-	padding-right: 6px;
+	padding-right: 10px;
 	color: #000050;
 }
 .ggpanelCell {
@@ -93,6 +96,9 @@ span.inputContainer {
 	padding-bottom: 2px;
 	padding-left: 6px;
 	padding-right: 6px;
+}
+.addSettingDropdown {
+    min-width: 300px;
 }
 .day1 {
 	background-color: #E0E0FF;
@@ -124,17 +130,6 @@ span.inputContainer {
 }
 .ggdropdown {
 	display: none;
-}
-.ggclickablelistitem {
-    background-color: #F0F0F0;
-    cursor: pointer;
-    
-    transition: background-color .2s ease-in-out;
-}
-.ggclickablelistitem:hover {
-    background-color: #3245a3;
-    color: #FFFFFF;
-    text-decoration: none;
 }
 .dropdownItem {
 	padding-left: 6px;
@@ -188,6 +183,14 @@ span.inputContainer {
 	border-radius: 10px;
 	border: solid 1px #000000;
 	color: #000050;
+}
+.radiowrapper {
+	border-radius: 10px;
+	border: solid 1px #000000;
+	white-space: nowrap;
+	text-align: center;
+	display: inline-block;
+    padding-right: 7px;
 }
 .legendBadge {
 	width: 44px;
@@ -327,6 +330,17 @@ span.inputContainer {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5883f8', endColorstr='#57a9fb',GradientType=0 );
 	color: #FFFFFF;
 }
+.ggclickablelistitem {
+    background-color: #F0F0F0;
+    cursor: pointer;
+    
+    transition: background-color .2s ease-in-out;
+}
+.ggclickablelistitem:hover {
+    background: #3245a3;
+    color: #FFFFFF;
+    text-decoration: none;
+}
 .infoPic {
 	vertical-align: middle;
 	padding: 2px;
@@ -349,7 +363,9 @@ span.inputContainer {
 	padding-left: 45px;
 }
 .questionDiv:hover {
+	background-position:12px 3px;
 	background-image: url("../images/question.png");
+	background-repeat: no-repeat;
 }
 .warningDiv {
 	background-position:12px 3px;

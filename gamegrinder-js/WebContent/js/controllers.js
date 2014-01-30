@@ -11,6 +11,9 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
     $scope.currentUser =  "MJD1";// cookies['ggUser'];
     
     $scope.currentComment = '';
+    
+    $scope.blanksetting = { name : '', mode : -1, status : 0, code : ''};
+    $scope.newsetting = $scope.blanksetting;
 
     $scope.settingsReady = false;
 
@@ -173,7 +176,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 	{"code": "TB",
 		"games": [ { "gm": {"name": "GM1", "comment": "Comment-GM1"}, "players": [{"name": "PJ1"}, {"name": "PJ2", "comment": "Comment-PJ2"}, {"name": "PJ3"}]}, { "gm": {"name": "GM2", "comment": "Comment-GM2"}, "players": [ {"name": "PJ4", "comment": "Comment-PJ4"}, {"name": "PJ5"}, {"name": "PJ6"}]}],
 		"availablegms": [ {"name": "MJD1", "comment": "Comment-MJD1"}, {"name": "MJD2"}],
-		"availableplayers": [ {"name": "PJD2", "comment": "Comment-PJD2"}, {"name": "PJD1"}, {"name": "PJD3", "comment": "Comment-PJD3"}, {"name": "PJD4"}],
+		"availableplayers": [ {"name": "PJD2", "comment": "Comment-PJD2"}, {"name": "PJD1"}, {"name": "PJD3", "comment": "Comment-PJD3"}, {"name": "PJD4"}, { "name": "MJD1"}],
 		"unavailable": [ { "name": "UA1", "comment": "Comment-UA1"}, { "name": "UA2", "comment": "Comment-UA2"}, { "name": "UA3", "comment": "Comment-UA3"}]
 	},
 	{"code": "7SP"}]},

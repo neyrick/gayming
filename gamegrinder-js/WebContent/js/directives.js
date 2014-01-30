@@ -2,7 +2,7 @@
 
 /* Directives */
 
-gamegrinderApp.directive('ggTfSettingTooltip', function() {
+gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'directives/tfsettingtooltip.html',
@@ -45,6 +45,11 @@ gamegrinderApp.directive('ggTfSettingTooltip', function() {
 				}
 			    }
 			});
+            scope.toggleDispo = function(dayid, timeframe, setting, role, isAvailable, callback) {
+                plannerService.toggleDispo(scope.user, dayid, timeframe, setting, role, isAvailable, function() {
+                    $window.alert('Done !');
+                });
+            };
 			$('.commentTrigger').click(function(event) {
 				$(this).slideUp(200);
 				var $box=$(this).next('.commentEdit');

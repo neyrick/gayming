@@ -72,22 +72,48 @@ function genericDelete(req, res, next, entity) {
 	    genericCreate(req, res, next, new setting(req.body));
     };
 
-    exports.createComment = function(req, res, next) {
-	    genericCreate(req, res, next, new comment(req.body));
+    exports.updateSetting = function(req, res, next) {
+	    genericUpdate(req, res, next, setting);
     };
 
     exports.createSchedule = function(req, res, next) {
-	    genericCreate(req, res, next, new schedule(req.body));
+        // Verification que le joueur est bien disponible
+        var newSchedule = req.body;
+        var conflict = false;
+        var querySchedule = { dayid : newSchedule.dayid, timeframe : newSchedule.timeframe, player : newSchedule.player};
+        schedule.using(connection).where(querySchedule).each(function(err, sameschedule) {
+            console.log("Erreur: " + err);
+            console.log(sameschedule);
+            if (sameschedule.game) conflict = true;
+        }, function(err) {
+            if (conflict) {
+                console.log("Conflit détecté !");
+                next();
+            }
+            else {
+                genericCreate(req, res, next, new schedule(req.body));
+            }
+        });	    
+    };
+
+    exports.deleteSchedule = function(req, res, next) {
+        schedule.where(JSON.parse(req.body)).deleteAll(connection, function(err) {
+            if (err) console.log("Erreur: " + err);
+            res.send("OK");
+            next();
+        });
+    };
+
+
+
+    exports.createComment = function(req, res, next) {
+	    genericCreate(req, res, next, new comment(req.body));
     };
 
     exports.createGame = function(req, res, next) {
 	    genericCreate(req, res, next, new game(req.body));
     };
 
-    exports.updateSetting = function(req, res, next) {
-	    genericUpdate(req, res, next, setting);
-    };
-    
     exports.updateComment = function(req, res, next) {
 	    genericUpdate(req, res, next, comment);
     };
@@ -106,10 +132,6 @@ function genericDelete(req, res, next, entity) {
 
     exports.deleteComment = function(req, res, next) {
 	    genericDelete(req, res, next, new comment({ id: req.params.id }));
-    };
-
-    exports.deleteSchedule = function(req, res, next) {
-	    genericDelete(req, res, next, new schedule({ id: req.params.id }));
     };
 
     exports.deleteGame = function(req, res, next) {

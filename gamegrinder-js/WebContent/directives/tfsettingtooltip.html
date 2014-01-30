@@ -1,11 +1,11 @@
-<div id="tfSettingTooltip-{{dayid}}-{{timeframe.code}}-{{setting.code}}" class="ggdropdown">
+<div id="tfSettingTooltip-{{dayid}}-{{timeframe.key}}-{{setting.code}}" class="ggdropdown">
 	<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">{{setting.name}}</div>
-	<div class="ggpanelItem ggclickablelistitem dispoDiv questionDiv" ng-show="status.dispoPJ" alt-text="Pas dispo pour jouer ?">Dispo pour jouer</div>
-	<div class="ggpanelItem ggclickablelistitem pasDispoDiv questionDiv" ng-show="status.showNotDispoPJ()" alt-text="Dispo pour jouer ?">Pas dispo pour jouer</div>
-	<div class="ggpanelItem ggclickablelistitem dispoDiv questionDiv" ng-show="status.dispoMJ" alt-text="Pas dispo pour maîtriser ?">Dispo pour maîtriser</div>
-	<div class="ggpanelItem ggclickablelistitem pasDispoDiv questionDiv" ng-show="status.showNotDispoMJ()" alt-text="Dispo pour maîtriser ?">Pas dispo pour maîtriser</div>
+	<div class="ggpanelItem ggclickablelistitem dispoDiv questionDiv" ng-show="status.dispoPJ" alt-text="Pas dispo pour jouer ?" ng-click="toggleDispo(dayid, timeframe.key, setting.id, 'PLAYER', false)">Dispo pour jouer</div>
+	<div class="ggpanelItem ggclickablelistitem pasDispoDiv questionDiv" ng-show="status.showNotDispoPJ()" alt-text="Dispo pour jouer ?" ng-click="toggleDispo(dayid, timeframe.key, setting.id, 'PLAYER', true)">Pas dispo pour jouer</div>
+	<div class="ggpanelItem ggclickablelistitem dispoDiv questionDiv" ng-show="status.dispoMJ" alt-text="Pas dispo pour maîtriser ?" ng-click="toggleDispo(dayid, timeframe.key, setting.id, 'GM', false)">Dispo pour maîtriser</div>
+	<div class="ggpanelItem ggclickablelistitem pasDispoDiv questionDiv" ng-show="status.showNotDispoMJ()" alt-text="Dispo pour maîtriser ?" ng-click="toggleDispo(dayid, timeframe.key, setting.id, 'GM', true)">Pas dispo pour maîtriser</div>
 	<div class="ggpanelItem warningDiv" ng-show="status.busy">Déjà sur une autre partie !</div>
-	<div class="ggpanelItem ggclickablelistitem validateDiv questionDiv" ng-show="status.dispoMJ" ng-click="validateGame(day.id, timeframe.code, setting.id, $event)">Valider une partie</div>
+	<div class="ggpanelItem ggclickablelistitem validateDiv questionDiv" ng-show="status.dispoMJ" ng-click="validateGame(day.id, timeframe.key, setting.id, $event)">Valider une partie</div>
 	<div class="ggpanelItem ggclickablelistitem cancelDiv questionDiv" ng-show="status.pj">Quitter la partie</div>
 	<div class="ggpanelItem ggclickablelistitem cancelDiv" ng-show="status.mj">Annuler la partie</div>
 	<div class="gameEditor ggpanelItem dummyContainer collapsed">
