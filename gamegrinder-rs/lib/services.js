@@ -123,17 +123,18 @@ function genericDelete(req, res, next, entity) {
         }, function(err) {
             if (conflict) {
                 console.log("Conflit détecté !");
-                next();
             }
             else {
                 genericCreate(req, res, next, new schedule(req.body));
             }
+            next();
         });	    
     };
 
     exports.deleteSchedule = function(req, res, next) {
         schedule.where(JSON.parse(req.body)).deleteAll(connection, function(err) {
-            if (err) console.log("Erreur: " + err);
+            if (err) res.send("Erreur: " + err);
+		else res.send("OK");
             next();
         });
     };
@@ -146,46 +147,63 @@ function genericDelete(req, res, next, entity) {
 	genericFetchInterval(req, res, next, comment);
     }
 
+    exports.setComment = function(req, res, next) {
+	var comm = new comment(req.body);
+	if ((comm.message == null) || (comm.message == '')) {
+		if ((comm.id != null) && (comm.id > 0)) {
+			genericDelete(req, res, next, comm);
+		}
+		else next();
+	}	
+	else {
+		if ((comm.id != null) && (comm.id > 0)) {
+			genericUpdate(req, res, next, comment);
+		}
+		else genericCreate(req, res, next, new comment(req.body));
+	}
+    }
+
     exports.fetchGame = function(req, res, next) {
 	genericFetchInterval(req, res, next, game);
     }
 
     exports.fetchPlanning = function(req, res, next) {
+	var basequery = "SELECT s.id AS idschedule, COALESCE(s.dayid, c.dayid) AS dayid, COALESCE(s.timeframe, c.timeframe) AS timeframe, COALESCE(s.setting, c.setting) AS setting, s.game , COALESCE(s.player, c.player) AS player, s.role, c.id AS idcomment,  c.message FROM schedule s FULL OUTER JOIN comment c USING (dayid, timeframe, setting, player) WHERE ((s.dayid >= $1) OR (c.dayid >= $1)) AND ((s.dayid <= $2) OR (c.dayid <= $2))";
+
 	var minday = req.params.minday;
 	if (typeof minday == "undefined") minday = 0;
 	var maxday = req.params.maxday;
 	if (typeof maxday == "undefined") maxday = 99999999;
-	var basequery = 'dayid >= $1 and dayid <= $2';
+//	var basequery = 'dayid >= $1 and dayid <= $2';
 	var params = [ minday, maxday ];
 
 	var paramindex = 3;
 	if (req.params.timeframe) {
-		basequery = basequery + ' and timeframe = $' + paramindex;
+		basequery = basequery + ' AND ((s.timeframe = $' + paramindex + ') OR ( c.timeframe = $' + paramindex + '))';
 		paramindex++;
 		params.push(req.params.timeframe);
 	}
 
 	if (req.params.setting) {
-		basequery = basequery + ' and setting = $' + paramindex;
+		basequery = basequery + ' AND ((s.setting = $' + paramindex + ') OR ( c.setting = $' + paramindex + '))';
 		paramindex++;
 		params.push(req.params.setting);
 	}
 
 	if (req.params.player) {
-		basequery = basequery + ' and player = $' + paramindex;
+		basequery = basequery + ' AND ((s.player = $' + paramindex + ') OR ( c.player = $' + paramindex + '))';
 		paramindex++;
 		params.push(req.params.player);
 	}
 	
-	connection.chain({
-		schedule: schedule.include(game).where(basequery, params).all,
-		comments: comment.where(basequery, params).all,
-	}, function(err, results) {
+	connection.runSqlAll(basequery, params, function(err, results) {
+//		schedule: schedule.include(game).where(basequery, params).all,
+//		comments: comment.where(basequery, params).all,
+//	, function(err, results) {
 	        if (err) console.log("Erreur: " + err);
 		res.send(results);
 		next();
 	});
-	next();
     }
 
     exports.createGame = function(req, res, next) {

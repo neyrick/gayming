@@ -100,8 +100,15 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
                     }
                 }
 			}
+		scope.setComment = function() {
+			plannerService.setComment( scope.user, scope.dayid, scope.timeframe.code, scope.schedule.settingid, scope.schedule.idcomment, scope.schedule.message, function() {
+		 		$(element).parent().qtip('api').hide();
+				    scope.refreshTimeframe();
+			});
+		}
             scope.toggleDispo = function(role, isAvailable) {
                 plannerService.toggleDispo(scope.user, scope.dayid, scope.timeframe.code, scope.schedule.settingid, role, isAvailable, function() {
+ 		$(element).parent().qtip('api').hide();
                     scope.refreshTimeframe();
                 });
             };
@@ -112,8 +119,8 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuilderService) {
 
 	var timeframesDesc = {
-			    "AFTERNOON": {"code":"AFTERNOON", pic:"images/aprem.gif", name:"Après-midi"},
-			    "EVENING": {"code":"EVENING", pic:"images/soir.gif", name:"Soirée"},
+			    "AFTERNOON": {"code":"AFTERNOON", pic:"images/aprem.png", name:"Après-midi"},
+			    "EVENING": {"code":"EVENING", pic:"images/soir.png", name:"Soirée"},
 			};
 
 	return {
@@ -209,7 +216,7 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 			  };
 			scope.refreshTimeframe = function() {
 				plannerService.getTimeframePlanning(scope.dayid, scope.timeframe.code, function(result) {
-					planningBuilderService.refreshTimeframeInWeeksPlanning(scope.settingsList, result.schedule, result.comments, scope.timeframe, scope.user);
+					planningBuilderService.refreshTimeframeInWeeksPlanning(scope.settingsList, result, scope.timeframe, scope.user);
 				});
 			}
 		}

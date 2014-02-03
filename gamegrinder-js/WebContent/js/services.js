@@ -85,13 +85,14 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
     var addSchedule = function (rawschedule, timeframe, allSettings, me) {
         var g, game;
         var tfSetting = mergeSetting(allSettings, timeframe.settings, rawschedule.setting);
-        if (rawschedule.role == 'GM') tfSetting.availablegms.push( { name : rawschedule.player, schedule : rawschedule.id, game: rawschedule._game  });
-        else if (rawschedule.role == 'PLAYER') tfSetting.availableplayers.push( { name : rawschedule.player, schedule: rawschedule.id, game: rawschedule._game });
-        if ( rawschedule._game != null) {  
+        if (rawschedule.role == 'GM') tfSetting.availablegms.push( { name : rawschedule.player, schedule : rawschedule.idschedule, game: rawschedule.game, idcomment : rawschedule.idcomment, comment : rawschedule.message  });
+        else if (rawschedule.role == 'PLAYER') tfSetting.availableplayers.push( { name : rawschedule.player, schedule: rawschedule.idschedule, game: rawschedule._game, idcomment : rawschedule.idcomment, comment : rawschedule.message });
+	else tfSetting.unavailable.push({ name : rawschedule.player, idcomment : rawschedule.idcomment, comment : rawschedule.message });
+        if ( rawschedule.game != null) {  
             tfSetting.hasgame = true;
             game = null;
             for (g = 0; g  < tfSetting.games.length; g++) {
-                if (tfSetting.games[g].id == rawschedule._game) game = tfSetting.games[g];
+                if (tfSetting.games[g].id == rawschedule.game) game = tfSetting.games[g];
             }
             if (game == null) {
                 game = { players : [] };
@@ -103,19 +104,22 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
         if ( rawschedule.player == me) {
             if (rawschedule.role == 'GM')  {
                 tfSetting.mystatus.dispoMJ = true;
-                if (rawschedule._game != null) {
+                if (rawschedule.game != null) {
                     tfSetting.mystatus.mj = true;
                     timeframe.busy = true;
                     timeframe.mysetting = tfSetting.code;
                 }
             }
             else if (rawschedule.role == 'PLAYER') {
-                tfSetting.mystatus.dispoPJ = true; {
+                tfSetting.mystatus.dispoPJ = true;
+                if (rawschedule.game != null) {
                     tfSetting.mystatus.pj = true;
                     timeframe.busy = true;
                     timeframe.mysetting = tfSetting.code;
                 }
             }
+	    if (rawschedule.idcomment != null) tfSetting.idcomment = rawschedule.idcomment;
+	    if (rawschedule.message != null) tfSetting.message = rawschedule.message;
         }
     }
     
@@ -153,7 +157,7 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 			return currtime;
 		},
 
-		refreshTimeframeInWeeksPlanning : function(settings, schedules, comments, timeframe, me) {
+		refreshTimeframeInWeeksPlanning : function(settings, schedules, timeframe, me) {
 			var i;
 
             /*
@@ -179,7 +183,7 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 			}
 		},
 
-		buildWeeksPlanning : function(mindaytime, daycount, settings, schedules, comments, me) {
+		buildWeeksPlanning : function(mindaytime, daycount, settings, schedules, me) {
 			
 			// Initialisation des semaines
 			var weeks = Array();
@@ -247,7 +251,15 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 				masterschedule: schedule_id,
 			};
 			$http.put(config.urlbase + '/game', game).success(callback);
-		}		
+		},
+
+		setComment : function(pm_player, pm_dayid, pm_timeframe, pm_setting, pm_idcomment, pm_message, callback) {
+			var comment;
+
+			if (pm_idcomment != null) comment = { id :  pm_idcomment, message : pm_message };
+			else comment = { player : pm_player, dayid : pm_dayid, timeframe : pm_timeframe, setting : pm_setting, message : pm_message};
+			$http.post(config.urlbase + '/comment', comment).success(callback);
+		}
 	}
 }]);
 

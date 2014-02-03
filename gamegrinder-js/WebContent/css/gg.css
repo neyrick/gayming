@@ -4,6 +4,7 @@ input[type="text"].ng-invalid {}
 }
 body {
 	font: 15px/22.5px "Helvetica Neue",HelveticaNeue,Helvetica,Arial,sans-serif;
+	background-color: #E0E0E0;
 }
 input.expand {
 	width: 100%;
@@ -342,6 +343,9 @@ span.inputContainer {
     background-color: #3245a3;
     color: #FFFFFF;
     text-decoration: none;
+}
+span.selector {
+	cursor: pointer;
 }
 .infoPic {
 	vertical-align: middle;

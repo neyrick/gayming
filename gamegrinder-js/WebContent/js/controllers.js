@@ -4,15 +4,11 @@
 
 gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsService', 'plannerService', 'planningBuilderService', 'config', function GameGrinderCtrl($scope, $cookies, settingsService, plannerService, planningBuilderService, config) {
 
-    var dayCount = 42;
+    $scope.dayCount = 42;
 
-    $scope.currentDay = 0;
+    $scope.currentUser =  $cookies['ggUser'];
 
-    $scope.currentTimeframe = 0;
-
-    $scope.currentUser =  "MJD1";// cookies['ggUser'];
-    
-    $scope.currentComment = '';
+    $scope.firstday = planningBuilderService.getDefaultMinDay();
     
     $scope.blanksetting = { name : '', mode : -1, status : 0, code : ''};
     $scope.newsetting = $scope.blanksetting;
@@ -25,7 +21,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 
     $scope.currentRecruits = [];
 	
-    $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; $scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);  };
+    $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; initPlanning(); };
     $scope.logout=function() { delete $cookies['ggUser']; $( "#logindialogcontainer" ).qtip( "toggle", true ); };
 
     $scope.setComment=function() {  };
@@ -127,14 +123,15 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 
   settingsService.getSettings( function(settings) {
 	  $scope.settingsList = settings;
-	  var minday = planningBuilderService.getDefaultMinDay();
-	  plannerService.getPlanning(minday, dayCount, function(planning) {
-			if (typeof $scope.currentUser != undefined) $scope.weeks = planningBuilderService.buildWeeksPlanning(minday, dayCount, settings, planning.schedule, planning.comments, $scope.currentUser);
-//			  $scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);
-		});
+	initPlanning();	  
   }); 
 
-
+  var initPlanning = function()  {
+		plannerService.getPlanning($scope.firstday, $scope.dayCount, function(planning) {
+			if (typeof $scope.currentUser != undefined) $scope.weeks = planningBuilderService.buildWeeksPlanning($scope.firstday, $scope.dayCount, $scope.settingsList, planning, $scope.currentUser);
+//			  $scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);
+		});
+  }
   /*
   $scope.settingsList =  {
     "EP": {"id": 1,

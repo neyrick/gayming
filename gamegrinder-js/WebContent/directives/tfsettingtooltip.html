@@ -4,7 +4,7 @@
 	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="(!status.dispoPJ) && (!timeframe.busy)" alt-text="Dispo pour jouer ?" ng-click="toggleDispo('PLAYER', true)" norm-text="Pas dispo pour jouer"></div>
 	<div class="ggpanelItem ggclickablelistitem dispoDiv tfSettingAction" ng-show="status.dispoMJ && (!timeframe.busy)" alt-text="Pas dispo pour maîtriser ?" ng-click="toggleDispo('GM', false)" norm-text="Dispo pour maîtriser"></div>
 	<div class="ggpanelItem ggclickablelistitem validateDiv tfSettingAction" ng-show="status.dispoMJ && (!timeframe.busy)" ng-click="validateGame(day.id, timeframe.code, schedule.id, $event)">Valider une partie</div>
-	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="!status.dispoMJ && (!timeframe.busy)" alt-text="Dispo pour maîtriser ?" ng-click="toggleDispo('GM', true)" reg-text="Pas dispo pour maîtriser"></div>
+	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="!status.dispoMJ && (!timeframe.busy)" alt-text="Dispo pour maîtriser ?" ng-click="toggleDispo('GM', true)" norm-text="Pas dispo pour maîtriser"></div>
 	<div class="ggpanelItem warningDiv tfSettingAction" ng-show="timeframe.busy && (timeframe.mysetting != schedule.code)">Déjà sur une autre partie !</div>
 	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="status.pj" ng-click="toggleDispo('PLAYER', false)">Quitter la partie</div>
 	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="status.mj" ng-click="toggleDispo('GM', false)">Annuler la partie</div>
@@ -12,11 +12,11 @@
 	  <div class="ggpanelSubheader hoverDay">Participants</div>
 	  <div class="ggclickablelistitem ggpanelSubitem" ng-repeat="player in schedule.availableplayers">{{ player.name }}</div>
 	</div>
-	<div class="ggpanelItem ggclickablelistitem noteDiv commentTrigger tfSettingAction collapsible">Ajouter un commentaire</div>
+	<div class="ggpanelItem ggclickablelistitem noteDiv commentTrigger tfSettingAction collapsible"><span ng-show="!(schedule.idcomment>0)">Ajouter un commentaire</span><span ng-show="schedule.idcomment>0">Modifier mon commentaire</span></div>
 	<div class="ggpanelItem commentEdit collapsed">
           <form id="commentForm" role="form" name="commentForm" ng-submit="setComment()" novalidate>
 	    <button class="commentButton rightbutton" ng-disabled="commentForm.$invalid" type="submit">Valider</button>
-	    <span class="inputContainer"><input type="text" class="inputComment expand" name="comment" placeholder="Tape ton commentaire" ng-model="comment"/><span>
+	    <span class="inputContainer"><input type="text" class="inputComment expand" name="comment" placeholder="Tape ton commentaire" ng-model="schedule.message"/><span>
 	  </form>
         </div>
 	<div class="ggpanelItem" ng-repeat="game in schedule.games">
