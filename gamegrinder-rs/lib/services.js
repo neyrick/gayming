@@ -134,7 +134,6 @@ function genericDelete(req, res, next, entity) {
     exports.deleteSchedule = function(req, res, next) {
         schedule.where(JSON.parse(req.body)).deleteAll(connection, function(err) {
             if (err) console.log("Erreur: " + err);
-            res.send("OK");
             next();
         });
     };
@@ -172,9 +171,6 @@ function genericDelete(req, res, next, entity) {
 		params.push(req.params.setting);
 	}
 
-	var gamesparams = params.slice();
-	var gamesquery = basequery;
-
 	if (req.params.player) {
 		basequery = basequery + ' and player = $' + paramindex;
 		paramindex++;
@@ -182,9 +178,8 @@ function genericDelete(req, res, next, entity) {
 	}
 	
 	connection.chain({
-		schedule: schedule.where(basequery, params).all,
+		schedule: schedule.include(game).where(basequery, params).all,
 		comments: comment.where(basequery, params).all,
-		games: game.where(gamesquery, gamesparams).all,
 	}, function(err, results) {
 	        if (err) console.log("Erreur: " + err);
 		res.send(results);
@@ -193,12 +188,26 @@ function genericDelete(req, res, next, entity) {
 	next();
     }
 
-    exports.createComment = function(req, res, next) {
-	    genericCreate(req, res, next, new comment(req.body));
+    exports.createGame = function(req, res, next) {
+	    var newgame = new game(req.body);
+            newgame.save(connection, function(err) {
+               if (err) res.send("Error: " + err);
+               else {
+			schedule.update( connection, newgame.masterschedule, { game : newgame.id }, function(err) {
+				if (err) res.send("Erreur: " + err);
+				else res.send("OK");
+			});
+	       }
+              next();
+            });
     };
 
-    exports.createGame = function(req, res, next) {
-	    genericCreate(req, res, next, new game(req.body));
+    exports.deleteGame = function(req, res, next) {
+	    genericDelete(req, res, next, new game({ id: req.params.id }));
+    };
+
+    exports.createComment = function(req, res, next) {
+	    genericCreate(req, res, next, new comment(req.body));
     };
 
     exports.updateComment = function(req, res, next) {
@@ -221,6 +230,3 @@ function genericDelete(req, res, next, entity) {
 	    genericDelete(req, res, next, new comment({ id: req.params.id }));
     };
 
-    exports.deleteGame = function(req, res, next) {
-	    genericDelete(req, res, next, new game({ id: req.params.id }));
-    };

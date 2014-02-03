@@ -1,18 +1,18 @@
 <div class="ggdropdown">
 	<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">{{schedule.name}}</div>
-	<div class="ggpanelItem ggclickablelistitem dispoDiv questionDiv" ng-show="status.dispoPJ" alt-text="Pas dispo pour jouer ?" ng-click="toggleDispo('PLAYER', false)" norm-text="Dispo pour jouer"></div>
-	<div class="ggpanelItem ggclickablelistitem pasDispoDiv questionDiv" ng-show="status.showNotDispoPJ()" alt-text="Dispo pour jouer ?" ng-click="toggleDispo('PLAYER', true)" norm-text="Pas dispo pour jouer"></div>
-	<div class="ggpanelItem ggclickablelistitem dispoDiv questionDiv" ng-show="status.dispoMJ" alt-text="Pas dispo pour maîtriser ?" ng-click="toggleDispo('GM', false)" norm-text="Dispo pour maîtriser"></div>
-	<div class="ggpanelItem ggclickablelistitem pasDispoDiv questionDiv" ng-show="status.showNotDispoMJ()" alt-text="Dispo pour maîtriser ?" ng-click="toggleDispo('GM', true)" reg-text="Pas dispo pour maîtriser"></div>
-	<div class="ggpanelItem warningDiv" ng-show="status.busy">Déjà sur une autre partie !</div>
-	<div class="ggpanelItem ggclickablelistitem validateDiv questionDiv" ng-show="status.dispoMJ" ng-click="validateGame(day.id, timeframe.key, schedule.id, $event)">Valider une partie</div>
-	<div class="ggpanelItem ggclickablelistitem cancelDiv questionDiv" ng-show="status.pj">Quitter la partie</div>
-	<div class="ggpanelItem ggclickablelistitem cancelDiv" ng-show="status.mj">Annuler la partie</div>
+	<div class="ggpanelItem ggclickablelistitem dispoDiv tfSettingAction" ng-show="status.dispoPJ && (!timeframe.busy)" alt-text="Pas dispo pour jouer ?" ng-click="toggleDispo('PLAYER', false)" norm-text="Dispo pour jouer"></div>
+	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="(!status.dispoPJ) && (!timeframe.busy)" alt-text="Dispo pour jouer ?" ng-click="toggleDispo('PLAYER', true)" norm-text="Pas dispo pour jouer"></div>
+	<div class="ggpanelItem ggclickablelistitem dispoDiv tfSettingAction" ng-show="status.dispoMJ && (!timeframe.busy)" alt-text="Pas dispo pour maîtriser ?" ng-click="toggleDispo('GM', false)" norm-text="Dispo pour maîtriser"></div>
+	<div class="ggpanelItem ggclickablelistitem validateDiv tfSettingAction" ng-show="status.dispoMJ && (!timeframe.busy)" ng-click="validateGame(day.id, timeframe.code, schedule.id, $event)">Valider une partie</div>
+	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="!status.dispoMJ && (!timeframe.busy)" alt-text="Dispo pour maîtriser ?" ng-click="toggleDispo('GM', true)" reg-text="Pas dispo pour maîtriser"></div>
+	<div class="ggpanelItem warningDiv tfSettingAction" ng-show="timeframe.busy && (timeframe.mysetting != schedule.code)">Déjà sur une autre partie !</div>
+	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="status.pj" ng-click="toggleDispo('PLAYER', false)">Quitter la partie</div>
+	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="status.mj" ng-click="toggleDispo('GM', false)">Annuler la partie</div>
 	<div class="gameEditor ggpanelItem dummyContainer collapsed">
 	  <div class="ggpanelSubheader hoverDay">Participants</div>
 	  <div class="ggclickablelistitem ggpanelSubitem" ng-repeat="player in schedule.availableplayers">{{ player.name }}</div>
 	</div>
-	<div class="ggpanelItem ggclickablelistitem noteDiv commentTrigger collapsible">Ajouter un commentaire</div>
+	<div class="ggpanelItem ggclickablelistitem noteDiv commentTrigger tfSettingAction collapsible">Ajouter un commentaire</div>
 	<div class="ggpanelItem commentEdit collapsed">
           <form id="commentForm" role="form" name="commentForm" ng-submit="setComment()" novalidate>
 	    <button class="commentButton rightbutton" ng-disabled="commentForm.$invalid" type="submit">Valider</button>
@@ -29,13 +29,13 @@
 	<div class="ggpanelItem">
 	  <span class="tfSettingSubbox">MJ Disponible(s):</span>
 	  <ul class="gameRoster">
-	    <li ng-repeat="player in schedule.availablegms" class="nomMJ">{{ player.name }}<span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
+	    <li ng-repeat="player in schedule.availablegms" class="nomMJ"><span ng-class="{busyplayer : player.game > 0}">{{ player.name }}</span><span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
 	  </ul>
 	</div>
 	<div class="ggpanelItem">
 	  <span class="tfSettingSubbox">Joueur(s) Disponible(s):</span>
 	  <ul class="gameRoster">
-	    <li ng-repeat="player in schedule.availableplayers" class="nomPJ">{{ player.name }}<span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
+	    <li ng-repeat="player in schedule.availableplayers" class="nomPJ"><span ng-class="{busyplayer : player.game > 0}">{{ player.name }}</span><span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
 	  </ul>
 	</div>
 	<div class="ggpanelItem">

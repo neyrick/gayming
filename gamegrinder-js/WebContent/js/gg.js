@@ -10,24 +10,18 @@ function userIsIn(username, itemlist) {
 function tfSettingStatus() {
 	this.pj = false;
 	this.mj = false;
-	this.busy = false;
-	this.dumped = false;
+//	this.busy = false;
 	this.dispoMJ = false;
 	this.dispoPJ = false;
-	
+	/*
 	this.dispo = function() { return (this.dispoMJ || this.dispoPJ); }
 	this.ongame = function() { return (this.pj || this.mj); }
+    
 	this.showNotDispoPJ = function() {return !(this.dispoPJ || this.ongame() || this.busy);}
 	this.showNotDispoMJ = function() {return !(this.dispoMJ || this.ongame() || this.busy); }
-
-	this.code = function() {
-	    if (this.ongame()) return 2;
-	    else if (this.dumped) return 3;
-	    else if (this.dispoPJ || this.dispoMJ) return 1;
-	    else return 0;
-	}
+*/
 }
-
+/*
 function TimeFrameStatus(username, timeframe) {
 
 	this.username=username;
@@ -42,7 +36,7 @@ function TimeFrameStatus(username, timeframe) {
 		for (s = 0; s < timeframe.settings.length; s++) {
 			setting = timeframe.settings[s];
 			settingStatus = new tfSettingStatus();
-			this.settings[setting.code] = settingStatus;
+			this.settings[setting.code] = settingStatus;            
 			hasgames = false;
 			if (typeof setting.games != "undefined") {
 				for (g = 0; g < setting.games.length; g++) {
@@ -61,7 +55,7 @@ function TimeFrameStatus(username, timeframe) {
 				}
 			}
 			settingStatus.dumped = (hasgames && !settingStatus.ongame());
-			settingStatus.dispoPJ = userIsIn(this.username, setting.availableplayers);
+			settingStatus.dispoPJ = userIsIn(this.username, setting.availableplayers) && !();
 			settingStatus.dispoMJ = userIsIn(this.username, setting.availablegms);
 		}
 		if (busy) {
@@ -104,13 +98,13 @@ function UserStatus(username, weeks) {
 	this.updateStatus(weeks);
 
 }
-
+*/
 function isLoggedIn() {
 	return (typeof angular.element('body').scope().currentUser != 'undefined');
 }
-
+/*
 function getTfSettingCode(item) {
 	return item.data('dayid') + '-' + item.data('timeframe') + '-' + item.data('settingcode');
 }
-
+*/
 

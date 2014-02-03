@@ -1,10 +1,10 @@
 								<img class="timeFrameItem timeFramePic" ttip="{{timeframesDesc[timeframe.code].name}}" ng-src="{{timeframesDesc[timeframe.code].pic}}"/>
-								<a href="#" class="tfSetting" ng-repeat="settingtf in timeframe.settings" ng-show="isTfSettingVisible(settingtf, status.settings[settingtf.code])">
-									<span class="badge {{statusDesc[status.settings[settingtf.code].code()].style}}">{{settingtf.code}}</span>
-									<gg-tf-setting-tooltip dayid="dayid" timeframe="timeframesDesc[timeframe.code]" status="status.settings[settingtf.code]" user="user" schedule="settingtf" comment="comment" refreshtimeframe="refreshTimeframe"></gg-tf-setting-tooltip>
+								<a href="#" class="tfSetting" ng-repeat="settingtf in timeframe.settings" ng-show="isTfSettingVisible(settingtf)">
+									<span class="badge {{statusDesc[getStatusCode(settingtf)].style}}">{{settingtf.code}}</span>
+									<gg-tf-setting-tooltip dayid="dayid" timeframe="timeframe" user="user" schedule="settingtf" comment="comment" refreshtimeframe="refreshTimeframe"></gg-tf-setting-tooltip>
 								</a>
 
-								<div class="timeFrameItem dropdown plusBox">
+								<div class="timeFrameItem dropdown plusBox" ng-show="!timeframe.busy">
 									<img id="plusButton-{{day.id}}-{{timeframe.code}}" class="tfExtra timeFrameItem plusButton" src="images/plus.gif"	data-day="{{day.id}}" data-timeframe="{{timeframe.code}}" ng-click="selectTimeframe(timeframe)">
 									<div class="ggdropdown addSettingDropdown">
 										<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">Je propose une partie de...</div>

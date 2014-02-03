@@ -339,7 +339,7 @@ span.inputContainer {
     transition: background-color .2s ease-in-out;
 }
 .ggclickablelistitem:hover {
-    background: #3245a3;
+    background-color: #3245a3;
     color: #FFFFFF;
     text-decoration: none;
 }
@@ -350,8 +350,14 @@ span.inputContainer {
 .pasDispoDiv {
 	background-image: url("../images/pasdispo.png");
 }
+.pasDispoDiv:hover {
+	background-image: url("../images/dispo.png");
+}
 .dispoDiv {
 	background-image: url("../images/dispo.png");
+}
+.dispoDiv:hover {
+	background-image: url("../images/pasdispo.png");
 }
 .validateDiv {
 	background-image: url("../images/checked.png");
@@ -359,26 +365,15 @@ span.inputContainer {
 .cancelDiv {
 	background-image: url("../images/unchecked.png");
 }
-.questionDiv {
+.tfSettingAction {
 	background-position:12px 3px;
 	background-repeat: no-repeat;
 	padding-left: 45px;
-}
-.questionDiv:hover {
-	background-position:12px 3px;
-	background-image: url("../images/question.png");
-	background-repeat: no-repeat;
 }
 .warningDiv {
-	background-position:12px 3px;
-	background-repeat: no-repeat;
-	padding-left: 45px;
 	background-image: url("../images/warning.png");
 }
 .noteDiv {
-	background-position:12px 3px;
-	background-repeat: no-repeat;
-	padding-left: 45px;
 	background-image: url("../images/note.png");
 }
 ul.gameRoster {
@@ -398,6 +393,9 @@ ul.gameRoster li.nomMJ {
 }
 ul.gameRoster li.nomPJ {
 	background-image: url("../images/dice.png");
+}
+.busyplayer {
+	text-decoration: line-through;
 }
 .commentDisplay {
 	font-style: italic;

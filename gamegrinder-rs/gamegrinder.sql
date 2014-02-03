@@ -95,9 +95,7 @@ ALTER SEQUENCE comment_id_seq OWNED BY comment.id;
 
 CREATE TABLE game (
     id integer NOT NULL,
-    dayid integer NOT NULL,
-    setting integer NOT NULL,
-    timeframe tf_type NOT NULL
+    masterschedule integer NOT NULL
 );
 
 
@@ -246,7 +244,7 @@ SELECT pg_catalog.setval('comment_id_seq', 1, false);
 -- Data for Name: game; Type: TABLE DATA; Schema: public; Owner: devel
 --
 
-COPY game (id, dayid, setting, timeframe) FROM stdin;
+COPY game (id, masterschedule) FROM stdin;
 \.
 
 
@@ -254,7 +252,7 @@ COPY game (id, dayid, setting, timeframe) FROM stdin;
 -- Name: game_id_seq; Type: SEQUENCE SET; Schema: public; Owner: devel
 --
 
-SELECT pg_catalog.setval('game_id_seq', 1, false);
+SELECT pg_catalog.setval('game_id_seq', 4, true);
 
 
 --
@@ -262,6 +260,9 @@ SELECT pg_catalog.setval('game_id_seq', 1, false);
 --
 
 COPY schedule (id, dayid, setting, game, player, timeframe, role) FROM stdin;
+43	20140131	1	\N	MJD1	AFTERNOON	GM
+45	20140131	2	\N	MJD1	AFTERNOON	GM
+46	20140131	3	\N	MJD1	AFTERNOON	GM
 \.
 
 
@@ -269,7 +270,7 @@ COPY schedule (id, dayid, setting, game, player, timeframe, role) FROM stdin;
 -- Name: schedule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: devel
 --
 
-SELECT pg_catalog.setval('schedule_id_seq', 1, false);
+SELECT pg_catalog.setval('schedule_id_seq', 46, true);
 
 
 --
@@ -360,6 +361,20 @@ CREATE INDEX schedule_player_idx ON schedule USING btree (player);
 
 
 --
+-- Name: schedule_setting_idx; Type: INDEX; Schema: public; Owner: devel; Tablespace: 
+--
+
+CREATE INDEX schedule_setting_idx ON schedule USING btree (setting);
+
+
+--
+-- Name: schedule_timeframe_idx; Type: INDEX; Schema: public; Owner: devel; Tablespace: 
+--
+
+CREATE INDEX schedule_timeframe_idx ON schedule USING btree (timeframe, dayid, setting);
+
+
+--
 -- Name: comment_setting_fk; Type: FK CONSTRAINT; Schema: public; Owner: devel
 --
 
@@ -368,11 +383,11 @@ ALTER TABLE ONLY comment
 
 
 --
--- Name: game_setting_fk; Type: FK CONSTRAINT; Schema: public; Owner: devel
+-- Name: game_schedule_fk; Type: FK CONSTRAINT; Schema: public; Owner: devel
 --
 
 ALTER TABLE ONLY game
-    ADD CONSTRAINT game_setting_fk FOREIGN KEY (setting) REFERENCES setting(id) ON DELETE CASCADE;
+    ADD CONSTRAINT game_schedule_fk FOREIGN KEY (masterschedule) REFERENCES schedule(id) ON DELETE CASCADE;
 
 
 --

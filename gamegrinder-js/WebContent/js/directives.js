@@ -29,14 +29,14 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 
 			dayid: '=dayid',
 			timeframe: '=timeframe',
-			status: '=status',
 			user: '=user',
 			schedule: '=schedule',
 			comment: '=comment',
 			statusdesc: '=statusdec',
 			refreshTimeframe: '=refreshtimeframe'
 		},
-		link: function(scope, element, attrs) {
+        link: function(scope, element, attrs) {
+            scope.status = scope.schedule.mystatus;
 			$(element).parent().qtip({
 			    style: {
 				classes: 'ggpanel tfSettingEditBox'
@@ -75,7 +75,7 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 				$box.slideUp(200);
 				$box.prev('.commentTrigger').slideDown(200);
 			});
-			$('.questionDiv').each(function() {
+			$("[alt-text]").each(function() {
 				$(this).hover(function(event) {
 					$(this).text($(this).attr("alt-text"));
 				},
@@ -83,18 +83,28 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 					$(this).text($(this).attr("norm-text"));
 				})
 			});
-			$('.questionDiv').show(function() {
+			$("[alt-text]").show(function() {
 					$(this).text($(this).attr("norm-text"));
 			});
 			scope.validateGame = function($event) {
-				$($event.target).slideUp(200);
-				$($event.target).nextAll(".gameEditor").slideDown(200);
+                var i, gm;
+                for (i = 0; i < scope.schedule.availablegms.length; i++ ) {
+                    gm = scope.schedule.availablegms[i];
+                    if (gm.name == scope.user) {
+                        plannerService.validateGame(gm.schedule, function() {
+                            $($event.target).slideUp(200);
+                            $($event.target).nextAll(".gameEditor").slideDown(200);
+                            scope.refreshTimeframe();
+                        });
+                        break;
+                    }
+                }
 			}
-	            scope.toggleDispo = function(role, isAvailable) {
-                	plannerService.toggleDispo(scope.user, scope.dayid, scope.timeframe.code, scope.schedule.id, role, isAvailable, function() {
-	                    scope.refreshTimeframe();
-	                });
-	            };
+            scope.toggleDispo = function(role, isAvailable) {
+                plannerService.toggleDispo(scope.user, scope.dayid, scope.timeframe.code, scope.schedule.settingid, role, isAvailable, function() {
+                    scope.refreshTimeframe();
+                });
+            };
 		}
 	};
 });
@@ -115,13 +125,21 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 			timeframe: '=timeframe',
 			user: '=user',
 			statusDesc: '=statusdesc',
-			status: '=status',
  			invisibleOpenSettings: '=invisibleopen',
  			visibleClosedSettings: '=visibleclosed',
  			invisibleStatus: '=invisiblestatus'
 		},
 		link: function(scope, element, attrs) {
 			scope.timeframesDesc = timeframesDesc;
+            scope.getStatusCode = function(schedule) {
+                var mystatus = schedule.mystatus;
+                if (mystatus.pj || mystatus.mj) return 2;
+                else if (mystatus.dispoPJ || mystatus.dispoMJ)  {
+                    if (schedule.hasgame) return 3;
+                    else return 1;
+                }
+	            else return 0;
+	        }
 			$(element).find('.tfExtra').each(function() {
 				$(this).qtip({
 				    style: {
@@ -179,19 +197,19 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 			});
 			scope.addSetting = function(setting) {
 				plannerService.toggleDispo(scope.user, scope.dayid, scope.timeframe.code, setting.id, 'GM', true, function() {
-				    window.alert('Done !');
+                    scope.refreshTimeframe();
+                    $(element).find('.tfExtra').qtip('api').hide();
 				});
 			};
-			scope.isTfSettingVisible = function(setting, tfstatus) {
+			scope.isTfSettingVisible = function(setting) {
 			    if ((setting.mode == 0) && (scope.invisibleOpenSettings.indexOf('' + setting.id) > -1)) return false;
 			    if ((setting.mode == 1) && (scope.visibleClosedSettings.indexOf('' + setting.id) == -1)) return false;
-			    if (scope.invisibleStatus.indexOf('' + tfstatus.code()) > -1) return false;
+			    if (scope.invisibleStatus.indexOf('' + scope.getStatusCode(setting)) > -1) return false;
 			    return true;
 			  };
 			scope.refreshTimeframe = function() {
 				plannerService.getTimeframePlanning(scope.dayid, scope.timeframe.code, function(result) {
-					planningBuilderService.refreshTimeframeInWeeksPlanning(scope.settingsList, result.schedule, result.games, result.comments, scope.timeframe.settings);
-					scope.status.update(scope.timeframe);
+					planningBuilderService.refreshTimeframeInWeeksPlanning(scope.settingsList, result.schedule, result.comments, scope.timeframe, scope.user);
 				});
 			}
 		}
@@ -210,7 +228,6 @@ gamegrinderApp.directive('ggDayTab', function() {
 			day: '=day',
 			user: '=user',
 			statusDesc: '=statusdesc',
-			status: '=status',
  			invisibleopen: '=invisibleopen',
  			visibleclosed: '=visibleclosed',
  			invisiblestatus: '=invisiblestatus'

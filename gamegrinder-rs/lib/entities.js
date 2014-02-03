@@ -8,10 +8,7 @@ var setting = persist.define("setting", {
           "status": type.INTEGER
     }, { tableName: "setting" });
     
-var game = persist.define("game", {
-          "dayid": type.INTEGER,
-          "timeframe": type.STRING,
-    }, { tableName: "game" }).hasOne(setting, { createHasMany: false, foreignKey : "setting"});
+var game = persist.define("game", {}, { tableName: "game" }).hasOne(setting, { createHasMany: false, foreignKey : "masterschedule"});
     
 var schedule = persist.define("schedule", {
           "dayid": type.INTEGER,

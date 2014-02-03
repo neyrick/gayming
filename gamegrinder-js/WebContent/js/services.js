@@ -66,14 +66,14 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 	var mergeSetting = function (allSettings, currentArray, settingid) {
 		var i;
 		for (i = 0; i < currentArray.length; i++) {
-			if (currentArray[i].id == settingid) return currentArray[i];
+			if (currentArray[i].settingid == settingid) return currentArray[i];
 		}
 		for (i = 0; i < allSettings.length; i++) {
 			if (allSettings[i].id == settingid) {
 				var settingref = allSettings[i];
-				var newsetting = { id : settingref.id , code : settingref.code , name : settingref.name,
+				var newsetting = { settingid : settingref.id , code : settingref.code , name : settingref.name,
 					mode : settingref.mode, status : settingref.status, games : [], availableplayers : [],
-					availablegms : [], unavailable : []};
+					availablegms : [], unavailable : [], mystatus : new tfSettingStatus(), hasgame : false };
 				currentArray.push(newsetting);
 				return newsetting;
 			}
@@ -82,6 +82,43 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 		
 	}
 
+    var addSchedule = function (rawschedule, timeframe, allSettings, me) {
+        var g, game;
+        var tfSetting = mergeSetting(allSettings, timeframe.settings, rawschedule.setting);
+        if (rawschedule.role == 'GM') tfSetting.availablegms.push( { name : rawschedule.player, schedule : rawschedule.id, game: rawschedule._game  });
+        else if (rawschedule.role == 'PLAYER') tfSetting.availableplayers.push( { name : rawschedule.player, schedule: rawschedule.id, game: rawschedule._game });
+        if ( rawschedule._game != null) {  
+            tfSetting.hasgame = true;
+            game = null;
+            for (g = 0; g  < tfSetting.games.length; g++) {
+                if (tfSetting.games[g].id == rawschedule._game) game = tfSetting.games[g];
+            }
+            if (game == null) {
+                game = { players : [] };
+                tfSetting.games.push(game);                
+            }
+            if (rawschedule.role == 'GM') game.gm = { name: rawschedule.player };
+            else if (rawschedule.role == 'PLAYER') game.players.push( { name: rawschedule.player });                    
+        }
+        if ( rawschedule.player == me) {
+            if (rawschedule.role == 'GM')  {
+                tfSetting.mystatus.dispoMJ = true;
+                if (rawschedule._game != null) {
+                    tfSetting.mystatus.mj = true;
+                    timeframe.busy = true;
+                    timeframe.mysetting = tfSetting.code;
+                }
+            }
+            else if (rawschedule.role == 'PLAYER') {
+                tfSetting.mystatus.dispoPJ = true; {
+                    tfSetting.mystatus.pj = true;
+                    timeframe.busy = true;
+                    timeframe.mysetting = tfSetting.code;
+                }
+            }
+        }
+    }
+    
 	return {
 		MS_IN_DAY : 1000 * 60 * 60 * 24,
 
@@ -98,7 +135,7 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 			result.dom = day.getDate();
 			result.month = day.getMonth()+1;
 			result.year = day.getFullYear();
-			result.timeframes = [ { code : 'AFTERNOON', settings : [] }, { code : 'EVENING', settings : [] }];
+			result.timeframes = [ { code : 'AFTERNOON', settings : [], busy : false }, { code : 'EVENING', settings : [], busy : false }];
 			return result;
 		},
 
@@ -116,26 +153,30 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 			return currtime;
 		},
 
-		refreshTimeframeInWeeksPlanning : function(settings, schedules, games, comments, tfSettings) {
-			var i, rawschedule, tfSetting;
+		refreshTimeframeInWeeksPlanning : function(settings, schedules, comments, timeframe, me) {
+			var i;
 
+            var tfSetting, tfSettings = timeframe.settings;
+            timeframe.busy = false;
+            delete timeframe.mysetting;
 			for (i = 0; i < tfSettings.length; i++) {
 				tfSetting = tfSettings[i];
 				tfSetting.availablegms.length=0;
 				tfSetting.availableplayers.length=0;
 				tfSetting.unavailable.length=0;
 				tfSetting.games.length=0;
+                tfSetting.mystatus.dispoMJ = false;
+                tfSetting.mystatus.dispoPJ = false;
+                tfSetting.mystatus.pj = false;
+                tfSetting.mystatus.mj = false;
 			}
 
 			for (i = 0; i < schedules.length; i++) {
-				rawschedule = schedules[i];
-				tfSetting = mergeSetting(settings, tfSettings, rawschedule.setting);
-				if (rawschedule.role == 'GM') tfSetting.availablegms.push( { name : rawschedule.player });
-				else if (rawschedule.role == 'PLAYER') tfSetting.availableplayers.push( { name : rawschedule.player });
+                addSchedule(schedules[i], timeframe, settings, me);
 			}
 		},
 
-		buildWeeksPlanning : function(mindaytime, daycount, settings, schedules, games, comments) {
+		buildWeeksPlanning : function(mindaytime, daycount, settings, schedules, comments, me) {
 			
 			// Initialisation des semaines
 			var weeks = Array();
@@ -159,17 +200,14 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 
 			// ajouter les schedule dans availablepj / available mj
 
-			var i, rawschedule;
-			var tfSettings, tfSetting;
-			for (i = 0; i < schedules.length; i++) {
+			var i, timeframe, rawschedule;
+			var tfSetting;
+			for (i = 0; i < schedules.length; i++) {                
 				rawschedule = schedules[i];
-				tfSettings = dayMap[rawschedule.dayid].timeframes[timeframeIndex[rawschedule.timeframe]].settings;
-				tfSetting = mergeSetting(settings, tfSettings, rawschedule.setting);
-				if (rawschedule.role == 'GM') tfSetting.availablegms.push( { name : rawschedule.player });
-				else if (rawschedule.role == 'PLAYER') tfSetting.availableplayers.push( { name : rawschedule.player });
+                timeframe = dayMap[rawschedule.dayid].timeframes[timeframeIndex[rawschedule.timeframe]];
+                addSchedule(rawschedule, timeframe, settings, me);
 			}
 
-			// ajouter les game
 			// parcourir les comment et les ajouter
 			return weeks;
 		}
@@ -201,17 +239,12 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 			$http.get(config.urlbase + '/planning?minday=' + minday + '&maxday=' + maxday).success(callback);
 		},
 				
-		validateGame : function(pm_dayid, pm_timeframecode, pm_settingid, pm_gmname, callback) {
+		validateGame : function(schedule_id, callback) {
 			var game = {
-				dayid: pm_dayid,
-				timeframe: pm_timeframecode,
-				setting: pm_settingid,
-				gm: pm_gmname
+				masterschedule: schedule_id,
 			};
-			$http.put(config.urlbase + '/game').success(callback);
-		}
-		
-		
+			$http.put(config.urlbase + '/game', game).success(callback);
+		}		
 	}
 }]);
 

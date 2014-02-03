@@ -25,6 +25,7 @@ server.del('/gg/schedule', serv.deleteSchedule);
 server.get('/gg/comment', serv.fetchComment);
 server.get('/gg/comment/:player', serv.fetchComment);
 
+server.put('/gg/game', serv.createGame);
 server.get('/gg/game', serv.fetchGame);
 
 server.get('/gg/planning', serv.fetchPlanning);

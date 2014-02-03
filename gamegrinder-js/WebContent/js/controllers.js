@@ -129,8 +129,8 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 	  $scope.settingsList = settings;
 	  var minday = planningBuilderService.getDefaultMinDay();
 	  plannerService.getPlanning(minday, dayCount, function(planning) {
-			$scope.weeks = planningBuilderService.buildWeeksPlanning(minday, dayCount, settings, planning.schedule,  planning.games, planning.comments);
-			  $scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);
+			if (typeof $scope.currentUser != undefined) $scope.weeks = planningBuilderService.buildWeeksPlanning(minday, dayCount, settings, planning.schedule, planning.comments, $scope.currentUser);
+//			  $scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);
 		});
   }); 
 
