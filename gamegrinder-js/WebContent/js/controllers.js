@@ -112,7 +112,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
   }
   */
 
-  $scope.tfSettingStatus = [
+  $scope.statusDesc = [
     { id: 0, desc : "Pas dispo / intéressé", style: "notAvailableBadge" },
     { id: 1, desc : "Je suis dispo", style: "availableBadge" },
     { id: 2, desc : "Je joue !", style: "playBadge" },

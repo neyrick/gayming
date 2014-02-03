@@ -96,7 +96,7 @@
 
 		<div id="legendContainer" class="ggpanel">
 			<div class="ggpanelItem ggpanelHeader glossyHeader" ttip="Cliquez sur une ligne pour cacher/afficher les cases correspondantes">Légende</div>
-				<div class="ggpanelItem ggclickablelistitem" ng-class="{ggDisabledItem : isInArray(status.id, invisibleStatus)}" ng-click="toggleStatusVisibility(status.id)" ng-repeat="status in tfSettingStatus">
+				<div class="ggpanelItem ggclickablelistitem" ng-class="{ggDisabledItem : isInArray(status.id, invisibleStatus)}" ng-click="toggleStatusVisibility(status.id)" ng-repeat="status in statusDesc">
 					<div class="legendBadge settingCell ggpanelCell"><span class="badge {{status.style}}">--</span></div>
 					<div class="settingCell ggpanelCell legendCell"><span>{{status.desc}}</span></div>
 				</div>
@@ -137,7 +137,7 @@
 		<div class="weekPanel" ng-repeat="week in weeks">
 
 			<div class="day{{$index+1}} dayPanel" ng-repeat="day in week.days">
-				<gg-day-tab day="day" user="currentUser" settings="settingsList" statusdesc="tfSettingStatus" invisibleopen="invisibleOpenSettings" visibleclosed="visibleClosedSettings" invisiblestatus="invisibleStatus">
+				<gg-day-tab>
 			</div>
 
 			</div>

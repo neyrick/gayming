@@ -85,9 +85,7 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
     var addSchedule = function (rawschedule, timeframe, allSettings, me) {
         var g, game;
         var tfSetting = mergeSetting(allSettings, timeframe.settings, rawschedule.setting);
-        if (rawschedule.role == 'GM') tfSetting.availablegms.push( { name : rawschedule.player, schedule : rawschedule.idschedule, game: rawschedule.game, idcomment : rawschedule.idcomment, comment : rawschedule.message  });
-        else if (rawschedule.role == 'PLAYER') tfSetting.availableplayers.push( { name : rawschedule.player, schedule: rawschedule.idschedule, game: rawschedule._game, idcomment : rawschedule.idcomment, comment : rawschedule.message });
-	else tfSetting.unavailable.push({ name : rawschedule.player, idcomment : rawschedule.idcomment, comment : rawschedule.message });
+        var newschedule = { name : rawschedule.player, schedule : rawschedule.idschedule, game: rawschedule.game, idcomment : rawschedule.idcomment, comment : rawschedule.message  };
         if ( rawschedule.game != null) {  
             tfSetting.hasgame = true;
             game = null;
@@ -98,9 +96,15 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
                 game = { players : [] };
                 tfSetting.games.push(game);                
             }
-            if (rawschedule.role == 'GM') game.gm = { name: rawschedule.player };
-            else if (rawschedule.role == 'PLAYER') game.players.push( { name: rawschedule.player });                    
+            if (rawschedule.role == 'GM') game.gm = newschedule;
+            else if (rawschedule.role == 'PLAYER') game.players.push(newschedule); 
+	    timeframe.gaming[rawschedule.player] = rawschedule.setting;
         }
+	else {
+	        if (rawschedule.role == 'GM') tfSetting.availablegms.push(newschedule);
+        	else if (rawschedule.role == 'PLAYER') tfSetting.availableplayers.push(newschedule);
+		else tfSetting.unavailable.push(newschedule);
+	}
         if ( rawschedule.player == me) {
             if (rawschedule.role == 'GM')  {
                 tfSetting.mystatus.dispoMJ = true;
@@ -115,7 +119,6 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
                 if (rawschedule.game != null) {
                     tfSetting.mystatus.pj = true;
                     timeframe.busy = true;
-                    timeframe.mysetting = tfSetting.code;
                 }
             }
 	    if (rawschedule.idcomment != null) tfSetting.idcomment = rawschedule.idcomment;
@@ -139,7 +142,7 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 			result.dom = day.getDate();
 			result.month = day.getMonth()+1;
 			result.year = day.getFullYear();
-			result.timeframes = [ { code : 'AFTERNOON', settings : [], busy : false }, { code : 'EVENING', settings : [], busy : false }];
+			result.timeframes = [ { code : 'AFTERNOON', settings : [], busy : false, gaming : {} }, { code : 'EVENING', settings : [], busy : false, gaming : {} }];
 			return result;
 		},
 
@@ -176,7 +179,7 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
             */
 
             timeframe.busy = false;
-            delete timeframe.mysetting;
+            timeframe.gaming = {};
             timeframe.settings.length = 0;
 			for (i = 0; i < schedules.length; i++) {
                 addSchedule(schedules[i], timeframe, settings, me);

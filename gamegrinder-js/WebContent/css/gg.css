@@ -373,6 +373,8 @@ span.selector {
 	background-position:12px 3px;
 	background-repeat: no-repeat;
 	padding-left: 45px;
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
 .warningDiv {
 	background-image: url("../images/warning.png");
