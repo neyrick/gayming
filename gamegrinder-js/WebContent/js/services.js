@@ -156,9 +156,8 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 		refreshTimeframeInWeeksPlanning : function(settings, schedules, comments, timeframe, me) {
 			var i;
 
+            /*
             var tfSetting, tfSettings = timeframe.settings;
-            timeframe.busy = false;
-            delete timeframe.mysetting;
 			for (i = 0; i < tfSettings.length; i++) {
 				tfSetting = tfSettings[i];
 				tfSetting.availablegms.length=0;
@@ -170,7 +169,11 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
                 tfSetting.mystatus.pj = false;
                 tfSetting.mystatus.mj = false;
 			}
+            */
 
+            timeframe.busy = false;
+            delete timeframe.mysetting;
+            timeframe.settings.length = 0;
 			for (i = 0; i < schedules.length; i++) {
                 addSchedule(schedules[i], timeframe, settings, me);
 			}
