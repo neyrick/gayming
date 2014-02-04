@@ -93,7 +93,7 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
                 if (tfSetting.games[g].id == rawschedule.game) game = tfSetting.games[g];
             }
             if (game == null) {
-                game = { players : [] };
+                game = { id : rawschedule.game, players : [] };
                 tfSetting.games.push(game);                
             }
             if (rawschedule.role == 'GM') game.gm = newschedule;
@@ -249,9 +249,10 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 			$http.get(config.urlbase + '/planning?minday=' + minday + '&maxday=' + maxday).success(callback);
 		},
 				
-		validateGame : function(schedule_id, callback) {
+		validateGame : function(schedule_id, players, callback) {
 			var game = {
 				masterschedule: schedule_id,
+                players: players
 			};
 			$http.put(config.urlbase + '/game', game).success(callback);
 		},

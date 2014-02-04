@@ -39,6 +39,8 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 		},
 */
         link: function(scope, element, attrs) {
+            scope.gamePlayers = {};
+            scope.numPlayers = 0;
             scope.status = scope.schedule.mystatus;
 			$(element).parent().qtip({
 			    style: {
@@ -62,8 +64,8 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 			    },
 			    events: {
 				hide: function(event, api) {
-					$(this).find('.collapsed').hide();
-					$(this).find('.collapsible').show();
+//					$(this).find('.collapsed').hide();
+//					$(this).find('.collapsible').show();
 				}
 			    }
 			});
@@ -93,9 +95,26 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 					$($event.target).slideUp(200);
                             		$($event.target).nextAll(".gameEditor").slideDown(200);
 			});
+            scope.toggleGamePlayer = function(player, event) {
+                if (typeof scope.gamePlayers[player.name] != "undefined") {
+                    delete scope.gamePlayers[player.name];
+                    scope.numPlayers--;
+//                    if (scope.numPlayers == 1) $(event.target).siblings(".gameButton").slideDown(200);
+                }
+                else {
+                    scope.gamePlayers[player.name] = player;
+                    scope.numPlayers++;
+//                    if (scope.numPlayers == 0) $(event.target).siblings(".gameButton").slideUp(200);
+                }
+            }
 			scope.isBusyElsewhere = function(player) {
 				var otherSetting = scope.timeframe.gaming[player];
 				return ((typeof otherSetting != "undefined") && (otherSetting != scope.schedule.settingid));
+			}
+			scope.isAvailableForGame = function(player) {
+                if (player.name == scope.currentUser) return false;
+				var otherSetting = scope.timeframe.gaming[player.name];
+				return (typeof otherSetting == "undefined");
 			}
 			scope.validateGame = function($event) {
                 var i, gm;
@@ -104,7 +123,7 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
                     if (gm.name == scope.currentUser) {
 			var api = $(element).parent().qtip('api');
 			api.hide();
-                        plannerService.validateGame(gm.schedule, function() {
+                        plannerService.validateGame(gm.schedule, scope.gamePlayers, function() {
                             
                             scope.refreshTimeframe();
                         });

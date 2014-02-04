@@ -185,6 +185,17 @@ span.inputContainer {
 	border: solid 1px #000000;
 	color: #000050;
 }
+.buttonBadge {
+	font-weight: normal;
+	border: solid 1px #000050;
+    font-size: 15px;
+    cursor: pointer;
+}
+.buttonBadge:hover {
+	border: solid 1px #FFFFFF;
+    background-color: #3245a3;
+    color: #FFFFFF;
+}
 .radiowrapper {
 	border-radius: 10px;
 	border: solid 1px #000000;
@@ -343,6 +354,14 @@ span.inputContainer {
     background-color: #3245a3;
     color: #FFFFFF;
     text-decoration: none;
+}
+.ggpanelSubfooter {
+    background-color: #b3bbf1;
+	border-top: 1px solid #000050;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 span.selector {
 	cursor: pointer;

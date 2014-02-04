@@ -207,11 +207,18 @@ function genericDelete(req, res, next, entity) {
     }
 
     exports.createGame = function(req, res, next) {
-	    var newgame = new game(req.body);
+	    var newgame = new game({ masterschedule : req.body.masterschedule});
             newgame.save(connection, function(err) {
                if (err) res.send("Error: " + err);
                else {
-			schedule.update( connection, newgame.masterschedule, { game : newgame.id }, function(err) {
+		       var updateStatement = 'UPDATE schedule SET game = ? WHERE id IN ( ?';
+		       var params = [newgame.id, req.body.masterschedule];
+		       for (name in req.body.players) {
+			       updateStatement = updateStatement + ', ?';
+			       params.push(req.body.players[name].schedule);
+		       }
+		       updateStatement = updateStatement + ')';
+			connection.runSql(updateStatement, params, function(err) {
 				if (err) res.send("Erreur: " + err);
 				else res.send("OK");
 			});
