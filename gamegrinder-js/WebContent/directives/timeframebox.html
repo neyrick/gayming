@@ -27,7 +27,7 @@
 	</div>
  </form>
 										</div>
-										<div class="ggpanelItem ggclickablelistitem dropdownItem" ng-repeat="setting in settingsList | filter: {status: 0} | orderBy: 'name'" ng-click="addSetting(setting)">{{setting.name}}</div>
+										<div class="ggpanelItem ggclickablelistitem dropdownItem" ng-repeat="setting in settingsList | filter: {status: 0} | filter: isSettingNew | orderBy: 'name'" ng-click="addSetting(setting)">{{setting.name}}</div>
 									</div>
 								</div>
 

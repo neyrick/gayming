@@ -94,8 +94,8 @@
 			</div>
 		</div>
 
-		<div id="legendContainer" class="ggpanel">
-			<div class="ggpanelItem ggpanelHeader glossyHeader" ttip="Cliquez sur une ligne pour cacher/afficher les cases correspondantes">Légende</div>
+		<div id="legendContainer" class="ggpanel" ttip="Clique sur une ligne pour cacher/afficher les sessions correspondantes">
+			<div class="ggpanelItem ggpanelHeader glossyHeader" ttip="Cliquez sur une ligne pour cacher/afficher les sessions correspondantes">Légende</div>
 				<div class="ggpanelItem ggclickablelistitem" ng-class="{ggDisabledItem : isInArray(status.id, invisibleStatus)}" ng-click="toggleStatusVisibility(status.id)" ng-repeat="status in statusDesc">
 					<div class="legendBadge settingCell ggpanelCell"><span class="badge {{status.style}}">--</span></div>
 					<div class="settingCell ggpanelCell legendCell"><span>{{status.desc}}</span></div>
@@ -103,28 +103,28 @@
 		</div>
 
 		<div id="campaignsContainer" class="dummyContainer">
-            <div class="ggpanel">
-                <div class="ggpanelItem ggpanelHeader glossyHeader" ttip="Cliquez sur une chronique pour la rendre visible/invisible dans votre planning">One-Shots</div>
+            <div class="ggpanel" ttip="Clique sur un one-shot pour le rendre visible/invisible dans ton planning">
+                <div class="ggpanelItem ggpanelHeader glossyHeader">One-Shots</div>
                 
-                <div class="ggpanelItem ggclickablelistitem" ng-repeat="setting in settingsList | filter: { mode: 2, status: 0} | orderBy: 'name'" ng-click="toggleSettingVisibility(setting.id, true)">
+                <div class="ggpanelItem ggclickablelistitem" ng-repeat="setting in settingsList | filter: { mode: 2, status: 0} | orderBy: 'name'" ng-click="toggleSettingVisibility(setting.id, setting.mode)" ng-class="{ggDisabledItem : isInArray(setting.id, invisibleOneShots)}">
                     <div class="legendBadge settingCell ggpanelCell"><span class="badge">{{setting.code }}</span></div>
                     <div class="settingCell ggpanelCell legendCell"><span>{{ setting.name }}</span></div>
                 </div>
             </div>
             
-            <div class="ggpanel">
-                <div class="ggpanelItem ggpanelHeader glossyHeader" ttip="Cliquez sur une chronique pour la rendre visible/invisible dans votre planning">Chroniques Ouvertes</div>
+            <div class="ggpanel" ttip="Clique sur une chronique pour la rendre visible/invisible dans ton planning">
+                <div class="ggpanelItem ggpanelHeader glossyHeader">Chroniques Ouvertes</div>
                 
-                <div class="ggpanelItem ggclickablelistitem" ng-repeat="setting in settingsList | filter: { mode: 0, status: 0} | orderBy: 'name'" ng-click="toggleSettingVisibility(setting.id, true)"  ng-class="{ggDisabledItem : isInArray(setting.id, invisibleOpenSettings)}">
+                <div class="ggpanelItem ggclickablelistitem" ng-repeat="setting in settingsList | filter: { mode: 0, status: 0} | orderBy: 'name'" ng-click="toggleSettingVisibility(setting.id, setting.mode)"  ng-class="{ggDisabledItem : isInArray(setting.id, invisibleOpenSettings)}">
                     <div class="legendBadge settingCell ggpanelCell"><span class="badge">{{setting.code }}</span></div>
                     <div class="settingCell ggpanelCell legendCell"><span>{{ setting.name }}</span></div>
                 </div>
             </div>
             
-            <div class="ggpanel">
-                <div class="ggpanelItem ggpanelHeader glossyHeader" ttip="Cliquez sur une chronique pour la rendre visible/invisible dans votre planning">Chroniques Fermées</div>
+            <div class="ggpanel" ttip="Clique sur une chronique pour la rendre visible/invisible dans ton planning">
+                <div class="ggpanelItem ggpanelHeader glossyHeader">Chroniques Fermées</div>
                 
-                <div class="ggpanelItem ggclickablelistitem" ng-repeat="setting in settingsList | filter: { mode: 1, status: 0} | orderBy: 'name'" ng-click="toggleSettingVisibility(setting.id, false)"  ng-class="{ggDisabledItem : !isInArray(setting.id, visibleClosedSettings)}">
+                <div class="ggpanelItem ggclickablelistitem" ng-repeat="setting in settingsList | filter: { mode: 1, status: 0} | orderBy: 'name'" ng-click="toggleSettingVisibility(setting.id, setting.mode)"  ng-class="{ggDisabledItem : !isInArray(setting.id, visibleClosedSettings)}">
                     <div class="legendBadge settingCell ggpanelCell"><span class="badge">{{setting.code }}</span></div>
                     <div class="settingCell ggpanelCell legendCell"><span>{{ setting.name }}</span></div>
                 </div>

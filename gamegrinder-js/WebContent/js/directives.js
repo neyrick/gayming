@@ -1,43 +1,12 @@
 'use strict';
 
 /* Directives */
-/*
-function initStandardTooltips(element, scope) {
-	$(element).find('[ttip!=""]').qtip({
-		style: { classes: 'infoTooltip' },
-		content: { attr: 'ttip' },
-		position: {
-			my: 'bottom left',
-			at: 'top right'
-		},
-		show: {
-			event: 'mouseenter click',
-		},
-		hide: {
-			delay: 10,
-			event: 'mouseleave',
-		}
-	});
-}
-*/
 
 gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 	return {
 		restrict: 'E',
 		templateUrl: 'directives/tfsettingtooltip.html',
 		scope: true,
-/*
-		scope: {
-
-			dayid: '=dayid',
-			timeframe: '=timeframe',
-			user: '=user',
-			schedule: '=schedule',
-			comment: '=comment',
-			statusdesc: '=statusdec',
-			refreshTimeframe: '=refreshtimeframe'
-		},
-*/
         link: function(scope, element, attrs) {
             scope.gamePlayers = {};
             scope.numPlayers = 0;
@@ -64,12 +33,12 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 			    },
 			    events: {
 				hide: function(event, api) {
-//					$(this).find('.collapsed').hide();
-//					$(this).find('.collapsible').show();
+					api.set('hide.event', 'mouseleave');
 				}
 			    }
 			});
 			$('.commentTrigger').click(function(event) {
+				$(element).parent().qtip('api').set('hide.event', 'unfocus');
 				$(this).slideUp(200);
 				var $box=$(this).next('.commentEdit');
 				$box.slideDown(200);
@@ -92,6 +61,7 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 					$(this).text($(this).attr("norm-text"));
 			});
 			$(".validateDiv").click(function($event) {
+					$(element).parent().qtip('api').set('hide.event', 'unfocus');
 					$($event.target).slideUp(200);
                             		$($event.target).nextAll(".gameEditor").slideDown(200);
 			});
@@ -99,12 +69,10 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
                 if (typeof scope.gamePlayers[player.name] != "undefined") {
                     delete scope.gamePlayers[player.name];
                     scope.numPlayers--;
-//                    if (scope.numPlayers == 1) $(event.target).siblings(".gameButton").slideDown(200);
                 }
                 else {
                     scope.gamePlayers[player.name] = player;
                     scope.numPlayers++;
-//                    if (scope.numPlayers == 0) $(event.target).siblings(".gameButton").slideUp(200);
                 }
             }
 			scope.isBusyElsewhere = function(player) {
@@ -158,18 +126,6 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 		restrict: 'E',
 		templateUrl: 'directives/timeframebox.html',
 		scope: true,
-/*
-		scope: {
-			settingsList: '=settings',
-			dayid: '=dayid',
-			timeframe: '=timeframe',
-			user: '=user',
-			statusDesc: '=statusdesc',
- 			invisibleOpenSettings: '=invisibleopen',
- 			visibleClosedSettings: '=visibleclosed',
- 			invisibleStatus: '=invisiblestatus'
-		},
-*/
 		link: function(scope, element, attrs) {
 			scope.timeframesDesc = timeframesDesc;
             scope.getStatusCode = function(schedule) {
@@ -204,6 +160,7 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 				    },
 				    events: {
 					hide: function(event, api) {
+						api.set('hide.event', 'mouseleave');
 						$(this).find('.collapsed').hide();
 						$(this).find('.collapsible').show();
 					}
@@ -211,10 +168,11 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 				});
 			});
 			$(element).find('.settingTrigger').first().click(function(event) {
+				$(element).find('.tfExtra').qtip('api').set('hide.event', 'unfocus');
 				$(this).slideUp(200);
 				var $box=$(this).next('.settingEditor');
 				$box.slideDown(200);
-				$box.find('.inputSetting').focus();
+				$box.find('.inputSettingName').focus();
 			});
 			$(element).find('.settingButton').first().click(function(event) {
 				var $box = $(this).parents('.settingEditor');
@@ -245,16 +203,25 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 				});
 				
 			}
+			scope.isSettingNew = function(setting) {
+				for (var i = 0; i < scope.timeframe.settings.length; i++) {
+					if (scope.timeframe.settings[i].settingid == setting.id) return false;
+				}
+				return true;
+			}
 			scope.addSetting = function(setting) {
 				plannerService.toggleDispo(scope.currentUser, scope.day.id, scope.timeframe.code, setting.id, 'GM', true, function() {
+			
+			scope.toggleSettingVisibility(setting.id, setting.mode, true);
                     scope.refreshTimeframe();
                     $(element).find('.tfExtra').qtip('api').hide();
 				});
 			};
-			scope.isTfSettingVisible = function(setting) {
-			    if ((setting.mode == 0) && (scope.invisibleOpenSettings.indexOf('' + setting.id) > -1)) return false;
-			    if ((setting.mode == 1) && (scope.visibleClosedSettings.indexOf('' + setting.id) == -1)) return false;
-			    if (scope.invisibleStatus.indexOf('' + scope.getStatusCode(setting)) > -1) return false;
+			scope.isTfSettingVisible = function(schedule) {
+			    if ((schedule.mode == 0) && (scope.invisibleOpenSettings.indexOf('' + schedule.settingid) > -1)) return false;
+			    if ((schedule.mode == 1) && (scope.visibleClosedSettings.indexOf('' + schedule.settingid) == -1)) return false;
+			    if ((schedule.mode == 2) && (scope.invisibleOneShots.indexOf('' + schedule.settingid) != -1)) return false;
+			    if (scope.invisibleStatus.indexOf('' + scope.getStatusCode(schedule)) > -1) return false;
 			    return true;
 			  };
 			scope.refreshTimeframe = function() {
@@ -274,17 +241,6 @@ gamegrinderApp.directive('ggDayTab', function() {
 		restrict: 'E',
 		templateUrl: 'directives/daytab.html',
 		scope: true,
-/*
-		scope: {
-			settings: '=settings',
-			day: '=day',
-			user: '=user',
-			statusDesc: '=statusdesc',
- 			invisibleopen: '=invisibleopen',
- 			visibleclosed: '=visibleclosed',
- 			invisiblestatus: '=invisiblestatus'
-		},
-*/
 		link: function(scope, element, attrs) {
 			$(element).hover(function(event) {
 				$(element).find(".datePanel").addClass("hoverDay");

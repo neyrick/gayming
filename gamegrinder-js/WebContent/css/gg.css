@@ -142,10 +142,11 @@ span.inputContainer {
 	padding: 0px;
 }
 .infoTooltip {
-	background-color: #E0E0FF;
-	border-color: #000050;
-	color: #000050;
-	font-size: 12px;
+	background-color: #3245a3;
+	border-color: #FFFFFF;
+	color: #FFFFFF;
+	font-size: 15px;
+	line-height: 15px;
 }
 .tfSetting  {
 	margin-right: 0px;

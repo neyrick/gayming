@@ -17,6 +17,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 
     $scope.invisibleStatus = (typeof $cookies.ggInvisibleStatus != 'undefined')?$cookies.ggInvisibleStatus.split("|"):new Array();
     $scope.invisibleOpenSettings = (typeof $cookies.ggInvisibleOpen != 'undefined')?$cookies.ggInvisibleOpen.split("|"):new Array();
+    $scope.invisibleOneShots = (typeof $cookies.ggInvisibleOneShots != 'undefined')?$cookies.ggInvisibleOneShots.split("|"):new Array();
     $scope.visibleClosedSettings = (typeof $cookies.ggVisibleClosed != 'undefined')?$cookies.ggVisibleClosed.split("|"):new Array();
 
     $scope.currentRecruits = [];
@@ -68,19 +69,24 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 	$scope.updateSettingsCookies();
   }
 
-  $scope.toggleSettingVisibility = function(settingid, isOpen) {
+  $scope.toggleSettingVisibility = function(settingid, settingmode, force) {
   	var settingsArray;
-	if (isOpen) {
+	if (settingmode == 0) {
 		settingsArray = $scope.invisibleOpenSettings;
 	}
-	else {
+	else if (settingmode == 1) {
 		settingsArray = $scope.visibleClosedSettings;
+	}
+	else {
+		settingsArray = $scope.invisibleOneShots;
 	}
 	var index = settingsArray.indexOf('' + settingid);
 	if (index != -1) {
-		settingsArray.splice(index, 1);
+		if ((typeof force == "undefined") || (force === false)) {
+			settingsArray.splice(index, 1);
+		}
 	}
-	else {
+	else if ((typeof force == "undefined") || (force === true)) {
 		settingsArray.push('' + settingid)
 	}
 	$scope.updateSettingsCookies();
@@ -90,6 +96,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 	$cookies.ggInvisibleOpen = $scope.invisibleOpenSettings.join("|");
 	$cookies.ggVisibleClosed = $scope.visibleClosedSettings.join("|");
 	$cookies.ggInvisibleStatus = $scope.invisibleStatus.join("|");
+	$cookies.ggInvisibleOneShots = $scope.invisibleOneShots.join("|");
   }
 
   $scope.isInArray = function(item, list) {
