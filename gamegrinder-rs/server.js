@@ -29,10 +29,21 @@ server.get('/gg/game', serv.fetchGame);
 
 server.get('/gg/planning', serv.fetchPlanning);
 
+server.on('after', function (request, response, route, error) {
+	if (error) {
+		console.log('Erreur: %j', error);
+	}
+	else {
+		var parseBody = (route.spec.method == "DELETE");
+		serv.log(request, parseBody);
+	}
+});
 
+/*
 server.on('uncaughtException', function (request, response, route, error) {
     console.log('Erreur !!! %j', error);
 });
+*/
 server.listen(5000, function() {
     console.log('Démarrage de l\'écoute de', server.name, server.url);
 });

@@ -4,6 +4,6 @@
     "dev": {
         "driver": "pg",
         "connectionString": "postgres://devel:devel@jafar:5432/gamegrinder",
-        "trace": true
+        "trace": false
     }
 }

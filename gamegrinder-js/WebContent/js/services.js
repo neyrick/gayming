@@ -239,10 +239,10 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 		toggleDispo : function(pm_player, pm_dayid, pm_timeframe, pm_setting, pm_role, isAvailable, callback) {
 		    var schedule = { dayid : pm_dayid, timeframe : pm_timeframe, player : pm_player, role : pm_role, setting : pm_setting};
 		    if (isAvailable) {
-		        $http.put(config.urlbase + '/schedule', schedule).success(callback);
+		        $http.put(config.urlbase + '/schedule?log_action=ADD_DISPO', schedule).success(callback);
 		    }
 		    else {
-		        $http.delete(config.urlbase + '/schedule', {data : schedule}).success(callback);
+		        $http.delete(config.urlbase + '/schedule?log_action=DEL_DISPO', {data : schedule}).success(callback);
 		    }
 		},
 
@@ -262,15 +262,22 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 				masterschedule: schedule_id,
                 players: players
 			};
-			$http.put(config.urlbase + '/game', game).success(callback);
+			$http.put(config.urlbase + '/game?log_action=ADD_GAME', game).success(callback);
 		},
 
 		setComment : function(pm_player, pm_dayid, pm_timeframe, pm_setting, pm_idcomment, pm_message, callback) {
 			var comment;
+			var action;
 
+			if ((typeof pm_message == "undefined") || (pm_message == '')) {
+				action = 'DEL_COMMENT';
+			}
+			else {
+				action = 'SET_COMMENT';
+			}
 			if (pm_idcomment != null) comment = { id :  pm_idcomment, message : pm_message };
 			else comment = { player : pm_player, dayid : pm_dayid, timeframe : pm_timeframe, setting : pm_setting, message : pm_message};
-			$http.post(config.urlbase + '/comment', comment).success(callback);
+			$http.post(config.urlbase + '/comment?log_action=' + action, comment).success(callback);
 		}
 	}
 }]);

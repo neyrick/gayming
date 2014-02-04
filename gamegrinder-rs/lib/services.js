@@ -1,4 +1,6 @@
 var entities = require("./entities");
+var logger = require("./logger");
+
 var persist = require("persist");
 
 var setting = entities.setting;
@@ -227,6 +229,12 @@ function genericDelete(req, res, next, entity) {
             });
     };
 
+    exports.log = function(req, res, next, parseBody) {
+	    var entry = logger.buildHistoryEntry(req, res, next, parseBody);
+	    if (typeof entry != "undefined") console.log("Entry : %j", entry);
+    };
+
+/*
     exports.deleteGame = function(req, res, next) {
 	    genericDelete(req, res, next, new game({ id: req.params.id }));
     };
@@ -254,4 +262,4 @@ function genericDelete(req, res, next, entity) {
     exports.deleteComment = function(req, res, next) {
 	    genericDelete(req, res, next, new comment({ id: req.params.id }));
     };
-
+*/

@@ -71,22 +71,26 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 
   $scope.toggleSettingVisibility = function(settingid, settingmode, force) {
   	var settingsArray;
+	var defaultState;
 	if (settingmode == 0) {
 		settingsArray = $scope.invisibleOpenSettings;
+		defaultState = true;
 	}
 	else if (settingmode == 1) {
 		settingsArray = $scope.visibleClosedSettings;
+		defaultState = false;
 	}
 	else {
 		settingsArray = $scope.invisibleOneShots;
+		defaultState = true;
 	}
 	var index = settingsArray.indexOf('' + settingid);
 	if (index != -1) {
-		if ((typeof force == "undefined") || (force === false)) {
+		if ((typeof force == "undefined") || (force === defaultState)) {
 			settingsArray.splice(index, 1);
 		}
 	}
-	else if ((typeof force == "undefined") || (force === true)) {
+	else if ((typeof force == "undefined") || (force === !defaultState)) {
 		settingsArray.push('' + settingid)
 	}
 	$scope.updateSettingsCookies();
