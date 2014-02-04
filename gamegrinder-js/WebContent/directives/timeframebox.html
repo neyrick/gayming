@@ -10,7 +10,7 @@
 										<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">Je propose une partie de...</div>
 <div class="ggpanelItem ggclickablelistitem dropdownItem settingTrigger hoverDay collapsible">Créer une Chronique / One-Shot</div>
 										<div class="ggpanelItem dropdownItem settingEditor collapsed dummyContainer" >
-<form class="form-inline" role="form" name="createSettingForm" ng-submit="createSetting()" novalidate>
+<form class="form-inline" role="form" name="createSettingForm" ng-submit="createAndAddSetting(newsetting)" novalidate>
 	<div class="ggpanelSubheader hoverDay">
 	    Nouvelle Chronique / One-Shot
 	</div>
@@ -23,7 +23,7 @@
 	</div>
 	<div class="ggpanelSubitem">
 	    Code (3 lettres max) <input type="text" class="inputSettingCode" name="settingCode" placeholder="XXX" ng-model="newsetting.code" required size="3" maxlength="3"/>
-		<button class="settingButton rightbutton" ng-disabled="createSettingForm.$invalid || (newsetting.mode<0)" type="submit">Valider</button>
+		<button class="settingButton rightbutton badge buttonBadge" ng-disabled="createSettingForm.$invalid || (newsetting.mode<0)" type="submit">Valider</button>
 	</div>
  </form>
 										</div>

@@ -147,7 +147,7 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 	};
 });
 
-gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuilderService) {
+gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuilderService, settingsService) {
 
 	var timeframesDesc = {
 			    "AFTERNOON": {"code":"AFTERNOON", pic:"images/aprem.png", name:"Après-midi"},
@@ -236,6 +236,15 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 					event: 'mouseleave',
 				}
 			});
+			scope.createAndAddSetting = function(setting) {
+				setting.status = 0;
+				console.log("Setting: %j", setting);
+				settingsService.createSetting(setting, function(newsetting) {
+					scope.settingsList.push(newsetting);
+					scope.addSetting(newsetting);
+				});
+				
+			}
 			scope.addSetting = function(setting) {
 				plannerService.toggleDispo(scope.currentUser, scope.day.id, scope.timeframe.code, setting.id, 'GM', true, function() {
                     scope.refreshTimeframe();

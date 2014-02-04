@@ -106,7 +106,7 @@ function genericDelete(req, res, next, entity) {
     };
 
     exports.createSetting = function(req, res, next) {
-	    genericCreate(req, res, next, new setting(req.body));
+	    genericCreate(req, res, next, new setting(req.body));	
     };
 
     exports.updateSetting = function(req, res, next) {

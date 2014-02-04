@@ -51,6 +51,14 @@ gamegrinderApp.factory('settingsService', ['$http', 'config', function($http, co
 				});
 			}
 			else callback(settings);
+		},
+		
+		createSetting : function(setting, callback) {
+			$http.put(config.urlbase + '/setting', setting).success(function(data, status) {
+					callback(data);
+				}).error(function(data, status) {
+					window.alert("Impossible de créer la chronique: " + data);
+				});
 		}
 		
 	}
