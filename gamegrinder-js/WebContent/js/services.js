@@ -236,14 +236,13 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 
 	return {
 
-		toggleDispo : function(pm_player, pm_dayid, pm_timeframe, pm_setting, pm_role, isAvailable, callback) {
+		setDispo : function(pm_player, pm_dayid, pm_timeframe, pm_setting, pm_role, callback) {
 		    var schedule = { dayid : pm_dayid, timeframe : pm_timeframe, player : pm_player, role : pm_role, setting : pm_setting};
-		    if (isAvailable) {
-		        $http.put(config.urlbase + '/schedule?log_action=ADD_DISPO', schedule).success(callback);
-		    }
-		    else {
-		        $http.delete(config.urlbase + '/schedule?log_action=DEL_DISPO', {data : schedule}).success(callback);
-		    }
+            $http.put(config.urlbase + '/schedule?log_action=ADD_DISPO', schedule).success(callback);
+		},
+
+		clearDispo : function(idschedule, callback) {
+            $http.delete(config.urlbase + '/schedule/' + idschedule + '?log_action=DEL_DISPO').success(callback);
 		},
 
 		getTimeframePlanning : function(dayid, timeframecode, callback) {
@@ -257,6 +256,18 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 			$http.get(config.urlbase + '/planning?minday=' + minday + '&maxday=' + maxday).success(callback);
 		},
 				
+        reformGame : function(pm_idgame, pm_newplayers, callback) {
+            $http.post(config.urlbase + '/game/' + idgame + '?log_action=RFM_GAME', {idgame : pm_idgame, players : pm_newplayers}).success(callback);
+        },
+        
+        dropGame : function(idschedule, callback) {
+            $http.delete(config.urlbase + '/schedule/' + idschedule + '?log_action=DRP_GAME').success(callback);
+        },
+        
+        disbandGame : function(idschedule, callback) {
+            $http.delete(config.urlbase + '/schedule/' + idschedule + '?log_action=DEL_GAME').success(callback);
+        },
+        
 		validateGame : function(schedule_id, players, callback) {
 			var game = {
 				masterschedule: schedule_id,

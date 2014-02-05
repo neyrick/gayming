@@ -132,9 +132,17 @@ function genericDelete(req, res, next, entity) {
             next();
         });	    
     };
-
+/*
     exports.deleteSchedule = function(req, res, next) {
         schedule.where(JSON.parse(req.body)).deleteAll(connection, function(err) {
+            if (err) res.send("Erreur: " + err);
+		else res.send("OK");
+            next();
+        });
+    };
+*/
+    exports.deleteSchedule = function(req, res, next) {
+        new schedule({ id : req.params.idschedule}).delete(connection, function(err) {
             if (err) res.send("Erreur: " + err);
 		else res.send("OK");
             next();
@@ -169,6 +177,11 @@ function genericDelete(req, res, next, entity) {
 	genericFetchInterval(req, res, next, game);
     }
 
+    exports.reformGame = function(req, res, next) {
+	
+	    // TODO !
+    }
+    
     exports.fetchPlanning = function(req, res, next) {
 	var basequery = "SELECT s.id AS idschedule, COALESCE(s.dayid, c.dayid) AS dayid, COALESCE(s.timeframe, c.timeframe) AS timeframe, COALESCE(s.setting, c.setting) AS setting, s.game , COALESCE(s.player, c.player) AS player, s.role, c.id AS idcomment,  c.message FROM schedule s FULL OUTER JOIN comment c USING (dayid, timeframe, setting, player) WHERE ((s.dayid >= $1) OR (c.dayid >= $1)) AND ((s.dayid <= $2) OR (c.dayid <= $2))";
 

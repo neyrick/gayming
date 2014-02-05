@@ -18,14 +18,13 @@ actionParsers['DEL_DISPO'] = function(result, body, params) {
 	return result;
 }
 
-    exports.buildHistoryEntry = function(req, parseBody) {
+    exports.buildHistoryEntry = function(req) {
 	var reqaction = req.params['log_action'];
 	if (typeof reqaction != "undefined") {
 		var parser = actionParsers[reqaction];
 		var result = { action : reqaction, address : req.connection.remoteAddress}
 		var body = req.body;
 
-		if (parseBody) body = JSON.parse(body);
 		if (typeof parser != "undefined") {
 			return parser(result, body, req.params);
 		}

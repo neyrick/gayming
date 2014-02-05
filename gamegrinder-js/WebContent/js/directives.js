@@ -3,6 +3,38 @@
 /* Directives */
 
 gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
+    
+    var getMyScheduleId = function(name, schedule, role) {
+        var schedules;
+        if (role == 'GM') schedules = schedule.availablegms;
+        else if (role == 'PLAYER') schedules = schedule.availableplayers;
+        for (var i = 0; i < schedules.length; i++) {
+            if (schedules[i].name == name) {
+                return schedules[i].schedule;
+            }
+        }
+    };
+    
+    var getMyGMScheduleId = function(name, games) {
+        for (var i = 0; i < games.length; i++) {
+            if (games[i].gm.name == name) {
+                return games[i].gm.schedule;
+            }
+        }
+    };
+    
+    var getMyPlayerScheduleId = function(name, games) {
+        var i, j, players;
+        for (i = 0; i < games.length; i++) {
+            players = games[i].players;
+            for (j = 0; j < players.length; j++) {
+                if (players[j].name == name) {
+                    return players[i].schedule;
+                }
+            }
+        }
+    };
+    
 	return {
 		restrict: 'E',
 		templateUrl: 'directives/tfsettingtooltip.html',
@@ -84,30 +116,40 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 				var otherSetting = scope.timeframe.gaming[player.name];
 				return (typeof otherSetting == "undefined");
 			}
+			scope.disbandGame = function() {
+                plannerService.disbandGame(getMyGMScheduleId(scope.currentUser, scope.schedule.games), function() {
+                    $(element).parent().qtip('api').hide();
+                    scope.refreshTimeframe();
+                });
+            }
+			scope.dropGame = function() {
+                plannerService.dropGame(getMyPlayerScheduleId(scope.currentUser, scope.schedule.games), function() {
+                    $(element).parent().qtip('api').hide();
+                    scope.refreshTimeframe();
+                });
+            }
 			scope.validateGame = function($event) {
-                var i, gm;
-                for (i = 0; i < scope.schedule.availablegms.length; i++ ) {
-                    gm = scope.schedule.availablegms[i];
-                    if (gm.name == scope.currentUser) {
-			var api = $(element).parent().qtip('api');
-			api.hide();
-                        plannerService.validateGame(gm.schedule, scope.gamePlayers, function() {
-                            
-                            scope.refreshTimeframe();
-                        });
-                        break;
-                    }
-                }
+                 var api = $(element).parent().qtip('api');
+                 api.hide();
+                 plannerService.validateGame(getMyScheduleId(scope.currentUser, scope.schedule, 'GM'), scope.gamePlayers, function() {
+                    scope.refreshTimeframe();
+                });
 			}
-		scope.setComment = function() {
-			plannerService.setComment( scope.currentUser, scope.day.id, scope.timeframe.code, scope.schedule.settingid, scope.schedule.idcomment, scope.schedule.message, function() {
-		 		$(element).parent().qtip('api').hide();
-				    scope.refreshTimeframe();
-			});
-		}
-            scope.toggleDispo = function(role, isAvailable) {
-                plannerService.toggleDispo(scope.currentUser, scope.day.id, scope.timeframe.code, scope.schedule.settingid, role, isAvailable, function() {
- 		$(element).parent().qtip('api').hide();
+		    scope.setComment = function() {
+                plannerService.setComment( scope.currentUser, scope.day.id, scope.timeframe.code, scope.schedule.settingid, scope.schedule.idcomment, scope.schedule.message, function() {
+		 		    $(element).parent().qtip('api').hide();
+                    scope.refreshTimeframe();
+			     });
+		    }
+            scope.setDispo = function(role) {
+                plannerService.setDispo(scope.currentUser, scope.day.id, scope.timeframe.code, scope.schedule.settingid, role, function() {
+ 		             $(element).parent().qtip('api').hide();
+                    scope.refreshTimeframe();
+                });
+            };
+            scope.clearDispo = function(role) {
+                plannerService.clearDispo(getMyScheduleId(scope.currentUser, scope.schedule, role), function() {
+                     $(element).parent().qtip('api').hide();
                     scope.refreshTimeframe();
                 });
             };
@@ -210,9 +252,9 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 				return true;
 			}
 			scope.addSetting = function(setting) {
-				plannerService.toggleDispo(scope.currentUser, scope.day.id, scope.timeframe.code, setting.id, 'GM', true, function() {
+				plannerService.setDispo(scope.currentUser, scope.day.id, scope.timeframe.code, setting.id, 'GM', function() {
 			
-			scope.toggleSettingVisibility(setting.id, setting.mode, true);
+			     scope.toggleSettingVisibility(setting.id, setting.mode, true);
                     scope.refreshTimeframe();
                     $(element).find('.tfExtra').qtip('api').hide();
 				});

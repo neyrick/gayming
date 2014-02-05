@@ -20,12 +20,13 @@ server.post('/gg/setting', serv.updateSetting);
 server.get('/gg/schedule', serv.fetchSchedule);
 server.get('/gg/schedule/:player', serv.fetchSchedule);
 server.put('/gg/schedule', serv.createSchedule);
-server.del('/gg/schedule', serv.deleteSchedule);
+server.del('/gg/schedule/:idschedule', serv.deleteSchedule);
 
 server.post('/gg/comment', serv.setComment);
 
 server.put('/gg/game', serv.createGame);
-server.get('/gg/game', serv.fetchGame);
+//server.get('/gg/game', serv.fetchGame);
+server.post('/gg/setting', serv.reformGame);
 
 server.get('/gg/planning', serv.fetchPlanning);
 
@@ -34,8 +35,7 @@ server.on('after', function (request, response, route, error) {
 		console.log('Erreur: %j', error);
 	}
 	else {
-		var parseBody = (route.spec.method == "DELETE");
-		serv.log(request, parseBody);
+		serv.log(request);
 	}
 });
 

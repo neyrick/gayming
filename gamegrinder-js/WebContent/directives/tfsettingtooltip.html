@@ -1,13 +1,14 @@
 <div class="ggdropdown">
 	<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">{{schedule.name}}</div>
-	<div class="ggpanelItem ggclickablelistitem dispoDiv tfSettingAction" ng-show="status.dispoPJ && (!timeframe.busy)" alt-text="Pas dispo pour jouer ?" ng-click="toggleDispo('PLAYER', false)" norm-text="Je suis dispo pour jouer"></div>
-	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="(!status.dispoPJ) && (!timeframe.busy)" alt-text="Dispo pour jouer ?" ng-click="toggleDispo('PLAYER', true)" norm-text="Je ne suis pas dispo pour jouer"></div>
-	<div class="ggpanelItem ggclickablelistitem dispoDiv tfSettingAction" ng-show="status.dispoMJ && (!timeframe.busy)" alt-text="Pas dispo pour maîtriser ?" ng-click="toggleDispo('GM', false)" norm-text="Je suis dispo pour maîtriser"></div>
+	<div class="ggpanelItem ggclickablelistitem dispoDiv tfSettingAction" ng-show="status.dispoPJ && (!timeframe.busy)" alt-text="Pas dispo pour jouer ?" ng-click="clearDispo('PLAYER')" norm-text="Je suis dispo pour jouer"></div>
+	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="(!status.dispoPJ) && (!timeframe.busy)" alt-text="Dispo pour jouer ?" ng-click="setDispo('PLAYER')" norm-text="Je ne suis pas dispo pour jouer"></div>
+	<div class="ggpanelItem ggclickablelistitem dispoDiv tfSettingAction" ng-show="status.dispoMJ && (!timeframe.busy)" alt-text="Pas dispo pour maîtriser ?" ng-click="clearDispo('GM')" norm-text="Je suis dispo pour maîtriser"></div>
 	<div class="ggpanelItem ggclickablelistitem validateDiv tfSettingAction collapsible" ng-show="status.dispoMJ && (!timeframe.busy)">Valider une partie</div>
-	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="!status.dispoMJ && (!timeframe.busy)" alt-text="Dispo pour maîtriser ?" ng-click="toggleDispo('GM', true)" norm-text="Je ne suis pas dispo pour maîtriser"></div>
+	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="!status.dispoMJ && (!timeframe.busy)" alt-text="Dispo pour maîtriser ?" ng-click="setDispo('GM')" norm-text="Je ne suis pas dispo pour maîtriser"></div>
 	<div class="ggpanelItem warningDiv tfSettingAction" ng-show="timeframe.busy && (timeframe.gaming[currentUser] != schedule.settingid)">Je suis déjà sur une autre partie !</div>
-	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="status.pj" ng-click="toggleDispo('PLAYER', false)">Quitter la partie</div>
-	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="status.mj" ng-click="toggleDispo('GM', false)">Annuler la partie</div>
+	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="status.pj" ng-click="dropGame()">Quitter la partie</div>
+	<div class="ggpanelItem ggclickablelistitem tfSettingAction" ng-show="status.mj">Modifier ma partie</div>
+	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="status.mj" ng-click="disbandGame()">Annuler la partie</div>
 	<div class="gameEditor ggpanelItem dummyContainer collapsed">
 	  <div class="ggpanelSubheader hoverDay">Choisis tes joueurs... <span class="rightbutton badge buttonBadge"ng-show="numPlayers > 0" ng-click="validateGame(day.id, timeframe.code, schedule.id, $event)">... Puis clique ici !</span></div>
 	  <div class="ggclickablelistitem ggpanelSubitem tfSettingAction" ng-repeat="player in schedule.availableplayers | filter: isAvailableForGame" ng-class="{validateDiv : gamePlayers[player.name]}" ng-click="toggleGamePlayer(player, $event)">{{ player.name }}</div>
