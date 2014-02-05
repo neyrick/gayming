@@ -93,7 +93,7 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
     var addSchedule = function (rawschedule, timeframe, allSettings, me) {
         var g, game;
         var tfSetting = mergeSetting(allSettings, timeframe.settings, rawschedule.setting);
-        var newschedule = { name : rawschedule.player, schedule : rawschedule.idschedule, game: rawschedule.game, idcomment : rawschedule.idcomment, comment : rawschedule.message  };
+        var newschedule = { name : rawschedule.player, id : rawschedule.idschedule, game: rawschedule.game, idcomment : rawschedule.idcomment, comment : rawschedule.message  };
         if ( rawschedule.game != null) {  
             tfSetting.hasgame = true;
             game = null;
@@ -107,6 +107,7 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
             if (rawschedule.role == 'GM') game.gm = newschedule;
             else if (rawschedule.role == 'PLAYER') game.players.push(newschedule); 
 	    timeframe.gaming[rawschedule.player] = rawschedule.setting;
+	    if ( rawschedule.player == me) timeframe.mygame = game;
         }
 	else {
 	        if (rawschedule.role == 'GM') tfSetting.availablegms.push(newschedule);
@@ -257,7 +258,7 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 		},
 				
         reformGame : function(pm_idgame, pm_newplayers, callback) {
-            $http.post(config.urlbase + '/game/' + idgame + '?log_action=RFM_GAME', {idgame : pm_idgame, players : pm_newplayers}).success(callback);
+            $http.post(config.urlbase + '/game/' + pm_idgame + '?log_action=RFM_GAME', {players : pm_newplayers}).success(callback);
         },
         
         dropGame : function(idschedule, callback) {

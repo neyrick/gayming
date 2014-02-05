@@ -10,7 +10,7 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
         else if (role == 'PLAYER') schedules = schedule.availableplayers;
         for (var i = 0; i < schedules.length; i++) {
             if (schedules[i].name == name) {
-                return schedules[i].schedule;
+                return schedules[i].id;
             }
         }
     };
@@ -18,7 +18,7 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
     var getMyGMScheduleId = function(name, games) {
         for (var i = 0; i < games.length; i++) {
             if (games[i].gm.name == name) {
-                return games[i].gm.schedule;
+                return games[i].gm.id;
             }
         }
     };
@@ -29,7 +29,7 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
             players = games[i].players;
             for (j = 0; j < players.length; j++) {
                 if (players[j].name == name) {
-                    return players[i].schedule;
+                    return players[i].id;
                 }
             }
         }
@@ -40,8 +40,20 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 		templateUrl: 'directives/tfsettingtooltip.html',
 		scope: true,
         link: function(scope, element, attrs) {
+		var i, j, currentItem;
             scope.gamePlayers = {};
+	    scope.potentialPlayers = [];
             scope.numPlayers = 0;
+		for (i = 0; i < scope.schedule.games.length; i++) {
+			currentItem = scope.schedule.games[i];
+			if (currentItem.gm.name == scope.currentUser) {
+				for (j = 0; j < currentItem.players.length; j++) {
+					scope.gamePlayers[currentItem.players[j].name] = currentItem.players[j];
+					scope.potentialPlayers.push(currentItem.players[j]);
+					scope.numPlayers++;
+				}
+			}
+		}
             scope.status = scope.schedule.mystatus;
 			$(element).parent().qtip({
 			    style: {
@@ -96,7 +108,13 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 					$(element).parent().qtip('api').set('hide.event', 'unfocus');
 					$($event.target).slideUp(200);
                             		$($event.target).nextAll(".gameEditor").slideDown(200);
-			});
+			});			
+			for (i = 0; i < scope.schedule.availableplayers.length; i++ ) {
+				currentItem = scope.schedule.availableplayers[i];
+				if (currentItem.name != scope.currentUser) {
+					scope.potentialPlayers.push(currentItem);
+				}
+			}
             scope.toggleGamePlayer = function(player, event) {
                 if (typeof scope.gamePlayers[player.name] != "undefined") {
                     delete scope.gamePlayers[player.name];
@@ -107,15 +125,6 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
                     scope.numPlayers++;
                 }
             }
-			scope.isBusyElsewhere = function(player) {
-				var otherSetting = scope.timeframe.gaming[player];
-				return ((typeof otherSetting != "undefined") && (otherSetting != scope.schedule.settingid));
-			}
-			scope.isAvailableForGame = function(player) {
-                if (player.name == scope.currentUser) return false;
-				var otherSetting = scope.timeframe.gaming[player.name];
-				return (typeof otherSetting == "undefined");
-			}
 			scope.disbandGame = function() {
                 plannerService.disbandGame(getMyGMScheduleId(scope.currentUser, scope.schedule.games), function() {
                     $(element).parent().qtip('api').hide();
@@ -131,9 +140,16 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
 			scope.validateGame = function($event) {
                  var api = $(element).parent().qtip('api');
                  api.hide();
-                 plannerService.validateGame(getMyScheduleId(scope.currentUser, scope.schedule, 'GM'), scope.gamePlayers, function() {
-                    scope.refreshTimeframe();
-                });
+		if (typeof scope.timeframe.mygame == "undefined") {
+	                 plannerService.validateGame(getMyScheduleId(scope.currentUser, scope.schedule, 'GM'), scope.gamePlayers, function() {
+	                    scope.refreshTimeframe();
+                	});
+		}
+		else {
+	                 plannerService.reformGame(scope.timeframe.mygame.id, scope.gamePlayers, function() {
+	                    scope.refreshTimeframe();
+                	});
+		}
 			}
 		    scope.setComment = function() {
                 plannerService.setComment( scope.currentUser, scope.day.id, scope.timeframe.code, scope.schedule.settingid, scope.schedule.idcomment, scope.schedule.message, function() {
@@ -277,7 +293,7 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 
 gamegrinderApp.directive('ggDayTab', function() {
 
-	var dowcodes = { "0":"DI","1":"LU","2":"MA","3":"ME","4":"JE","5":"VE","6":"SA"};
+	var dowcodes = { "0":"DIM","1":"LUN","2":"MAR","3":"MER","4":"JEU","5":"VEN","6":"SAM"};
 
 	return {
 		restrict: 'E',

@@ -20,7 +20,7 @@ function assignGame(idgame, masterschedule, players, callback) {
 	var params = [idgame, masterschedule];
 	for (name in players) {
 		updateStatement = updateStatement + ', ?';
-		params.push(players[name].schedule);
+		params.push(players[name].id);
 	}
 	updateStatement = updateStatement + ')';
 	connection.runSql(updateStatement, params, callback);
@@ -311,13 +311,19 @@ function genericDelete(req, res, next, entity) {
 			var dumpedplayers = {};
 			var keptplayers = {};
 			var newplayers = {};
+			var masterschedule;
 			for(var i = 0; i < oldplayers.length; i++) {
-				if (typeof req.body.players[oldplayers[i].name] == "undefined") dumpedplayers[oldplayers[i].name] = oldplayers[i];
-				else keptplayers[oldplayers[i].name] = oldplayers[i];
+				if (oldplayers[i].role == 'GM') {
+					masterschedule = oldplayers.splice(i, 1)[0];
+				}
+			}
+			for(var i = 0; i < oldplayers.length; i++) {
+				if (typeof req.body.players[oldplayers[i].player] == "undefined") dumpedplayers[oldplayers[i].player] = oldplayers[i];
+				else keptplayers[oldplayers[i].player] = oldplayers[i];
 			}
 
 			for (name in req.body.players) {
-				if (keptplayers.indexOf(name) == -1) newplayers[name]=req.body.players[name];
+				if (typeof keptplayers[name] == "undefined") newplayers[name]=req.body.players[name];
 			}
 
 			var nametab = Object.keys(req.body.players);

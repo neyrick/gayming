@@ -7,6 +7,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
     $scope.dayCount = 42;
 
     $scope.currentUser =  $cookies['ggUser'];
+    $scope.tempUser = $scope.currentUser;
 
     $scope.firstday = planningBuilderService.getDefaultMinDay();
     
@@ -22,8 +23,18 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 
     $scope.currentRecruits = [];
 	
-    $scope.login=function() { $cookies['ggUser'] = $scope.currentUser; initPlanning(); };
-    $scope.logout=function() { delete $cookies['ggUser']; $( "#logindialogcontainer" ).qtip( "toggle", true ); };
+    $scope.login=function() {
+	 $scope.currentUser = $scope.tempUser;
+	 $cookies['ggUser'] = $scope.currentUser;
+	 $scope.weeks = [];
+	 initPlanning();
+     };
+    $scope.logout=function() {
+	 $scope.weeks = [];
+	 delete $scope.currentUser;
+	 delete $cookies['ggUser'];
+	 $( "#logindialogcontainer" ).qtip( "toggle", true ); }
+    ;
 
     $scope.setComment=function() {  };
     
@@ -134,12 +145,12 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 
   settingsService.getSettings( function(settings) {
 	  $scope.settingsList = settings;
-	initPlanning();	  
+	if (typeof $scope.currentUser != undefined) initPlanning();	  
   }); 
 
   var initPlanning = function()  {
 		plannerService.getPlanning($scope.firstday, $scope.dayCount, function(planning) {
-			if (typeof $scope.currentUser != undefined) $scope.weeks = planningBuilderService.buildWeeksPlanning($scope.firstday, $scope.dayCount, $scope.settingsList, planning, $scope.currentUser);
+			 $scope.weeks = planningBuilderService.buildWeeksPlanning($scope.firstday, $scope.dayCount, $scope.settingsList, planning, $scope.currentUser);
 //			  $scope.mystatus = new UserStatus($scope.currentUser, $scope.weeks);
 		});
   }
