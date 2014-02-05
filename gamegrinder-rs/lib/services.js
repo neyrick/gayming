@@ -15,6 +15,32 @@ persist.connect(
     connection = conn;
 });
 
+function assignGame(idgame, masterschedule, players, callback) {
+	var updateStatement = 'UPDATE schedule SET game = ? WHERE id IN ( ?';
+	var params = [idgame, masterschedule];
+	for (name in players) {
+		updateStatement = updateStatement + ', ?';
+		params.push(players[name].schedule);
+	}
+	updateStatement = updateStatement + ')';
+	connection.runSql(updateStatement, params, callback);
+}
+
+function storelog(logdata) {
+	console.log("Logdata: %j", logdata);
+}
+
+function createBaseLogData(req, source) {
+	var result = { action : req.params['log_action'], address : req.connection.remoteAddress }
+	if (typeof source != "undefined") {
+		result.dayid = source.dayid;
+		result.timeframe = source.timeframe;
+		result.setting = source.setting;
+		result.player = source.player;
+	}
+	return result;
+}
+
 function genericFetchInterval(req, res, next, entity) {
 	var basequery = '1=1';
 	var params = Array();
@@ -128,9 +154,12 @@ function genericDelete(req, res, next, entity) {
             }
             else {
                 genericCreate(req, res, next, new schedule(req.body));
+		var logdata = createBaseLogData(req, req.body);
+		logdata.data = { role : req.body.role };
+		storelog(logdata);
             }
             next();
-        });	    
+        });
     };
 /*
     exports.deleteSchedule = function(req, res, next) {
@@ -142,11 +171,38 @@ function genericDelete(req, res, next, entity) {
     };
 */
     exports.deleteSchedule = function(req, res, next) {
-        new schedule({ id : req.params.idschedule}).delete(connection, function(err) {
-            if (err) res.send("Erreur: " + err);
-		else res.send("OK");
-            next();
-        });
+	schedule.getById(connection, req.params.idschedule, function(err, targetschedule) {
+		if (err) res.send("Erreur: " + err);
+		else {
+			var logdata = createBaseLogData(req, targetschedule);
+			logdata.data = { role : targetschedule.role };
+			if (targetschedule.game != null) {
+				schedule.where( {game : targetschedule._game}).all(connection, function(err, players) {
+					if (err) res.send("Erreur: " + err);
+					else {
+						logdata.data.players = players;
+						targetschedule.delete(connection, function(err) {
+							if (err) res.send("Erreur: " + err);
+							else {
+								storelog(logdata);
+								res.send("OK");
+							}
+						});
+					}
+				});
+			}
+			else {
+				targetschedule.delete(connection, function(err) {
+					if (err) res.send("Erreur: " + err);
+					else {
+						storelog(logdata);
+						res.send("OK");
+					}
+				});
+			}
+		}
+		next();
+	});
     };
 
     exports.fetchSchedule = function(req, res, next) {
@@ -159,17 +215,24 @@ function genericDelete(req, res, next, entity) {
 
     exports.setComment = function(req, res, next) {
 	var comm = new comment(req.body);
+	var logdata = createBaseLogData(req, req.body);
+	logdata.data = { message : comm.message };
 	if ((comm.message == null) || (comm.message == '')) {
 		if ((comm.id != null) && (comm.id > 0)) {
+			storelog(logdata);
 			genericDelete(req, res, next, comm);
 		}
 		else next();
 	}	
 	else {
 		if ((comm.id != null) && (comm.id > 0)) {
+			storelog(logdata);
 			genericUpdate(req, res, next, comment);
 		}
-		else genericCreate(req, res, next, new comment(req.body));
+		else {
+			storelog(logdata);
+			genericCreate(req, res, next, new comment(req.body));
+		}
 	}
     }
 
@@ -177,11 +240,6 @@ function genericDelete(req, res, next, entity) {
 	genericFetchInterval(req, res, next, game);
     }
 
-    exports.reformGame = function(req, res, next) {
-	
-	    // TODO !
-    }
-    
     exports.fetchPlanning = function(req, res, next) {
 	var basequery = "SELECT s.id AS idschedule, COALESCE(s.dayid, c.dayid) AS dayid, COALESCE(s.timeframe, c.timeframe) AS timeframe, COALESCE(s.setting, c.setting) AS setting, s.game , COALESCE(s.player, c.player) AS player, s.role, c.id AS idcomment,  c.message FROM schedule s FULL OUTER JOIN comment c USING (dayid, timeframe, setting, player) WHERE ((s.dayid >= $1) OR (c.dayid >= $1)) AND ((s.dayid <= $2) OR (c.dayid <= $2))";
 
@@ -222,30 +280,66 @@ function genericDelete(req, res, next, entity) {
     }
 
     exports.createGame = function(req, res, next) {
-	    var newgame = new game({ masterschedule : req.body.masterschedule});
-            newgame.save(connection, function(err) {
-               if (err) res.send("Error: " + err);
-               else {
-		       var updateStatement = 'UPDATE schedule SET game = ? WHERE id IN ( ?';
-		       var params = [newgame.id, req.body.masterschedule];
-		       for (name in req.body.players) {
-			       updateStatement = updateStatement + ', ?';
-			       params.push(req.body.players[name].schedule);
-		       }
-		       updateStatement = updateStatement + ')';
-			connection.runSql(updateStatement, params, function(err) {
-				if (err) res.send("Erreur: " + err);
-				else res.send("OK");
+	schedule.getById(connection, req.body.masterschedule, function(err, masterschedule) {
+		if (err) res.send("Erreur: " + err);
+		else {
+			var newgame = new game({ masterschedule : req.body.masterschedule});
+			newgame.save(connection, function(err) {
+				if (err) res.send("Error: " + err);
+				else {
+					var nametab = Object.keys(req.body.players);
+					assignGame(newgame.id, newgame.masterschedule, req.body.players, function(err) {
+						if (err) res.send("Erreur: " + err);
+						else {
+							var logdata = createBaseLogData(req, masterschedule);
+							logdata.data = { players : req.body.players };
+							res.send("OK");
+							storelog(logdata);
+						}
+					});
+				}
 			});
 	       }
-              next();
-            });
+	});
+	next();
     };
 
-    exports.log = function(req, res, next, parseBody) {
-	    var entry = logger.buildHistoryEntry(req, res, next, parseBody);
-	    if (typeof entry != "undefined") console.log("Entry : %j", entry);
-    };
+    exports.reformGame = function(req, res, next) {
+	 schedule.where( {game : req.params.idgame}).all(connection, function(err, oldplayers) {
+		if (err) res.send("Erreur: " + err);
+		else {
+			var dumpedplayers = {};
+			var keptplayers = {};
+			var newplayers = {};
+			for(var i = 0; i < oldplayers.length; i++) {
+				if (typeof req.body.players[oldplayers[i].name] == "undefined") dumpedplayers[oldplayers[i].name] = oldplayers[i];
+				else keptplayers[oldplayers[i].name] = oldplayers[i];
+			}
+
+			for (name in req.body.players) {
+				if (keptplayers.indexOf(name) == -1) newplayers[name]=req.body.players[name];
+			}
+
+			var nametab = Object.keys(req.body.players);
+			assignGame(null, -1, dumpedplayers, function(err) {
+				if (err) res.send("Erreur: " + err);
+				else {
+					assignGame(req.params.idgame, -1, newplayers, function(err) {
+						if (err) res.send("Erreur: " + err);
+						else {
+							var logdata = createBaseLogData(req, masterschedule);
+							logdata.data = { dumped : dumpedplayers, kept : keptplayers, added : newplayers };
+							res.send("OK");
+							storelog(logdata);
+						}
+					});
+				}
+			});
+	       }
+	});
+	next();
+    }
+    
 
 /*
     exports.deleteGame = function(req, res, next) {

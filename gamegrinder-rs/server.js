@@ -26,19 +26,23 @@ server.post('/gg/comment', serv.setComment);
 
 server.put('/gg/game', serv.createGame);
 //server.get('/gg/game', serv.fetchGame);
-server.post('/gg/setting', serv.reformGame);
+server.post('/gg/game/:idgame', serv.reformGame);
 
 server.get('/gg/planning', serv.fetchPlanning);
 
+/*
 server.on('after', function (request, response, route, error) {
 	if (error) {
 		console.log('Erreur: %j', error);
 	}
 	else {
-		serv.log(request);
+		var logdata = request.gglogdata;
+		if (typeof logdata != "undefined") {
+			serv.log(logdata);
+		}
 	}
 });
-
+*/
 /*
 server.on('uncaughtException', function (request, response, route, error) {
     console.log('Erreur !!! %j', error);
