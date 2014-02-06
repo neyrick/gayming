@@ -2,6 +2,12 @@
 
 /* Directives */
 
+function lockTooltip(scope, element) {
+	element.qtip('api').set('hide.event', 'unfocus');
+	scope.tooltipLock.lock = true;
+	$('#ggoverlay').addClass('active');
+}
+
 gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService, historyService) {
     
     var getMyScheduleId = function(name, schedule, role) {
@@ -44,6 +50,8 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService, historyS
             scope.gamePlayers = {};
 	    scope.potentialPlayers = [];
             scope.numPlayers = 0;
+                scope.historyList = [];
+                scope.history = { setting : scope.schedule.name, date : scope.dowcodes[scope.day.dow] + ' ' + scope.day.dom + '/' + scope.day.month, timeframe : scope.timeframesDesc[scope.timeframe.code].name };
 		for (i = 0; i < scope.schedule.games.length; i++) {
 			currentItem = scope.schedule.games[i];
 			if (currentItem.gm.name == scope.currentUser) {
@@ -76,24 +84,31 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService, historyS
 				event: 'mouseleave',
 			    },
 			    events: {
+				show: function(event, api) {
+				    if(scope.tooltipLock.lock) {
+					try { event.preventDefault(); } catch(e) {}
+				    }
+				},
 				hide: function(event, api) {
 					api.set('hide.event', 'mouseleave');
+					scope.tooltipLock.lock = false;
+					$('#ggoverlay').removeClass('active');
 				}
 			    }
 			});
-			$('.commentTrigger').click(function(event) {
-				$(element).parent().qtip('api').set('hide.event', 'unfocus');
+			$(element).find('.commentTrigger').click(function(event) {
+				lockTooltip(scope, $(element).parent());
 				$(this).slideUp(200);
 				var $box=$(this).next('.commentEdit');
 				$box.slideDown(200);
 				$box.find('.inputComment').focus();
 			});
-			$('.commentButton').click(function(event) {
+			$(element).find('.commentButton').click(function(event) {
 				var $box = $(this).parents('.commentEdit');
 				$box.slideUp(200);
 				$box.prev('.commentTrigger').slideDown(200);
 			});
-			$("[alt-text]").each(function() {
+			$(element).find("[alt-text]").each(function() {
 				$(this).hover(function(event) {
 					$(this).text($(this).attr("alt-text"));
 				},
@@ -101,14 +116,35 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService, historyS
 					$(this).text($(this).attr("norm-text"));
 				})
 			});
-			$("[alt-text]").show(function() {
+			$(element).find("[alt-text]").show(function() {
 					$(this).text($(this).attr("norm-text"));
 			});
-			$(".validateDiv").click(function($event) {
+			$(element).find(".validateDiv").click(function($event) {
+					lockTooltip(scope, $(element).parent());
 					$(element).parent().qtip('api').set('hide.event', 'unfocus');
 					$($event.target).slideUp(200);
                             		$($event.target).nextAll(".gameEditor").slideDown(200);
 			});			
+			$(element).find('.histButton').qtip({
+			    style: {
+				    classes: 'ggpanel'
+			    },
+			    content: {
+				    text: $(element).find('.historydialog')
+			    },
+			    position: {
+        	            	my: 'center',
+        	            	at: 'center',
+        	            	target: $(window),
+			    },
+			    show: {
+				    modal: {
+	        	                on: true,
+				    },
+				    event: false
+			    },
+			    hide: 'unfocus',
+			});
 			for (i = 0; i < scope.schedule.availableplayers.length; i++ ) {
 				currentItem = scope.schedule.availableplayers[i];
 				if (currentItem.name != scope.currentUser) {
@@ -169,17 +205,14 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService, historyS
                     scope.refreshTimeframe();
                 });
             };
-            scope.showHistory = function() {                
+            scope.showHistory = function($event) {                
                 scope.historyList.length = 0;
-                scope.history.setting = scope.schedule.name;
-                scope.history.date = scope.dowcodes[scope.day.dow] + ' ' + scope.day.dom + '/' + scope.day.month;
-                scope.history.timeframe = scope.timeframesDesc[scope.timeframe.code].name;
                 historyService.getHistory(scope.day.id, scope.timeframe.code, scope.schedule.settingid, function(history) {
                     for (var i = 0; i < history.length; i++) {
                         scope.historyList.push(history[i]);
                     }
-					$(element).parent().qtip('api').set('hide.event', 'unfocus');
-                    $('#historydialogcontainer').qtip('api').show();
+				lockTooltip(scope, $(element).parent());
+                    $($event.target).qtip('api').show();
                 });
                 
             };
@@ -231,16 +264,23 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 					event: 'mouseleave',
 				    },
 				    events: {
+					show: function(event, api) {
+					    if(scope.tooltipLock) {
+						try { event.preventDefault(); } catch(e) {}
+					    }
+					},
 					hide: function(event, api) {
 						api.set('hide.event', 'mouseleave');
 						$(this).find('.collapsed').hide();
 						$(this).find('.collapsible').show();
+						$('#ggoverlay').removeClass('active');
+						scope.tooltipLock = false;
 					}
 				    }
 				});
 			});
 			$(element).find('.settingTrigger').first().click(function(event) {
-				$(element).find('.tfExtra').qtip('api').set('hide.event', 'unfocus');
+				lockTooltip(scope, $(element).find('.tfExtra'));
 				$(this).slideUp(200);
 				var $box=$(this).next('.settingEditor');
 				$box.slideDown(200);
@@ -321,6 +361,24 @@ gamegrinderApp.directive('ggDayTab', function() {
 				$(element).find(".datePanel").removeClass("hoverDay");
 			});
 			scope.dowcodes = dowcodes;
+		}
+	};
+});
+
+gamegrinderApp.directive('ggHistory', function() {
+
+	return {
+		restrict: 'E',
+		templateUrl: 'directives/history.html',
+		scope: { row : '=' },
+		link: function(scope, element, attrs) {
+			scope.tstamp = scope.row.tstamp;
+			scope.dayid = scope.row.dayid;
+			scope.timeframe = scope.row.timeframe;
+			scope.setting = scope.row.setting;
+			scope.player = scope.row.player;
+			scope.data = scope.row.data;
+			scope.action = scope.row.action;
 		}
 	};
 });

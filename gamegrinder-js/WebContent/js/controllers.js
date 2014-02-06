@@ -16,6 +16,8 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 
     $scope.settingsReady = false;
 
+    $scope.tooltipLock = { lock : false};
+
     $scope.invisibleStatus = (typeof $cookies.ggInvisibleStatus != 'undefined')?$cookies.ggInvisibleStatus.split("|"):new Array();
     $scope.invisibleOpenSettings = (typeof $cookies.ggInvisibleOpen != 'undefined')?$cookies.ggInvisibleOpen.split("|"):new Array();
     $scope.invisibleOneShots = (typeof $cookies.ggInvisibleOneShots != 'undefined')?$cookies.ggInvisibleOneShots.split("|"):new Array();
@@ -37,9 +39,6 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
     ;
 
     $scope.setComment=function() {  };
-    
-    $scope.history = new Object();
-    $scope.historyList = [];
     
 /*    
 
@@ -148,7 +147,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 
   settingsService.getSettings( function(settings) {
 	  $scope.settingsList = settings;
-	if (typeof $scope.currentUser != undefined) initPlanning();	  
+	if ((typeof $scope.currentUser != "undefined") && ($scope.currentUser != '')) initPlanning();	  
   }); 
 
   var initPlanning = function()  {

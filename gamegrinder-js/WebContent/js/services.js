@@ -15,6 +15,11 @@ gamegrinderApp.factory('userService', ['$cookies', function(cookies) {
 	}
 }]);
 */
+
+function genericError(error) {
+	window.alert("Ouille... ça part en sucette: " + JSON.stringify(error, null, 4));
+}
+
 gamegrinderApp.factory('logger', [function() {
 
 	return {
@@ -205,6 +210,7 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
             timeframe.busy = false;
             timeframe.gaming = {};
             timeframe.settings.length = 0;
+	    delete timeframe.mygame;
 			for (i = 0; i < schedules.length; i++) {
                 addSchedule(schedules[i], timeframe, settings, me);
 			}
@@ -254,34 +260,34 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 
 		setDispo : function(pm_player, pm_dayid, pm_timeframe, pm_setting, pm_role, callback) {
 		    var schedule = { dayid : pm_dayid, timeframe : pm_timeframe, player : pm_player, role : pm_role, setting : pm_setting};
-            $http.put(config.urlbase + '/schedule?log_action=ADD_DISPO', schedule).success(callback);
+            $http.put(config.urlbase + '/schedule?log_action=ADD_DISPO', schedule).success(callback).error(genericError);
 		},
 
 		clearDispo : function(idschedule, callback) {
-            $http.delete(config.urlbase + '/schedule/' + idschedule + '?log_action=DEL_DISPO').success(callback);
+            $http.delete(config.urlbase + '/schedule/' + idschedule + '?log_action=DEL_DISPO').success(callback).error(genericError);
 		},
 
 		getTimeframePlanning : function(dayid, timeframecode, callback) {
-			$http.get(config.urlbase + '/planning?minday=' + dayid + '&maxday=' + dayid + '&timeframe=' + timeframecode).success(callback);
+			$http.get(config.urlbase + '/planning?minday=' + dayid + '&maxday=' + dayid + '&timeframe=' + timeframecode).success(callback).error(genericError);
 		},
 				
 		getPlanning : function(mindaytime, daycount, callback) {
 			var minday = planningBuilderService.getDayId(new Date(mindaytime));
 			var maxdaytime = mindaytime + daycount * planningBuilderService.MS_IN_DAY;
 			var maxday = planningBuilderService.getDayId(new Date(maxdaytime));
-			$http.get(config.urlbase + '/planning?minday=' + minday + '&maxday=' + maxday).success(callback);
+			$http.get(config.urlbase + '/planning?minday=' + minday + '&maxday=' + maxday).success(callback).error(genericError);
 		},
 				
         reformGame : function(pm_idgame, pm_newplayers, callback) {
-            $http.post(config.urlbase + '/game/' + pm_idgame + '?log_action=RFM_GAME', {players : pm_newplayers}).success(callback);
+            $http.post(config.urlbase + '/game/' + pm_idgame + '?log_action=RFM_GAME', {players : pm_newplayers}).success(callback).error(genericError);
         },
         
         dropGame : function(idschedule, callback) {
-            $http.delete(config.urlbase + '/schedule/' + idschedule + '?log_action=DRP_GAME').success(callback);
+            $http.delete(config.urlbase + '/schedule/' + idschedule + '?log_action=DRP_GAME').success(callback).error(genericError);
         },
         
         disbandGame : function(idschedule, callback) {
-            $http.delete(config.urlbase + '/schedule/' + idschedule + '?log_action=DEL_GAME').success(callback);
+            $http.delete(config.urlbase + '/schedule/' + idschedule + '?log_action=DEL_GAME').success(callback).error(genericError);
         },
         
 		validateGame : function(schedule_id, players, callback) {
@@ -289,12 +295,13 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 				masterschedule: schedule_id,
                 players: players
 			};
-			$http.put(config.urlbase + '/game?log_action=ADD_GAME', game).success(callback);
+			$http.put(config.urlbase + '/game?log_action=ADD_GAME', game).success(callback).error(genericError);
 		},
 
 		setComment : function(pm_player, pm_dayid, pm_timeframe, pm_setting, pm_idcomment, pm_message, callback) {
 			var comment;
 			var action;
+
 
 			if ((typeof pm_message == "undefined") || (pm_message == '')) {
 				action = 'DEL_COMMENT';
@@ -302,9 +309,9 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 			else {
 				action = 'SET_COMMENT';
 			}
-			if (pm_idcomment != null) comment = { id :  pm_idcomment, message : pm_message };
+			if (pm_idcomment != null) comment = { id :  pm_idcomment, player : pm_player, dayid : pm_dayid, timeframe : pm_timeframe, setting : pm_setting, message : pm_message };
 			else comment = { player : pm_player, dayid : pm_dayid, timeframe : pm_timeframe, setting : pm_setting, message : pm_message};
-			$http.post(config.urlbase + '/comment?log_action=' + action, comment).success(callback);
+			$http.post(config.urlbase + '/comment?log_action=' + action, comment).success(callback).error(genericError);
 		}
 	}
 }]);

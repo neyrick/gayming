@@ -225,20 +225,24 @@ function genericDelete(req, res, next, entity) {
     }
 
     exports.setComment = function(req, res, next) {
-	var comm = new comment(req.body);
+	var comm;
 	var logdata = createBaseLogData(req, req.body);
-	logdata.data = { message : comm.message };
-	if ((comm.message == null) || (comm.message == '')) {
-		if ((comm.id != null) && (comm.id > 0)) {
+	logdata.data = { message : req.body.message };
+	if ((req.body.id != null) && (req.body.id > 0)) {
+		comm = new comment({ id : req.body.id, message : req.body.message});
+		if ((comm.message == null) || (comm.message == '')) {
 			storelog(logdata);
 			genericDelete(req, res, next, comm);
 		}
-		else next();
-	}	
-	else {
-		if ((comm.id != null) && (comm.id > 0)) {
+		else {
 			storelog(logdata);
 			genericUpdate(req, res, next, comment);
+		}
+	}
+	else {
+		comm = new comment(req.body);
+		if ((comm.message == null) || (comm.message == '')) {
+			next();
 		}
 		else {
 			storelog(logdata);
@@ -328,9 +332,11 @@ function genericDelete(req, res, next, entity) {
 					masterschedule = oldplayers.splice(i, 1)[0];
 				}
 			}
+			var playercopy;
 			for(var i = 0; i < oldplayers.length; i++) {
-				if (typeof req.body.players[oldplayers[i].player] == "undefined") dumpedplayers[oldplayers[i].player] = oldplayers[i];
-				else keptplayers[oldplayers[i].player] = oldplayers[i];
+				playercopy = { name : oldplayers[i].player, id : oldplayers[i].id};
+				if (typeof req.body.players[oldplayers[i].player] == "undefined") dumpedplayers[oldplayers[i].player] = playercopy;
+				else keptplayers[oldplayers[i].player] = playercopy;
 			}
 
 			for (name in req.body.players) {
