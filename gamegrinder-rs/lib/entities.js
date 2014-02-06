@@ -23,7 +23,7 @@ var comment = persist.define("comment", {
           "player": type.STRING,
           "message": type.STRING
     }, { tableName: "comment" }).hasOne(setting, { createHasMany: false, foreignKey : "setting"});
-/*
+
 var history = persist.define("history", {
           "address": type.STRING,
           "tstamp": type.DATETIME,
@@ -33,10 +33,10 @@ var history = persist.define("history", {
           "action": type.STRING,
           "data": type.JSON
     }, { tableName: "history" }).hasOne(setting, { createHasMany: false, foreignKey : "setting"});
-*/
+
 
 exports.setting = setting;
 exports.game = game;
 exports.schedule = schedule;
 exports.comment = comment;
-//exports.history = history;
+exports.history = history;

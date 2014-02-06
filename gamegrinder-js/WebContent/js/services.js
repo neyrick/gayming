@@ -31,6 +31,21 @@ gamegrinderApp.factory('config', [function() {
 		}
 }]);
 
+gamegrinderApp.factory('historyService', ['$http', 'config', function($http, config) {
+
+	return {
+		
+		getHistory : function(dayid, timeframe, settingid, callback) {
+            $http.get(config.urlbase + '/history?dayid=' + dayid + '&timeframe=' + timeframe + '&setting=' + settingid).success(function(data, status) {
+					callback(data);
+				}).error(function(data, status) {
+					window.alert("Impossible de récupérer l'historique: " + data);
+				});
+		}
+        
+	}
+}]);
+
 gamegrinderApp.factory('settingsService', ['$http', 'config', function($http, config) {
 
 	var settings = { ready : false };

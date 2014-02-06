@@ -2,7 +2,7 @@
 
 /* Directives */
 
-gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
+gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService, historyService) {
     
     var getMyScheduleId = function(name, schedule, role) {
         var schedules;
@@ -168,6 +168,20 @@ gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService) {
                      $(element).parent().qtip('api').hide();
                     scope.refreshTimeframe();
                 });
+            };
+            scope.showHistory = function() {                
+                scope.historyList.length = 0;
+                scope.history.setting = scope.schedule.name;
+                scope.history.date = scope.dowcodes[scope.day.dow] + ' ' + scope.day.dom + '/' + scope.day.month;
+                scope.history.timeframe = scope.timeframesDesc[scope.timeframe.code].name;
+                historyService.getHistory(scope.day.id, scope.timeframe.code, scope.schedule.settingid, function(history) {
+                    for (var i = 0; i < history.length; i++) {
+                        scope.historyList.push(history[i]);
+                    }
+					$(element).parent().qtip('api').set('hide.event', 'unfocus');
+                    $('#historydialogcontainer').qtip('api').show();
+                });
+                
             };
 		}
 	};

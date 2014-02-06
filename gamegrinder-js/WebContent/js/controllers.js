@@ -38,6 +38,9 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 
     $scope.setComment=function() {  };
     
+    $scope.history = new Object();
+    $scope.historyList = [];
+    
 /*    
 
     $scope.openCommentDialog=function(day, timeframe, setting) {

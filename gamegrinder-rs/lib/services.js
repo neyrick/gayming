@@ -1,5 +1,4 @@
 var entities = require("./entities");
-var logger = require("./logger");
 
 var persist = require("persist");
 
@@ -7,6 +6,7 @@ var setting = entities.setting;
 var comment = entities.comment;
 var game = entities.game;
 var schedule = entities.schedule;
+var history = entities.history;
 
 var connection;
 
@@ -27,13 +27,16 @@ function assignGame(idgame, masterschedule, players, callback) {
 }
 
 function storelog(logdata) {
-	console.log("Logdata: %j", logdata);
+	new history(logdata).save(connection, function(err) {
+               if (err) console.log("Error: " + err);
+            });
 }
 
 function createBaseLogData(req, source) {
 	var result = { action : req.params['log_action'], address : req.connection.remoteAddress }
 	if (typeof source != "undefined") {
 		result.dayid = source.dayid;
+		result.tstamp = new Date();
 		result.timeframe = source.timeframe;
 		result.setting = source.setting;
 		result.player = source.player;
@@ -111,6 +114,14 @@ function genericDelete(req, res, next, entity) {
 
     exports.init = function(conn) {
         connection = conn;
+    };
+
+    
+    exports.fetchHistory = function(req, res, next) {
+            history.where({dayid : req.params.dayid, timeframe : req.params.timeframe, setting : req.params.setting}).orderBy('tstamp', persist.Descending).all(connection, function(err, result) {
+              genericSendJson(res, result);
+              next();
+            });
     };
 
     exports.fetchAllSettings = function(req, res, next) {

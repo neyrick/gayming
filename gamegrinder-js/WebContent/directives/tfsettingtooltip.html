@@ -45,4 +45,6 @@
 	    <li ng-repeat="player in schedule.unavailable"><span ng-class="{busyplayer : timeframe.gaming[player.name]}">{{ player.name }}</span><span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
 	  </ul>
 	</div>
+  	<div class="ggpanelItem ggbuttonbox ggclickableitem hoverDay"><span class="badge buttonBadge" ng-click="showHistory()">Voir l'historique</span></div>
+
     </div>

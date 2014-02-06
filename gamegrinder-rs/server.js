@@ -30,6 +30,8 @@ server.post('/gg/game/:idgame', serv.reformGame);
 
 server.get('/gg/planning', serv.fetchPlanning);
 
+server.get('/gg/history', serv.fetchHistory);
+
 /*
 server.on('after', function (request, response, route, error) {
 	if (error) {

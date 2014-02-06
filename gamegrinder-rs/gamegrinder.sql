@@ -123,6 +123,46 @@ ALTER SEQUENCE game_id_seq OWNED BY game.id;
 
 
 --
+-- Name: history; Type: TABLE; Schema: public; Owner: devel; Tablespace: 
+--
+
+CREATE TABLE history (
+    id integer NOT NULL,
+    address character varying NOT NULL,
+    tstamp timestamp without time zone DEFAULT now() NOT NULL,
+    dayid integer,
+    timeframe tf_type,
+    setting integer,
+    player character varying NOT NULL,
+    action character varying NOT NULL,
+    data character varying
+);
+
+
+ALTER TABLE public.history OWNER TO devel;
+
+--
+-- Name: history_id_seq; Type: SEQUENCE; Schema: public; Owner: devel
+--
+
+CREATE SEQUENCE history_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.history_id_seq OWNER TO devel;
+
+--
+-- Name: history_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: devel
+--
+
+ALTER SEQUENCE history_id_seq OWNED BY history.id;
+
+
+--
 -- Name: schedule; Type: TABLE; Schema: public; Owner: devel; Tablespace: 
 --
 
@@ -215,6 +255,13 @@ ALTER TABLE ONLY game ALTER COLUMN id SET DEFAULT nextval('game_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: devel
 --
 
+ALTER TABLE ONLY history ALTER COLUMN id SET DEFAULT nextval('history_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: devel
+--
+
 ALTER TABLE ONLY schedule ALTER COLUMN id SET DEFAULT nextval('schedule_id_seq'::regclass);
 
 
@@ -230,6 +277,7 @@ ALTER TABLE ONLY setting ALTER COLUMN id SET DEFAULT nextval('setting_id_seq'::r
 --
 
 COPY comment (id, player, message, dayid, setting, timeframe) FROM stdin;
+1	Neyrick	dffdsfdddd	20140131	3	AFTERNOON
 \.
 
 
@@ -237,7 +285,7 @@ COPY comment (id, player, message, dayid, setting, timeframe) FROM stdin;
 -- Name: comment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: devel
 --
 
-SELECT pg_catalog.setval('comment_id_seq', 1, false);
+SELECT pg_catalog.setval('comment_id_seq', 1, true);
 
 
 --
@@ -252,7 +300,25 @@ COPY game (id, masterschedule) FROM stdin;
 -- Name: game_id_seq; Type: SEQUENCE SET; Schema: public; Owner: devel
 --
 
-SELECT pg_catalog.setval('game_id_seq', 4, true);
+SELECT pg_catalog.setval('game_id_seq', 15, true);
+
+
+--
+-- Data for Name: history; Type: TABLE DATA; Schema: public; Owner: devel
+--
+
+COPY history (id, address, tstamp, dayid, timeframe, setting, player, action, data) FROM stdin;
+2	127.0.0.1	2014-02-05 23:00:24.638	20140131	AFTERNOON	3	Neyrick	ADD_DISPO	{"role":"PLAYER"}
+3	127.0.0.1	2014-02-06 01:08:28.792	20140131	AFTERNOON	1	Neyrick	DEL_DISPO	{"role":"GM","players":[]}
+4	127.0.0.1	2014-02-06 01:08:34.581	20140131	AFTERNOON	3	Neyrick	ADD_DISPO	{"role":"GM"}
+\.
+
+
+--
+-- Name: history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: devel
+--
+
+SELECT pg_catalog.setval('history_id_seq', 4, true);
 
 
 --
@@ -260,9 +326,14 @@ SELECT pg_catalog.setval('game_id_seq', 4, true);
 --
 
 COPY schedule (id, dayid, setting, game, player, timeframe, role) FROM stdin;
+52	20140131	3	\N	Arkyn	AFTERNOON	PLAYER
+53	20140131	3	\N	Eloso	AFTERNOON	PLAYER
+67	20140131	4	\N	Neyrick	AFTERNOON	PLAYER
+68	20140131	3	\N	Neyrick	AFTERNOON	PLAYER
+69	20140131	3	\N	Neyrick	AFTERNOON	GM
 43	20140131	1	\N	MJD1	AFTERNOON	GM
-45	20140131	2	\N	MJD1	AFTERNOON	GM
 46	20140131	3	\N	MJD1	AFTERNOON	GM
+47	20140131	4	\N	MJD1	AFTERNOON	GM
 \.
 
 
@@ -270,7 +341,7 @@ COPY schedule (id, dayid, setting, game, player, timeframe, role) FROM stdin;
 -- Name: schedule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: devel
 --
 
-SELECT pg_catalog.setval('schedule_id_seq', 46, true);
+SELECT pg_catalog.setval('schedule_id_seq', 69, true);
 
 
 --
@@ -324,6 +395,14 @@ ALTER TABLE ONLY game
 
 
 --
+-- Name: history_pk; Type: CONSTRAINT; Schema: public; Owner: devel; Tablespace: 
+--
+
+ALTER TABLE ONLY history
+    ADD CONSTRAINT history_pk PRIMARY KEY (id);
+
+
+--
 -- Name: schedule_pk; Type: CONSTRAINT; Schema: public; Owner: devel; Tablespace: 
 --
 
@@ -351,6 +430,27 @@ CREATE INDEX comment_dayid_idx ON comment USING btree (dayid, setting, timeframe
 --
 
 CREATE INDEX comment_player_idx ON comment USING btree (player);
+
+
+--
+-- Name: history_dayid_idx; Type: INDEX; Schema: public; Owner: devel; Tablespace: 
+--
+
+CREATE INDEX history_dayid_idx ON history USING btree (dayid, timeframe);
+
+
+--
+-- Name: history_setting_idx; Type: INDEX; Schema: public; Owner: devel; Tablespace: 
+--
+
+CREATE INDEX history_setting_idx ON history USING btree (setting);
+
+
+--
+-- Name: history_tstamp_idx; Type: INDEX; Schema: public; Owner: devel; Tablespace: 
+--
+
+CREATE INDEX history_tstamp_idx ON history USING btree (tstamp);
 
 
 --
@@ -388,6 +488,14 @@ ALTER TABLE ONLY comment
 
 ALTER TABLE ONLY game
     ADD CONSTRAINT game_schedule_fk FOREIGN KEY (masterschedule) REFERENCES schedule(id) ON DELETE CASCADE;
+
+
+--
+-- Name: history_setting_fk; Type: FK CONSTRAINT; Schema: public; Owner: devel
+--
+
+ALTER TABLE ONLY history
+    ADD CONSTRAINT history_setting_fk FOREIGN KEY (setting) REFERENCES setting(id);
 
 
 --

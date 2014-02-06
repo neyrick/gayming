@@ -16,9 +16,9 @@
 <script src="js/gg.js"></script>
 <script src="js/app.js"></script>
 <script src="js/controllers.js"></script>
-<script src="js/directives.js"></script>
 <script src="js/filters.js"></script>
 <script src="js/services.js"></script>
+<script src="js/directives.js"></script>
 
 </head>
 <body ng-controller="GameGrinderCtrl">
@@ -44,6 +44,26 @@
 	        	                on: true,
 				        blur: false,
 				        escape: false
+				    }
+			    },
+			    hide: false
+			});
+			$('#historydialogcontainer').qtip({
+			    style: {
+				    classes: 'ggpanel historydialog'
+			    },
+			    content: {
+				    text: $('#historydialog')
+			    },
+			    position: {
+        	            my: 'center',
+				    at: 'center',
+				    target: $(window)
+			    },
+			    show: {
+	        	            event: false,
+				    modal: {
+	        	                on: true,
 				    }
 			    },
 			    hide: false
@@ -84,6 +104,17 @@
 			</div>
 		</form>
 	</div>
+    </div>
+
+   <div id="historydialogcontainer" style="display: none">
+        <div id="historydialog">
+            <div class="ggpanelItem ggpanelHeader glossyHeader">{{ history.setting }} - {{ history.date }} - {{ history.timeframe }}</div>
+            <div class="ggpanelItem ggpanelBorderItem" ng-repeat="history in historyList"  ng-class-even="evenline" ng-class-odd="oddline">
+                <div class="dateCell ggpanelCell"><span>{{ history.tstamp | date:'dd/MM/yyyy'}}</span></div>
+                <div class="dateCell ggpanelCell"><span>{{ history.tstamp | date:'shortTime'}}</span></div>
+                <div class="legendCell ggpanelCell"><span>{{ history.data }}</span></div>
+            </div>
+        </div>
     </div>
 
 	<div id="toolbar" class="pageColumn">
