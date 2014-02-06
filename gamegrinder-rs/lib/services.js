@@ -285,9 +285,6 @@ function genericDelete(req, res, next, entity) {
 	}
 	
 	connection.runSqlAll(basequery, params, function(err, results) {
-//		schedule: schedule.include(game).where(basequery, params).all,
-//		comments: comment.where(basequery, params).all,
-//	, function(err, results) {
 	        if (err) console.log("Erreur: " + err);
 		res.send(results);
 		next();
@@ -363,33 +360,39 @@ function genericDelete(req, res, next, entity) {
 	next();
     }
     
+    exports.fetchUpdates = function(req, res, next) {
+	var basequery = "SELECT dayid, timeframe, setting, MAX(tstamp) AS update FROM history h  WHERE (h.dayid >= $1) AND (h.dayid <= $2)";
 
-/*
-    exports.deleteGame = function(req, res, next) {
-	    genericDelete(req, res, next, new game({ id: req.params.id }));
-    };
+	var minday = req.params.minday;
+	if (typeof minday == "undefined") minday = 0;
+	var maxday = req.params.maxday;
+	if (typeof maxday == "undefined") maxday = 99999999;
+	var params = [ minday, maxday ];
 
-    exports.createComment = function(req, res, next) {
-	    genericCreate(req, res, next, new comment(req.body));
-    };
+	var paramindex = 3;
+	if (req.params.timeframe) {
+		basequery = basequery + ' AND ((s.timeframe = $' + paramindex + ') OR ( c.timeframe = $' + paramindex + '))';
+		paramindex++;
+		params.push(req.params.timeframe);
+	}
 
-    exports.updateComment = function(req, res, next) {
-	    genericUpdate(req, res, next, comment);
-    };
-    
-    exports.updateSchedule = function(req, res, next) {
-	    genericUpdate(req, res, next, schedule);
-    };
-    
-    exports.updateGame = function(req, res, next) {
-	    genericUpdate(req, res, next, game);
-    };
-    
-    exports.deleteSetting = function(req, res, next) {
-	    genericDelete(req, res, next, new setting({ id: req.params.id }));
-    };
+	if (req.params.setting) {
+		basequery = basequery + ' AND ((s.setting = $' + paramindex + ') OR ( c.setting = $' + paramindex + '))';
+		paramindex++;
+		params.push(req.params.setting);
+	}
 
-    exports.deleteComment = function(req, res, next) {
-	    genericDelete(req, res, next, new comment({ id: req.params.id }));
-    };
-*/
+	if (req.params.player) {
+		basequery = basequery + ' AND ((s.player = $' + paramindex + ') OR ( c.player = $' + paramindex + '))';
+		paramindex++;
+		params.push(req.params.player);
+	}
+	
+	basequery = basequery + ' GROUP BY dayid, timeframe, setting';
+	
+	connection.runSqlAll(basequery, params, function(err, results) {
+	        if (err) console.log("Erreur: " + err);
+		res.send(results);
+		next();
+	});
+    }
