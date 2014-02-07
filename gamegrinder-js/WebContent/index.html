@@ -12,7 +12,7 @@
 <script type="text/javascript" src="js/jquery.qtip.js"></script>
 
 <script src="lib/angular/angular.js"></script>
-<script src="lib/angular/angular-cookies.js"></script>
+<script src="lib/angular-local-storage.min.js"></script>
 <script src="js/gg.js"></script>
 <script src="js/app.js"></script>
 <script src="js/controllers.js"></script>
@@ -79,7 +79,8 @@
 					event: 'mouseleave',
 				}
 			});
-			if (typeof angular.element('body').scope().currentUser == 'undefined') {
+			var currentUser = angular.element('body').scope().currentUser;
+			if ((typeof currentUser == 'undefined') || (currentUser == null)) {
 				$( "#logindialogcontainer" ).qtip( "toggle", true );
 			}
 			$('#loginForm').submit(function(event) {

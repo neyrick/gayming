@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsService', 'plannerService', 'planningBuilderService', 'config', function GameGrinderCtrl($scope, $cookies, settingsService, plannerService, planningBuilderService, config) {
+gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'plannerService', 'planningBuilderService', 'config', 'localStorageService', function GameGrinderCtrl($scope, settingsService, plannerService, planningBuilderService, config, localStorageService) {
 
     function timeSlide(days) {
         $scope.firstday = $scope.firstday + days * planningBuilderService.MS_IN_DAY;
@@ -13,67 +13,81 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 		plannerService.getPlanning($scope.firstday, $scope.dayCount, function(planning) {
 			 $scope.weeks = planningBuilderService.buildWeeksPlanning($scope.firstday, $scope.dayCount, $scope.settingsList, planning, $scope.currentUser);
             plannerService.getUpdates($scope.firstday, $scope.dayCount, $scope.currentUser, function(updatesHash) {
-                planningBuilderService.dispatchUpdatesFlags(updatesHash, $scope.weeks, 0);
+                planningBuilderService.dispatchUpdatesFlags(updatesHash, $scope.weeks, $scope.lastUpdate);
             });
+		$scope.lastUpdate = new Date().getTime();
+		storeConfig();
 		});
     }
     
-    $scope.dayCount = 42;
+    function loadConfig() {
+	if ((typeof $scope.currentUser == "undefined") || ($scope.currentUser == null)) return;
+        var config =  localStorageService.get('ggconfig-' + $scope.currentUser);
+	if ((typeof config == "undefined") || (config === '') || (config == null)) return;
+	$scope.invisibleStatus = (typeof config.invisibleStatus != "undefined") ? config.invisibleStatus : new Array();
+	$scope.invisibleOpenSettings = (typeof config.invisibleOpenSettings != "undefined") ? config.invisibleOpenSettings : new Array();
+	$scope.invisibleOneShots = (typeof config.invisibleOneShots != "undefined") ? config.invisibleOneShots : new Array();
+	$scope.visibleClosedSettings = (typeof config.visibleClosedSettings != "undefined") ? config.visibleClosedSettings : new Array();
+	$scope.lastUpdate = (typeof config.lastUpdate != "undefined") ? config.lastUpdate : 0;
+    }
 
-    $scope.currentUser =  $cookies['ggUser'];
-    $scope.tempUser = '';
+    function storeConfig() {
+	if (typeof $scope.currentUser == "undefined") return;
+	var config = {
+		invisibleStatus : $scope.invisibleStatus,
+		invisibleOpenSettings : $scope.invisibleOpenSettings,
+		invisibleOneShots : $scope.invisibleOneShots,
+		visibleClosedSettings : $scope.visibleClosedSettings,
+		lastUpdate : $scope.lastUpdate
+	};
+        localStorageService.add('ggconfig-' + $scope.currentUser, JSON.stringify(config));
+    }
 
-    $scope.firstday = planningBuilderService.getDefaultMinDay();
-    
     $scope.blanksetting = { name : '', mode : -1, status : 0, code : ''};
     $scope.newsetting = $scope.blanksetting;
 
+    $scope.dayCount = 42;
+
+    $scope.firstday = planningBuilderService.getDefaultMinDay();
+    
     $scope.settingsReady = false;
 
     $scope.tooltipLock = { lock : false};
 
-    $scope.invisibleStatus = (typeof $cookies.ggInvisibleStatus != 'undefined')?$cookies.ggInvisibleStatus.split("|"):new Array();
-    $scope.invisibleOpenSettings = (typeof $cookies.ggInvisibleOpen != 'undefined')?$cookies.ggInvisibleOpen.split("|"):new Array();
-    $scope.invisibleOneShots = (typeof $cookies.ggInvisibleOneShots != 'undefined')?$cookies.ggInvisibleOneShots.split("|"):new Array();
-    $scope.visibleClosedSettings = (typeof $cookies.ggVisibleClosed != 'undefined')?$cookies.ggVisibleClosed.split("|"):new Array();
+    $scope.currentUser =  localStorageService.get('ggUser');
+    $scope.lastUpdate = 0;
+    $scope.tempUser = '';
+    $scope.mystatus = new Array();
+    $scope.weeks = Array();
+    $scope.invisibleStatus = new Array();
+    $scope.invisibleOpenSettings = new Array();
+    $scope.invisibleOneShots = new Array();
+    $scope.visibleClosedSettings = new Array();
 
-    $scope.currentRecruits = [];
-	
+    loadConfig();
+
     $scope.login=function() {
 	 $scope.currentUser = $scope.tempUser;
-     $scope.tempUser = '';
-	 $cookies['ggUser'] = $scope.currentUser;
+         $scope.tempUser = '';
+	 localStorageService.add('ggUser', $scope.currentUser);
 	 $scope.weeks = [];
+	 loadConfig();
 	 initPlanning();
      };
     $scope.logout=function() {
+	 $scope.lastUpdate = 0;
+	 $scope.tempUser = '';
+	 $scope.mystatus = new Array();
+	 $scope.weeks = Array();
+	 $scope.invisibleStatus = new Array();
+	 $scope.invisibleOpenSettings = new Array();
+	 $scope.invisibleOneShots = new Array();
+	 $scope.visibleClosedSettings = new Array();
 	 $scope.weeks = [];
 	 delete $scope.currentUser;
-	 delete $cookies['ggUser'];
+	 localStorageService.remove('ggUser');
 	 $( "#logindialogcontainer" ).qtip( "toggle", true ); }
     ;
-
-    $scope.setComment=function() {  };
-    
-   $scope.selectTimeframe=function(val) {
-     $scope.currentTimeframe=val;
-  }
-  
-  $scope.selectTimeframeSetting = function(val) {
-     $scope.currentSettingTf = val;
-  }
-  
-  $scope.mystatus = new Array();
-
-  $scope.toggleRecruit = function(player) {
-	for (var key in $scope.currentRecruits) {
-	    if (key == player.name) {
-		    delete $scope.currentRecruits[key];
-		    return;
-	    }
-	}
-	$scope.currentRecruits[player.name] = player;
-  }
 
   $scope.toggleStatusVisibility = function(status) {
   	var settingsArray;
@@ -85,7 +99,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 	else {
 		settingsArray.push('' + status)
 	}
-	$scope.updateSettingsCookies();
+	storeConfig();
   }
 
   $scope.toggleSettingVisibility = function(settingid, settingmode, force) {
@@ -112,14 +126,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
 	else if ((typeof force == "undefined") || (force === !defaultState)) {
 		settingsArray.push('' + settingid)
 	}
-	$scope.updateSettingsCookies();
-  }
-
-  $scope.updateSettingsCookies = function() {
-	$cookies.ggInvisibleOpen = $scope.invisibleOpenSettings.join("|");
-	$cookies.ggVisibleClosed = $scope.visibleClosedSettings.join("|");
-	$cookies.ggInvisibleStatus = $scope.invisibleStatus.join("|");
-	$cookies.ggInvisibleOneShots = $scope.invisibleOneShots.join("|");
+	storeConfig();
   }
 
   $scope.isInArray = function(item, list) {
@@ -141,11 +148,9 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', '$cookies', 'settingsSe
       timeSlide($scope.dayCount);
   };
     
-  $scope.weeks = Array();
-
   settingsService.getSettings( function(settings) {
 	  $scope.settingsList = settings;
-	if ((typeof $scope.currentUser != "undefined") && ($scope.currentUser != '')) initPlanning();	  
+	if ((typeof $scope.currentUser != "undefined") && ($scope.currentUser != '') && ($scope.currentUser != null)) initPlanning();	  
   }); 
 
 }]);
