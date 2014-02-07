@@ -265,7 +265,7 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 				    },
 				    events: {
 					show: function(event, api) {
-					    if(scope.tooltipLock) {
+					    if(scope.tooltipLock.lock) {
 						try { event.preventDefault(); } catch(e) {}
 					    }
 					},
@@ -274,7 +274,7 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 						$(this).find('.collapsed').hide();
 						$(this).find('.collapsible').show();
 						$('#ggoverlay').removeClass('active');
-						scope.tooltipLock = false;
+						scope.tooltipLock.lock = false;
 					}
 				    }
 				});
