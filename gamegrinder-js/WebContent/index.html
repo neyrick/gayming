@@ -49,6 +49,21 @@
 			    },
 			    hide: false
 			});
+			$('[ttip-low!=""]').qtip({
+				style: { classes: 'infoTooltip' },
+				content: { attr: 'ttip-low' },
+				position: {
+					my: 'top right',
+					at: 'bottom left'
+				},
+				show: {
+					event: 'mouseenter click',
+				},
+				hide: {
+					delay: 10,
+					event: 'mouseleave',
+				}
+			});
 			$('[ttip!=""]').qtip({
 				style: { classes: 'infoTooltip' },
 				content: { attr: 'ttip' },
@@ -105,6 +120,10 @@
 					<div class="legendBadge settingCell ggpanelCell"><span class="badge {{status.style}}">--</span></div>
 					<div class="settingCell ggpanelCell legendCell"><span>{{status.desc}}</span></div>
 				</div>
+				<div class="ggpanelItem">
+					<div class="legendBadge settingCell ggpanelCell"><span class="badge newStuff">--</span></div>
+					<div class="settingCell ggpanelCell legendCell"><span>Y'a du neuf !</span></div>
+				</div>
 		</div>
 
 		<div id="campaignsContainer" class="dummyContainer">
@@ -139,14 +158,21 @@
 	</div>
 
 	<div class="pageColumn" ng-if="settingsReady">
-		<div class="weekPanel" ng-repeat="week in weeks">
-
-			<div class="day{{$index+1}} dayPanel" ng-repeat="day in week.days">
-				<gg-day-tab>
-			</div>
-
-			</div>
-		</div>
+        <div id="#titleBox">
+            <div class="previousArrow" ng-click="showPrevious()" ttip-low="Revenir dans le passé (parce que c'était mieux avant)"><img src="images/previous.png"></div>
+            <div class="nextArrow" ng-click="showNext()" ttip-low="Voir le futur, c'est possible !"><img src="images/next.png"></div>
+            <div class="title">Rêves et Légendes</div>
+        </div>
+        <div class="dummyContainer">
+            <div class="weekPanel" ng-repeat="week in weeks">
+    
+                <div class="day{{$index+1}} dayPanel" ng-repeat="day in week.days">
+                    <gg-day-tab>
+                </div>
+    
+                </div>
+            </div>
+        </div>
 	
 
 </body>

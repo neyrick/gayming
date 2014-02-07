@@ -20,63 +20,62 @@ function genericError(error) {
 	window.alert("Ouille... ça part en sucette: " + JSON.stringify(error, null, 4));
 }
 
-gamegrinderApp.factory('logger', [function() {
+gamegrinderApp.factory('logger', [function () {
 
 	return {
-		log : function() {
+		log : function () {
 		}
-	}
+	};
 }]);
 
-gamegrinderApp.factory('config', [function() {
+gamegrinderApp.factory('config', [function () {
 
 	return {
 		urlbase : "http://jafar/rs/gg",
-		FIRST_DAY_OF_WEEK : 5,				
-		}
+		FIRST_DAY_OF_WEEK : 1
+    };
 }]);
 
-gamegrinderApp.factory('historyService', ['$http', 'config', function($http, config) {
+gamegrinderApp.factory('historyService', ['$http', 'config', function ($http, config) {
 
 	return {
 		
-		getHistory : function(dayid, timeframe, settingid, callback) {
-            $http.get(config.urlbase + '/history?dayid=' + dayid + '&timeframe=' + timeframe + '&setting=' + settingid).success(function(data, status) {
-					callback(data);
-				}).error(function(data, status) {
-					window.alert("Impossible de récupérer l'historique: " + data);
-				});
+		getHistory : function (dayid, timeframe, settingid, callback) {
+            $http.get(config.urlbase + '/history?dayid=' + dayid + '&timeframe=' + timeframe + '&setting=' + settingid).success(function (data, status) {
+				callback(data);
+            }).error(function (data, status) {
+				window.alert("Impossible de récupérer l'historique: " + data);
+            });
 		}
         
-	}
+	};
 }]);
 
-gamegrinderApp.factory('settingsService', ['$http', 'config', function($http, config) {
+gamegrinderApp.factory('settingsService', ['$http', 'config', function ($http, config) {
 
-	var settings = { ready : false };
-	var updateSettings = function(callback, callback2) {
+	var settings = { ready : false }, updateSettings = function (callback, callback2) {
 		$http.get(config.urlbase + '/setting').success(callback).error(callback2);
 	};
 
 	return {
 		
-		getSettings : function(callback) {
+		getSettings : function (callback) {
 			if (!settings.ready) {
-				updateSettings(function(result) {
+				updateSettings(function (result) {
 					settings = result;
 					settings.ready = true;
 					callback(settings);
-				}, function(error) {
+				}, function (error) {
 					window.alert("Impossible de récupérer les chroniques: " + error);
 				});
 			}
 			else callback(settings);
 		},
 		
-		createSetting : function(setting, callback) {
-			$http.put(config.urlbase + '/setting', setting).success(function(data, status) {
+		createSetting : function (setting, callback) {
+			$http.put(config.urlbase + '/setting', setting).success(function (data, status) {
 					callback(data);
-				}).error(function(data, status) {
+				}).error(function (data, status) {
 					window.alert("Impossible de créer la chronique: " + data);
 				});
 		}
@@ -84,7 +83,7 @@ gamegrinderApp.factory('settingsService', ['$http', 'config', function($http, co
 	}
 }]);
 
-gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
+gamegrinderApp.factory('planningBuilderService', ['config', function (config) {
 
 	var timeframeIndex = {
 		'AFTERNOON' : 0,
@@ -99,15 +98,14 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 		for (i = 0; i < allSettings.length; i++) {
 			if (allSettings[i].id == settingid) {
 				var settingref = allSettings[i];
-				var newsetting = { settingid : settingref.id , code : settingref.code , name : settingref.name,
+				var newsetting = { settingid : settingref.id , code : settingref.code, name : settingref.name,
 					mode : settingref.mode, status : settingref.status, games : [], availableplayers : [],
 					availablegms : [], unavailable : [], mystatus : new tfSettingStatus(), hasgame : false };
 				currentArray.push(newsetting);
 				return newsetting;
 			}
 		}
-		return undefined;
-		
+		return undefined;	
 	}
 
     var addSchedule = function (rawschedule, timeframe, allSettings, me) {
@@ -125,15 +123,15 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
                 tfSetting.games.push(game);                
             }
             if (rawschedule.role == 'GM') game.gm = newschedule;
-            else if (rawschedule.role == 'PLAYER') game.players.push(newschedule); 
-	    timeframe.gaming[rawschedule.player] = rawschedule.setting;
-	    if ( rawschedule.player == me) timeframe.mygame = game;
+            else if (rawschedule.role == 'PLAYER') game.players.push(newschedule);
+	       timeframe.gaming[rawschedule.player] = rawschedule.setting;
+	       if ( rawschedule.player == me) timeframe.mygame = game;
         }
-	else {
+	   else {
 	        if (rawschedule.role == 'GM') tfSetting.availablegms.push(newschedule);
         	else if (rawschedule.role == 'PLAYER') tfSetting.availableplayers.push(newschedule);
-		else tfSetting.unavailable.push(newschedule);
-	}
+		    else tfSetting.unavailable.push(newschedule);
+	   }
         if ( rawschedule.player == me) {
             if (rawschedule.role == 'GM')  {
                 tfSetting.mystatus.dispoMJ = true;
@@ -157,6 +155,24 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
     
 	return {
 		MS_IN_DAY : 1000 * 60 * 60 * 24,
+
+        dispatchUpdatesFlags : function (updatesHash, weeks, lastVisit) {
+            var w, d, t, s, week, day, timeframe, setting, lastUpdate;
+            for (w = 0; w < weeks.length; w++) {
+                week = weeks[w];
+                for (d = 0; d < week.days.length; d++) {
+                    day = week.days[d];
+                    for (t = 0; t < day.timeframes.length; t++) {
+                        timeframe = day.timeframes[t];
+                        for (s = 0; s < timeframe.settings.length; s++) {
+                            setting = timeframe.settings[s];
+                            lastUpdate = updatesHash[day.id + '-' + timeframe.code + '-' + setting.settingid];
+                            if ((typeof lastUpdate != "undefined") && (lastUpdate > lastVisit)) setting.newStuff = true;
+                        }
+                    }
+                }
+            }
+        },
 
 		getDayId : function(daytime) {
 			var date = new Date(daytime);
@@ -191,21 +207,6 @@ gamegrinderApp.factory('planningBuilderService', ['config', function(config) {
 
 		refreshTimeframeInWeeksPlanning : function(settings, schedules, timeframe, me) {
 			var i;
-
-            /*
-            var tfSetting, tfSettings = timeframe.settings;
-			for (i = 0; i < tfSettings.length; i++) {
-				tfSetting = tfSettings[i];
-				tfSetting.availablegms.length=0;
-				tfSetting.availableplayers.length=0;
-				tfSetting.unavailable.length=0;
-				tfSetting.games.length=0;
-                tfSetting.mystatus.dispoMJ = false;
-                tfSetting.mystatus.dispoPJ = false;
-                tfSetting.mystatus.pj = false;
-                tfSetting.mystatus.mj = false;
-			}
-            */
 
             timeframe.busy = false;
             timeframe.gaming = {};
@@ -258,6 +259,21 @@ gamegrinderApp.factory('plannerService', ['$http', 'config', 'planningBuilderSer
 
 	return {
 
+        getUpdates : function (mindaytime, daycount, user, callback) {
+			var minday = planningBuilderService.getDayId(new Date(mindaytime));
+			var maxdaytime = mindaytime + daycount * planningBuilderService.MS_IN_DAY;
+			var maxday = planningBuilderService.getDayId(new Date(maxdaytime));
+            $http.get(config.urlbase + '/updates?minday=' + minday + '&maxday=' + maxday + '&user=' + user).success(function(result) {
+                var datesHash = {};            
+                var updateData;
+                for(var i = 0; i < result.length; i++) {
+                    updateData = result[i];
+                    datesHash[updateData.dayid + '-' + updateData.timeframe + '-' + updateData.setting] = 1000*updateData.update;
+                }
+                callback(datesHash);
+            }).error(genericError);		
+        },
+            
 		setDispo : function(pm_player, pm_dayid, pm_timeframe, pm_setting, pm_role, callback) {
 		    var schedule = { dayid : pm_dayid, timeframe : pm_timeframe, player : pm_player, role : pm_role, setting : pm_setting};
             $http.put(config.urlbase + '/schedule?log_action=ADD_DISPO', schedule).success(callback).error(genericError);

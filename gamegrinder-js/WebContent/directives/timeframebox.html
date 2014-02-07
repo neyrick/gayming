@@ -1,6 +1,6 @@
 								<img class="timeFrameItem timeFramePic" ttip="{{timeframesDesc[timeframe.code].name}}" ng-src="{{timeframesDesc[timeframe.code].pic}}"/>
 								<a href="#" class="tfSetting" ng-repeat="schedule in timeframe.settings" ng-show="isTfSettingVisible(schedule)">
-									<span class="badge {{statusDesc[getStatusCode(schedule)].style}}">{{schedule.code}}</span>
+									<span class="badge {{statusDesc[getStatusCode(schedule)].style}}" ng-class="{newStuff : schedule.newStuff == true}">{{schedule.code}}</span>
 									<gg-tf-setting-tooltip></gg-tf-setting-tooltip>
 								</a>
 

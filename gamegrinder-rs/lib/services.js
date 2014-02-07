@@ -361,7 +361,7 @@ function genericDelete(req, res, next, entity) {
     }
     
     exports.fetchUpdates = function(req, res, next) {
-	var basequery = "SELECT dayid, timeframe, setting, MAX(tstamp) AS update FROM history h  WHERE (h.dayid >= $1) AND (h.dayid <= $2)";
+	var basequery = "SELECT dayid, timeframe, setting, EXTRACT(EPOCH FROM MAX(tstamp)) AS update FROM history h  WHERE (h.dayid >= $1) AND (h.dayid <= $2)";
 
 	var minday = req.params.minday;
 	if (typeof minday == "undefined") minday = 0;
@@ -371,21 +371,21 @@ function genericDelete(req, res, next, entity) {
 
 	var paramindex = 3;
 	if (req.params.timeframe) {
-		basequery = basequery + ' AND ((s.timeframe = $' + paramindex + ') OR ( c.timeframe = $' + paramindex + '))';
+		basequery = basequery + ' AND (h.timeframe = $' + paramindex + ')';
 		paramindex++;
 		params.push(req.params.timeframe);
 	}
 
 	if (req.params.setting) {
-		basequery = basequery + ' AND ((s.setting = $' + paramindex + ') OR ( c.setting = $' + paramindex + '))';
+		basequery = basequery + ' AND (h.setting = $' + paramindex + ')';
 		paramindex++;
 		params.push(req.params.setting);
 	}
 
-	if (req.params.player) {
-		basequery = basequery + ' AND ((s.player = $' + paramindex + ') OR ( c.player = $' + paramindex + '))';
+	if (req.params.user) {
+		basequery = basequery + ' AND (h.player != $' + paramindex + ')';
 		paramindex++;
-		params.push(req.params.player);
+		params.push(req.params.user);
 	}
 	
 	basequery = basequery + ' GROUP BY dayid, timeframe, setting';
