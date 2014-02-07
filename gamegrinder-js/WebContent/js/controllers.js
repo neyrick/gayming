@@ -10,6 +10,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     }
 
     function initPlanning()  {
+		$('#ggloading').addClass('active');
 		plannerService.getPlanning($scope.firstday, $scope.dayCount, function(planning) {
 			 $scope.weeks = planningBuilderService.buildWeeksPlanning($scope.firstday, $scope.dayCount, $scope.settingsList, planning, $scope.currentUser);
             plannerService.getUpdates($scope.firstday, $scope.dayCount, $scope.currentUser, function(updatesHash) {
@@ -18,6 +19,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
 		$scope.lastUpdate = new Date().getTime();
 		storeConfig();
 		});
+		$('#ggloading').removeClass('active');
     }
     
     function loadConfig() {
@@ -53,6 +55,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     $scope.settingsReady = false;
 
     $scope.tooltipLock = { lock : false};
+    $scope.loading = { show : false};
 
     $scope.currentUser =  localStorageService.get('ggUser');
     $scope.lastUpdate = 0;

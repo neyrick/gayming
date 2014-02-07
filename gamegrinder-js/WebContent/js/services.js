@@ -248,7 +248,6 @@ gamegrinderApp.factory('planningBuilderService', ['config', function (config) {
                 timeframe = dayMap[rawschedule.dayid].timeframes[timeframeIndex[rawschedule.timeframe]];
                 addSchedule(rawschedule, timeframe, settings, me);
 			}
-
 			// parcourir les comment et les ajouter
 			return weeks;
 		}

@@ -18,6 +18,26 @@
 	display: block;
 	opacity: 0.4;
 }
+#ggloading {
+	display: none;
+	opacity: 0;
+	z-index: 20000;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	-webkit-transition: opacity .5s ease-out;
+	-moz-transition:  opacity .5s ease-out;
+	-ms-transition:  opacity .5s ease-out;
+	-o-transition:  opacity .5s ease-out;
+	transition:  opacity .5s ease-out;
+	background: #000000 url('../images/loading.gif') no-repeat fixed center;
+}
+#ggloading.active {
+	display: block;
+	opacity: 0.4;
+}
 div.previousArrow {
     float:left;
     cursor: pointer;
