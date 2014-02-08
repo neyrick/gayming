@@ -26,23 +26,37 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
 	if ((typeof $scope.currentUser == "undefined") || ($scope.currentUser == null)) return;
         var config =  localStorageService.get('ggconfig-' + $scope.currentUser);
 	if ((typeof config == "undefined") || (config === '') || (config == null)) return;
-	$scope.invisibleStatus = (typeof config.invisibleStatus != "undefined") ? config.invisibleStatus : new Array();
-	$scope.invisibleOpenSettings = (typeof config.invisibleOpenSettings != "undefined") ? config.invisibleOpenSettings : new Array();
-	$scope.invisibleOneShots = (typeof config.invisibleOneShots != "undefined") ? config.invisibleOneShots : new Array();
-	$scope.visibleClosedSettings = (typeof config.visibleClosedSettings != "undefined") ? config.visibleClosedSettings : new Array();
-	$scope.lastUpdate = (typeof config.lastUpdate != "undefined") ? config.lastUpdate : 0;
+        $scope.config = config;
     }
 
+    function reset() {
+        $scope.tempUser = '';
+        $scope.mystatus = new Array();
+        $scope.weeks = Array();
+        $scope.config = {
+            invisibleStatus : [],
+            invisibleOpenSettings : [],
+            invisibleOneShots : [],
+            visibleClosedSettings : [],
+            lastUpdate : 0
+        };        
+    }
+    
     function storeConfig() {
-	if (typeof $scope.currentUser == "undefined") return;
-	var config = {
-		invisibleStatus : $scope.invisibleStatus,
-		invisibleOpenSettings : $scope.invisibleOpenSettings,
-		invisibleOneShots : $scope.invisibleOneShots,
-		visibleClosedSettings : $scope.visibleClosedSettings,
-		lastUpdate : $scope.lastUpdate
-	};
-        localStorageService.add('ggconfig-' + $scope.currentUser, JSON.stringify(config));
+        if (typeof $scope.currentUser == "undefined") return;
+           $scope.openSettings.forEach(function (item) {
+               if (!item.visible) $scope.config.invisibleOpenSettings.push(item.id);
+           });
+           $scope.closedSettings.forEach(function (item) {
+               if (item.visible) $scope.config.visibleClosedSettings.push(item.id);
+           });
+           $scope.oneShots.forEach(function (item) {
+               if (!item.visible) $scope.config.invisibleOneShots.push(item.id);
+           });
+          for (var i = 0; i < $scope.statusDesc.length; i++) {
+              if (!$scope.statusDesc[i].visible) $scope.config.invisibleStatus.push(i);
+          }        
+        localStorageService.add('ggconfig-' + $scope.currentUser, JSON.stringify($scope.config));
     }
 
     $scope.blanksetting = { name : '', mode : -1, status : 0, code : ''};
@@ -58,15 +72,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     $scope.loading = { show : false};
 
     $scope.currentUser =  localStorageService.get('ggUser');
-    $scope.lastUpdate = 0;
-    $scope.tempUser = '';
-    $scope.mystatus = new Array();
-    $scope.weeks = Array();
-    $scope.invisibleStatus = new Array();
-    $scope.invisibleOpenSettings = new Array();
-    $scope.invisibleOneShots = new Array();
-    $scope.visibleClosedSettings = new Array();
-
+    reset();    
     loadConfig();
 
     $scope.login=function() {
@@ -78,57 +84,66 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
 	 initPlanning();
      };
     $scope.logout=function() {
-	 $scope.lastUpdate = 0;
-	 $scope.tempUser = '';
-	 $scope.mystatus = new Array();
-	 $scope.weeks = Array();
-	 $scope.invisibleStatus = new Array();
-	 $scope.invisibleOpenSettings = new Array();
-	 $scope.invisibleOneShots = new Array();
-	 $scope.visibleClosedSettings = new Array();
-	 $scope.weeks = [];
-	 delete $scope.currentUser;
-	 localStorageService.remove('ggUser');
-	 $( "#logindialogcontainer" ).qtip( "toggle", true ); }
+        reset();
+         delete $scope.currentUser;
+         localStorageService.remove('ggUser');
+         $( "#logindialogcontainer" ).qtip( "toggle", true ); }
     ;
 
+  $scope.refreshSettings = function(andPlanning) {
+      settingsService.getSettings( function(settings) {
+          $scope.settingsList = settings;
+          $scope.openSettings = [];
+          $scope.closedSettings = [];
+          $scope.oneShots = [];
+          $scope.settingsList.forEach(function(item) {
+              if (item.status > 0) return;
+              if (item.mode == 0) {
+                  $scope.openSettings.push(item);
+                  item.visible = ($scope.config.invisibleOpenSettings.indexOf(item.id) == -1);
+              }
+              else if (item.mode == 1) {
+                  $scope.closedSettings.push(item);
+                  item.visible = ($scope.config.visibleClosedSettings.indexOf(item.id) > -1);
+              }
+              else if (item.mode == 2) {
+                  $scope.oneShots.push(item);
+                  item.visible = ($scope.config.invisibleOneShots.indexOf(item.id) == -1);
+              }
+          });
+          if (andPlanning && (typeof $scope.currentUser != "undefined") && ($scope.currentUser != '') && ($scope.currentUser != null)) initPlanning();	 
+      }); 
+  };
+    
   $scope.toggleStatusVisibility = function(status) {
-  	var settingsArray;
-	settingsArray = $scope.invisibleStatus;
-	var index = settingsArray.indexOf('' + status);
-	if (index != -1) {
-		settingsArray.splice(index, 1);
-	}
-	else {
-		settingsArray.push('' + status)
-	}
+      if ($scope.statusDesc[status].visible) {
+          $('.' + $scope.statusDesc[status].style).addClass('ggHidden');
+          $scope.statusDesc[status].visible = false;
+      }
+      else {
+          $('.' + $scope.statusDesc[status].style).removeClass('ggHidden');
+          $scope.statusDesc[status].visible = true;
+      }
 	storeConfig();
-  }
+  };
 
-  $scope.toggleSettingVisibility = function(settingid, settingmode, force) {
-  	var settingsArray;
-	var defaultState;
-	if (settingmode == 0) {
-		settingsArray = $scope.invisibleOpenSettings;
-		defaultState = true;
-	}
-	else if (settingmode == 1) {
-		settingsArray = $scope.visibleClosedSettings;
-		defaultState = false;
-	}
-	else {
-		settingsArray = $scope.invisibleOneShots;
-		defaultState = true;
-	}
-	var index = settingsArray.indexOf('' + settingid);
-	if (index != -1) {
-		if ((typeof force == "undefined") || (force === defaultState)) {
-			settingsArray.splice(index, 1);
-		}
-	}
-	else if ((typeof force == "undefined") || (force === !defaultState)) {
-		settingsArray.push('' + settingid)
-	}
+  $scope.toggleSettingVisibility = function(settingid, force) {
+      var setting;
+      for (var i = 0; i < $scope.settingsList.length; i++) {
+          setting = $scope.settingsList[i];
+          if (setting.id == settingid) {
+              if ((setting.visible) && (force !== true)) {
+                  $('.settingBadge-id-' + settingid).addClass('ggHidden');
+                  setting.visible = false;
+                  return;
+              }
+              if ((!setting.visible) && (force !== false)) {
+                  $('.settingBadge-id-' + settingid).removeClass('ggHidden');
+                  setting.visible = true;
+                  return;
+              }
+          }
+      }
 	storeConfig();
   }
 
@@ -137,10 +152,10 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
   }
 
   $scope.statusDesc = [
-    { id: 0, desc : "Pas dispo / intéressé", style: "notAvailableBadge" },
-    { id: 1, desc : "Je suis dispo", style: "availableBadge" },
-    { id: 2, desc : "Je joue !", style: "playBadge" },
-    { id: 3, desc : "Partie sans moi", style: "noPlayBadge" }
+    { id: 0, desc : "Pas dispo / intéressé", style: "notAvailableBadge", visible : true },
+    { id: 1, desc : "Partie sans moi", style: "noPlayBadge", visible : true },
+    { id: 2, desc : "Je suis dispo", style: "availableBadge", visible : true },
+    { id: 3, desc : "Je joue !", style: "playBadge", visible : true }
   ];
 
   $scope.showPrevious = function () {
@@ -151,11 +166,9 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
       timeSlide($scope.dayCount);
   };
     
-  settingsService.getSettings( function(settings) {
-	  $scope.settingsList = settings;
-	if ((typeof $scope.currentUser != "undefined") && ($scope.currentUser != '') && ($scope.currentUser != null)) initPlanning();	  
-  }); 
+  $scope.refreshSettings(true);
 
+    
 }]);
 
 

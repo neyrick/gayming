@@ -1,7 +1,8 @@
 <div class="datePanel glossyHeader">
-	<span>{{ dowcodes[day.dow] }}</span> <br /><span>{{ day.dom }} / {{ day.month }}</span>
+	<span><span bo-text="dowcodes[day.dow]"/> <br /><span bo-text="day.dom + ' / ' + day.month"/>
 </div>
 
-<div class="timeFramePanel" ng-repeat="timeframe in day.timeframes">
+<div bindonce class="timeFramePanel" ng-repeat="timeframe in day.timeframes">
   <gg-timeframe-box>
 </div>
+

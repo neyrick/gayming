@@ -2,7 +2,7 @@
 
 /* App Module */
 
-var gamegrinderApp = angular.module('gamegrinderApp', ['LocalStorageModule']);
+var gamegrinderApp = angular.module('gamegrinderApp', ['LocalStorageModule', 'pasvaz.bindonce']);
 
 gamegrinderApp.config(function ($httpProvider) {
         delete $httpProvider.defaults.headers.common['X-Requested-With'];

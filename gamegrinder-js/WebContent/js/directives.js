@@ -228,20 +228,67 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 			};
 
 	return {
+        controller : function ($scope, $element, $attrs) {
+			$scope.timeframesDesc = timeframesDesc;
+            $scope.getSettingClasses = function(schedule) {
+                var classes = [];
+                classes.push('settingBadge');
+                classes.push('settingBadge-id-' + schedule.settingid);
+                var mystatus = schedule.mystatus;
+                if (mystatus.pj || mystatus.mj) {
+                    classes.push('playBadge');
+                }
+                else if (mystatus.dispoPJ || mystatus.dispoMJ)  {
+                    if (schedule.hasgame) classes.push('noPlayBadge');
+                    else classes.push('availableBadge');
+                }
+	            else classes.push('notAvailableBadge');
+                return classes;
+	        };
+			$scope.createAndAddSetting = function(setting) {
+				setting.status = 0;
+				console.log("Setting: %j", setting);
+				settingsService.createSetting(setting, function(newsetting) {
+					$scope.settingsList.push(newsetting);
+					$scope.addSetting(newsetting);
+				});
+				
+			};/*
+			$scope.isSettingNew = function(setting) {
+				for (var i = 0; i < $scope.timeframe.settings.length; i++) {
+					if ($scope.timeframe.settings[i].settingid == setting.id) return false;
+				}
+				return true;
+			};*/
+			$scope.addSetting = function(setting) {
+				plannerService.setDispo($scope.currentUser, $scope.day.id, $scope.timeframe.code, $setting.id, 'GM', function() {
+			
+			     $scope.toggleSettingVisibility(setting.id, setting.mode, true);
+                    $scope.refreshTimeframe();
+                    $($element).find('.tfExtra').qtip('api').hide();
+				});
+			};
+			$scope.refreshTimeframe = function() {
+				plannerService.getTimeframePlanning($scope.day.id, $scope.timeframe.code, function(result) {
+					planningBuilderService.refreshTimeframeInWeeksPlanning($scope.settingsList, result, $scope.timeframe, $scope.currentUser);
+				});
+			};
+            var i;
+            var presentSettings = [], setting;
+            $scope.possibleSettings = [];
+            $scope.timeframe.settings.forEach(function (item) {
+                presentSettings.push(item.settingid);
+            });
+            $scope.settingsList.forEach(function (item) {
+                if ((item.status == 0) && (presentSettings.indexOf(item.id) == -1)) {
+                    $scope.possibleSettings.push(item);
+                }
+            });
+        },
 		restrict: 'E',
 		templateUrl: 'directives/timeframebox.html',
 		scope: true,
 		link: function(scope, element, attrs) {
-			scope.timeframesDesc = timeframesDesc;
-            scope.getStatusCode = function(schedule) {
-                var mystatus = schedule.mystatus;
-                if (mystatus.pj || mystatus.mj) return 2;
-                else if (mystatus.dispoPJ || mystatus.dispoMJ)  {
-                    if (schedule.hasgame) return 3;
-                    else return 1;
-                }
-	            else return 0;
-	        }
 			$(element).find('.tfExtra').each(function() {
 				$(this).qtip({
 				    style: {
@@ -306,41 +353,6 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 					event: 'mouseleave',
 				}
 			});
-			scope.createAndAddSetting = function(setting) {
-				setting.status = 0;
-				console.log("Setting: %j", setting);
-				settingsService.createSetting(setting, function(newsetting) {
-					scope.settingsList.push(newsetting);
-					scope.addSetting(newsetting);
-				});
-				
-			}
-			scope.isSettingNew = function(setting) {
-				for (var i = 0; i < scope.timeframe.settings.length; i++) {
-					if (scope.timeframe.settings[i].settingid == setting.id) return false;
-				}
-				return true;
-			}
-			scope.addSetting = function(setting) {
-				plannerService.setDispo(scope.currentUser, scope.day.id, scope.timeframe.code, setting.id, 'GM', function() {
-			
-			     scope.toggleSettingVisibility(setting.id, setting.mode, true);
-                    scope.refreshTimeframe();
-                    $(element).find('.tfExtra').qtip('api').hide();
-				});
-			};
-			scope.isTfSettingVisible = function(schedule) {
-			    if ((schedule.mode == 0) && (scope.invisibleOpenSettings.indexOf('' + schedule.settingid) > -1)) return false;
-			    if ((schedule.mode == 1) && (scope.visibleClosedSettings.indexOf('' + schedule.settingid) == -1)) return false;
-			    if ((schedule.mode == 2) && (scope.invisibleOneShots.indexOf('' + schedule.settingid) != -1)) return false;
-			    if (scope.invisibleStatus.indexOf('' + scope.getStatusCode(schedule)) > -1) return false;
-			    return true;
-			  };
-			scope.refreshTimeframe = function() {
-				plannerService.getTimeframePlanning(scope.day.id, scope.timeframe.code, function(result) {
-					planningBuilderService.refreshTimeframeInWeeksPlanning(scope.settingsList, result, scope.timeframe, scope.currentUser);
-				});
-			}
 		}
 	};
 });
@@ -354,6 +366,7 @@ gamegrinderApp.directive('ggDayTab', function() {
 		templateUrl: 'directives/daytab.html',
 		scope: true,
 		link: function(scope, element, attrs) {
+            scope.day = scope.$eval(attrs['day']);
 			$(element).hover(function(event) {
 				$(element).find(".datePanel").addClass("hoverDay");
 			},

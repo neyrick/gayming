@@ -13,6 +13,7 @@
 
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-local-storage.min.js"></script>
+<script src="lib/bindonce.js"></script>
 <script src="js/gg.js"></script>
 <script src="js/app.js"></script>
 <script src="js/controllers.js"></script>
@@ -120,9 +121,21 @@
 
 		<div id="legendContainer" class="ggpanel" ttip="Clique sur une ligne pour cacher/afficher les sessions correspondantes">
 			<div class="ggpanelItem ggpanelHeader glossyHeader">Légende</div>
-				<div class="ggpanelItem ggclickablelistitem" ng-class="{ggDisabledItem : isInArray(status.id, invisibleStatus)}" ng-click="toggleStatusVisibility(status.id)" ng-repeat="status in statusDesc">
-					<div class="legendBadge settingCell ggpanelCell"><span class="badge {{status.style}}">--</span></div>
-					<div class="settingCell ggpanelCell legendCell"><span>{{status.desc}}</span></div>
+				<div bindonce class="ggpanelItem ggclickablelistitem" ng-class="{ggDisabledItem : !statusDesc[0].visible}" ng-click="toggleStatusVisibility(0)">
+					<div class="legendBadge settingCell ggpanelCell"><span class="badge notAvailableBadge">--</span></div>
+					<div class="settingCell ggpanelCell legendCell"><span>Pas dispo / intéressé</span></div>
+				</div>
+				<div bindonce class="ggpanelItem ggclickablelistitem" ng-class="{ggDisabledItem : !statusDesc[1].visible}" ng-click="toggleStatusVisibility(1)">
+					<div class="legendBadge settingCell ggpanelCell"><span class="badge noPlayBadge">--</span></div>
+					<div class="settingCell ggpanelCell legendCell"><span>Partie sans moi</span></div>
+				</div>
+				<div bindonce class="ggpanelItem ggclickablelistitem" ng-class="{ggDisabledItem : !statusDesc[2].visible}" ng-click="toggleStatusVisibility(2)">
+					<div class="legendBadge settingCell ggpanelCell"><span class="badge availableBadge">--</span></div>
+					<div class="settingCell ggpanelCell legendCell"><span>Je suis dispo</span></div>
+				</div>
+				<div bindonce class="ggpanelItem ggclickablelistitem" ng-class="{ggDisabledItem : !statusDesc[3].visible}" ng-click="toggleStatusVisibility(3)">
+					<div class="legendBadge settingCell ggpanelCell"><span class="badge playBadge">--</span></div>
+					<div class="settingCell ggpanelCell legendCell"><span>Je joue !</span></div>
 				</div>
 				<div class="ggpanelItem">
 					<div class="legendBadge settingCell ggpanelCell"><span class="badge newStuff">--</span></div>
@@ -134,28 +147,31 @@
             <div class="ggpanel" ttip="Clique sur un one-shot pour le rendre visible/invisible dans ton planning">
                 <div class="ggpanelItem ggpanelHeader glossyHeader">One-Shots</div>
                 
-                <div class="ggpanelItem ggclickablelistitem" ng-repeat="setting in settingsList | filter: { mode: 2, status: 0} | orderBy: 'name'" ng-click="toggleSettingVisibility(setting.id, setting.mode)" ng-class="{ggDisabledItem : isInArray(setting.id, invisibleOneShots)}">
-                    <div class="legendBadge settingCell ggpanelCell"><span class="badge">{{setting.code }}</span></div>
-                    <div class="settingCell ggpanelCell legendCell"><span>{{ setting.name }}</span></div>
+                <div bindonce class="ggpanelItem ggclickablelistitem" ng-repeat="setting in oneShots" ng-click="toggleSettingVisibility(setting.id)" ng-class="{ggDisabledItem : !setting.visible}">
+                    <div class="legendBadge settingCell ggpanelCell"><span class="badge" bo-text="setting.code"></span></div>
+                    <div class="settingCell ggpanelCell legendCell"><span bo-text="setting.name"></span></div>
                 </div>
+
             </div>
             
             <div class="ggpanel" ttip="Clique sur une chronique pour la rendre visible/invisible dans ton planning">
                 <div class="ggpanelItem ggpanelHeader glossyHeader">Chroniques Ouvertes</div>
                 
-                <div class="ggpanelItem ggclickablelistitem" ng-repeat="setting in settingsList | filter: { mode: 0, status: 0} | orderBy: 'name'" ng-click="toggleSettingVisibility(setting.id, setting.mode)"  ng-class="{ggDisabledItem : isInArray(setting.id, invisibleOpenSettings)}">
-                    <div class="legendBadge settingCell ggpanelCell"><span class="badge">{{setting.code }}</span></div>
-                    <div class="settingCell ggpanelCell legendCell"><span>{{ setting.name }}</span></div>
+                <div bindonce class="ggpanelItem ggclickablelistitem" ng-repeat="setting in openSettings" ng-click="toggleSettingVisibility(setting.id)" ng-class="{ggDisabledItem : !setting.visible}">
+                    <div class="legendBadge settingCell ggpanelCell"><span class="badge" bo-text="setting.code"></span></div>
+                    <div class="settingCell ggpanelCell legendCell"><span bo-text="setting.name"></span></div>
                 </div>
+
             </div>
             
             <div class="ggpanel" ttip="Clique sur une chronique pour la rendre visible/invisible dans ton planning">
                 <div class="ggpanelItem ggpanelHeader glossyHeader">Chroniques Fermées</div>
                 
-                <div class="ggpanelItem ggclickablelistitem" ng-repeat="setting in settingsList | filter: { mode: 1, status: 0} | orderBy: 'name'" ng-click="toggleSettingVisibility(setting.id, setting.mode)"  ng-class="{ggDisabledItem : !isInArray(setting.id, visibleClosedSettings)}">
-                    <div class="legendBadge settingCell ggpanelCell"><span class="badge">{{setting.code }}</span></div>
-                    <div class="settingCell ggpanelCell legendCell"><span>{{ setting.name }}</span></div>
+                <div bindonce class="ggpanelItem ggclickablelistitem" ng-repeat="setting in closedSettings" ng-click="toggleSettingVisibility(setting.id)" ng-class="{ggDisabledItem : !setting.visible}">
+                    <div class="legendBadge settingCell ggpanelCell"><span class="badge" bo-text="setting.code"></span></div>
+                    <div class="settingCell ggpanelCell legendCell"><span bo-text="setting.name"></span></div>
                 </div>
+
             </div>
             
 		</div>
@@ -167,17 +183,35 @@
             <div class="nextArrow" ng-click="showNext()" ttip-low="Voir le futur, c'est possible !"><img src="images/next.png"></div>
             <div class="title">Rêves et Légendes</div>
         </div>
+        
         <div class="dummyContainer">
-            <div class="weekPanel" ng-repeat="week in weeks">
+            <div bindonce class="weekPanel" ng-repeat="week in weeks">
     
-                <div class="day{{$index+1}} dayPanel" ng-repeat="day in week.days">
-                    <gg-day-tab>
+                <div class="day1 dayPanel">
+                    <gg-day-tab day="week.days[0]">
                 </div>
-    
+                <div class="day2 dayPanel">
+                    <gg-day-tab day="week.days[1]">
+                </div>
+                <div class="day3 dayPanel">
+                    <gg-day-tab day="week.days[2]">
+                </div>
+                <div class="day4 dayPanel">
+                    <gg-day-tab day="week.days[3]">
+                </div>
+                <div class="day5 dayPanel">
+                    <gg-day-tab day="week.days[4]">
+                </div>
+                <div class="day6 dayPanel">
+                    <gg-day-tab day="week.days[5]">
+                </div>
+                <div class="day7 dayPanel">
+                    <gg-day-tab day="week.days[6]">
                 </div>
             </div>
+
         </div>
-	
+	</div>
 
 </body>
 </html>

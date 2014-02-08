@@ -125,11 +125,11 @@ function genericDelete(req, res, next, entity) {
     };
 
     exports.fetchAllSettings = function(req, res, next) {
-            var result = new Array();
-            setting.using(connection).each(function(err, setting) {
-                result.push(setting);
-            }, function() {
-              genericSendJson(res, result);
+            setting.orderBy('name', persist.Ascending).all(connection, function(err, settings) {
+		if (err) res.send("Erreur: " + err);
+		else {
+			res.send(settings);
+		}
               next();
             });
     };
