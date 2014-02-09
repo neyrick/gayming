@@ -226,7 +226,9 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 			    "AFTERNOON": {"code":"AFTERNOON", pic:"images/aprem.png", name:"Après-midi"},
 			    "EVENING": {"code":"EVENING", pic:"images/soir.png", name:"Soirée"},
 			};
-
+    
+    var allPossibleSettings = {};
+    
 	return {
         controller : function ($scope, $element, $attrs) {
 			$scope.timeframesDesc = timeframesDesc;
@@ -253,13 +255,7 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 					$scope.addSetting(newsetting);
 				});
 				
-			};/*
-			$scope.isSettingNew = function(setting) {
-				for (var i = 0; i < $scope.timeframe.settings.length; i++) {
-					if ($scope.timeframe.settings[i].settingid == setting.id) return false;
-				}
-				return true;
-			};*/
+			};
 			$scope.addSetting = function(setting) {
 				plannerService.setDispo($scope.currentUser, $scope.day.id, $scope.timeframe.code, $setting.id, 'GM', function() {
 			
@@ -273,71 +269,57 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 					planningBuilderService.refreshTimeframeInWeeksPlanning($scope.settingsList, result, $scope.timeframe, $scope.currentUser);
 				});
 			};
-            var i;
-            var presentSettings = [], setting;
-            $scope.possibleSettings = [];
-            $scope.timeframe.settings.forEach(function (item) {
-                presentSettings.push(item.settingid);
-            });
-            $scope.settingsList.forEach(function (item) {
-                if ((item.status == 0) && (presentSettings.indexOf(item.id) == -1)) {
-                    $scope.possibleSettings.push(item);
+            $scope.triggerExtraSettingTooltip = function(element) {
+                if($scope.tooltipLock.lock === false) {
+                    $scope.currentEdit.possibleSettings = allPossibleSettings[$scope.day.id + '-' + $scope.timeframe.code];
+                    $(element).qtip({
+                        style: {
+                            classes: 'ggpanel'
+                        },
+                        content: {
+                            text: $('.addSettingDropdown').first()
+                        },
+                        position: {
+                            my: 'top center',
+                            at: 'bottom left',
+                            target: $(element)
+                        },
+                        show: {
+                            event: false,
+                            solo: '.tfExtra',
+                            ready: true
+                        },
+                        hide: {
+                            delay: 100,
+                            fixed: 'true',
+                            event: 'mouseleave',
+                        },
+                        events: {
+                            hide: function(event, api) {
+                                $('#ggoverlay').removeClass('active');
+                                $scope.tooltipLock.lock = false;
+//                                api.destroy();
+                            }
+                        }
+                    });
                 }
-            });
+            }
         },
 		restrict: 'E',
 		templateUrl: 'directives/timeframebox.html',
 		scope: true,
 		link: function(scope, element, attrs) {
-			$(element).find('.tfExtra').each(function() {
-				$(this).qtip({
-				    style: {
-					classes: 'ggpanel'
-				    },
-				    content: {
-					text: $(this).next('div')
-				    },
-				    position: {
-					my: 'top center',
-					at: 'bottom center'
-				    },
-				    show: {
-					event: 'mouseenter click',
-					solo: '.tfExtra'
-				    },
-				    hide: {
-					delay: 100,
-					fixed: 'true',
-					event: 'mouseleave',
-				    },
-				    events: {
-					show: function(event, api) {
-					    if(scope.tooltipLock.lock) {
-						try { event.preventDefault(); } catch(e) {}
-					    }
-					},
-					hide: function(event, api) {
-						api.set('hide.event', 'mouseleave');
-						$(this).find('.collapsed').hide();
-						$(this).find('.collapsible').show();
-						$('#ggoverlay').removeClass('active');
-						scope.tooltipLock.lock = false;
-					}
-				    }
-				});
-			});
-			$(element).find('.settingTrigger').first().click(function(event) {
-				lockTooltip(scope, $(element).find('.tfExtra'));
-				$(this).slideUp(200);
-				var $box=$(this).next('.settingEditor');
-				$box.slideDown(200);
-				$box.find('.inputSettingName').focus();
-			});
-			$(element).find('.settingButton').first().click(function(event) {
-				var $box = $(this).parents('.settingEditor');
-				$box.slideUp(200);
-				$box.prev('.settingTrigger').slideDown(200);
-			});
+            var presentSettings = [];
+            var possibleSettings = [];
+            scope.timeframe.settings.forEach(function (item) {
+                presentSettings.push(item.settingid);
+            });
+            scope.settingsList.forEach(function (item) {
+                if ((item.status == 0) && (presentSettings.indexOf(item.id) == -1)) {
+                    possibleSettings.push(item);
+                }
+            });
+            allPossibleSettings[scope.day.id + '-' + scope.timeframe.code] = possibleSettings;
 			$(element).find('.timeFramePic').qtip({
 				style: { classes: 'infoTooltip' },
 				content: { text: timeframesDesc[scope.timeframe.code].name },

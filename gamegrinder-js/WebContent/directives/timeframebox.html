@@ -4,32 +4,6 @@
 									<!-- <gg-tf-setting-tooltip></gg-tf-setting-tooltip> -->
 								</a>
 
-								<div class="timeFrameItem dropdown plusBox" ng-show="!timeframe.busy">
+								<div class="timeFrameItem dropdown plusBox" bo-show="!timeframe.busy" ng-mouseenter="triggerExtraSettingTooltip($event.target)">
 									<img class="tfExtra timeFrameItem plusButton" src="images/plus.png">
-									<div class="ggdropdown addSettingDropdown">
-										<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">Je propose une partie de...</div>
-                                        
-<div class="ggpanelItem ggclickablelistitem dropdownItem settingTrigger hoverDay collapsible">Créer une Chronique / One-Shot ...</div>
-                                        
-										<div class="ggpanelItem dropdownItem settingEditor collapsed dummyContainer" >
-<form class="form-inline" role="form" name="createSettingForm" ng-submit="createAndAddSetting(newsetting)" novalidate>
-	<div class="ggpanelSubheader hoverDay">
-	    Nouvelle Chronique / One-Shot
-	</div>
-	<div class="ggpanelSubitem"><input type="text" class="inputSettingName expand" name="settingName" placeholder="Nom de la chronique" required maxlength="32"/></span>
-	</div>
-	<div class="ggpanelSubitem centered">
-        <span class="badge selector">Ouverte</span>
-        <span class="badge selector">Fermée</span>
-        <span class="badge selector">One-Shot</span>
-	</div>
-	<div class="ggpanelSubitem">
-	    Code (3 lettres max) <input type="text" class="inputSettingCode" name="settingCode" placeholder="XXX" required size="3" maxlength="3"/>
-		<button class="settingButton rightbutton badge buttonBadge" type="submit">Valider</button>
-	</div>
- </form>
-										</div>
-										<div class="ggpanelItem ggclickablelistitem dropdownItem" ng-repeat="setting in possibleSettings" ng-click="addSetting(setting)"><span bo-text="setting.name" /></div>
-									</div>
 								</div>
-

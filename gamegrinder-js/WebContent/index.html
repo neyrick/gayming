@@ -80,6 +80,18 @@
 					event: 'mouseleave',
 				}
 			});
+			$('.settingTrigger').click(function(event) {
+				lockTooltip(scope, $(element).find('.tfExtra'));
+				$(this).slideUp(200);
+				var $box=$(this).next('.settingEditor');
+				$box.slideDown(200);
+				$box.find('.inputSettingName').focus();
+			});
+			$('.settingButton').click(function(event) {
+				var $box = $(this).parents('.settingEditor');
+				$box.slideUp(200);
+				$box.prev('.settingTrigger').slideDown(200);
+			});
 			var currentUser = angular.element('body').scope().currentUser;
 			if ((typeof currentUser == 'undefined') || (currentUser == null)) {
 				$( "#logindialogcontainer" ).qtip( "toggle", true );
@@ -96,6 +108,34 @@
 	<div></div>
    </div>
 
+   <div id="addSettingTooltipContainer" style="display:none">
+            <div class="ggdropdown addSettingDropdown">
+                <div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">Je propose une partie de...</div>
+                
+                    <div class="ggpanelItem ggclickablelistitem dropdownItem settingTrigger hoverDay collapsible">Créer une Chronique / One-Shot ...</div>
+                
+                    <div class="ggpanelItem dropdownItem settingEditor collapsed dummyContainer" >
+                        <form class="form-inline" role="form" name="createSettingForm" ng-submit="createAndAddSetting(newsetting)" novalidate>
+                            <div class="ggpanelSubheader hoverDay">
+                                Nouvelle Chronique / One-Shot
+                            </div>
+                            <div class="ggpanelSubitem"><input type="text" class="inputSettingName expand" name="settingName" placeholder="Nom de la chronique" ng-model="newsetting.name" required maxlength="32"/></span>
+                            </div>
+                            <div class="ggpanelSubitem centered">
+                                    <span class="badge selector" ng-click="newsetting.mode=0" ng-class="{ noPlayBadge : newsetting.mode == 0 }">Ouverte</span>
+                                    <span class="badge selector" ng-click="newsetting.mode=1" ng-class="{ noPlayBadge : newsetting.mode == 1 }">Fermée</span>
+                                    <span class="badge selector" ng-click="newsetting.mode=2" ng-class="{ noPlayBadge : newsetting.mode == 2 }">One-Shot</span>
+                            </div>
+                            <div class="ggpanelSubitem">
+                                Code (3 lettres max) <input type="text" class="inputSettingCode" name="settingCode" placeholder="XXX" ng-model="newsetting.code" required size="3" maxlength="3"/>
+                                <button class="settingButton rightbutton badge buttonBadge" ng-disabled="createSettingForm.$invalid || (newsetting.mode<0)" type="submit">Valider</button>
+                            </div>
+                         </form>
+                    </div>
+                <div class="ggpanelItem ggclickablelistitem dropdownItem" ng-repeat="setting in currentEdit.possibleSettings" ng-click="addSetting(setting)">{{setting.name}}</div>
+            </div>
+    </div>
+    
    <div id="logindialogcontainer" style="display: none">
 	<div id="logindialog">
 		<form class="form-inline" id="loginForm" role="form"

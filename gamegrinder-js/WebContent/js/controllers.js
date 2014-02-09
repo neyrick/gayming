@@ -11,15 +11,17 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
 
     function initPlanning()  {
 		$('#ggloading').addClass('active');
-		plannerService.getPlanning($scope.firstday, $scope.dayCount, function(planning) {
-			 $scope.weeks = planningBuilderService.buildWeeksPlanning($scope.firstday, $scope.dayCount, $scope.settingsList, planning, $scope.currentUser);
-            plannerService.getUpdates($scope.firstday, $scope.dayCount, $scope.currentUser, function(updatesHash) {
-                planningBuilderService.dispatchUpdatesFlags(updatesHash, $scope.weeks, $scope.lastUpdate);
+        setTimeout(function() {
+            plannerService.getPlanning($scope.firstday, $scope.dayCount, function(planning) {
+                 $scope.weeks = planningBuilderService.buildWeeksPlanning($scope.firstday, $scope.dayCount, $scope.settingsList, planning, $scope.currentUser);
+                plannerService.getUpdates($scope.firstday, $scope.dayCount, $scope.currentUser, function(updatesHash) {
+                    planningBuilderService.dispatchUpdatesFlags(updatesHash, $scope.weeks, $scope.lastUpdate);
+                });
+            $scope.lastUpdate = new Date().getTime();
+            storeConfig();
             });
-		$scope.lastUpdate = new Date().getTime();
-		storeConfig();
-		});
-		$('#ggloading').removeClass('active');
+            $('#ggloading').removeClass('active');
+        }, 0);
     }
     
     function loadConfig() {
@@ -40,6 +42,8 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
             visibleClosedSettings : [],
             lastUpdate : 0
         };        
+        $scope.currentEdit = {            
+        };
     }
     
     function storeConfig() {
@@ -69,9 +73,9 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     $scope.settingsReady = false;
 
     $scope.tooltipLock = { lock : false};
-    $scope.loading = { show : false};
 
     $scope.currentUser =  localStorageService.get('ggUser');
+    $scope.currentEdit =  {};
     reset();    
     loadConfig();
 
