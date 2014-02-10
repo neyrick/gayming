@@ -33,7 +33,6 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
 
     function reset() {
         $scope.tempUser = '';
-        $scope.mystatus = new Array();
         $scope.weeks = Array();
         $scope.config = {
             invisibleStatus : [],
@@ -63,8 +62,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
         localStorageService.add('ggconfig-' + $scope.currentUser, JSON.stringify($scope.config));
     }
 
-    $scope.blanksetting = { name : '', mode : -1, status : 0, code : ''};
-    $scope.newsetting = $scope.blanksetting;
+    $scope.newsetting = { name : '', mode : -1, status : 0, code : ''};
 
     $scope.dayCount = 42;
 
@@ -76,6 +74,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
 
     $scope.currentUser =  localStorageService.get('ggUser');
     $scope.currentEdit =  {};
+    $scope.historyList = [];
     reset();    
     loadConfig();
 
@@ -172,7 +171,123 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     
   $scope.refreshSettings(true);
 
+    // Fonctions au  niveau de la timeframe
     
+    $scope.createAndAddSetting = function() {
+        setting.status = 0;
+        settingsService.createSetting($scope.newsetting, function(newsetting) {
+            $scope.settingsList.push(newsetting);
+            $scope.addSetting(newsetting);
+            item.visible = true;
+            if (item.mode == 0) {
+                  $scope.openSettings.push(newsetting);
+              }
+              else if (item.mode == 1) {
+                  $scope.closedSettings.push(newsetting);
+              }
+              else if (item.mode == 2) {
+                  $scope.oneShots.push(newsetting);
+              }
+            $scope.newsetting = { name : '', mode : -1, status : 0, code : ''};
+        });
+        
+    };
+    
+    $scope.addSetting = function(setting) {
+        plannerService.setDispo($scope.currentUser, $scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, setting.id, 'GM', function() {
+    
+         $scope.toggleSettingVisibility(setting.id, true);
+            $scope.refreshTimeframe();
+            $('.extraSettingEditBox').qtip('api').hide();
+        });
+    };
+    $scope.refreshTimeframe = function() {
+        plannerService.getTimeframePlanning($scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, function(result) {
+            planningBuilderService.refreshTimeframeInWeeksPlanning($scope.settingsList, result, $scope.currentEdit.timeframe, $scope.currentUser);
+        });
+    };
+
+        // Fonctions au  niveau du tfSetting
+
+    $scope.toggleGamePlayer = function(player) {
+        if (typeof $scope.currentEdit.gamePlayers[player.name] != "undefined") {
+            delete $scope.currentEdit.gamePlayers[player.name];
+            $scope.numPlayers--;
+        }
+        else {
+            $scope.currentEdit.gamePlayers[player.name] = player;
+            $scope.numPlayers++;
+        }
+    }
+    $scope.disbandGame = function() {
+        plannerService.disbandGame(getMyGMScheduleId($scope.currentUser, $scope.currentEdit.schedule.games), function() {
+            $('.tfSettingEditBox').qtip('api').hide();
+            $scope.refreshTimeframe();
+        });
+    }
+    $scope.dropGame = function() {
+        plannerService.dropGame(getMyPlayerScheduleId($scope.currentUser, $scope.currentEdit.schedule.games), function() {
+            $('.tfSettingEditBox').qtip('api').hide();
+            $scope.refreshTimeframe();
+        });
+    }
+    $scope.validateGame = function($event) {
+        $('.tfSettingEditBox').qtip('api').hide();
+        if (typeof $scope.currentEdit.timeframe.mygame == "undefined") {
+            plannerService.validateGame(getMyScheduleId($scope.currentUser, $scope.currentEdit.schedule, 'GM'), $scope.currentEdit.gamePlayers, function() {
+                $scope.refreshTimeframe();
+            });
+        }
+        else {
+            plannerService.reformGame($scope.currentEdit.timeframe.mygame.id, $scope.currentEdit.gamePlayers, function() {
+                $scope.refreshTimeframe();
+            });
+        }
+    }
+    $scope.setComment = function() {
+        plannerService.setComment( $scope.currentUser, $scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, $scope.currentEdit.schedule.settingid, $scope.currentEdit.schedule.idcomment, $scope.currentEdit.schedule.message, function() {
+            $('.tfSettingEditBox').qtip('api').hide();
+            $scope.refreshTimeframe();
+         });
+    }
+    $scope.setDispo = function(role) {
+        plannerService.setDispo($scope.currentUser, $scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, $scope.currentEdit.schedule.settingid, role, function() {
+            $('.tfSettingEditBox').qtip('api').hide();
+            $scope.refreshTimeframe();
+        });
+    };
+    $scope.clearDispo = function(role) {
+        plannerService.clearDispo(getMyScheduleId($scope.currentUser, $scope.currentEdit.schedule, role), function() {
+            $('.tfSettingEditBox').qtip('api').hide();
+            $scope.refreshTimeframe();
+        });
+    };
+    $scope.openCommentEditor = function() {
+        lockTooltip($scope, $('.tfSettingEditBox').first());
+        $('.commentTrigger').slideUp(200);
+        var $box=$('.commentTrigger').next('.commentEdit');
+        $box.slideDown(200);
+        $box.find('.inputComment').focus();
+    };
+    $scope.openGameEditor = function() {
+            lockTooltip($scope, $('.extraSettingEditBox'.first()));
+            $('.validateDiv').slideUp(200);
+            $('.gameEditor').slideDown(200);
+    };			
+    
+    $scope.showHistory = function($event) {                
+        $scope.historyList.length = 0;
+        historyService.getHistory($scope.day.id, $scope.timeframe.code, $scope.schedule.settingid, function(history) {
+            for (var i = 0; i < history.length; i++) {
+                $scope.historyList.push(history[i]);
+            }
+        lockTooltip($scope, $(element).parent());
+            $($event.target).qtip('api').show();
+        });
+        
+    };
+
+
 }]);
 
 

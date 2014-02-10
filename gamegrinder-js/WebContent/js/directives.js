@@ -2,224 +2,6 @@
 
 /* Directives */
 
-function lockTooltip(scope, element) {
-	element.qtip('api').set('hide.event', 'unfocus');
-	scope.tooltipLock.lock = true;
-	$('#ggoverlay').addClass('active');
-}
-
-gamegrinderApp.directive('ggTfSettingTooltip', function(plannerService, historyService) {
-    
-    var getMyScheduleId = function(name, schedule, role) {
-        var schedules;
-        if (role == 'GM') schedules = schedule.availablegms;
-        else if (role == 'PLAYER') schedules = schedule.availableplayers;
-        for (var i = 0; i < schedules.length; i++) {
-            if (schedules[i].name == name) {
-                return schedules[i].id;
-            }
-        }
-    };
-    
-    var getMyGMScheduleId = function(name, games) {
-        for (var i = 0; i < games.length; i++) {
-            if (games[i].gm.name == name) {
-                return games[i].gm.id;
-            }
-        }
-    };
-    
-    var getMyPlayerScheduleId = function(name, games) {
-        var i, j, players;
-        for (i = 0; i < games.length; i++) {
-            players = games[i].players;
-            for (j = 0; j < players.length; j++) {
-                if (players[j].name == name) {
-                    return players[i].id;
-                }
-            }
-        }
-    };
-    
-	return {
-		restrict: 'E',
-		templateUrl: 'directives/tfsettingtooltip.html',
-		scope: true,
-        link: function(scope, element, attrs) {
-		var i, j, currentItem;
-            scope.gamePlayers = {};
-	    scope.potentialPlayers = [];
-            scope.numPlayers = 0;
-                scope.historyList = [];
-                scope.history = { setting : scope.schedule.name, date : scope.dowcodes[scope.day.dow] + ' ' + scope.day.dom + '/' + scope.day.month, timeframe : scope.timeframesDesc[scope.timeframe.code].name };
-		for (i = 0; i < scope.schedule.games.length; i++) {
-			currentItem = scope.schedule.games[i];
-			if (currentItem.gm.name == scope.currentUser) {
-				for (j = 0; j < currentItem.players.length; j++) {
-					scope.gamePlayers[currentItem.players[j].name] = currentItem.players[j];
-					scope.potentialPlayers.push(currentItem.players[j]);
-					scope.numPlayers++;
-				}
-			}
-		}
-            scope.status = scope.schedule.mystatus;
-			$(element).parent().qtip({
-			    style: {
-				classes: 'ggpanel tfSettingEditBox'
-			    },
-			    content: {
-				text: $(element).find('.ggdropdown').first()
-			    },
-			    position: {
-				my: 'top center',
-				at: 'bottom center'
-			    },
-			    show: {
-				event: 'mouseenter click',
-				solo: '.tfExtra'
-			    },
-			    hide: {
-				delay: 100,
-				fixed: 'true',
-				event: 'mouseleave',
-			    },
-			    events: {
-				show: function(event, api) {
-				    if(scope.tooltipLock.lock) {
-					try { event.preventDefault(); } catch(e) {}
-				    }
-				},
-				hide: function(event, api) {
-					api.set('hide.event', 'mouseleave');
-					scope.tooltipLock.lock = false;
-					$('#ggoverlay').removeClass('active');
-				}
-			    }
-			});
-			$(element).find('.commentTrigger').click(function(event) {
-				lockTooltip(scope, $(element).parent());
-				$(this).slideUp(200);
-				var $box=$(this).next('.commentEdit');
-				$box.slideDown(200);
-				$box.find('.inputComment').focus();
-			});
-			$(element).find('.commentButton').click(function(event) {
-				var $box = $(this).parents('.commentEdit');
-				$box.slideUp(200);
-				$box.prev('.commentTrigger').slideDown(200);
-			});
-			$(element).find("[alt-text]").each(function() {
-				$(this).hover(function(event) {
-					$(this).text($(this).attr("alt-text"));
-				},
-				function(event) {
-					$(this).text($(this).attr("norm-text"));
-				})
-			});
-			$(element).find("[alt-text]").show(function() {
-					$(this).text($(this).attr("norm-text"));
-			});
-			$(element).find(".validateDiv").click(function($event) {
-					lockTooltip(scope, $(element).parent());
-					$(element).parent().qtip('api').set('hide.event', 'unfocus');
-					$($event.target).slideUp(200);
-                            		$($event.target).nextAll(".gameEditor").slideDown(200);
-			});			
-			$(element).find('.histButton').qtip({
-			    style: {
-				    classes: 'ggpanel'
-			    },
-			    content: {
-				    text: $(element).find('.historydialog')
-			    },
-			    position: {
-        	            	my: 'center',
-        	            	at: 'center',
-        	            	target: $(window),
-			    },
-			    show: {
-				    modal: {
-	        	                on: true,
-				    },
-				    event: false
-			    },
-			    hide: 'unfocus',
-			});
-			for (i = 0; i < scope.schedule.availableplayers.length; i++ ) {
-				currentItem = scope.schedule.availableplayers[i];
-				if (currentItem.name != scope.currentUser) {
-					scope.potentialPlayers.push(currentItem);
-				}
-			}
-            scope.toggleGamePlayer = function(player, event) {
-                if (typeof scope.gamePlayers[player.name] != "undefined") {
-                    delete scope.gamePlayers[player.name];
-                    scope.numPlayers--;
-                }
-                else {
-                    scope.gamePlayers[player.name] = player;
-                    scope.numPlayers++;
-                }
-            }
-			scope.disbandGame = function() {
-                plannerService.disbandGame(getMyGMScheduleId(scope.currentUser, scope.schedule.games), function() {
-                    $(element).parent().qtip('api').hide();
-                    scope.refreshTimeframe();
-                });
-            }
-			scope.dropGame = function() {
-                plannerService.dropGame(getMyPlayerScheduleId(scope.currentUser, scope.schedule.games), function() {
-                    $(element).parent().qtip('api').hide();
-                    scope.refreshTimeframe();
-                });
-            }
-			scope.validateGame = function($event) {
-                 var api = $(element).parent().qtip('api');
-                 api.hide();
-		if (typeof scope.timeframe.mygame == "undefined") {
-	                 plannerService.validateGame(getMyScheduleId(scope.currentUser, scope.schedule, 'GM'), scope.gamePlayers, function() {
-	                    scope.refreshTimeframe();
-                	});
-		}
-		else {
-	                 plannerService.reformGame(scope.timeframe.mygame.id, scope.gamePlayers, function() {
-	                    scope.refreshTimeframe();
-                	});
-		}
-			}
-		    scope.setComment = function() {
-                plannerService.setComment( scope.currentUser, scope.day.id, scope.timeframe.code, scope.schedule.settingid, scope.schedule.idcomment, scope.schedule.message, function() {
-		 		    $(element).parent().qtip('api').hide();
-                    scope.refreshTimeframe();
-			     });
-		    }
-            scope.setDispo = function(role) {
-                plannerService.setDispo(scope.currentUser, scope.day.id, scope.timeframe.code, scope.schedule.settingid, role, function() {
- 		             $(element).parent().qtip('api').hide();
-                    scope.refreshTimeframe();
-                });
-            };
-            scope.clearDispo = function(role) {
-                plannerService.clearDispo(getMyScheduleId(scope.currentUser, scope.schedule, role), function() {
-                     $(element).parent().qtip('api').hide();
-                    scope.refreshTimeframe();
-                });
-            };
-            scope.showHistory = function($event) {                
-                scope.historyList.length = 0;
-                historyService.getHistory(scope.day.id, scope.timeframe.code, scope.schedule.settingid, function(history) {
-                    for (var i = 0; i < history.length; i++) {
-                        scope.historyList.push(history[i]);
-                    }
-				lockTooltip(scope, $(element).parent());
-                    $($event.target).qtip('api').show();
-                });
-                
-            };
-		}
-	};
-});
-
 gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuilderService, settingsService) {
 
 	var timeframesDesc = {
@@ -247,34 +29,71 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
 	            else classes.push('notAvailableBadge');
                 return classes;
 	        };
-			$scope.createAndAddSetting = function(setting) {
-				setting.status = 0;
-				console.log("Setting: %j", setting);
-				settingsService.createSetting(setting, function(newsetting) {
-					$scope.settingsList.push(newsetting);
-					$scope.addSetting(newsetting);
-				});
-				
-			};
-			$scope.addSetting = function(setting) {
-				plannerService.setDispo($scope.currentUser, $scope.day.id, $scope.timeframe.code, $setting.id, 'GM', function() {
-			
-			     $scope.toggleSettingVisibility(setting.id, setting.mode, true);
-                    $scope.refreshTimeframe();
-                    $($element).find('.tfExtra').qtip('api').hide();
-				});
-			};
-			$scope.refreshTimeframe = function() {
-				plannerService.getTimeframePlanning($scope.day.id, $scope.timeframe.code, function(result) {
-					planningBuilderService.refreshTimeframeInWeeksPlanning($scope.settingsList, result, $scope.timeframe, $scope.currentUser);
-				});
-			};
+            $scope.triggerTfSettingTooltip = function(schedule, element) {
+                if($scope.tooltipLock.lock === false) {
+                    $scope.currentEdit.day = $scope.day;
+                    $scope.currentEdit.timeframe = $scope.timeframe;
+                    $scope.currentEdit.schedule = schedule;
+                    $scope.currentEdit.status = schedule.mystatus;
+                    $scope.currentEdit.gamePlayers = new Array();
+                    $scope.currentEdit.potentialPlayers = new Array();
+                    $scope.currentEdit.numPlayers = 0;
+                    var i, currentItem;
+                    for (i = 0; i < schedule.games.length; i++) {
+                        currentItem = schedule.games[i];
+                        if (currentItem.gm.name == $scope.currentUser) {
+                            for (j = 0; j < currentItem.players.length; j++) {
+                                $scope.currentEdit.gamePlayers[currentItem.players[j].name] = currentItem.players[j];
+                                $scope.currentEdit.potentialPlayers.push(currentItem.players[j]);
+                                $scope.currentEdit.numPlayers++;
+                            }
+                        }
+                    }
+                    for (i = 0; i < schedule.availableplayers.length; i++ ) {
+                        currentItem = schedule.availableplayers[i];
+                        if (currentItem.name != $scope.currentUser) {
+                            $scope.currentEdit.potentialPlayers.push(currentItem);
+                        }
+                    }
+                    $(element).qtip({
+                        style: {
+                            classes: 'ggpanel tfSettingEditBox'
+                        },
+                        content: {
+                            text: $('.tfSettingDropdown').first()
+                        },
+                        position: {
+                            my: 'top center',
+                            at: 'bottom center',
+                            target: $(element)
+                        },
+                        show: {
+                            event: false,
+                            solo: '.tfSettingDropdown',
+                            ready: true
+                        },
+                        hide: {
+                            delay: 100,
+                            fixed: 'true',
+                            event: 'mouseleave',
+                        },
+                        events: {
+                            hide: function(event, api) {
+                                $('#ggoverlay').removeClass('active');
+                                $scope.tooltipLock.lock = false;
+                            }
+                        }
+                    });
+                }
+            };
             $scope.triggerExtraSettingTooltip = function(element) {
                 if($scope.tooltipLock.lock === false) {
+                    $scope.currentEdit.day = $scope.day;
+                    $scope.currentEdit.timeframe = $scope.timeframe;
                     $scope.currentEdit.possibleSettings = allPossibleSettings[$scope.day.id + '-' + $scope.timeframe.code];
                     $(element).qtip({
                         style: {
-                            classes: 'ggpanel'
+                            classes: 'ggpanel extraSettingEditBox'
                         },
                         content: {
                             text: $('.addSettingDropdown').first()
@@ -298,7 +117,6 @@ gamegrinderApp.directive('ggTimeframeBox', function(plannerService, planningBuil
                             hide: function(event, api) {
                                 $('#ggoverlay').removeClass('active');
                                 $scope.tooltipLock.lock = false;
-//                                api.destroy();
                             }
                         }
                     });

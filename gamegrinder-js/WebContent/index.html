@@ -80,6 +80,8 @@
 					event: 'mouseleave',
 				}
 			});
+            
+            // Elements de la timeframe
 			$('.settingTrigger').click(function(event) {
 				lockTooltip(scope, $(element).find('.tfExtra'));
 				$(this).slideUp(200);
@@ -92,6 +94,43 @@
 				$box.slideUp(200);
 				$box.prev('.settingTrigger').slideDown(200);
 			});
+            
+            // ELements du tfSetting
+            
+			$("[alt-text]").each(function() {
+				$(this).hover(function(event) {
+					$(this).text($(this).attr("alt-text"));
+				},
+				function(event) {
+					$(this).text($(this).attr("norm-text"));
+				})
+			});
+			$("[alt-text]").show(function() {
+					$(this).text($(this).attr("norm-text"));
+			});
+			$('.histButton').qtip({
+			    style: {
+				    classes: 'ggpanel'
+			    },
+			    content: {
+				    text: $('.historydialog')
+			    },
+			    position: {
+        	            	my: 'center',
+        	            	at: 'center',
+        	            	target: $(window),
+			    },
+			    show: {
+				    modal: {
+	        	                on: true,
+				    },
+				    event: false
+			    },
+			    hide: 'unfocus',
+			});
+            
+            // Etat de login initial
+            
 			var currentUser = angular.element('body').scope().currentUser;
 			if ((typeof currentUser == 'undefined') || (currentUser == null)) {
 				$( "#logindialogcontainer" ).qtip( "toggle", true );
@@ -108,6 +147,72 @@
 	<div></div>
    </div>
 
+    
+   <div id="tfSettingTooltipContainer" style="display:none">
+    <div class="ggdropdown tfSettingDropdown">
+	<div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">{{currentEdit.schedule.name}}</div>
+	<div class="ggpanelItem ggclickablelistitem dispoDiv tfSettingAction" ng-show="currentEdit.status.dispoPJ && (!currentEdit.timeframe.busy)" alt-text="Pas dispo pour jouer ?" ng-click="clearDispo('PLAYER')" norm-text="Je suis dispo pour jouer"></div>
+	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="(!currentEdit.status.dispoPJ) && (!currentEdit.timeframe.busy)" alt-text="Dispo pour jouer ?" ng-click="setDispo('PLAYER')" norm-text="Je ne suis pas dispo pour jouer"></div>
+	<div class="ggpanelItem ggclickablelistitem dispoDiv tfSettingAction" ng-show="currentEdit.status.dispoMJ && (!currentEdit.timeframe.busy)" alt-text="Pas dispo pour maîtriser ?" ng-click="clearDispo('GM')" norm-text="Je suis dispo pour maîtriser"></div>
+	<div class="ggpanelItem ggclickablelistitem validateDiv tfSettingAction collapsible" ng-show="currentEdit.status.dispoMJ && (!currentEdit.timeframe.busy) && (currentEdit.potentialPlayers.length > 0)">Valider une partie...</div>
+	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="!currentEdit.status.dispoMJ && (!currentEdit.timeframe.busy)" alt-text="Dispo pour maîtriser ?" ng-click="setDispo('GM')" norm-text="Je ne suis pas dispo pour maîtriser"></div>
+	<div class="ggpanelItem warningDiv tfSettingAction" ng-show="currentEdit.timeframe.busy && (currentEdit.timeframe.gaming[currentUser] != currentEdit.schedule.settingid)">Je suis déjà sur une autre partie !</div>
+	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="currentEdit.status.pj" ng-click="dropGame()">Quitter la partie</div>
+	<div class="ggpanelItem ggclickablelistitem tfSettingAction validateDiv collapsible" ng-show="currentEdit.status.mj">Modifier ma partie...</div>
+	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="currentEdit.status.mj" ng-click="disbandGame()">Annuler la partie</div>
+	<div class="gameEditor ggpanelItem dummyContainer collapsed">
+	  <div class="ggpanelSubheader hoverDay">Choisis tes joueurs... <span class="rightbutton badge buttonBadge" ng-show="numPlayers > 0" ng-click="validateGame(day.id, timeframe.code, schedule.id, $event)">... Puis clique ici !</span></div>
+	  <div class="ggclickablelistitem ggpanelSubitem tfSettingAction" ng-repeat="player in currentEdit.potentialPlayers" ng-class="{validateDiv : currentEdit.gamePlayers[player.name]}" ng-click="toggleGamePlayer(player)">{{ player.name }}</div>
+	</div>
+	<div class="ggpanelItem ggclickablelistitem noteDiv commentTrigger tfSettingAction collapsible" ng-click="openCommentEditor()"><span ng-show="!(currentEdit.schedule.idcomment>0)">Ajouter un commentaire...</span><span ng-show="currentEdit.schedule.idcomment>0">Modifier mon commentaire...</span></div>
+	<div class="ggpanelItem commentEdit collapsed">
+          <form id="commentForm" role="form" name="commentForm" ng-submit="setComment()" novalidate>
+	    <button class="commentButton rightbutton" ng-disabled="commentForm.$invalid" type="submit">Valider</button>
+	    <span class="inputContainer"><input type="text" class="inputComment expand" name="comment" placeholder="Tape ton commentaire" ng-model="currentEdit.schedule.message"/><span>
+	  </form>
+        </div>
+	<div class="ggpanelItem" ng-repeat="game in currentEdit.schedule.games">
+	  <span class="confirmedgame tfSettingSubbox">Partie confirmée:</span>
+	  <ul class="gameRoster">
+	    <li class="nomMJ">{{ game.gm.name }}<span class="commentDisplay" ng-show="game.gm.comment"> - {{ game.gm.comment }}</span></li>
+	    <li ng-repeat="player in game.players" class="nomPJ">{{ player.name }}<span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
+	  </ul>
+	</div>
+	<div class="ggpanelItem">
+	  <span class="tfSettingSubbox">MJ Disponible(s):</span>
+	  <ul class="gameRoster">
+	    <li ng-repeat="player in currentEdit.schedule.availablegms" class="nomMJ"><span ng-class="{busyplayer : timeframe.gaming[player.name]}">{{ player.name }}</span><span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
+	  </ul>
+	</div>
+	<div class="ggpanelItem">
+	  <span class="tfSettingSubbox">Joueur(s) Disponible(s):</span>
+	  <ul class="gameRoster">
+	    <li ng-repeat="player in currentEdit.schedule.availableplayers" class="nomPJ"><span ng-class="{busyplayer : timeframe.gaming[player.name]}">{{ player.name }}</span><span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
+	  </ul>
+	</div>
+	<div class="ggpanelItem">
+          <span class="tfSettingSubbox">Ne sont pas disponible(s):</span>
+	  <ul class="gameRoster">
+	    <li ng-repeat="player in currentEdit.schedule.unavailable"><span ng-class="{busyplayer : timeframe.gaming[player.name]}">{{ player.name }}</span><span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
+	  </ul>
+	</div>              
+  	<div class="ggpanelItem ggbuttonbox ggclickableitem hoverDay"><span class="badge buttonBadge histButton" ng-click="showHistory($event)">Voir l'historique</span></div>
+
+    </div>
+  </div>        
+   <div id="historydialogcontainer" style="display: none">
+        <table class="historydialog" cellspacing="0">
+	    <tr class="ggpanelItem ggpanelHeader hoverDay historyHeader">
+	      <td colspan="3">{{ history.setting }} - {{ history.date }} - {{ history.timeframe }}</td>
+	    </tr>
+            <tr class="ggpanelItem ggpanelBorderItem historyLine" ng-class-even="'evenline'" ng-class-odd="'oddline'" ng-repeat="history in historyList">
+                <td class="dateCell ggpanelCell" ng-class-even="'evenline'" ng-class-odd="'oddline'"><span>{{ history.tstamp | date:'dd/MM/yyyy'}}</span></td>
+                <td class="dateCell ggpanelCell" ng-class-even="'evenline'" ng-class-odd="'oddline'"><span>{{ history.tstamp | date:'H:mm'}}</span></td>
+                <td class="historyDetailCell ggpanelCell"><gg-history row="history"/></td>
+            </tr>
+        </table>
+    </div>
+        
    <div id="addSettingTooltipContainer" style="display:none">
             <div class="ggdropdown addSettingDropdown">
                 <div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">Je propose une partie de...</div>
@@ -115,7 +220,7 @@
                     <div class="ggpanelItem ggclickablelistitem dropdownItem settingTrigger hoverDay collapsible">Créer une Chronique / One-Shot ...</div>
                 
                     <div class="ggpanelItem dropdownItem settingEditor collapsed dummyContainer" >
-                        <form class="form-inline" role="form" name="createSettingForm" ng-submit="createAndAddSetting(newsetting)" novalidate>
+                        <form class="form-inline" role="form" name="createSettingForm" ng-submit="createAndAddSetting()" novalidate>
                             <div class="ggpanelSubheader hoverDay">
                                 Nouvelle Chronique / One-Shot
                             </div>
