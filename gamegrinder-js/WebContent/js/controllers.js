@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'plannerService', 'planningBuilderService', 'config', 'localStorageService', function GameGrinderCtrl($scope, settingsService, plannerService, planningBuilderService, config, localStorageService) {
+gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'plannerService', 'planningBuilderService', 'config', 'localStorageService', 'historyService', function GameGrinderCtrl($scope, settingsService, plannerService, planningBuilderService, config, localStorageService, historyService) {
 
     function timeSlide(days) {
         $scope.firstday = $scope.firstday + days * planningBuilderService.MS_IN_DAY;
@@ -71,10 +71,13 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     $scope.settingsReady = false;
 
     $scope.tooltipLock = { lock : false};
+    $scope.editingGame = false;
+    $scope.editingComment = false;
 
     $scope.currentUser =  localStorageService.get('ggUser');
     $scope.currentEdit =  {};
     $scope.historyList = [];
+    $scope.history = {};
     reset();    
     loadConfig();
 
@@ -198,7 +201,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     
          $scope.toggleSettingVisibility(setting.id, true);
             $scope.refreshTimeframe();
-            $('.extraSettingEditBox').qtip('api').hide();
+            $('#addSettingTooltipContainer').qtip('api').hide();
         });
     };
     $scope.refreshTimeframe = function() {
@@ -212,27 +215,27 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     $scope.toggleGamePlayer = function(player) {
         if (typeof $scope.currentEdit.gamePlayers[player.name] != "undefined") {
             delete $scope.currentEdit.gamePlayers[player.name];
-            $scope.numPlayers--;
+            $scope.currentEdit.numPlayers--;
         }
         else {
             $scope.currentEdit.gamePlayers[player.name] = player;
-            $scope.numPlayers++;
+            $scope.currentEdit.numPlayers++;
         }
     }
     $scope.disbandGame = function() {
         plannerService.disbandGame(getMyGMScheduleId($scope.currentUser, $scope.currentEdit.schedule.games), function() {
-            $('.tfSettingEditBox').qtip('api').hide();
+            $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     }
     $scope.dropGame = function() {
         plannerService.dropGame(getMyPlayerScheduleId($scope.currentUser, $scope.currentEdit.schedule.games), function() {
-            $('.tfSettingEditBox').qtip('api').hide();
+            $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     }
     $scope.validateGame = function($event) {
-        $('.tfSettingEditBox').qtip('api').hide();
+        $('#tfSettingTooltipContainer').qtip('api').hide();
         if (typeof $scope.currentEdit.timeframe.mygame == "undefined") {
             plannerService.validateGame(getMyScheduleId($scope.currentUser, $scope.currentEdit.schedule, 'GM'), $scope.currentEdit.gamePlayers, function() {
                 $scope.refreshTimeframe();
@@ -246,47 +249,136 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     }
     $scope.setComment = function() {
         plannerService.setComment( $scope.currentUser, $scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, $scope.currentEdit.schedule.settingid, $scope.currentEdit.schedule.idcomment, $scope.currentEdit.schedule.message, function() {
-            $('.tfSettingEditBox').qtip('api').hide();
+            $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
          });
     }
     $scope.setDispo = function(role) {
         plannerService.setDispo($scope.currentUser, $scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, $scope.currentEdit.schedule.settingid, role, function() {
-            $('.tfSettingEditBox').qtip('api').hide();
+            $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     };
     $scope.clearDispo = function(role) {
         plannerService.clearDispo(getMyScheduleId($scope.currentUser, $scope.currentEdit.schedule, role), function() {
-            $('.tfSettingEditBox').qtip('api').hide();
+            $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     };
+
     $scope.openCommentEditor = function() {
-        lockTooltip($scope, $('.tfSettingEditBox').first());
+        lockTooltip($scope, $('#tfSettingTooltipContainer'));
+	$scope.editingComment = true;
+        $('.commentEdit').find('.inputComment').focus();
+/*
         $('.commentTrigger').slideUp(200);
         var $box=$('.commentTrigger').next('.commentEdit');
         $box.slideDown(200);
-        $box.find('.inputComment').focus();
+*/
     };
+
+    $scope.closeCommentEditor = function() {
+	$scope.editingComment = false;
+/*
+        $('.commentEdit').slideUp(200);
+        $('.commentTrigger').slideDown(200);
+*/
+    };
+
     $scope.openGameEditor = function() {
-            lockTooltip($scope, $('.extraSettingEditBox'.first()));
+            lockTooltip($scope, $('#tfSettingTooltipContainer'));
+	    $scope.editingGame = true;
+/*
             $('.validateDiv').slideUp(200);
             $('.gameEditor').slideDown(200);
+*/
+    };			
+    
+    $scope.closeGameEditor = function() {
+	    $scope.editingGame = false;
+/*
+            $('.validateDiv').slideDown(200);
+            $('.gameEditor').slideUp(200);
+*/
     };			
     
     $scope.showHistory = function($event) {                
         $scope.historyList.length = 0;
-        historyService.getHistory($scope.day.id, $scope.timeframe.code, $scope.schedule.settingid, function(history) {
+        historyService.getHistory($scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, $scope.currentEdit.schedule.settingid, function(history) {
             for (var i = 0; i < history.length; i++) {
                 $scope.historyList.push(history[i]);
             }
-        lockTooltip($scope, $(element).parent());
+        lockTooltip($scope, $('#tfSettingTooltipContainer'));
             $($event.target).qtip('api').show();
         });
         
     };
 
+    $('#tfSettingTooltipContainer').qtip({
+        style: {
+            classes: 'ggpanel tfSettingEditBox'
+        },
+        content: {
+            text: $('.tfSettingDropdown')
+        },
+        position: {
+            my: 'top center',
+            at: 'bottom center',
+            target: $('#tfSettingTooltipContainer'),
+	    adjust: { x : -10, y : -9 }
+        },
+        show: {
+            event: false,
+	    solo: true
+        },
+        hide: {
+            delay: 100,
+            fixed: true,
+            event: 'mouseleave',
+	    inactive: 2000
+        },
+        events: {
+            hide: function(event, api) {
+                $('#ggoverlay').removeClass('active');
+		api.set('hide.event', 'mouseleave');
+		api.set('hide.inactive', 2000);
+		$scope.closeCommentEditor();
+		$scope.closeGameEditor();
+                $scope.tooltipLock.lock = false;
+            }
+        }
+    });
+
+    $('#addSettingTooltipContainer').qtip({
+        style: {
+            classes: 'ggpanel extraSettingEditBox'
+        },
+        content: {
+            text: $('.addSettingDropdown')
+        },
+        position: {
+            my: 'top center',
+            at: 'bottom left',
+            target: $('#addSettingTooltipContainer'),
+	    adjust: { x : -4, y : -12 }
+        },
+        show: {
+            event: false,
+            solo: true
+        },
+        hide: {
+            delay: 100,
+            fixed: true,
+            event: 'mouseleave',
+	    inactive: 2000
+        },
+        events: {
+            hide: function(event, api) {
+                $('#ggoverlay').removeClass('active');
+                $scope.tooltipLock.lock = false;
+            }
+        }
+    });
 
 }]);
 

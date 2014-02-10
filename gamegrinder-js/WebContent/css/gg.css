@@ -106,6 +106,8 @@ tr.evenline {
 	height: auto;
 	max-width:none;
     min-width: 300px;
+	max-height: 700px;
+	overflow: scroll;
 }
 .ggbuttonbox {
 	text-align: center;
@@ -231,6 +233,11 @@ tr.ggpanelItem:hover {
 	margin: 0px;
 	padding: 0px;
 }
+.dummyInlineContainer {
+	display: inline;
+	margin: 0px;
+	padding: 0px;
+}
 .infoTooltip {
 	background-color: #3245a3;
 	border-color: #FFFFFF;
@@ -238,9 +245,14 @@ tr.ggpanelItem:hover {
 	font-size: 15px;
 	line-height: 15px;
 }
+.tfExtra {
+	cursor: pointer;
+}
 .tfSetting  {
 	margin-right: 0px;
 	text-decoration: none;
+	display: inline;
+	cursor: pointer;
 }
 .tfSettingEditBox {
 	max-width: 800px;

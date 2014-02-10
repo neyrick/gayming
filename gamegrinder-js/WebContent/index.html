@@ -119,6 +119,8 @@
         	            	my: 'center',
         	            	at: 'center',
         	            	target: $(window),
+				viewport: $(window),
+				adjust : { scroll : false }
 			    },
 			    show: {
 				    modal: {
@@ -154,18 +156,18 @@
 	<div class="ggpanelItem ggclickablelistitem dispoDiv tfSettingAction" ng-show="currentEdit.status.dispoPJ && (!currentEdit.timeframe.busy)" alt-text="Pas dispo pour jouer ?" ng-click="clearDispo('PLAYER')" norm-text="Je suis dispo pour jouer"></div>
 	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="(!currentEdit.status.dispoPJ) && (!currentEdit.timeframe.busy)" alt-text="Dispo pour jouer ?" ng-click="setDispo('PLAYER')" norm-text="Je ne suis pas dispo pour jouer"></div>
 	<div class="ggpanelItem ggclickablelistitem dispoDiv tfSettingAction" ng-show="currentEdit.status.dispoMJ && (!currentEdit.timeframe.busy)" alt-text="Pas dispo pour maîtriser ?" ng-click="clearDispo('GM')" norm-text="Je suis dispo pour maîtriser"></div>
-	<div class="ggpanelItem ggclickablelistitem validateDiv tfSettingAction collapsible" ng-show="currentEdit.status.dispoMJ && (!currentEdit.timeframe.busy) && (currentEdit.potentialPlayers.length > 0)">Valider une partie...</div>
+	<div class="ggpanelItem ggclickablelistitem validateDiv tfSettingAction collapsible" ng-show="((!editingGame) && (currentEdit.status.dispoMJ) && (!currentEdit.timeframe.busy) && (currentEdit.potentialPlayers.length > 0))" ng-click="openGameEditor()"><span>Valider une partie...</span></div>
+	<div class="ggpanelItem ggclickablelistitem validateDiv tfSettingAction collapsible" ng-show="((!editingGame) && (currentEdit.status.mj))" ng-click="openGameEditor()"><span>Modifier ma partie...</span></div>
 	<div class="ggpanelItem ggclickablelistitem pasDispoDiv tfSettingAction" ng-show="!currentEdit.status.dispoMJ && (!currentEdit.timeframe.busy)" alt-text="Dispo pour maîtriser ?" ng-click="setDispo('GM')" norm-text="Je ne suis pas dispo pour maîtriser"></div>
 	<div class="ggpanelItem warningDiv tfSettingAction" ng-show="currentEdit.timeframe.busy && (currentEdit.timeframe.gaming[currentUser] != currentEdit.schedule.settingid)">Je suis déjà sur une autre partie !</div>
 	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="currentEdit.status.pj" ng-click="dropGame()">Quitter la partie</div>
-	<div class="ggpanelItem ggclickablelistitem tfSettingAction validateDiv collapsible" ng-show="currentEdit.status.mj">Modifier ma partie...</div>
 	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="currentEdit.status.mj" ng-click="disbandGame()">Annuler la partie</div>
-	<div class="gameEditor ggpanelItem dummyContainer collapsed">
-	  <div class="ggpanelSubheader hoverDay">Choisis tes joueurs... <span class="rightbutton badge buttonBadge" ng-show="numPlayers > 0" ng-click="validateGame(day.id, timeframe.code, schedule.id, $event)">... Puis clique ici !</span></div>
+	<div class="gameEditor ggpanelItem dummyContainer" ng-show="editingGame">
+	  <div class="ggpanelSubheader hoverDay">Choisis tes joueurs... <span class="rightbutton badge buttonBadge" ng-show="currentEdit.numPlayers > 0" ng-click="validateGame(day.id, timeframe.code, schedule.id, $event)">... Puis clique ici !</span></div>
 	  <div class="ggclickablelistitem ggpanelSubitem tfSettingAction" ng-repeat="player in currentEdit.potentialPlayers" ng-class="{validateDiv : currentEdit.gamePlayers[player.name]}" ng-click="toggleGamePlayer(player)">{{ player.name }}</div>
 	</div>
-	<div class="ggpanelItem ggclickablelistitem noteDiv commentTrigger tfSettingAction collapsible" ng-click="openCommentEditor()"><span ng-show="!(currentEdit.schedule.idcomment>0)">Ajouter un commentaire...</span><span ng-show="currentEdit.schedule.idcomment>0">Modifier mon commentaire...</span></div>
-	<div class="ggpanelItem commentEdit collapsed">
+	<div class="ggpanelItem ggclickablelistitem noteDiv commentTrigger tfSettingAction collapsible" ng-click="openCommentEditor()" ng-show="!editingComment"><span ng-show="!(currentEdit.schedule.idcomment>0)">Ajouter un commentaire...</span><span ng-show="currentEdit.schedule.idcomment>0">Modifier mon commentaire...</span></div>
+	<div class="ggpanelItem commentEdit" ng-show="editingComment">
           <form id="commentForm" role="form" name="commentForm" ng-submit="setComment()" novalidate>
 	    <button class="commentButton rightbutton" ng-disabled="commentForm.$invalid" type="submit">Valider</button>
 	    <span class="inputContainer"><input type="text" class="inputComment expand" name="comment" placeholder="Tape ton commentaire" ng-model="currentEdit.schedule.message"/><span>

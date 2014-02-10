@@ -21,6 +21,7 @@ function isLoggedIn() {
 
 function lockTooltip(scope, element) {
 	element.qtip('api').set('hide.event', 'unfocus');
+	element.qtip('api').set('hide.inactive', false);
 	scope.tooltipLock.lock = true;
 	$('#ggoverlay').addClass('active');
 }
