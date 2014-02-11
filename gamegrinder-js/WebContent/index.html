@@ -81,20 +81,6 @@
 				}
 			});
             
-            // Elements de la timeframe
-			$('.settingTrigger').click(function(event) {
-				lockTooltip(scope, $(element).find('.tfExtra'));
-				$(this).slideUp(200);
-				var $box=$(this).next('.settingEditor');
-				$box.slideDown(200);
-				$box.find('.inputSettingName').focus();
-			});
-			$('.settingButton').click(function(event) {
-				var $box = $(this).parents('.settingEditor');
-				$box.slideUp(200);
-				$box.prev('.settingTrigger').slideDown(200);
-			});
-            
             // ELements du tfSetting
             
 			$("[alt-text]").each(function() {
@@ -142,7 +128,7 @@
 			});
 		});
 	</script>
-   <div id="ggoverlay">
+   <div id="ggoverlay" ng-class="{ active :  tooltipLock.mainlock == true }">
 	<div></div>
    </div>
    <div id="ggloading">
@@ -219,7 +205,7 @@
             <div class="ggdropdown addSettingDropdown">
                 <div class="ggpanelItem ggpanelHeader glossyHeader hoverDay">Je propose une partie de...</div>
                 
-                    <div class="ggpanelItem ggclickablelistitem dropdownItem settingTrigger hoverDay collapsible">Créer une Chronique / One-Shot ...</div>
+                    <div class="ggpanelItem ggclickablelistitem dropdownItem settingTrigger hoverDay collapsible" ng-click="openSettingEditor()">Créer une Chronique / One-Shot ...</div>
                 
                     <div class="ggpanelItem dropdownItem settingEditor collapsed dummyContainer" >
                         <form class="form-inline" role="form" name="createSettingForm" ng-submit="createAndAddSetting()" novalidate>

@@ -16,9 +16,10 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
                  $scope.weeks = planningBuilderService.buildWeeksPlanning($scope.firstday, $scope.dayCount, $scope.settingsList, planning, $scope.currentUser);
                 plannerService.getUpdates($scope.firstday, $scope.dayCount, $scope.currentUser, function(updatesHash) {
                     planningBuilderService.dispatchUpdatesFlags(updatesHash, $scope.weeks, $scope.lastUpdate);
+                    $scope.lastUpdate = new Date().getTime();
+                    storeConfig();
+                    applyFilters();
                 });
-            $scope.lastUpdate = new Date().getTime();
-            storeConfig();
             });
             $('#ggloading').removeClass('active');
         }, 0);
@@ -43,6 +44,13 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
         };        
         $scope.currentEdit = {            
         };
+    }
+    
+    function applyFilters () {
+        $scope.settingsList.forEach( function (setting) {
+            if (setting.visible) $('.settingBadge-id-' + setting.id).removeClass('ggHidden');
+            else $('.settingBadge-id-' + setting.id).addClass('ggHidden');
+        });
     }
     
     function storeConfig() {
@@ -70,7 +78,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     
     $scope.settingsReady = false;
 
-    $scope.tooltipLock = { lock : false};
+    $scope.tooltipLock = { mainlock : false};
     $scope.editingGame = false;
     $scope.editingComment = false;
 
@@ -177,21 +185,26 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     // Fonctions au  niveau de la timeframe
     
     $scope.createAndAddSetting = function() {
-        setting.status = 0;
+        $scope.newsetting.status = 0;
         settingsService.createSetting($scope.newsetting, function(newsetting) {
             $scope.settingsList.push(newsetting);
             $scope.addSetting(newsetting);
-            item.visible = true;
-            if (item.mode == 0) {
+            newsetting.visible = true;
+            if (newsetting.mode == 0) {
                   $scope.openSettings.push(newsetting);
               }
-              else if (item.mode == 1) {
+              else if (newsetting.mode == 1) {
                   $scope.closedSettings.push(newsetting);
               }
-              else if (item.mode == 2) {
+              else if (newsetting.mode == 2) {
                   $scope.oneShots.push(newsetting);
               }
-            $scope.newsetting = { name : '', mode : -1, status : 0, code : ''};
+            $scope.newsetting.name = '';
+            $scope.newsetting.mode = -1;
+            $scope.newsetting.status = 0;
+            $scope.newsetting.code = '';
+            $scope.tooltipLock.mainlock = false;
+            $('#addSettingTooltipContainer').qtip('api').hide();
         });
         
     };
@@ -200,8 +213,9 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
         plannerService.setDispo($scope.currentUser, $scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, setting.id, 'GM', function() {
     
          $scope.toggleSettingVisibility(setting.id, true);
-            $scope.refreshTimeframe();
+            $scope.tooltipLock.mainlock = false;
             $('#addSettingTooltipContainer').qtip('api').hide();
+            $scope.refreshTimeframe();
         });
     };
     $scope.refreshTimeframe = function() {
@@ -224,17 +238,20 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     }
     $scope.disbandGame = function() {
         plannerService.disbandGame(getMyGMScheduleId($scope.currentUser, $scope.currentEdit.schedule.games), function() {
+            $scope.tooltipLock.mainlock = false;
             $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     }
     $scope.dropGame = function() {
         plannerService.dropGame(getMyPlayerScheduleId($scope.currentUser, $scope.currentEdit.schedule.games), function() {
+            $scope.tooltipLock.mainlock = false;
             $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     }
     $scope.validateGame = function($event) {
+        $scope.tooltipLock.mainlock = false;
         $('#tfSettingTooltipContainer').qtip('api').hide();
         if (typeof $scope.currentEdit.timeframe.mygame == "undefined") {
             plannerService.validateGame(getMyScheduleId($scope.currentUser, $scope.currentEdit.schedule, 'GM'), $scope.currentEdit.gamePlayers, function() {
@@ -249,26 +266,29 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     }
     $scope.setComment = function() {
         plannerService.setComment( $scope.currentUser, $scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, $scope.currentEdit.schedule.settingid, $scope.currentEdit.schedule.idcomment, $scope.currentEdit.schedule.message, function() {
+            $scope.tooltipLock.mainlock = false;
             $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
          });
     }
     $scope.setDispo = function(role) {
         plannerService.setDispo($scope.currentUser, $scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, $scope.currentEdit.schedule.settingid, role, function() {
+            $scope.tooltipLock.mainlock = false;
             $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     };
     $scope.clearDispo = function(role) {
         plannerService.clearDispo(getMyScheduleId($scope.currentUser, $scope.currentEdit.schedule, role), function() {
+            $scope.tooltipLock.mainlock = false;
             $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     };
 
     $scope.openCommentEditor = function() {
-        lockTooltip($scope, $('#tfSettingTooltipContainer'));
-	$scope.editingComment = true;
+        $scope.tooltipLock.mainlock = true;
+        $scope.editingComment = true;
         $('.commentEdit').find('.inputComment').focus();
 /*
         $('.commentTrigger').slideUp(200);
@@ -286,7 +306,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     };
 
     $scope.openGameEditor = function() {
-            lockTooltip($scope, $('#tfSettingTooltipContainer'));
+        $scope.tooltipLock.mainlock = true;
 	    $scope.editingGame = true;
 /*
             $('.validateDiv').slideUp(200);
@@ -308,11 +328,24 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
             for (var i = 0; i < history.length; i++) {
                 $scope.historyList.push(history[i]);
             }
-        lockTooltip($scope, $('#tfSettingTooltipContainer'));
+        $scope.tooltipLock.mainlock = true;
             $($event.target).qtip('api').show();
         });
         
     };
+
+    $scope.openSettingEditor = function() {
+        $scope.tooltipLock.mainlock = true;
+        $('.settingTrigger').slideUp(200);
+        var $box=$('.settingEditor');
+        $box.slideDown(200);
+        $box.find('.inputSettingName').focus();
+	}
+
+    $scope.closeSettingEditor = function() {
+        $('.settingEditor').slideUp(200);
+        $('.settingTrigger').slideDown(200);
+	}
 
     $('#tfSettingTooltipContainer').qtip({
         style: {
@@ -334,17 +367,25 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
         hide: {
             delay: 100,
             fixed: true,
-            event: 'mouseleave',
+            event: 'mouseleave unfocus',
 	    inactive: 2000
         },
         events: {
             hide: function(event, api) {
-                $('#ggoverlay').removeClass('active');
-		api.set('hide.event', 'mouseleave');
-		api.set('hide.inactive', 2000);
-		$scope.closeCommentEditor();
-		$scope.closeGameEditor();
-                $scope.tooltipLock.lock = false;
+                if (($scope.tooltipLock.mainlock === true) && ((event.originalEvent.type != 'mousedown') || (event.originalEvent.target.id != 'ggoverlay'))){
+                    event.preventDefault();
+                    return;
+                }
+                $scope.closeCommentEditor();
+                $scope.closeGameEditor();
+                if ($scope.$$phase == null) {
+                    $scope.$apply( function () {
+                        $scope.tooltipLock.mainlock = false;
+                    });
+                }
+                else {
+                    $scope.tooltipLock.mainlock = false;
+                }
             }
         }
     });
@@ -369,13 +410,24 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
         hide: {
             delay: 100,
             fixed: true,
-            event: 'mouseleave',
+            event: 'mouseleave unfocus',
 	    inactive: 2000
         },
         events: {
             hide: function(event, api) {
-                $('#ggoverlay').removeClass('active');
-                $scope.tooltipLock.lock = false;
+                if (($scope.tooltipLock.mainlock === true) && ((event.originalEvent.type != 'mousedown') || (event.originalEvent.target.id != 'ggoverlay'))){
+                    event.preventDefault();
+                    return;
+                }
+                $scope.closeSettingEditor();
+                if ($scope.$$phase == null) {
+                    $scope.$apply( function () {
+                        $scope.tooltipLock.mainlock = false;
+                    });
+                }
+                else {
+                    $scope.tooltipLock.mainlock = false;
+                }
             }
         }
     });

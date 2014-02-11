@@ -138,7 +138,6 @@ gamegrinderApp.factory('planningBuilderService', ['config', function (config) {
                 if (rawschedule.game != null) {
                     tfSetting.mystatus.mj = true;
                     timeframe.busy = true;
-                    timeframe.mysetting = tfSetting.code;
                 }
             }
             else if (rawschedule.role == 'PLAYER') {

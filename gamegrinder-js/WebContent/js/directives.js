@@ -8,7 +8,7 @@ gamegrinderApp.directive('ggTfSetting', function() {
 	return {
         controller : function ($scope, $element, $attrs) {
             $scope.triggerTfSettingTooltip = function(element) {
-                if($scope.tooltipLock.lock === false) {
+                if($scope.tooltipLock.mainlock === false) {
 		    $scope.$apply( function () {
 		            $scope.currentEdit.day = $scope.day;
 		            $scope.currentEdit.timeframe = $scope.timeframe;
@@ -62,6 +62,12 @@ gamegrinderApp.directive('ggTfSetting', function() {
 		            else classes.push('availableBadge');
 		        }
 			else classes.push('notAvailableBadge');
+            for (var i = 0; i < scope.settingsList.length; i++) {
+                if (scope.settingsList[i].id == scope.schedule.settingid) {
+                    if (!scope.settingsList[i].visible) classes.push('ggHidden');
+                    break;
+                }
+            }
 			scope.settingClasses = classes;
 
 			$(element).find('.tfSetting').mouseenter(function (event) {
@@ -92,7 +98,7 @@ gamegrinderApp.directive('ggTimeframeBox', function() {
         controller : function ($scope, $element, $attrs) {
 			$scope.timeframesDesc = timeframesDesc;
             $scope.triggerExtraSettingTooltip = function(element) {
-                if($scope.tooltipLock.lock === false) {
+                if($scope.tooltipLock.mainlock === false) {
 		    $scope.$apply( function () {
 		            $scope.currentEdit.day = $scope.day;
 		            $scope.currentEdit.timeframe = $scope.timeframe;

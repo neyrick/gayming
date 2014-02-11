@@ -19,13 +19,6 @@ function isLoggedIn() {
 	return (typeof angular.element('body').scope().currentUser != 'undefined');
 }
 
-function lockTooltip(scope, element) {
-	element.qtip('api').set('hide.event', 'unfocus');
-	element.qtip('api').set('hide.inactive', false);
-	scope.tooltipLock.lock = true;
-	$('#ggoverlay').addClass('active');
-}
-
 function getMyScheduleId(name, schedule, role) {
     var schedules;
     if (role == 'GM') schedules = schedule.availablegms;
