@@ -107,7 +107,7 @@ tr.evenline {
 	max-width:none;
     min-width: 300px;
 	max-height: 700px;
-	overflow: scroll;
+	overflow: auto;
 }
 .ggbuttonbox {
 	text-align: center;

@@ -2,6 +2,6 @@
 	<div class="dummyInlineContainer" ng-repeat="schedule in timeframe.settings">
 		<gg-tf-setting />
 	</div>
-	<div class="timeFrameItem dropdown plusBox tfExtra" bo-show="!timeframe.busy">
+	<div class="timeFrameItem dropdown plusBox tfExtra" ng-show="!timeframe.busy">
 		<img class="timeFrameItem plusButton" src="images/plus.png">
 	</div>

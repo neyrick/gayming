@@ -4,6 +4,12 @@
 
 gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'plannerService', 'planningBuilderService', 'config', 'localStorageService', 'historyService', function GameGrinderCtrl($scope, settingsService, plannerService, planningBuilderService, config, localStorageService, historyService) {
 
+    function sortSettings(settings) {
+	return settings.sort(function(settinga, settingb) {
+		return settinga.name.localeCompare(settingb.name);
+	});	
+    }
+
     function timeSlide(days) {
         $scope.firstday = $scope.firstday + days * planningBuilderService.MS_IN_DAY;
         initPlanning();
@@ -106,7 +112,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
 
   $scope.refreshSettings = function(andPlanning) {
       settingsService.getSettings( function(settings) {
-          $scope.settingsList = settings;
+          $scope.settingsList = sortSettings(settings);
           $scope.openSettings = [];
           $scope.closedSettings = [];
           $scope.oneShots = [];
@@ -188,17 +194,22 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
         $scope.newsetting.status = 0;
         settingsService.createSetting($scope.newsetting, function(newsetting) {
             $scope.settingsList.push(newsetting);
+	    sortSettings($scope.settingsList);
             $scope.addSetting(newsetting);
             newsetting.visible = true;
             if (newsetting.mode == 0) {
                   $scope.openSettings.push(newsetting);
+		  sortSettings($scope.openSettings);
               }
               else if (newsetting.mode == 1) {
                   $scope.closedSettings.push(newsetting);
+		  sortSettings($scope.closedSettings);
               }
               else if (newsetting.mode == 2) {
                   $scope.oneShots.push(newsetting);
+		  sortSettings($scope.oneShots);
               }
+	    storeConfig();
             $scope.newsetting.name = '';
             $scope.newsetting.mode = -1;
             $scope.newsetting.status = 0;
