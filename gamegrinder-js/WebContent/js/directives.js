@@ -12,6 +12,10 @@ gamegrinderApp.directive('ggTfSetting', function() {
 		    $scope.$apply( function () {
 		            $scope.currentEdit.day = $scope.day;
 		            $scope.currentEdit.timeframe = $scope.timeframe;
+			    $scope.history.date = $scope.dowcodes[$scope.day.dow] + ' ' + $scope.day.dom + '/' + $scope.day.month;
+			    $scope.history.timeframe = $scope.timeframesDesc[$scope.timeframe.code].name;
+			    $scope.resetTfSettingData($scope.schedule);
+/*
 		            $scope.currentEdit.schedule = $scope.schedule;
 		            $scope.currentEdit.status = $scope.schedule.mystatus;
 		            $scope.currentEdit.gamePlayers = {};
@@ -19,8 +23,8 @@ gamegrinderApp.directive('ggTfSetting', function() {
 		            $scope.currentEdit.numPlayers = 0;
 		            $scope.historyList.length = 0;
 	                    $scope.history.setting = $scope.schedule.name;
-			    $scope.history.date = $scope.dowcodes[$scope.day.dow] + ' ' + $scope.day.dom + '/' + $scope.day.month;
-			    $scope.history.timeframe = $scope.timeframesDesc[$scope.timeframe.code].name;
+*/
+/*
 		            var i, j, currentItem;
 		            for (i = 0; i < $scope.schedule.games.length; i++) {
 		                currentItem = $scope.schedule.games[i];
@@ -38,6 +42,7 @@ gamegrinderApp.directive('ggTfSetting', function() {
 		                    $scope.currentEdit.potentialPlayers.push(currentItem);
 		                }
 		            }
+*/
 		    });
 		    var api =  $('#tfSettingTooltipContainer').qtip('api');
 		    api.set('position.target', $(element));
@@ -102,6 +107,7 @@ gamegrinderApp.directive('ggTimeframeBox', function() {
 		    $scope.$apply( function () {
 		            $scope.currentEdit.day = $scope.day;
 		            $scope.currentEdit.timeframe = $scope.timeframe;
+			    delete $scope.currentEdit.schedule;
 		            $scope.currentEdit.possibleSettings = allPossibleSettings[$scope.day.id + '-' + $scope.timeframe.code];
 		    });
 		    var api =  $('#addSettingTooltipContainer').qtip('api');

@@ -232,6 +232,14 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     $scope.refreshTimeframe = function() {
         plannerService.getTimeframePlanning($scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, function(result) {
             planningBuilderService.refreshTimeframeInWeeksPlanning($scope.settingsList, result, $scope.currentEdit.timeframe, $scope.currentUser);
+	    if (typeof $scope.currentEdit.schedule != "undefined") { 
+		    $scope.currentEdit.timeframe.settings.some( function (newschedule) {
+			    if (newschedule.settingid == $scope.currentEdit.schedule.settingid) {
+				    $scope.resetTfSettingData(newschedule);
+				    return true;
+			    }
+		    });
+	    }
         });
     };
 
@@ -250,20 +258,20 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     $scope.disbandGame = function() {
         plannerService.disbandGame(getMyGMScheduleId($scope.currentUser, $scope.currentEdit.schedule.games), function() {
             $scope.tooltipLock.mainlock = false;
-            $('#tfSettingTooltipContainer').qtip('api').hide();
+//            $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     }
     $scope.dropGame = function() {
         plannerService.dropGame(getMyPlayerScheduleId($scope.currentUser, $scope.currentEdit.schedule.games), function() {
             $scope.tooltipLock.mainlock = false;
-            $('#tfSettingTooltipContainer').qtip('api').hide();
+//            $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     }
     $scope.validateGame = function($event) {
         $scope.tooltipLock.mainlock = false;
-        $('#tfSettingTooltipContainer').qtip('api').hide();
+//        $('#tfSettingTooltipContainer').qtip('api').hide();
         if (typeof $scope.currentEdit.timeframe.mygame == "undefined") {
             plannerService.validateGame(getMyScheduleId($scope.currentUser, $scope.currentEdit.schedule, 'GM'), $scope.currentEdit.gamePlayers, function() {
                 $scope.refreshTimeframe();
@@ -278,21 +286,21 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
     $scope.setComment = function() {
         plannerService.setComment( $scope.currentUser, $scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, $scope.currentEdit.schedule.settingid, $scope.currentEdit.schedule.idcomment, $scope.currentEdit.schedule.message, function() {
             $scope.tooltipLock.mainlock = false;
-            $('#tfSettingTooltipContainer').qtip('api').hide();
+//            $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
          });
     }
     $scope.setDispo = function(role) {
         plannerService.setDispo($scope.currentUser, $scope.currentEdit.day.id, $scope.currentEdit.timeframe.code, $scope.currentEdit.schedule.settingid, role, function() {
             $scope.tooltipLock.mainlock = false;
-            $('#tfSettingTooltipContainer').qtip('api').hide();
+//            $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     };
     $scope.clearDispo = function(role) {
         plannerService.clearDispo(getMyScheduleId($scope.currentUser, $scope.currentEdit.schedule, role), function() {
             $scope.tooltipLock.mainlock = false;
-            $('#tfSettingTooltipContainer').qtip('api').hide();
+//            $('#tfSettingTooltipContainer').qtip('api').hide();
             $scope.refreshTimeframe();
         });
     };
@@ -343,6 +351,34 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
             $($event.target).qtip('api').show();
         });
         
+    };
+
+    $scope.resetTfSettingData = function (newschedule) {
+	    $scope.currentEdit.schedule = newschedule;
+	    $scope.currentEdit.status = newschedule.mystatus;
+	    $scope.currentEdit.gamePlayers = {};
+	    $scope.currentEdit.potentialPlayers = new Array();
+	    $scope.currentEdit.numPlayers = 0;
+	    $scope.historyList.length = 0;
+	    $scope.history.setting = newschedule.name;
+
+	    var i, j, currentItem;
+	    for (i = 0; i < newschedule.games.length; i++) {
+		currentItem = newschedule.games[i];
+		if (currentItem.gm.name == $scope.currentUser) {
+		    for (j = 0; j < currentItem.players.length; j++) {
+		        $scope.currentEdit.gamePlayers[currentItem.players[j].name] = currentItem.players[j];
+		        $scope.currentEdit.potentialPlayers.push(currentItem.players[j]);
+		        $scope.currentEdit.numPlayers++;
+		    }
+		}
+	    }
+	    for (i = 0; i < newschedule.availableplayers.length; i++ ) {
+		currentItem = newschedule.availableplayers[i];
+		if (currentItem.name != $scope.currentUser) {
+		    $scope.currentEdit.potentialPlayers.push(currentItem);
+		}
+	    }
     };
 
     $scope.openSettingEditor = function() {

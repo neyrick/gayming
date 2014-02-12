@@ -214,6 +214,9 @@ gamegrinderApp.factory('planningBuilderService', ['config', function (config) {
 			for (i = 0; i < schedules.length; i++) {
                 addSchedule(schedules[i], timeframe, settings, me);
 			}
+	    timeframe.settings.sort(function(settinga, settingb) {
+		return settinga.name.localeCompare(settingb.name);
+	});	
 		},
 
 		buildWeeksPlanning : function(mindaytime, daycount, settings, schedules, me) {
@@ -246,6 +249,13 @@ gamegrinderApp.factory('planningBuilderService', ['config', function (config) {
 				rawschedule = schedules[i];
                 timeframe = dayMap[rawschedule.dayid].timeframes[timeframeIndex[rawschedule.timeframe]];
                 addSchedule(rawschedule, timeframe, settings, me);
+			}
+			for (currday in dayMap) {
+				dayMap[currday].timeframes.forEach(function (item) {
+					item.settings.sort(function(settinga, settingb) {
+						return settinga.name.localeCompare(settingb.name);
+					});	
+				});
 			}
 			// parcourir les comment et les ajouter
 			return weeks;
