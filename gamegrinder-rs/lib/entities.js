@@ -34,9 +34,15 @@ var history = persist.define("history", {
           "data": type.JSON
     }, { tableName: "history" }).hasOne(setting, { createHasMany: false, foreignKey : "setting"});
 
+var player = persist.define("player", {
+          "name": type.STRING,
+          "email": type.STRING
+    }, { tableName: "player" });
+
 
 exports.setting = setting;
 exports.game = game;
 exports.schedule = schedule;
 exports.comment = comment;
 exports.history = history;
+exports.player = player;

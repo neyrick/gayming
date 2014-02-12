@@ -1,0 +1,13 @@
+{{ include ../parts/header-html }}
+
+<div>
+{{= gm }} a validé une partie de {{= setting }} le {{= date }} {{= timeframe }} avec:
+<ul>
+ {{ players.forEach( function (player) { }}
+	<li> {{= player.name }}</li>
+ {{ }) }}
+</ul>
+</div>
+
+{{ include ../parts/footer-html }}
+

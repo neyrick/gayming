@@ -1,4 +1,5 @@
 var entities = require("./entities");
+var mailer = require("./mailer");
 
 var persist = require("persist");
 
@@ -7,6 +8,7 @@ var comment = entities.comment;
 var game = entities.game;
 var schedule = entities.schedule;
 var history = entities.history;
+var playerData = entities.player
 
 var connection;
 
@@ -30,6 +32,11 @@ function storelog(logdata) {
 	new history(logdata).save(connection, function(err) {
                if (err) console.log("Error: " + err);
             });
+	mailer.notify(logdata, function (msgData) {
+		console.log("Message envoyé à " + msgData.recipient.name + ' (' + msgData.Recipient.address + ')');
+	}, function (err) {
+		console.log(err);
+	});
 }
 
 function createBaseLogData(req, source) {
@@ -396,3 +403,12 @@ function genericDelete(req, res, next, entity) {
 		next();
 	});
     }
+
+    exports.fetchSettingById = function (id, callback) {
+	setting.getById(connection, id, callback);
+    }
+
+    exports.fetchPlayerData = function (players, callback) {
+	playerData.whereIn('name', players).all(connection, callback);
+    }
+
