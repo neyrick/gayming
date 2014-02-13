@@ -24,7 +24,7 @@ function getMyScheduleId(name, schedule, role) {
     if (role == 'GM') schedules = schedule.availablegms;
     else if (role == 'PLAYER') schedules = schedule.availableplayers;
     for (var i = 0; i < schedules.length; i++) {
-        if (schedules[i].name == name) {
+        if (schedules[i].player == name) {
             return schedules[i].id;
         }
     }
@@ -32,7 +32,7 @@ function getMyScheduleId(name, schedule, role) {
 
 function getMyGMScheduleId(name, games) {
     for (var i = 0; i < games.length; i++) {
-        if (games[i].gm.name == name) {
+        if (games[i].gm.player == name) {
             return games[i].gm.id;
         }
     }
@@ -43,7 +43,7 @@ function getMyPlayerScheduleId(name, games) {
     for (i = 0; i < games.length; i++) {
         players = games[i].players;
         for (j = 0; j < players.length; j++) {
-            if (players[j].name == name) {
+            if (players[j].player == name) {
                 return players[i].id;
             }
         }

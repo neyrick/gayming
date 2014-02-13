@@ -245,13 +245,13 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
 
         // Fonctions au  niveau du tfSetting
 
-    $scope.toggleGamePlayer = function(player) {
-        if (typeof $scope.currentEdit.gamePlayers[player.name] != "undefined") {
-            delete $scope.currentEdit.gamePlayers[player.name];
+    $scope.toggleGamePlayer = function(playerSchedule) {
+        if (typeof $scope.currentEdit.gamePlayers[playerSchedule.player] != "undefined") {
+            delete $scope.currentEdit.gamePlayers[playerSchedule.player];
             $scope.currentEdit.numPlayers--;
         }
         else {
-            $scope.currentEdit.gamePlayers[player.name] = player;
+            $scope.currentEdit.gamePlayers[playerSchedule.player] = playerSchedule;
             $scope.currentEdit.numPlayers++;
         }
     }
@@ -365,9 +365,9 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
 	    var i, j, currentItem;
 	    for (i = 0; i < newschedule.games.length; i++) {
 		currentItem = newschedule.games[i];
-		if (currentItem.gm.name == $scope.currentUser) {
+		if (currentItem.gm.player == $scope.currentUser) {
 		    for (j = 0; j < currentItem.players.length; j++) {
-		        $scope.currentEdit.gamePlayers[currentItem.players[j].name] = currentItem.players[j];
+		        $scope.currentEdit.gamePlayers[currentItem.players[j].player] = currentItem.players[j];
 		        $scope.currentEdit.potentialPlayers.push(currentItem.players[j]);
 		        $scope.currentEdit.numPlayers++;
 		    }
@@ -375,7 +375,7 @@ gamegrinderApp.controller('GameGrinderCtrl', [ '$scope', 'settingsService', 'pla
 	    }
 	    for (i = 0; i < newschedule.availableplayers.length; i++ ) {
 		currentItem = newschedule.availableplayers[i];
-		if (currentItem.name != $scope.currentUser) {
+		if (currentItem.player != $scope.currentUser) {
 		    $scope.currentEdit.potentialPlayers.push(currentItem);
 		}
 	    }

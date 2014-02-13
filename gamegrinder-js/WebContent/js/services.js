@@ -111,7 +111,7 @@ gamegrinderApp.factory('planningBuilderService', ['config', function (config) {
     var addSchedule = function (rawschedule, timeframe, allSettings, me) {
         var g, game;
         var tfSetting = mergeSetting(allSettings, timeframe.settings, rawschedule.setting);
-        var newschedule = { name : rawschedule.player, id : rawschedule.idschedule, game: rawschedule.game, idcomment : rawschedule.idcomment, comment : rawschedule.message  };
+        var newschedule = { player : rawschedule.player, id : rawschedule.idschedule, game: rawschedule.game, idcomment : rawschedule.idcomment, comment : rawschedule.message  };
         if ( rawschedule.game != null) {  
             tfSetting.hasgame = true;
             game = null;

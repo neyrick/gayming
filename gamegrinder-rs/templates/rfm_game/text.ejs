@@ -2,7 +2,7 @@
 
 {{= gm.player }} a validé une partie de {{= setting }} le {{= date }} {{= timeframe }} avec:
  {{ players.forEach( function (player) { }}
- - {{= player.player }} {{ if (player.idcomment) { }} ({{= player.comment }}) {{ } }}
+ - {{= player.name }} {{ if (player.idcomment) { }} ({{= player.comment }}) {{ } }}
  {{ }) }}
 
 {{ if (gm.idcomment > 0) { }}

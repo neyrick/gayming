@@ -32,11 +32,13 @@ function storelog(logdata) {
 	new history(logdata).save(connection, function(err) {
                if (err) console.log("Error: " + err);
             });
-	mailer.notify(logdata, function (msgData) {
-		console.log("Message envoyé à " + msgData.recipient.name + ' (' + msgData.Recipient.address + ')');
-	}, function (err) {
-		console.log(err);
-	});
+	    setTimeout( function() {
+		mailer.notify(logdata, function (msgData) {
+			console.log("Message envoyé à " + msgData.recipient.name + ' (' + msgData.recipient.address + ')');
+		}, function (err) {
+			console.log(err);
+		});
+	}, 0);
 }
 
 function createBaseLogData(req, source) {
@@ -50,6 +52,20 @@ function createBaseLogData(req, source) {
 	}
 	return result;
 }
+
+    function fetchCompleteScheduleById(id, callback) {
+	var basequery = "SELECT s.id AS id, s.dayid AS dayid, s.timeframe AS timeframe, s.setting AS setting, s.game AS game, s.player AS player, s.role AS role, c.id AS idcomment,  c.message AS comment FROM schedule s LEFT OUTER JOIN comment c USING (dayid, timeframe, setting, player) WHERE s.id = ?";
+	connection.runSqlAll(basequery, [id], function(err, result) {
+		if (err) callback(err, undefined);
+		else callback(err, result[0]);
+	});	    
+    }
+    
+    function fetchCompleteSchedulesByGame(id, callback) {
+	var basequery = "SELECT s.id AS id, s.dayid AS dayid, s.timeframe AS timeframe, s.setting AS setting, s.game AS game, s.player AS player, s.role AS role, c.id AS idcomment,  c.message AS comment FROM schedule s LEFT OUTER JOIN comment c USING (dayid, timeframe, setting, player) WHERE s.game = ?";
+	connection.runSqlAll(basequery, [id], callback);	    
+    }
+    
 
 function genericFetchInterval(req, res, next, entity) {
 	var basequery = '1=1';
@@ -189,17 +205,17 @@ function genericDelete(req, res, next, entity) {
     };
 */
     exports.deleteSchedule = function(req, res, next) {
-	schedule.getById(connection, req.params.idschedule, function(err, targetschedule) {
+	fetchCompleteScheduleById(req.params.idschedule, function(err, targetschedule) {
 		if (err) res.send("Erreur: " + err);
 		else {
 			var logdata = createBaseLogData(req, targetschedule);
 			logdata.data = { role : targetschedule.role };
-			if (targetschedule.game != null) {
-				schedule.where( {game : targetschedule._game}).all(connection, function(err, players) {
+			if (targetschedule.game > 0) {
+				fetchCompleteSchedulesByGame( targetschedule.game, function(err, players) {
 					if (err) res.send("Erreur: " + err);
 					else {
 						logdata.data.players = players;
-						targetschedule.delete(connection, function(err) {
+						new schedule( { id : req.params.idschedule }).delete(connection, function(err) {
 							if (err) res.send("Erreur: " + err);
 							else {
 								storelog(logdata);
@@ -210,7 +226,7 @@ function genericDelete(req, res, next, entity) {
 				});
 			}
 			else {
-				targetschedule.delete(connection, function(err) {
+				new schedule( { id : req.params.idschedule }).delete(connection, function(err) {
 					if (err) res.send("Erreur: " + err);
 					else {
 						storelog(logdata);
@@ -299,7 +315,7 @@ function genericDelete(req, res, next, entity) {
     }
 
     exports.createGame = function(req, res, next) {
-	schedule.getById(connection, req.body.masterschedule, function(err, masterschedule) {
+	fetchCompleteScheduleById(req.body.masterschedule, function(err, masterschedule) {		
 		if (err) res.send("Erreur: " + err);
 		else {
 			var newgame = new game({ masterschedule : req.body.masterschedule});
@@ -311,7 +327,7 @@ function genericDelete(req, res, next, entity) {
 						if (err) res.send("Erreur: " + err);
 						else {
 							var logdata = createBaseLogData(req, masterschedule);
-							logdata.data = { players : req.body.players };
+							logdata.data = { gm : masterschedule, players : req.body.players };
 							res.send("OK");
 							storelog(logdata);
 						}
@@ -324,7 +340,7 @@ function genericDelete(req, res, next, entity) {
     };
 
     exports.reformGame = function(req, res, next) {
-	 schedule.where( {game : req.params.idgame}).all(connection, function(err, oldplayers) {
+	fetchCompleteSchedulesByGame(req.params.idgame, function(err, oldplayers) {
 		if (err) res.send("Erreur: " + err);
 		else {
 			var dumpedplayers = {};
@@ -355,7 +371,7 @@ function genericDelete(req, res, next, entity) {
 						if (err) res.send("Erreur: " + err);
 						else {
 							var logdata = createBaseLogData(req, masterschedule);
-							logdata.data = { dumped : dumpedplayers, kept : keptplayers, added : newplayers };
+							logdata.data = { gm : masterschedule, dumped : dumpedplayers, kept : keptplayers, added : newplayers };
 							res.send("OK");
 							storelog(logdata);
 						}
@@ -409,6 +425,7 @@ function genericDelete(req, res, next, entity) {
     }
 
     exports.fetchPlayerData = function (players, callback) {
-	playerData.whereIn('name', players).all(connection, callback);
+	var basequery = "SELECT * FROM player WHERE name IN ('" + players.join("','") + "')";
+	connection.runSqlAll(basequery, [], callback);
     }
 

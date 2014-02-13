@@ -150,7 +150,7 @@
 	<div class="ggpanelItem ggclickablelistitem cancelDiv tfSettingAction" ng-show="currentEdit.status.mj" ng-click="disbandGame()">Annuler la partie</div>
 	<div class="gameEditor ggpanelItem dummyContainer" ng-show="editingGame">
 	  <div class="ggpanelSubheader hoverDay">Choisis tes joueurs... <span class="rightbutton badge buttonBadge" ng-show="currentEdit.numPlayers > 0" ng-click="validateGame(day.id, timeframe.code, schedule.id, $event)">... Puis clique ici !</span></div>
-	  <div class="ggclickablelistitem ggpanelSubitem tfSettingAction" ng-repeat="player in currentEdit.potentialPlayers" ng-class="{validateDiv : currentEdit.gamePlayers[player.name]}" ng-click="toggleGamePlayer(player)">{{ player.name }}</div>
+	  <div class="ggclickablelistitem ggpanelSubitem tfSettingAction" ng-repeat="playerSchedule in currentEdit.potentialPlayers" ng-class="{validateDiv : currentEdit.gamePlayers[playerSchedule.player]}" ng-click="toggleGamePlayer(playerSchedule)">{{ playerSchedule.player }}</div>
 	</div>
 	<div class="ggpanelItem ggclickablelistitem noteDiv commentTrigger tfSettingAction collapsible" ng-click="openCommentEditor()" ng-show="!editingComment"><span ng-show="!(currentEdit.schedule.idcomment>0)">Ajouter un commentaire...</span><span ng-show="currentEdit.schedule.idcomment>0">Modifier mon commentaire...</span></div>
 	<div class="ggpanelItem commentEdit" ng-show="editingComment">
@@ -162,26 +162,26 @@
 	<div class="ggpanelItem" ng-repeat="game in currentEdit.schedule.games">
 	  <span class="confirmedgame tfSettingSubbox">Partie confirmée:</span>
 	  <ul class="gameRoster">
-	    <li class="nomMJ">{{ game.gm.name }}<span class="commentDisplay" ng-show="game.gm.comment"> - {{ game.gm.comment }}</span></li>
-	    <li ng-repeat="player in game.players" class="nomPJ">{{ player.name }}<span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
+	    <li class="nomMJ">{{ game.gm.player }}<span class="commentDisplay" ng-show="game.gm.comment"> - {{ game.gm.comment }}</span></li>
+	    <li ng-repeat="playerSchedule in game.players" class="nomPJ">{{ playerSchedule.player }}<span class="commentDisplay" ng-show="playerSchedule.comment"> - {{ playerSchedule.comment }}</span></li>
 	  </ul>
 	</div>
 	<div class="ggpanelItem">
 	  <span class="tfSettingSubbox">MJ Disponible(s):</span>
 	  <ul class="gameRoster">
-	    <li ng-repeat="player in currentEdit.schedule.availablegms" class="nomMJ"><span ng-class="{busyplayer : timeframe.gaming[player.name]}">{{ player.name }}</span><span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
+	    <li ng-repeat="playerSchedule in currentEdit.schedule.availablegms" class="nomMJ"><span ng-class="{busyplayer : timeframe.gaming[playerSchedule.player]}">{{ playerSchedule.player }}</span><span class="commentDisplay" ng-show="playerSchedule.comment"> - {{ playerSchedule.comment }}</span></li>
 	  </ul>
 	</div>
 	<div class="ggpanelItem">
 	  <span class="tfSettingSubbox">Joueur(s) Disponible(s):</span>
 	  <ul class="gameRoster">
-	    <li ng-repeat="player in currentEdit.schedule.availableplayers" class="nomPJ"><span ng-class="{busyplayer : timeframe.gaming[player.name]}">{{ player.name }}</span><span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
+	    <li ng-repeat="playerSchedule in currentEdit.schedule.availableplayers" class="nomPJ"><span ng-class="{busyplayer : timeframe.gaming[playerSchedule.player]}">{{ playerSchedule.player }}</span><span class="commentDisplay" ng-show="playerSchedule.comment"> - {{ playerSchedule.comment }}</span></li>
 	  </ul>
 	</div>
 	<div class="ggpanelItem">
           <span class="tfSettingSubbox">Ne sont pas disponible(s):</span>
 	  <ul class="gameRoster">
-	    <li ng-repeat="player in currentEdit.schedule.unavailable"><span ng-class="{busyplayer : timeframe.gaming[player.name]}">{{ player.name }}</span><span class="commentDisplay" ng-show="player.comment"> - {{ player.comment }}</span></li>
+	    <li ng-repeat="playerSchedule in currentEdit.schedule.unavailable"><span ng-class="{busyplayer : timeframe.gaming[playerSchedule.player]}">{{ playerSchedule.player }}</span><span class="commentDisplay" ng-show="playerSchedule.comment"> - {{ playerSchedule.comment }}</span></li>
 	  </ul>
 	</div>              
   	<div class="ggpanelItem ggbuttonbox ggclickableitem hoverDay"><span class="badge buttonBadge histButton" ng-click="showHistory($event)">Voir l'historique</span></div>

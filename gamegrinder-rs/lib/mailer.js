@@ -2,7 +2,8 @@ var path           = require('path')
   , templatesDir   = path.join(__dirname, '..', 'templates')
   , emailTemplates = require('email-templates')
   , services = require("./services")
-  , nodemailer = require('nodemailer');
+  , nodemailer = require('nodemailer')
+  , partsPath = path.join(templatesDir, 'parts');
 
 
 var ejs = require('ejs');
@@ -19,57 +20,103 @@ var transport = nodemailer.createTransport("SMTP", {
       service: "Gmail",
       auth: {
         user: "neyrick@gmail.com",
-        pass: ""
+        pass: "#####"
       }
     });
 
 function parseDayId(dayid) {
-	var daydate = new Date(dayid.substr(0, 4), dayid.substr(4, 2),  dayid.substr(6, 2), 0, 0, 0, 0);
-	return daydate.toLocaleDateString();
+	var strdayid = '' + dayid;
+	return strdayid.substr(6, 2) + '/' + strdayid.substr(4, 2) + '/' + strdayid.substr(0, 4);
 }
 
-// TODO: afficher le comment de chaque player
+var templateFactory;
+
+emailTemplates(templatesDir,  { open: '{{', close: '}}' }, function(err, template) {
+	if (err) console.log(err);
+	else templateFactory = template;
+});
+
+function buildGenericMailData(templatename, dest, mailsubject, settingname, dayid, tf, gmschedule, playersArray, actorname) {
+	return {
+					template: templatename,
+					recipient: { name : dest },
+					subject: mailsubject,
+					setting: settingname,
+					date: parseDayId(dayid),
+					timeframe: timeframeNames[tf],
+					gm: gmschedule,
+					players: playersArray,
+					actor: actorname
+	}
+}
 
 var msgBuilders = {
 	"ADD_GAME": function(eventData) {
-			var recipient, results = [];
-			for (var i = -1; i < eventData.data.players; i++) {
-				if (i == -1) recipient = { name : eventData.player };
-				else recipient = { name : eventData.data.players[i].name };
-				results.push( {
-					template: 'add_game',
-					recipient: recipient,
-					subject: 'Validation d\'une partie de ' + eventData.setting.name,
-					setting: eventData.setting,
-					date: parseDayId(eventData.dayid),
-					timeframe: timeframeNames[eventData.timeframe],
-					gm: eventData.player,
-					players: eventData.data.players
-				});
+			var player, results = [], playersTab = [];
+			for (playername in eventData.data.players) {
+				player = eventData.data.players[playername];
+				playersTab.push(player);
+				results.push( buildGenericMailData('add_game', player.player , 'Validation d\'une partie de ' + eventData.setting.name,
+					eventData.setting.name, eventData.dayid, eventData.timeframe, eventData.data.gm, playersTab, eventData.player));
 			}
+			results.push( buildGenericMailData('add_game', eventData.player , 'Validation d\'une partie de ' + eventData.setting.name,
+					eventData.setting.name, eventData.dayid, eventData.timeframe, eventData.data.gm, playersTab, eventData.player));
 			return results;
 		},
 	"RFM_GAME": function(eventData) {			
-			return [{
-				template: 'rfm_game',
-				recipient: { name : '', address : '' },
-				subject: '',
-			}];
+			var player, results = [], players = { dumped : [], kept : [], added : []};
+			for (playername in eventData.data.dumped) {
+				players.dumped.push(eventData.data.dumped[playername]);
+				results.push( buildGenericMailData('rfm_game', eventData.data.dumped[playername].player , 'Modification de la composition d\'une partie de ' + eventData.setting.name,
+					eventData.setting.name, eventData.dayid, eventData.timeframe, eventData.data.gm, players, eventData.player));
+			}
+			for (playername in eventData.data.kept) {
+				players.kept.push(eventData.data.kept[playername]);
+				results.push( buildGenericMailData('rfm_game', eventData.data.kept[playername].player , 'Modification de la composition d\'une partie de ' + eventData.setting.name,
+					eventData.setting.name, eventData.dayid, eventData.timeframe, eventData.data.gm, players, eventData.player));
+			}
+			for (playername in eventData.data.added) {
+				players.added.push(eventData.data.added[playername]);
+				results.push( buildGenericMailData('rfm_game', eventData.data.added[playername].player , 'Modification de la composition d\'une partie de ' + eventData.setting.name,
+					eventData.setting.name, eventData.dayid, eventData.timeframe, eventData.data.gm, players, eventData.player));
+			}
+			results.push( buildGenericMailData('rfm_game', eventData.data.gm.player , 'Modification de la composition d\'une partie de ' + eventData.setting.name,
+					eventData.setting.name, eventData.dayid, eventData.timeframe, eventData.data.gm, playersTab, eventData.player));
+			return results;
 		},
 	"DRP_GAME": function(eventData) {			
-			return [{
-				template: 'drp_game',
-				recipient: { name : '', address : '' },
-				subject: '',
-			}];
+			var gm, results = [], playersTab = [];
+			eventData.data.players.some( function (player) {
+				if (player.role == 'GM') {
+					gm = player;
+				}
+				else {
+					playersTab.push(player);
+				}
+			});
+			eventData.data.players.forEach( function (player) {
+				results.push( buildGenericMailData('drp_game', player.player , 'Un joueur s\'est retiré d\'une partie de ' + eventData.setting.name,
+					eventData.setting.name, eventData.dayid, eventData.timeframe, gm, playersTab, eventData.player));
+			});
+			return results;
 		},
 	"DEL_GAME": function(eventData) {			
-			return [{
-				template: 'del_game',
-				recipient: { name : '', address : '' },
-				subject: '',
-			}];
-		},
+			var gm, results = [], playersTab = [];
+			eventData.data.players.some( function (player) {
+				if (player.role == 'GM') {
+					gm = player;
+				}
+				else {
+					playersTab.push(player);
+				}
+			});
+			eventData.data.players.forEach( function (player) {
+				results.push( buildGenericMailData('del_game', player.player , 'Annulation d\'une partie de ' + eventData.setting.name,
+					eventData.setting.name, eventData.dayid, eventData.timeframe, gm, playersTab, eventData.player));
+			});
+			return results;
+		}
+		/*,
 	"SET_COMMENT": function(eventData) {			
 			return [{
 				template: 'set_comment',
@@ -77,6 +124,7 @@ var msgBuilders = {
 				subject: '',
 			}];
 		},
+		*/
 };
 
 function processMessages(builder, eventData, msgHandler) {
@@ -125,11 +173,11 @@ exports.notify = function (eventData, successCallback, errorCallback) {
 	builder = msgBuilders[action];
 
 	// Pas de message pour cette action
-	if (typeof handler == "undefined") return;
+	if (typeof builder == "undefined") return;
 	
 	processMessages(builder,eventData, function (msgData) {
 
-	    template(msgData.template, msgData, function(err, html, text) {
+	    templateFactory(msgData.template, msgData, function(err, html, text) {
 	      if (err) {
 		errorCallback(err);
 	      } else {
@@ -138,7 +186,13 @@ exports.notify = function (eventData, successCallback, errorCallback) {
 		  to: msgData.recipient.address,
 		  subject: msgData.subject,
 		  html: html,
-		  text: text
+		  text: text,
+		  attachments: [
+			{
+				filePath: partsPath + '/rel-header.png',
+				cid: 'logo@reves-et-legendes.fr'
+			}
+		]
 		}, function(err, response) {
 		  if (err) {
 		    errorCallback(err.message);
