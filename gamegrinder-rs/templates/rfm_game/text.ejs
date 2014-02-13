@@ -1,8 +1,11 @@
 {{ include ../parts/header-text }}
 
-{{= gm.player }} a validé une partie de {{= setting }} le {{= date }} {{= timeframe }} avec:
- {{ players.forEach( function (player) { }}
- - {{= player.name }} {{ if (player.idcomment) { }} ({{= player.comment }}) {{ } }}
+{{= gm.player }} a modifié la liste des joueurs de la partie de {{= setting }} du {{= date }} {{= timeframe }}. La nouvelle liste est:
+ {{ players.kept.forEach( function (schedule) { }}
+ - {{= schedule.player }} {{ if (schedule.idcomment) { }} ({{= schedule.comment }}){{ } }}
+ {{ }) }}
+ {{ players.added.forEach( function (schedule) { }}
+ - {{= schedule.player }} {{ if (schedule.idcomment) { }} ({{= schedule.comment }}){{ } }}
  {{ }) }}
 
 {{ if (gm.idcomment > 0) { }}

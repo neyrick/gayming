@@ -177,10 +177,13 @@ exports.notify = function (eventData, successCallback, errorCallback) {
 	
 	processMessages(builder,eventData, function (msgData) {
 
-	    templateFactory(msgData.template, msgData, function(err, html, text) {
+	    templateFactory(msgData.template, msgData, function(err, html, text) {	      
 	      if (err) {
 		errorCallback(err);
 	      } else {
+		if (typeof msgData.recipient.address == "undefined") {
+			return;
+		}
 		transport.sendMail({
 		  from: appFrom,
 		  to: msgData.recipient.address,

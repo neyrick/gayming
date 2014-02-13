@@ -1,0 +1,19 @@
+span.yes {
+	font-weight: bold;
+	color: #00A000;
+}
+span.no {
+	font-weight: bold;
+	color: #FF0000;
+}
+.comment {
+	font-style: italic;
+}
+.dumped {
+	text-decoration: line-through;
+}
+.kept {
+}
+.added {
+	color: #00A000;
+}
