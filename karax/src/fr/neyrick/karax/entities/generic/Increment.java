@@ -8,6 +8,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Increment {
 
+	public static final String ROLL = "ROLL";
 	public static final String CREATION = "CREATION";
 	public static final String FREE = "FREE";
 	public static final String FREEBIE = "FREEBIE";

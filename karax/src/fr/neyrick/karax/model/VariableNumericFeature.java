@@ -68,6 +68,10 @@ public abstract class VariableNumericFeature extends AbstractSingleFeature {
 		return result;
 	}
 	
+	public int getRoll() {
+		return getCost(Increment.ROLL);
+	}
+	
 	public int getCreationCost() {
 		return getCost(Increment.CREATION);
 	}
