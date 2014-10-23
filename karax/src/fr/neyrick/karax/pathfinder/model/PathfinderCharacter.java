@@ -52,6 +52,12 @@ public class PathfinderCharacter extends GameCharacter {
 
 	private SimpleVariable armorpenalty;
 	
+	private SimpleVariable hitpoints;
+	
+	private ArmorClass armorclass;
+	
+	private SimpleVariable initiative;
+	
 	private StaticFeaturesCollection<StringFeature> favoredClasses;
 
 	private StaticFeaturesCollection<StringFeature> feats;
@@ -66,7 +72,7 @@ public class PathfinderCharacter extends GameCharacter {
 	
 	private StaticFeaturesCollection<StringFeature> domains;
 	
-	private VariableFeaturesCollection<SimpleVariable> spellSlots;
+	private SpellSlotsMap spellSlots;
 
 	private VariableFeaturesCollection<Ability> abilities;
 	
@@ -75,6 +81,8 @@ public class PathfinderCharacter extends GameCharacter {
 	private VariableFeaturesCollection<SimpleVariable> levels;
 	
 	private StaticFeaturesCollection<StringFeature> specialAbilities;
+
+	private VariableFeaturesCollection<SimpleVariable> saves;
 
 
 	@XmlElement
@@ -194,6 +202,33 @@ public class PathfinderCharacter extends GameCharacter {
 		this.armorpenalty = armorpenalty;
 	}
 
+	@XmlElement
+	public SimpleVariable getHitpoints() {
+		return hitpoints;
+	}
+
+	public void setHitpoints(SimpleVariable hitpoints) {
+		this.hitpoints = hitpoints;
+	}
+
+	@XmlElement
+	public ArmorClass getArmorclass() {
+		return armorclass;
+	}
+
+	public void setArmorclass(ArmorClass armorclass) {
+		this.armorclass = armorclass;
+	}
+
+	@XmlElement
+	public SimpleVariable getInitiative() {
+		return initiative;
+	}
+
+	public void setInitiative(SimpleVariable initiative) {
+		this.initiative = initiative;
+	}
+
 	@XmlElementWrapper(name="favoredclasses")
 	@XmlElement(name="favoredclass")
 	public Collection<StringFeature> getFavoredClasses() {
@@ -286,12 +321,12 @@ public class PathfinderCharacter extends GameCharacter {
 	}
 
 	@XmlElementWrapper(name="spellSlots")
-	@XmlElement(name="skill")
-	public Collection<SimpleVariable> getSpellSlots() {
+	@XmlElement(name="slots")
+	public Collection<SpellSlotsArray> getSpellSlots() {
 		return spellSlots.getActualSubFeatures();
 	}
 
-	public void setSpellSlots(VariableFeaturesCollection<SimpleVariable> spellSlots) {
+	public void setSpellSlots(SpellSlotsMap spellSlots) {
 		this.spellSlots = spellSlots;
 	}
 
@@ -313,6 +348,16 @@ public class PathfinderCharacter extends GameCharacter {
 
 	public void setSpecialAbilities(StaticFeaturesCollection<StringFeature> specialAbilities) {
 		this.specialAbilities = specialAbilities;
+	}
+
+	@XmlElementWrapper(name="saves")
+	@XmlElement(name="save")
+	public Collection<SimpleVariable> getSaves() {
+		return saves.getActualSubFeatures();
+	}
+
+	public void setSaves(VariableFeaturesCollection<SimpleVariable> saves) {
+		this.saves = saves;
 	}
 
 }

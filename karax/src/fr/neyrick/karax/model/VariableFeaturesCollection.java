@@ -18,6 +18,14 @@ public class VariableFeaturesCollection<T extends VariableNumericFeature> extend
 	
 	private FeatureCalculator defaultCalculator = null;
 		
+	public int getTotalIntValue() {
+		int result = 0;
+		for(Map.Entry<String, T> item : featuresMap.entrySet()) {
+			result += item.getValue().getNumericValue().intValue();
+		}
+		return result;
+	}
+	
 	protected FeatureCalculator getExtraItemCalculator(CharacterEdit edit) {
 		return defaultCalculator;
 	}

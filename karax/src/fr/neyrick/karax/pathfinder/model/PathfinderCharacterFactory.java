@@ -55,7 +55,8 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		character.setGender(registerListener(new StringFeature("GENDER")));
 		character.setAge(registerListener(new FixedNumericFeature("ACTUAL_AGE")));
 		
-	    character.setLevels(registerListener(new VariableFeaturesCollection<>("LEVEL", SimpleVariable.class)));
+		VariableFeaturesCollection<SimpleVariable> levels = new VariableFeaturesCollection<>("LEVEL", SimpleVariable.class);
+	    character.setLevels(registerListener(levels));
 	    character.setSpecialAbilities(registerListener(registerListener(new StaticFeaturesCollection<StringFeature>("SP_ABILITY", StringFeature.class))));
 		SimpleVariable armorPenaltyVariable = new SimpleVariable("ARMOR_PENALTY");
 		
@@ -113,8 +114,19 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		skills.addSkill("SWIM", "STR", false, true);
 		skills.addSkill("USE_MAGIC_DEVICE", "CHA", false, true);
 		
+		// Saves
+		
+		VariableFeaturesCollection<SimpleVariable> saves = registerListener(new VariableFeaturesCollection<>("SAVE", SimpleVariable.class));
+		character.setSaves(saves);
+		saves.addFeature(new SimpleVariable("FOR", new SaveCalculator(abilitiesMap.get("CON"))));
+		saves.addFeature(new SimpleVariable("REF", new SaveCalculator(abilitiesMap.get("DEX"))));
+		saves.addFeature(new SimpleVariable("WIL", new SaveCalculator(abilitiesMap.get("WIL"))));
+		
 		// Misc
 		
+		character.setArmorclass(registerListener(new ArmorClass("AC", new ArmorClassCalculator(abilitiesMap.get("DEX")))));
+		character.setInitiative(registerListener(new SimpleVariable("INITIATIVE", new InitiativeCalculator((abilitiesMap.get("DEX"))))));
+		character.setHitpoints(registerListener(new SimpleVariable("HP", new HitPointCalculator(abilitiesMap.get("CON"), levels))));
 		character.setArmorpenalty(registerListener(armorPenaltyVariable));
 		character.setFavoredClasses(registerListener(new StaticFeaturesCollection<StringFeature>("FAVORED_CLASS", StringFeature.class)));
 		character.setFeats(registerListener(new StaticFeaturesCollection<StringFeature>("FEAT", StringFeature.class)));
@@ -124,10 +136,7 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		character.setKnownSpells(registerListener(new StaticFeaturesCollection<StringFeature>("KNOWN_SPELL", StringFeature.class)));
 
 		// Spell slots
-		VariableFeaturesCollection<SimpleVariable> spellSlots = registerListener(new VariableFeaturesCollection<SimpleVariable>("SPELL_SLOT", SimpleVariable.class));
-		for (int lvl = 0; lvl < 10; lvl++) {
-			spellSlots.addFeature(new SimpleVariable(Integer.toString(lvl)));
-		}
+		SpellSlotsMap spellSlots = registerListener(new SpellSlotsMap("SPELL_SLOT"));
 		character.setSpellSlots(spellSlots);
 		
 		// Gear
