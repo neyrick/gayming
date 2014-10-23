@@ -120,7 +120,7 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		character.setSaves(saves);
 		saves.addFeature(new SimpleVariable("FOR", new SaveCalculator(abilitiesMap.get("CON"))));
 		saves.addFeature(new SimpleVariable("REF", new SaveCalculator(abilitiesMap.get("DEX"))));
-		saves.addFeature(new SimpleVariable("WIL", new SaveCalculator(abilitiesMap.get("WIL"))));
+		saves.addFeature(new SimpleVariable("WIL", new SaveCalculator(abilitiesMap.get("WIS"))));
 		
 		// Misc
 		
@@ -138,6 +138,9 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		// Spell slots
 		SpellSlotsMap spellSlots = registerListener(new SpellSlotsMap("SPELL_SLOT"));
 		character.setSpellSlots(spellSlots);
+		
+		character.setDomains(registerListener(new StaticFeaturesCollection<StringFeature>("DOMAIN", StringFeature.class)));
+		
 		
 		// Gear
 		

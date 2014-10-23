@@ -4,10 +4,12 @@ import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import fr.neyrick.karax.model.SimpleVariable;
 import fr.neyrick.karax.model.VariableFeaturesCollection;
 
+@XmlTransient
 public class SpellSlotsArray extends VariableFeaturesCollection<SimpleVariable> {
 
 	@XmlAttribute
@@ -23,6 +25,5 @@ public class SpellSlotsArray extends VariableFeaturesCollection<SimpleVariable> 
 	public SpellSlotsArray(String key) {
 		super(key, SimpleVariable.class);
 	}
-
 
 }
