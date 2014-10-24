@@ -14,7 +14,7 @@ public class InitiativeCalculator extends AbstractNumericFeatureCalculator imple
 
 		int result = calculateFromTotalCost((VariableNumericFeature) feature);
 		
-		result += dexterity.getBonus();
+		result += dexterity.getBonusValue();
 				
 		return result;
 	}

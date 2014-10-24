@@ -1,7 +1,9 @@
 package fr.neyrick.karax.pathfinder.model;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,13 +18,21 @@ import fr.neyrick.karax.model.VariableFeaturesCollection;
 @XmlAccessorType(XmlAccessType.NONE)
 public class PathfinderSkillList extends VariableFeaturesCollection<Skill> {
 
+	public static final String CLASS_SKILL = "CLASS";
+	
 	public static final String SUBKEY_PROFESSION = "PR:";
+	public static final String SKILL_PROFESSION = "PROFESSION";
 	public static final String SUBKEY_CRAFT = "CR:";
+	public static final String SKILL_CRAFT = "CRAFT";
 	public static final String SUBKEY_KNOWLEDGE = "KN:";
+	public static final String SKILL_KNOWLEDGE = "KNOWLEDGE";
 	public static final String SUBKEY_PERFORM = "PE:";
+	public static final String SKILL_PERFORM = "PERFORM";
 	
 	private Map<String, SkillCalculator> calculatorsMap = new HashMap<>();
 
+	private Set<String> classSkills = new HashSet<>();
+	
 	public Map<String, SkillCalculator> getCalculatorsMap() {
 		return calculatorsMap;
 	}
@@ -58,6 +68,24 @@ public class PathfinderSkillList extends VariableFeaturesCollection<Skill> {
 	protected void customizeExtraFeature(CharacterEdit edit, Skill newFeature) {
 		super.customizeExtraFeature(edit, newFeature);
 		newFeature.setLinkedAbility(getLinkedAbilityKey(edit));
+	}
+
+	protected boolean isClassSkill(String skillKey) {
+		if (skillKey.startsWith(SUBKEY_CRAFT) && classSkills.contains(SKILL_CRAFT)) return true;
+		if (skillKey.startsWith(SUBKEY_KNOWLEDGE) && classSkills.contains(SKILL_KNOWLEDGE)) return true;
+		if (skillKey.startsWith(SUBKEY_PROFESSION) && classSkills.contains(SKILL_PROFESSION)) return true;
+		if (skillKey.startsWith(SUBKEY_PERFORM) && classSkills.contains(SKILL_PERFORM)) return true;
+		return classSkills.contains(skillKey);
+	}
+	
+	@Override
+	public void recordEdit(CharacterEdit edit) {
+		if (CLASS_SKILL.equals(edit.getValue())) {
+			classSkills.add(edit.getTargetSubKey1());
+		}
+		else {
+			super.recordEdit(edit);
+		}
 	}
 
 	public PathfinderSkillList(FeaturesCollection parent, String key, Map<String, SkillCalculator> calculatorsMap) {

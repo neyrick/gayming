@@ -27,7 +27,7 @@ public class SkillCalculator extends AbstractNumericFeatureCalculator implements
 			return 0;
 		}
 		
-		result += baseAbility.getBonus();
+		result += baseAbility.getBonusValue();
 		
 		if (skill.isArmorpenalty()) {
 			result += this.armorpenalty.getNumericValue().intValue();

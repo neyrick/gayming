@@ -15,7 +15,7 @@ public class SaveCalculator extends AbstractNumericFeatureCalculator implements 
 		
 		int result = save.getTotalCost();
 		
-		result += ability.getBonus();
+		result += ability.getBonusValue();
 		
 		return result;
 	}

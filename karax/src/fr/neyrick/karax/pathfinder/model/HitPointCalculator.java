@@ -18,7 +18,7 @@ public class HitPointCalculator extends AbstractNumericFeatureCalculator impleme
 		
 		int result = calculateFromTotalCost((VariableNumericFeature) feature);
 		
-		result += levels.getTotalIntValue() * constitution.getBonus();
+		result += levels.getTotalIntValue() * constitution.getBonusValue();
 				
 		return result;
 	}

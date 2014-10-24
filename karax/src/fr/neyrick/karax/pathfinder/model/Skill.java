@@ -18,8 +18,6 @@ public class Skill extends VariableNumericFeature {
 	
 	private boolean nodefault = false;
 	
-	private boolean classskill = false;
-	
 	private boolean armorpenalty = false;
 	
 	private int ranks = 0;
@@ -83,16 +81,12 @@ public class Skill extends VariableNumericFeature {
 	
 	@XmlAttribute
 	public boolean isClassskill() {
-		return classskill;
+		return ((PathfinderSkillList)this.getContainer()).isClassSkill(getKey());
 	}
 
 	@XmlAttribute
 	public boolean isArmorpenalty() {
 		return armorpenalty;
-	}
-
-	public void setClassskill(boolean classskill) {
-		this.classskill = classskill;
 	}
 
 	public Skill() {

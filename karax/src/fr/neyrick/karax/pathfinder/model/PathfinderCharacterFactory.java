@@ -52,8 +52,8 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		character.setDeity(registerListener(new StringFeature("DEITY")));
 		character.setAlignment(registerListener(new StringFeature("ALIGNMENT")));
 		character.setHomeland(registerListener(new StringFeature("HOMELAND")));
-		character.setGender(registerListener(new StringFeature("GENDER")));
-		character.setAge(registerListener(new FixedNumericFeature("ACTUAL_AGE")));
+		character.setSex(registerListener(new StringFeature("SEX")));
+		character.setAge(registerListener(new FixedNumericFeature("AGE")));
 		
 		VariableFeaturesCollection<SimpleVariable> levels = new VariableFeaturesCollection<>("LEVEL", SimpleVariable.class);
 	    character.setLevels(registerListener(levels));
@@ -132,7 +132,7 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		character.setFeats(registerListener(new StaticFeaturesCollection<StringFeature>("FEAT", StringFeature.class)));
 		character.setTraits(registerListener(new StaticFeaturesCollection<StringFeature>("TRAIT", StringFeature.class)));
 		character.setRaceTraits(registerListener(new StaticFeaturesCollection<StringFeature>("RACE_TRAIT", StringFeature.class)));
-		character.setGear(registerListener(new StaticFeaturesCollection<StringFeature>("GEAR", StringFeature.class)));
+		character.setLanguages(registerListener(new StaticFeaturesCollection<StringFeature>("LANGUAGE", StringFeature.class)));
 		character.setKnownSpells(registerListener(new StaticFeaturesCollection<StringFeature>("KNOWN_SPELL", StringFeature.class)));
 
 		// Spell slots

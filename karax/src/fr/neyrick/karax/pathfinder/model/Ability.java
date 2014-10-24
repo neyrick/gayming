@@ -1,5 +1,7 @@
 package fr.neyrick.karax.pathfinder.model;
 
+import java.text.DecimalFormat;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -14,6 +16,8 @@ import fr.neyrick.karax.model.VariableNumericFeature;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Ability extends VariableNumericFeature {
 
+	private static final DecimalFormat signFormat = new DecimalFormat("+#,##0;-#");
+	
 	@XmlAttribute
 	public String getDisplay() {
 		return tryTranslation(getKey());
@@ -32,7 +36,11 @@ public class Ability extends VariableNumericFeature {
 	}
 
 	@XmlAttribute
-	public int getBonus() {
+	public String getBonus() {
+		return signFormat.format((this.getNumericValue().intValue() / 2)-5);
+	}
+
+	public int getBonusValue() {
 		return (this.getNumericValue().intValue() / 2)-5;
 	}
 

@@ -73,8 +73,9 @@ public class VariableFeaturesCollection<T extends VariableNumericFeature> extend
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-	    feature.setKey(subItemKey);
-	    feature.setCalculator(getExtraItemCalculator(edit));
+	    feature.setKey(subItemKey);	    
+	    FeatureCalculator calculator = getExtraItemCalculator(edit);
+	    if (calculator != null) feature.setCalculator(calculator);
 	    customizeExtraFeature(edit, feature);
 	    return addFeature(feature);
 	}

@@ -46,7 +46,7 @@ public class PathfinderCharacter extends GameCharacter {
 	
 	private StringFeature homeland;
 	
-	private StringFeature gender;
+	private StringFeature sex;
 
 	private FixedNumericFeature age;
 
@@ -65,6 +65,8 @@ public class PathfinderCharacter extends GameCharacter {
 	private StaticFeaturesCollection<StringFeature> traits;
 
 	private StaticFeaturesCollection<StringFeature> raceTraits;
+
+	private StaticFeaturesCollection<StringFeature> languages;
 
 	private StaticFeaturesCollection<StringFeature> gear;
 
@@ -176,12 +178,12 @@ public class PathfinderCharacter extends GameCharacter {
 	}
 
 	@XmlElement
-	public StringFeature getGender() {
-		return gender;
+	public StringFeature getSex() {
+		return sex;
 	}
 
-	public void setGender(StringFeature gender) {
-		this.gender = gender;
+	public void setSex(StringFeature sex) {
+		this.sex = sex;
 	}
 
 	@XmlElement
@@ -258,6 +260,16 @@ public class PathfinderCharacter extends GameCharacter {
 
 	public void setRaceTraits(StaticFeaturesCollection<StringFeature> raceTraits) {
 		this.raceTraits = raceTraits;
+	}
+
+	@XmlElementWrapper(name="languages")
+	@XmlElement(name="languages")
+	public Collection<StringFeature> getLanguages() {
+		return languages.getActualSubFeatures();
+	}
+
+	public void setLanguages(StaticFeaturesCollection<StringFeature> languages) {
+		this.languages = languages;
 	}
 
 	@XmlElementWrapper(name="knownspells")
