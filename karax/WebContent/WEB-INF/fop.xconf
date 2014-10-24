@@ -93,6 +93,10 @@ the location of this file.
         <font kerning="yes" embed-url="GriffosSCapsFont.ttf">
           <font-triplet name="Griffos" style="normal" weight="normal"/>
         </font>
+
+        <font kerning="yes" embed-url="CarroisGothicSC-Regular.ttf">
+          <font-triplet name="Carrois" style="normal" weight="normal"/>
+        </font>
       </fonts>
 
       <!-- This option lets you specify additional options on an XML handler -->

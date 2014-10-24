@@ -5,6 +5,8 @@
   
   <!-- Isolate locale-specific content -->
 
+  <xsl:variable name="label.total" select="'Total'"/>
+  <xsl:variable name="label.misc" select="'Divers'"/>
   <xsl:variable name="label.name" select="'Nom du personnage'"/>
   <xsl:variable name="label.player" select="'Joueur'"/>
   <xsl:variable name="label.bonus" select="'Bonus'"/>
@@ -28,12 +30,15 @@
   <xsl:variable name="label.levels" select="'Classe et Niveau'"/>
   <xsl:variable name="label.race" select="'Race'"/>
   <xsl:variable name="label.racetraits" select="'Traits de race'"/>
-  <xsl:variable name="label.saves" select="'Sauvegarde'"/>
+  <xsl:variable name="label.savingthrows" select="'Jets de Sauvegarde'"/>
   <xsl:variable name="label.saveFOR" select="'Vigueur'"/>
-  <xsl:variable name="label.saveWIL" select="'Volonté'"/>
-  <xsl:variable name="label.saveREF" select="'Réflexes'"/>
-  <xsl:variable name="label.size" select="'Cat. Taille'"/>
-  <xsl:variable name="label.skills" select="'Compétences'"/>
+  <xsl:variable name="label.saveWIL" select="'Volontè'"/>
+  <xsl:variable name="label.saveREF" select="'Rèflexes'"/>
+  <xsl:variable name="label.saveBase" select="'Base'"/>
+  <xsl:variable name="label.saveAbility" select="'Carac'"/>
+  <xsl:variable name="label.saveMagic" select="'Magie'"/>
+  <xsl:variable name="label.size" select="'Gabarit'"/>
+  <xsl:variable name="label.skills" select="'Compètences'"/>
   <xsl:variable name="label.subrace" select="'Sous-race'"/>
   <xsl:variable name="label.weight" select="'Poids'"/>
   <xsl:variable name="label.abilitySTR" select="'FOR'"/>
@@ -48,5 +53,9 @@
   <xsl:variable name="label.abilityLongINT" select="'INTELLIGENCE'"/>
   <xsl:variable name="label.abilityLongWIS" select="'SAGESSE'"/>
   <xsl:variable name="label.abilityLongCHA" select="'CHARISME'"/>
+  <xsl:variable name="label.ACarmor" select="'Armure'"/>
+  <xsl:variable name="label.ACshield" select="'Bouclier'"/>
+  <xsl:variable name="label.ACnatural" select="'Naturelle'"/>
+  <xsl:variable name="label.ACdeflection" select="'Parade'"/>
 
 </xsl:stylesheet>
