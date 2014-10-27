@@ -1,19 +1,19 @@
 package fr.neyrick.karax.eclipsephase.model;
 
-import fr.neyrick.karax.model.CharacterFeature;
 import fr.neyrick.karax.model.FeatureCalculator;
+import fr.neyrick.karax.model.SimpleVariable;
 import fr.neyrick.karax.model.VariableNumericFeature;
 
-public class InitiativeCalculator implements FeatureCalculator {
+public class InitiativeCalculator extends FeatureCalculator<SimpleVariable> {
 
 	private VariableNumericFeature aptitudeINTFeature;
 	
 	private VariableNumericFeature aptitudeREFFeature;
 	
 	@Override
-	public Number calculate(CharacterFeature feature) {
+	public Number calculateFeature(SimpleVariable feature) {
 		int base = (int)Math.ceil((aptitudeINTFeature.getNumericValue().intValue()+aptitudeREFFeature.getNumericValue().intValue())/5.);
-		base += ((VariableNumericFeature)feature).getModifier();
+		base += feature.getModifier();
 		return base;
 	}
 

@@ -14,19 +14,11 @@ import fr.neyrick.karax.entities.generic.Increment;
 @XmlTransient
 public abstract class VariableNumericFeature extends AbstractSingleFeature {
 
-	protected static final FeatureCalculator defaultCalculator = new AbstractNumericFeatureCalculator() {
-		
-		@Override
-		public Number calculate(CharacterFeature feature) {
-			return super.calculateFromTotalCost((VariableNumericFeature)feature);
-		}
-	};
-	
 	private static final NumberFormat format = NumberFormat.getNumberInstance();
 	
 	private List<Increment> increments = new ArrayList<>();
 		
-	private FeatureCalculator calculator = null;
+	private FeatureCalculator<? extends VariableNumericFeature> calculator = null;
 	
 	private boolean uptodate = false;
 
@@ -52,11 +44,11 @@ public abstract class VariableNumericFeature extends AbstractSingleFeature {
 		return value;
 	}
 	
-	public FeatureCalculator getCalculator() {
+	public FeatureCalculator<? extends VariableNumericFeature> getCalculator() {
 		return calculator;
 	}
 
-	public void setCalculator(FeatureCalculator calculator) {
+	public void setCalculator(FeatureCalculator<? extends VariableNumericFeature> calculator) {
 		this.calculator = calculator;
 	}
 
@@ -114,12 +106,12 @@ public abstract class VariableNumericFeature extends AbstractSingleFeature {
 		return result;
 	}
 	
-	public VariableNumericFeature(FeaturesCollection container, String key, FeatureCalculator calculator) {
+	public VariableNumericFeature(FeaturesCollection container, String key, FeatureCalculator<? extends VariableNumericFeature> calculator) {
 		super(container, key);
 		setCalculator(calculator);
 	}
 
-	public VariableNumericFeature(String key, FeatureCalculator calculator) {
+	public VariableNumericFeature(String key, FeatureCalculator<? extends VariableNumericFeature> calculator) {
 		super(null, key);
 		setCalculator(calculator);
 	}

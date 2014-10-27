@@ -45,7 +45,7 @@ public class EclipsePhaseSkillList extends VariableFeaturesCollection<Skill> {
 		this.calculatorsMap = calculatorsMap;
 	}
 
-	protected FeatureCalculator getCalculator(String calculatorKey) {
+	protected FeatureCalculator<Skill> getCalculator(String calculatorKey) {
 		if (calculatorKey == null) return null;
 		return calculatorsMap.get(calculatorKey);
 	}
@@ -67,7 +67,7 @@ public class EclipsePhaseSkillList extends VariableFeaturesCollection<Skill> {
 	}
 	
 	@Override
-	protected FeatureCalculator getExtraItemCalculator(CharacterEdit edit) {
+	protected FeatureCalculator<Skill> getExtraItemCalculator(CharacterEdit edit) {
 		return calculatorsMap.get(getLinkedAptitudeKey(edit));
 	}
 

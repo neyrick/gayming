@@ -14,10 +14,72 @@ import fr.neyrick.karax.model.VariableNumericFeature;
 @XmlAccessorType(XmlAccessType.NONE)
 public class ArmorClass extends VariableNumericFeature {
 
+	private int shield = 0;
+	private int armor = 0;
+	private int size = 0;
+	private int natural = 0;
+	private int deflection = 0;
+	private int misc = 0;
+	
 	private int flatfooted = 0;
-	
 	private int touch = 0;
+		
 	
+	@XmlAttribute
+	public int getShield() {
+		refresh();
+		return shield;
+	}
+
+	public void setShield(int shield) {
+		this.shield = shield;
+	}
+
+	@XmlAttribute
+	public int getArmor() {
+		return armor;
+	}
+
+	public void setArmor(int armor) {
+		this.armor = armor;
+	}
+
+	@XmlAttribute
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	@XmlAttribute
+	public int getNatural() {
+		return natural;
+	}
+
+	public void setNatural(int natural) {
+		this.natural = natural;
+	}
+
+	@XmlAttribute
+	public int getDeflection() {
+		return deflection;
+	}
+
+	public void setDeflection(int deflection) {
+		this.deflection = deflection;
+	}
+
+	@XmlAttribute
+	public int getMisc() {
+		return misc;
+	}
+
+	public void setMisc(int misc) {
+		this.misc = misc;
+	}
+
 	@XmlAttribute
 	@Override
 	public String getKey() {
@@ -55,11 +117,11 @@ public class ArmorClass extends VariableNumericFeature {
 	}
 
 	public ArmorClass(FeaturesCollection container, String key,
-			FeatureCalculator calculator) {
+			FeatureCalculator<ArmorClass> calculator) {
 		super(container, key, calculator);
 	}
 
-	public ArmorClass(String key, FeatureCalculator calculator) {
+	public ArmorClass(String key, FeatureCalculator<ArmorClass> calculator) {
 		super(key, calculator);
 	}
 

@@ -2,10 +2,9 @@ package fr.neyrick.karax.model;
 
 import fr.neyrick.karax.entities.generic.Increment;
 
-public abstract class AbstractNumericFeatureCalculator implements
-		FeatureCalculator {
+public abstract class AbstractNumericFeatureCalculator<T extends VariableNumericFeature> extends FeatureCalculator<T> {
 
-	protected int calculateFromRegularCost(VariableNumericFeature feature) {
+	protected int calculateFromRegularCost(T feature) {
 		double result = 0.;
 		for (Increment inc : feature.getIncrements()) {
 			if (Increment.REGULAR_COSTS.contains(inc.getAmountType())) {
@@ -15,7 +14,7 @@ public abstract class AbstractNumericFeatureCalculator implements
 		return (int)result;
 	}
 	
-	protected int calculateFromTotalCost(VariableNumericFeature feature) {
+	protected int calculateFromTotalCost(T feature) {
 		double result = 0.;
 		for (Increment inc : feature.getIncrements()) {
 			result += inc.getAmount() * inc.getMultiplier();

@@ -1,11 +1,8 @@
 package fr.neyrick.karax.pathfinder.model;
 
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
-import fr.neyrick.karax.model.CharacterFeature;
-import fr.neyrick.karax.model.FeatureCalculator;
-import fr.neyrick.karax.model.VariableNumericFeature;
 
-public class AbilityCalculator extends AbstractNumericFeatureCalculator implements FeatureCalculator{
+public class AbilityCalculator extends AbstractNumericFeatureCalculator<Ability>{
 
 	private int getValueFromCost(int cost) {
 		switch(cost) {
@@ -26,19 +23,17 @@ public class AbilityCalculator extends AbstractNumericFeatureCalculator implemen
 	}
 	
 	@Override
-	public Number calculate(CharacterFeature feature) {
-		VariableNumericFeature targetFeature = (VariableNumericFeature)feature;
-		
+	public Number calculateFeature(Ability feature) {
 		int result = 0;
 		
-		result = targetFeature.getRoll();
+		result = feature.getRoll();
 		if (result == 0) {
-			result = getValueFromCost(targetFeature.getCreationCost());
+			result = getValueFromCost(feature.getCreationCost());
 		}
 		
-		result += targetFeature.getCost("RACE");
-		result += targetFeature.getExperienceCost();
-		result += targetFeature.getCost("MAGIC");
+		result += feature.getCost("RACE");
+		result += feature.getExperienceCost();
+		result += feature.getCost("MAGIC");
 
 		return result;
 	}

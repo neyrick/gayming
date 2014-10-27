@@ -1,28 +1,38 @@
 package fr.neyrick.karax.pathfinder.model;
 
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
-import fr.neyrick.karax.model.CharacterFeature;
-import fr.neyrick.karax.model.FeatureCalculator;
 
-public class ArmorClassCalculator extends AbstractNumericFeatureCalculator implements FeatureCalculator{
+public class ArmorClassCalculator extends AbstractNumericFeatureCalculator<ArmorClass>{
 
 	private Ability dexterity;
 	
 	@Override
-	public Number calculate(CharacterFeature feature) {
+	public Number calculateFeature(ArmorClass feature) {
 		
-		ArmorClass armorClass = (ArmorClass)feature;
-		int result = 10;
-		result += super.calculateFromTotalCost(armorClass);
+		int result = 0;
+		result += super.calculateFromTotalCost(feature);
 		
-		int armorBonus = armorClass.getCost("ARMOR");
-		int naturalArmorBonus = armorClass.getCost("NATURAL_ARMOR");
+		int armorBonus = feature.getCost("ARMOR");
+		int naturalArmorBonus = feature.getCost("NATURAL_ARMOR");
+		int shieldBonus = feature.getCost("SHIELD");
+		int sizeBonus = feature.getCost("SIZE");
+		int deflectionBonus = feature.getCost("DEFLECTION");
+		int miscBonus = result - armorBonus - naturalArmorBonus - shieldBonus - sizeBonus - deflectionBonus;
 		
-		armorClass.setFlatfooted(result);
+		feature.setArmor(armorBonus);
+		feature.setShield(shieldBonus);
+		feature.setSize(sizeBonus);
+		feature.setNatural(naturalArmorBonus);
+		feature.setDeflection(deflectionBonus);
+		feature.setMisc(miscBonus);
+		
+		result += 10;
+				
+		feature.setFlatfooted(result);
 		
 		result += dexterity.getBonusValue();
 		
-		armorClass.setTouch(result - armorBonus - naturalArmorBonus);
+		feature.setTouch(result - armorBonus - naturalArmorBonus);
 				
 		return result;
 	}

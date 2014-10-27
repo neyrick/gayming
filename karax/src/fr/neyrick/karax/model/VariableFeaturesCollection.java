@@ -16,7 +16,7 @@ public class VariableFeaturesCollection<T extends VariableNumericFeature> extend
 	
 	private final Class<? extends T> featureClass;
 	
-	private FeatureCalculator defaultCalculator = null;
+	private FeatureCalculator<T> defaultCalculator = null;
 		
 	public int getTotalIntValue() {
 		int result = 0;
@@ -26,19 +26,19 @@ public class VariableFeaturesCollection<T extends VariableNumericFeature> extend
 		return result;
 	}
 	
-	protected FeatureCalculator getExtraItemCalculator(CharacterEdit edit) {
+	protected FeatureCalculator<T> getExtraItemCalculator(CharacterEdit edit) {
 		return defaultCalculator;
 	}
 
-	public FeatureCalculator getDefaultCalculator() {
+	public FeatureCalculator<T> getDefaultCalculator() {
 		return defaultCalculator;
 	}
 
-	public void setDefaultCalculator(FeatureCalculator defaultCalculator) {
+	public void setDefaultCalculator(FeatureCalculator<T> defaultCalculator) {
 		this.defaultCalculator = defaultCalculator;
 	}
 
-	public VariableFeaturesCollection(FeaturesCollection parent, String key, Class<T> featureClass, FeatureCalculator calculator) {
+	public VariableFeaturesCollection(FeaturesCollection parent, String key, Class<T> featureClass, FeatureCalculator<T> calculator) {
 		super(parent, key);
 		this.featureClass = featureClass;
 		this.defaultCalculator = calculator;
@@ -49,7 +49,7 @@ public class VariableFeaturesCollection<T extends VariableNumericFeature> extend
 		this.featureClass = featureClass;
 	}
 
-	public VariableFeaturesCollection(String key, Class<T> featureClass, FeatureCalculator calculator) {
+	public VariableFeaturesCollection(String key, Class<T> featureClass, FeatureCalculator<T> calculator) {
 		super(key);
 		this.featureClass = featureClass;
 		this.defaultCalculator = calculator;
@@ -74,7 +74,7 @@ public class VariableFeaturesCollection<T extends VariableNumericFeature> extend
 			throw new RuntimeException(e);
 		}
 	    feature.setKey(subItemKey);	    
-	    FeatureCalculator calculator = getExtraItemCalculator(edit);
+	    FeatureCalculator<T> calculator = getExtraItemCalculator(edit);
 	    if (calculator != null) feature.setCalculator(calculator);
 	    customizeExtraFeature(edit, feature);
 	    return addFeature(feature);

@@ -10,8 +10,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import fr.neyrick.karax.entities.generic.CharacterEdit;
 import fr.neyrick.karax.model.CharacterFeature;
 import fr.neyrick.karax.model.FeaturesCollection;
-import fr.neyrick.karax.model.SimpleVariable;
-import fr.neyrick.karax.model.VariableFeaturesCollection;
 
 @XmlTransient
 public class SpellSlotsMap extends FeaturesCollection {

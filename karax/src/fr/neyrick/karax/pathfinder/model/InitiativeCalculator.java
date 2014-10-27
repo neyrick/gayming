@@ -1,18 +1,17 @@
 package fr.neyrick.karax.pathfinder.model;
 
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
-import fr.neyrick.karax.model.CharacterFeature;
-import fr.neyrick.karax.model.FeatureCalculator;
-import fr.neyrick.karax.model.VariableNumericFeature;
 
-public class InitiativeCalculator extends AbstractNumericFeatureCalculator implements FeatureCalculator{
+public class InitiativeCalculator extends AbstractNumericFeatureCalculator<Initiative>{
 
 	private Ability dexterity;
 	
 	@Override
-	public Number calculate(CharacterFeature feature) {
+	public Number calculateFeature(Initiative feature) {
 
-		int result = calculateFromTotalCost((VariableNumericFeature) feature);
+		int result = calculateFromTotalCost(feature);
+		feature.setMisc(result);
+		
 		
 		result += dexterity.getBonusValue();
 				

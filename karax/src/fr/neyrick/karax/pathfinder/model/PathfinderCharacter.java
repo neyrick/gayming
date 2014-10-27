@@ -56,7 +56,7 @@ public class PathfinderCharacter extends GameCharacter {
 	
 	private ArmorClass armorclass;
 	
-	private SimpleVariable initiative;
+	private Initiative initiative;
 	
 	private StaticFeaturesCollection<StringFeature> favoredClasses;
 
@@ -84,7 +84,7 @@ public class PathfinderCharacter extends GameCharacter {
 	
 	private StaticFeaturesCollection<StringFeature> specialAbilities;
 
-	private VariableFeaturesCollection<SimpleVariable> saves;
+	private VariableFeaturesCollection<Save> saves;
 
 
 	@XmlElement
@@ -223,11 +223,11 @@ public class PathfinderCharacter extends GameCharacter {
 	}
 
 	@XmlElement
-	public SimpleVariable getInitiative() {
+	public Initiative getInitiative() {
 		return initiative;
 	}
 
-	public void setInitiative(SimpleVariable initiative) {
+	public void setInitiative(Initiative initiative) {
 		this.initiative = initiative;
 	}
 
@@ -263,7 +263,7 @@ public class PathfinderCharacter extends GameCharacter {
 	}
 
 	@XmlElementWrapper(name="languages")
-	@XmlElement(name="languages")
+	@XmlElement(name="language")
 	public Collection<StringFeature> getLanguages() {
 		return languages.getActualSubFeatures();
 	}
@@ -364,11 +364,11 @@ public class PathfinderCharacter extends GameCharacter {
 
 	@XmlElementWrapper(name="saves")
 	@XmlElement(name="save")
-	public Collection<SimpleVariable> getSaves() {
+	public Collection<Save> getSaves() {
 		return saves.getActualSubFeatures();
 	}
 
-	public void setSaves(VariableFeaturesCollection<SimpleVariable> saves) {
+	public void setSaves(VariableFeaturesCollection<Save> saves) {
 		this.saves = saves;
 	}
 

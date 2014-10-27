@@ -4,12 +4,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
 
 import fr.neyrick.karax.model.VariableNumericFeature;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
 public class Skill extends VariableNumericFeature {
+
+	private static final BonusFormat signFormat = new BonusFormat();
 
 	private static final String CUSTOM_SKILL_SEPARATOR = ":";
 	private static final String CUSTOM_SKILL_PREFIX = "CS_";
@@ -24,6 +27,16 @@ public class Skill extends VariableNumericFeature {
 
 	private int miscbonus = 0;
 
+	private int abilityBonus = 0;
+	
+	
+	
+	@Override
+	@XmlValue
+	public String getValue() {
+		return signFormat.format(super.getNumericValue());
+	}
+
 	@XmlAttribute
 	public String getDisplay() {
 		String key = getKey();
@@ -34,11 +47,6 @@ public class Skill extends VariableNumericFeature {
 		else {
 			return tryTranslation(getKey());
 		}
-	}
-
-	@Override
-	protected Number calculate() {
-		return getCalculator().calculate(this).intValue();
 	}
 
 	@XmlAttribute
@@ -52,6 +60,7 @@ public class Skill extends VariableNumericFeature {
 
 	@XmlAttribute
 	public int getRanks() {
+		refresh();
 		return ranks;
 	}
 
@@ -61,11 +70,22 @@ public class Skill extends VariableNumericFeature {
 
 	@XmlAttribute
 	public int getMiscBonus() {
+		refresh();
 		return miscbonus;
 	}
 
 	public void setMiscbonus(int miscbonus) {
 		this.miscbonus = miscbonus;
+	}
+	
+	@XmlAttribute
+	public int getAbilityBonus() {
+		refresh();
+		return abilityBonus;
+	}
+
+	public void setAbilityBonus(int abilityBonus) {
+		this.abilityBonus = abilityBonus;
 	}
 
 	@XmlAttribute

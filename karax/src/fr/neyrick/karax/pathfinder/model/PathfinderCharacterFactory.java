@@ -92,19 +92,18 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		skills.addSkill("HANDLE_ANIMAL", "DEX", false, true);
 		skills.addSkill("HEAL", "WIS", false, true);
 		skills.addSkill("INTIMIDATE", "CHA", false, true);
-		skills.addSkill("KN:ARCANA", "INT", false, true);
-		skills.addSkill("KN:DUNGEONEERING", "INT", false, true);
-		skills.addSkill("KN:ENGINEERING", "INT", false, true);
-		skills.addSkill("KN:GEOGRAPHIE", "INT", false, true);
-		skills.addSkill("KN:HISTORY", "INT", false, true);
-		skills.addSkill("KN:LOCAL", "INT", false, true);
-		skills.addSkill("KN:NATURE", "INT", false, true);
-		skills.addSkill("KN:NOBILITY", "INT", false, true);
-		skills.addSkill("KN:PLANES", "INT", false, true);
-		skills.addSkill("KN:RELIGION", "INT", false, true);
+		skills.addSkill("KN_ARCANA", "INT", false, true);
+		skills.addSkill("KN_DUNGEONEERING", "INT", false, true);
+		skills.addSkill("KN_ENGINEERING", "INT", false, true);
+		skills.addSkill("KN_GEOGRAPHY", "INT", false, true);
+		skills.addSkill("KN_HISTORY", "INT", false, true);
+		skills.addSkill("KN_LOCAL", "INT", false, true);
+		skills.addSkill("KN_NATURE", "INT", false, true);
+		skills.addSkill("KN_NOBILITY", "INT", false, true);
+		skills.addSkill("KN_PLANES", "INT", false, true);
+		skills.addSkill("KN_RELIGION", "INT", false, true);
 		skills.addSkill("LINGUISTICS", "INT", false, true);
 		skills.addSkill("PERCEPTION", "WIS", false, true);
-		skills.addSkill("PERFORM", "CHA", false, true);
 		skills.addSkill("RIDE", "DEX", false, true);
 		skills.addSkill("SENSE_MOTIVE", "WIS", false, true);
 		skills.addSkill("SLEIGHT_OF_HAND", "DEX", false, true);
@@ -116,16 +115,16 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		
 		// Saves
 		
-		VariableFeaturesCollection<SimpleVariable> saves = registerListener(new VariableFeaturesCollection<>("SAVE", SimpleVariable.class));
+		VariableFeaturesCollection<Save> saves = registerListener(new VariableFeaturesCollection<>("SAVE", Save.class));
 		character.setSaves(saves);
-		saves.addFeature(new SimpleVariable("FOR", new SaveCalculator(abilitiesMap.get("CON"))));
-		saves.addFeature(new SimpleVariable("REF", new SaveCalculator(abilitiesMap.get("DEX"))));
-		saves.addFeature(new SimpleVariable("WIL", new SaveCalculator(abilitiesMap.get("WIS"))));
+		saves.addFeature(new Save("FOR", new SaveCalculator(abilitiesMap.get("CON"))));
+		saves.addFeature(new Save("REF", new SaveCalculator(abilitiesMap.get("DEX"))));
+		saves.addFeature(new Save("WIL", new SaveCalculator(abilitiesMap.get("WIS"))));
 		
 		// Misc
 		
 		character.setArmorclass(registerListener(new ArmorClass("AC", new ArmorClassCalculator(abilitiesMap.get("DEX")))));
-		character.setInitiative(registerListener(new SimpleVariable("INITIATIVE", new InitiativeCalculator((abilitiesMap.get("DEX"))))));
+		character.setInitiative(registerListener(new Initiative("INITIATIVE", new InitiativeCalculator((abilitiesMap.get("DEX"))))));
 		character.setHitpoints(registerListener(new SimpleVariable("HP", new HitPointCalculator(abilitiesMap.get("CON"), levels))));
 		character.setArmorpenalty(registerListener(armorPenaltyVariable));
 		character.setFavoredClasses(registerListener(new StaticFeaturesCollection<StringFeature>("FAVORED_CLASS", StringFeature.class)));

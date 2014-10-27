@@ -1,40 +1,41 @@
 package fr.neyrick.karax.pathfinder.model;
 
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
-import fr.neyrick.karax.model.CharacterFeature;
-import fr.neyrick.karax.model.FeatureCalculator;
 import fr.neyrick.karax.model.SimpleVariable;
 
-public class SkillCalculator extends AbstractNumericFeatureCalculator implements FeatureCalculator{
+public class SkillCalculator extends AbstractNumericFeatureCalculator<Skill>{
 
 	private Ability baseAbility;
 	private SimpleVariable armorpenalty;
 	
 	@Override
-	public Number calculate(CharacterFeature feature) {
-		Skill skill = (Skill)feature;
+	public Number calculateFeature(Skill feature) {
+		int result = feature.getExperienceCost();
 		
-		int result = skill.getExperienceCost();
+		feature.setRanks(result);
 		
-		skill.setRanks(result);
+		int miscBonus = 0;
 		
 		if (result > 0) {
-			if (skill.isClassskill()) {
-				result += 3;
+			if (feature.isClassskill()) {
+				miscBonus += 3;
 			}
 		}
-		else if (skill.isNodefault()) {
+		else if (feature.isNodefault()) {
 			return 0;
 		}
 		
+		int abilityBonus = baseAbility.getBonusValue();		
 		result += baseAbility.getBonusValue();
+		feature.setAbilityBonus(abilityBonus);
 		
-		if (skill.isArmorpenalty()) {
+		if (feature.isArmorpenalty()) {
 			result += this.armorpenalty.getNumericValue().intValue();
 		}
 		
-		skill.setMiscbonus(skill.getModifier());
-		result += skill.getMiscBonus();
+		miscBonus += feature.getModifier();
+		feature.setMiscbonus(miscBonus);
+		result += miscBonus;
 		
 		return result;
 	}

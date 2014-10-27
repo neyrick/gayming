@@ -13,7 +13,7 @@ import fr.neyrick.karax.eclipsephase.entities.MorphDefinition;
 import fr.neyrick.karax.entities.generic.MetaCharacter;
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
 import fr.neyrick.karax.model.CharacterFactory;
-import fr.neyrick.karax.model.CharacterFeature;
+import fr.neyrick.karax.model.FeatureCalculator;
 import fr.neyrick.karax.model.FixedNumericFeature;
 import fr.neyrick.karax.model.GameCharacter;
 import fr.neyrick.karax.model.Ruleset;
@@ -86,11 +86,11 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		
 		// MOXIE
 		
-		character.setMoxie(registerListener(new SimpleVariable("MOXIE", new AbstractNumericFeatureCalculator() {
+		character.setMoxie(registerListener(new SimpleVariable("MOXIE", new AbstractNumericFeatureCalculator<SimpleVariable>() {
 			
 			@Override
-			public Number calculate(CharacterFeature feature) {
-				int result = super.calculateFromRegularCost((SimpleVariable)feature);
+			public Number calculateFeature(SimpleVariable feature) {
+				int result = super.calculateFromRegularCost(feature);
 				if (result > 10) return 10;
 				return result;
 			}
@@ -168,13 +168,7 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 		
 		// CREDITS
 		
-		character.setCredits(registerListener(new SimpleVariable("CREDITS", new AbstractNumericFeatureCalculator() {
-			
-			@Override
-			public Number calculate(CharacterFeature feature) {
-				return super.calculateFromTotalCost((SimpleVariable)feature);
-			}
-		})));
+		character.setCredits(registerListener(new SimpleVariable("CREDITS", FeatureCalculator.getDefaultInstance(SimpleVariable.class))));
 		
 		// INITIATIVE
 		

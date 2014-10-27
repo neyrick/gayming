@@ -1,23 +1,20 @@
 package fr.neyrick.karax.eclipsephase.model;
 
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
-import fr.neyrick.karax.model.CharacterFeature;
-import fr.neyrick.karax.model.FeatureCalculator;
 
-public class AptitudeCalculator extends AbstractNumericFeatureCalculator implements FeatureCalculator{
+public class AptitudeCalculator extends AbstractNumericFeatureCalculator<Aptitude> {
 
 	@Override
-	public Number calculate(CharacterFeature feature) {
-		Aptitude targetFeature = (Aptitude)feature;
-		int base = super.calculateFromRegularCost(targetFeature);
-		int max = targetFeature.getEgoMax();
+	public Number calculateFeature(Aptitude feature) {
+		int base = super.calculateFromRegularCost(feature);
+		int max = feature.getEgoMax();
 		if (base > max) base = max;
 		int result = base;
-		targetFeature.setBase(result);
-		result += targetFeature.getMorphBonus();
-		max = targetFeature.getMorphMax();
+		feature.setBase(result);
+		result += feature.getMorphBonus();
+		max = feature.getMorphMax();
 		if (result > max) result = max; 
-		targetFeature.setEffectiveMorphBonus(result - base);
+		feature.setEffectiveMorphBonus(result - base);
 		return result;
 	}
 

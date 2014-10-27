@@ -16,7 +16,6 @@ import fr.neyrick.karax.model.FeaturesCollection;
 import fr.neyrick.karax.model.SimpleVariable;
 import fr.neyrick.karax.model.StringFeature;
 import fr.neyrick.karax.model.VariableFeaturesCollection;
-import fr.neyrick.karax.model.VariableNumericFeature;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
@@ -52,15 +51,14 @@ public class Identity extends ComplexFeatureCollection {
 		name = new StringFeature(this, SUBKEY_NAME);
 		notes = new StringFeature(this, SUBKEY_NOTES);
 		reputations =
-				new VariableFeaturesCollection<>(this,  SUBKEY_REPUTATION, SimpleVariable.class, new FeatureCalculator() {
+				new VariableFeaturesCollection<>(this,  SUBKEY_REPUTATION, SimpleVariable.class, new FeatureCalculator<SimpleVariable>() {
 
 					@Override
-					public Number calculate(CharacterFeature feature) {
-						VariableNumericFeature targetFeature = (VariableNumericFeature)feature;
-						int result = targetFeature.getCreationCost();
-						result += (targetFeature.getFreebieCost() * 10) + (targetFeature.getExperienceCost() * 10);
-						result += targetFeature.getFreeCost();
-						if ((targetFeature.getModifier() < -500) && (result > 0)) return 0; 
+					public Number calculateFeature(SimpleVariable feature) {
+						int result = feature.getCreationCost();
+						result += (feature.getFreebieCost() * 10) + (feature.getExperienceCost() * 10);
+						result += feature.getFreeCost();
+						if ((feature.getModifier() < -500) && (result > 0)) return 0; 
 						return result;
 					}
 					

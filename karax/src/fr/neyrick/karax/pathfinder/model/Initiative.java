@@ -6,52 +6,43 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
-import fr.neyrick.karax.model.FeatureCalculator;
 import fr.neyrick.karax.model.FeaturesCollection;
 import fr.neyrick.karax.model.VariableNumericFeature;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class Ability extends VariableNumericFeature {
+public class Initiative extends VariableNumericFeature {
 
 	private static final BonusFormat signFormat = new BonusFormat();
-
+	
+	private int miscBonus = 0;
+	
 	@XmlAttribute
-	public String getDisplay() {
-		return tryTranslation(getKey());
-	}
-
-	@XmlAttribute
-	@Override
-	public String getKey() {
-		return super.getKey();
+	public String getMisc() {
+		refresh();
+		return signFormat.format(miscBonus);
 	}
 
 	@Override
 	@XmlValue
 	public String getValue() {
-		return super.getValue();
+		return signFormat.format(super.getNumericValue());
+	}
+	
+	public void setMisc(int miscBonus) {
+		this.miscBonus = miscBonus;
 	}
 
-	@XmlAttribute
-	public String getBonus() {
-		return signFormat.format((this.getNumericValue().intValue() / 2)-5);
-	}
-
-	public int getBonusValue() {
-		return (this.getNumericValue().intValue() / 2)-5;
-	}
-
-	public Ability() {
+	public Initiative() {
 		this(null, null);
 	}
 
-	public Ability(FeaturesCollection container, String key,
-			FeatureCalculator<Ability> calculator) {
+	public Initiative(FeaturesCollection container, String key,
+			InitiativeCalculator calculator) {
 		super(container, key, calculator);
 	}
 
-	public Ability(String key, FeatureCalculator<Ability> calculator) {
+	public Initiative(String key, InitiativeCalculator calculator) {
 		super(key, calculator);
 	}
 

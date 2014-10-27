@@ -79,6 +79,10 @@ the location of this file.
           <font-triplet name="ArialMT" style="normal" weight="bold"/>
         </font>
         -->
+        <font kerning="yes" embed-url="glyphicons-halflings-regular.ttf">
+          <font-triplet name="Glyphicons" style="normal" weight="normal"/>
+        </font>
+
         <font kerning="yes" embed-url="liberationsansnarrow-regular.ttf">
           <font-triplet name="Liberation" style="normal" weight="normal"/>
         </font>
