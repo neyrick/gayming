@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import fr.neyrick.karax.model.BonusFormat;
 import fr.neyrick.karax.model.VariableNumericFeature;
 
 @XmlRootElement

@@ -94,4 +94,8 @@
   <xsl:variable name="label.spellsPerDay" select="'Sorts / jour'"/>
   <xsl:variable name="label.bonusSpells" select="'Sorts en bonus'"/>
   <xsl:variable name="label.knownSpells" select="'Sorts connus'"/>
+  <xsl:variable name="short.racetrait" select="'R'"/>
+  <xsl:variable name="short.feat" select="'D'"/>
+  <xsl:variable name="short.trait" select="'T'"/>
+  <xsl:variable name="short.specialAbility" select="'S'"/>
 </xsl:stylesheet>

@@ -25,8 +25,8 @@ public class SkillCalculator extends AbstractNumericFeatureCalculator<Skill>{
 			return 0;
 		}
 		
-		int abilityBonus = baseAbility.getBonusValue();		
-		result += baseAbility.getBonusValue();
+		int abilityBonus = baseAbility.getBonus();		
+		result += baseAbility.getBonus();
 		feature.setAbilityBonus(abilityBonus);
 		
 		if (feature.isArmorpenalty()) {

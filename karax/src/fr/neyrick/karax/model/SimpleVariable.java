@@ -44,7 +44,7 @@ public class SimpleVariable extends VariableNumericFeature {
 	}
 
 	public SimpleVariable(FeaturesCollection container, String key,
-			FeatureCalculator<SimpleVariable> calculator) {
+			FeatureCalculator<? extends SimpleVariable> calculator) {
 		super(container, key, calculator);
 	}
 
@@ -52,7 +52,7 @@ public class SimpleVariable extends VariableNumericFeature {
 		super(container, key, FeatureCalculator.getDefaultInstance(SimpleVariable.class));
 	}
 
-	public SimpleVariable(String key, FeatureCalculator<SimpleVariable> calculator) {
+	public SimpleVariable(String key, FeatureCalculator<? extends SimpleVariable> calculator) {
 		super(key, calculator);
 	}
 

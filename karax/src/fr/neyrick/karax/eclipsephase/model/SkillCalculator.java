@@ -1,8 +1,6 @@
 package fr.neyrick.karax.eclipsephase.model;
 
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
-import fr.neyrick.karax.model.CharacterFeature;
-import fr.neyrick.karax.model.FeatureCalculator;
 
 public class SkillCalculator extends AbstractNumericFeatureCalculator<Skill>{
 

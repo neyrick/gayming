@@ -13,7 +13,7 @@ public class InitiativeCalculator extends AbstractNumericFeatureCalculator<Initi
 		feature.setMisc(result);
 		
 		
-		result += dexterity.getBonusValue();
+		result += dexterity.getBonus();
 				
 		return result;
 	}

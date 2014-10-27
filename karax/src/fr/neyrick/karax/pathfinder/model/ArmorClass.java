@@ -37,6 +37,7 @@ public class ArmorClass extends VariableNumericFeature {
 
 	@XmlAttribute
 	public int getArmor() {
+		refresh();
 		return armor;
 	}
 
@@ -46,6 +47,7 @@ public class ArmorClass extends VariableNumericFeature {
 
 	@XmlAttribute
 	public int getSize() {
+		refresh();
 		return size;
 	}
 
@@ -55,6 +57,7 @@ public class ArmorClass extends VariableNumericFeature {
 
 	@XmlAttribute
 	public int getNatural() {
+		refresh();
 		return natural;
 	}
 
@@ -64,6 +67,7 @@ public class ArmorClass extends VariableNumericFeature {
 
 	@XmlAttribute
 	public int getDeflection() {
+		refresh();
 		return deflection;
 	}
 
@@ -73,6 +77,7 @@ public class ArmorClass extends VariableNumericFeature {
 
 	@XmlAttribute
 	public int getMisc() {
+		refresh();
 		return misc;
 	}
 

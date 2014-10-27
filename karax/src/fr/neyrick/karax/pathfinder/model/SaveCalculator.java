@@ -13,7 +13,7 @@ public class SaveCalculator extends AbstractNumericFeatureCalculator<Save> {
 		int magicBonus = feature.getCost("MAGIC");
 		int baseBonus = feature.getCost("EXPERIENCE");
 		int miscBonus = result - magicBonus - baseBonus;		
-		int abilityBonus = ability.getBonusValue();
+		int abilityBonus = ability.getBonus();
 		
 		feature.setBaseBonus(baseBonus);
 		feature.setMagicBonus(magicBonus);

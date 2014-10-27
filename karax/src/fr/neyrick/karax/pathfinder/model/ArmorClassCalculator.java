@@ -30,7 +30,7 @@ public class ArmorClassCalculator extends AbstractNumericFeatureCalculator<Armor
 				
 		feature.setFlatfooted(result);
 		
-		result += dexterity.getBonusValue();
+		result += dexterity.getBonus();
 		
 		feature.setTouch(result - armorBonus - naturalArmorBonus);
 				

@@ -107,32 +107,32 @@
 						<fo:table-row height="5mm">
 							<fo:table-cell padding="1mm"><fo:block padding-left="2mm" padding-top="1mm" color="white" background-color="black"><xsl:value-of select="$label.abilityLongSTR"/></fo:block></fo:table-cell>
 							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='STR']"/></fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='STR']/@bonus"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='STR']/@signedBonus"/></fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row height="5mm">
 							<fo:table-cell padding="1mm"><fo:block padding-left="2mm" padding-top="1mm" color="white" background-color="black"><xsl:value-of select="$label.abilityLongDEX"/></fo:block></fo:table-cell>
 							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='DEX']"/></fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='DEX']/@bonus"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='DEX']/@signedBonus"/></fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row height="5mm">
 							<fo:table-cell padding="1mm"><fo:block padding-left="2mm" padding-top="1mm" color="white" background-color="black"><xsl:value-of select="$label.abilityLongCON"/></fo:block></fo:table-cell>
 							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='CON']"/></fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='CON']/@bonus"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='CON']/@signedBonus"/></fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row height="5mm">
 							<fo:table-cell padding="1mm"><fo:block padding-left="2mm" padding-top="1mm" color="white" background-color="black"><xsl:value-of select="$label.abilityLongINT"/></fo:block></fo:table-cell>
 							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='INT']"/></fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='INT']/@bonus"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='INT']/@signedBonus"/></fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row height="5mm">
 							<fo:table-cell padding="1mm"><fo:block padding-left="2mm" padding-top="1mm" color="white" background-color="black"><xsl:value-of select="$label.abilityLongWIS"/></fo:block></fo:table-cell>
 							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='WIS']"/></fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='WIS']/@bonus"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='WIS']/@signedBonus"/></fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row height="5mm">
 							<fo:table-cell padding="1mm"><fo:block padding-left="2mm" padding-top="1mm" color="white" background-color="black"><xsl:value-of select="$label.abilityLongCHA"/></fo:block></fo:table-cell>
 							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='CHA']"/></fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='CHA']/@bonus"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='CHA']/@signedBonus"/></fo:block></fo:table-cell>
 						</fo:table-row>
 					</fo:table-body>
 				</fo:table>
@@ -346,7 +346,7 @@
 					<fo:table-body>
 						<fo:table-row height="5mm" display-align="center">
 							<fo:table-cell padding="1mm"><fo:block padding-left="2mm" padding-top="1mm" color="white" background-color="black"><xsl:value-of select="$label.bab"/></fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="bab"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="baseAttackBonus"/></fo:block></fo:table-cell>
 						</fo:table-row>
 					</fo:table-body>
 				</fo:table>
@@ -379,13 +379,13 @@
 						</fo:table-row>
 						<fo:table-row height="5mm" display-align="center">
 							<fo:table-cell padding="1mm"><fo:block padding-left="2mm" padding-top="1mm" color="white" background-color="black"><xsl:value-of select="$label.cmb"/></fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="cmd"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="maneuverAttack"/></fo:block></fo:table-cell>
 							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" font-family="Carrois">=</fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="bab"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="baseAttackBonus"/></fo:block></fo:table-cell>
 							<fo:table-cell text-align="center" padding-top="1mm" font-family="Carrois"><fo:block>+</fo:block></fo:table-cell>
 							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='STR']/@bonus"/></fo:block></fo:table-cell>
 							<fo:table-cell text-align="center" padding-top="1mm" font-family="Carrois"><fo:block>+</fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="cmb/@size"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="size/@amount"/></fo:block></fo:table-cell>
 						</fo:table-row>
 					</fo:table-body>
 				</fo:table>
@@ -422,15 +422,15 @@
 						</fo:table-row>
 						<fo:table-row height="5mm" display-align="center">
 							<fo:table-cell padding="1mm"><fo:block padding-left="2mm" padding-top="1mm" color="white" background-color="black"><xsl:value-of select="$label.cmd"/></fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="cmd"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="maneuverDefense"/></fo:block></fo:table-cell>
 							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" font-family="Carrois">= 10 +</fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="bab"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="baseAttackBonus"/></fo:block></fo:table-cell>
 							<fo:table-cell text-align="center" padding-top="1mm" font-family="Carrois"><fo:block>+</fo:block></fo:table-cell>
 							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='STR']/@bonus"/></fo:block></fo:table-cell>
 							<fo:table-cell text-align="center" padding-top="1mm" font-family="Carrois"><fo:block>+</fo:block></fo:table-cell>
 							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="abilities/ability[@key='DEX']/@bonus"/></fo:block></fo:table-cell>
 							<fo:table-cell text-align="center" padding-top="1mm" font-family="Carrois"><fo:block>+</fo:block></fo:table-cell>
-							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="cmd/@size"/></fo:block></fo:table-cell>
+							<fo:table-cell padding="1mm" text-align="center"><fo:block padding-top="1mm" border-style="solid" border-width="thin" font-family="Carrois"><xsl:value-of select="size/@amount"/></fo:block></fo:table-cell>
 						</fo:table-row>
 					</fo:table-body>
 				</fo:table>
@@ -501,8 +501,9 @@
 					</fo:table-header>
 					<fo:table-body>
 						<xsl:for-each select="skills/skill">
+						    <xsl:sort select="@display"/>
 							<fo:table-row height="3mm" font-size="8pt">
-								<fo:table-cell padding-top="1mm"><fo:block font-size="8pt" font-family="Glyphicons">&#xE013;</fo:block></fo:table-cell>
+								<fo:table-cell padding-top="1mm"><fo:block font-size="8pt" font-family="Glyphicons"><xsl:if test="@classskill = 'true'">&#xE013;</xsl:if></fo:block></fo:table-cell>
 								<fo:table-cell text-align="left" padding-left="2mm"><fo:block padding-bottom="-1mm" border-bottom-style="solid" border-bottom-width="thin"><xsl:value-of select="@display"/></fo:block></fo:table-cell>
 								<fo:table-cell text-align="center" font-family="Carrois"><fo:block><xsl:value-of select="."/></fo:block></fo:table-cell>
 								<fo:table-cell text-align="center" font-family="Carrois"><fo:block>=</fo:block></fo:table-cell>
@@ -520,8 +521,8 @@
           
           <!-- Armes -->
 
- 	<xsl:for-each select="weapon">	
-          <fo:block-container absolute-position="absolute" top="218mm" left="15mm" width="30mm">
+      <fo:block-container absolute-position="absolute" top="180mm" left="15mm" width="30mm">
+	 	<xsl:for-each select="weapons/weapon">	
             <fo:block font-size="12pt" padding-left="1mm" padding-top="1mm">
 				<fo:table table-layout="fixed" width="90mm" text-align="left">
 					<fo:table-column column-width="12mm" />
@@ -535,10 +536,10 @@
 							<fo:table-cell text-align="center"><fo:block><xsl:value-of select="$label.attack"/></fo:block></fo:table-cell>
 							<fo:table-cell text-align="center"><fo:block><xsl:value-of select="$label.critical"/></fo:block></fo:table-cell>
 						</fo:table-row>
-						<fo:table-row height="5mm" font-size="7pt" display-align="center">
-							<fo:table-cell border-style="solid" border-width="thin" number-columns-spanned="3" padding-top="1mm"><fo:block><xsl:value-of select="."/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@attack"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@critical"/></fo:block></fo:table-cell>
+						<fo:table-row height="4mm" font-size="7pt" display-align="center">
+							<fo:table-cell border-style="solid" border-width="thin" number-columns-spanned="3" padding-top="1mm" padding-left="2mm"><fo:block><xsl:value-of select="name"/></fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="attackBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="critical"/></fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row height="2mm" font-size="6pt" display-align="center" font-family="Carrois" color="white" background-color="black">
 							<fo:table-cell text-align="center"><fo:block><xsl:value-of select="$label.type"/></fo:block></fo:table-cell>
@@ -546,17 +547,17 @@
 							<fo:table-cell text-align="center"><fo:block><xsl:value-of select="$label.ammo"/></fo:block></fo:table-cell>
 							<fo:table-cell number-columns-spanned="2" text-align="center"><fo:block color="white" background-color="black"><xsl:value-of select="$label.damage"/></fo:block></fo:table-cell>
 						</fo:table-row>
-						<fo:table-row height="5mm" display-align="center">
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@type"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@range"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@ammo"/></fo:block></fo:table-cell>
-							<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@damage"/></fo:block></fo:table-cell>
+						<fo:table-row height="4mm" font-size="7pt" display-align="center">
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="type"/></fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="range"/></fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm"><fo:block><xsl:value-of select="ammo"/></fo:block></fo:table-cell>
+							<fo:table-cell number-columns-spanned="2" border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="damage"/></fo:block></fo:table-cell>
 						</fo:table-row>
 					</fo:table-body>
 				</fo:table>
 			</fo:block>
-		  </fo:block-container>
- 	</xsl:for-each>	
+	 	   </xsl:for-each>	
+		 </fo:block-container>
 
           <!-- Protections -->
 
@@ -577,26 +578,20 @@
 							<fo:table-cell text-align="center"><fo:block><xsl:value-of select="$label.type"/></fo:block></fo:table-cell>
 							<fo:table-cell text-align="center"><fo:block><xsl:value-of select="$label.penalty"/></fo:block></fo:table-cell>
 							<fo:table-cell text-align="center"><fo:block><xsl:value-of select="$label.spellfailure"/></fo:block></fo:table-cell>
-							<fo:table-cell text-align="center"><fo:block><xsl:value-of select="$label.weight"/></fo:block></fo:table-cell>
-							<fo:table-cell text-align="center"><fo:block><xsl:value-of select="$label.notes"/></fo:block></fo:table-cell>
 						</fo:table-row>
 					</fo:table-header>
 					<fo:table-body>
-				 	<xsl:for-each select="armor">	
+				 	<xsl:for-each select="armors/armor">	
 						<fo:table-row height="5mm" font-size="7pt" display-align="center">
-							<fo:table-cell border-style="solid" border-width="thin" padding-top="1mm"><fo:block><xsl:value-of select="."/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@bonus"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@type"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@penalty"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@spellfailure"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@weight"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@notes"/></fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" padding-top="1mm" padding-left="2mm"><fo:block><xsl:value-of select="name"/></fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="acBonus"/></fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="maxDex"/></fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="penalty"/></fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="spellFailure/@amount"/>%</fo:block></fo:table-cell>
 						</fo:table-row>
 					  </xsl:for-each>
 						<fo:table-row height="5mm" font-size="7pt" display-align="center">
 							<fo:table-cell border-style="solid" border-width="thin" padding-top="1mm"><fo:block></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block></fo:block></fo:table-cell>
 							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block></fo:block></fo:table-cell>
 							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block></fo:block></fo:table-cell>
 							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block></fo:block></fo:table-cell>
@@ -626,7 +621,7 @@
 				 	<xsl:for-each select="gear/item">	
 						<fo:table-row height="5mm" font-size="8pt" display-align="center">
 							<fo:table-cell padding-left="2mm" border-style="solid" border-width="thin" padding-top="1mm"><fo:block><xsl:value-of select="."/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@weight"/></fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="@amount div 10"/></fo:block></fo:table-cell>
 						</fo:table-row>
 					  </xsl:for-each>
 						<fo:table-row height="5mm" font-size="8pt" display-align="center">
@@ -639,22 +634,22 @@
 						</fo:table-row>
 						<fo:table-row height="5mm" font-size="8pt" display-align="center">
 							<fo:table-cell padding-right="2mm" border-style="solid" border-width="thin" text-align="right" padding-top="1mm"><fo:block><xsl:value-of select="$label.totalweight"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="sum(//@weight)"/> </fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="sum(//item/@amount) div 10"/> </fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row height="5mm" display-align="center" color="white" background-color="black">
 							<fo:table-cell number-columns-spanned="2" padding-left="2mm" font-size="10pt"><fo:block><xsl:value-of select="$label.load"/></fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row height="5mm" font-size="8pt" display-align="center">
 							<fo:table-cell padding-left="2mm" border-style="solid" border-width="thin" text-align="left" padding-top="1mm"><fo:block><xsl:value-of select="$label.loadLight"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block> </fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="load/@maxLight"/> </fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row height="5mm" font-size="8pt" display-align="center">
 							<fo:table-cell padding-left="2mm" border-style="solid" border-width="thin" text-align="left" padding-top="1mm"><fo:block><xsl:value-of select="$label.loadMedium"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block> </fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="load/@maxMedium"/></fo:block></fo:table-cell>
 						</fo:table-row>
 						<fo:table-row height="5mm" font-size="8pt" display-align="center">
 							<fo:table-cell padding-left="2mm" border-style="solid" border-width="thin" text-align="left" padding-top="1mm"><fo:block><xsl:value-of select="$label.loadHeavy"/></fo:block></fo:table-cell>
-							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block> </fo:block></fo:table-cell>
+							<fo:table-cell border-style="solid" border-width="thin" text-align="center" padding-top="1mm" font-family="Carrois"><fo:block><xsl:value-of select="load/@maxHeavy"/></fo:block></fo:table-cell>
 						</fo:table-row>
 					</fo:table-body>
 				</fo:table>
@@ -718,25 +713,25 @@
 					<fo:table-body>
 					 	<xsl:for-each select="racetraits/racetrait">	
 							<fo:table-row height="4mm" font-size="8pt" display-align="center">
-								<fo:table-cell text-align="center" font-family="Carrois" border-style="solid" border-width="thin" padding-top="1mm"><fo:block>R</fo:block></fo:table-cell>
+								<fo:table-cell text-align="center" font-family="Carrois" border-style="solid" border-width="thin" padding-top="1mm"><fo:block><xsl:value-of select="$short.racetrait"/></fo:block></fo:table-cell>
 								<fo:table-cell padding-left="2mm" padding-right="2mm" border-style="solid" border-width="thin" padding-top="1mm"><fo:block><xsl:value-of select="."/></fo:block></fo:table-cell>
 							</fo:table-row>
 	   				    </xsl:for-each>
 					 	<xsl:for-each select="feats/feat">	
 							<fo:table-row height="4mm" font-size="8pt" display-align="center">
-								<fo:table-cell text-align="center" font-family="Carrois" border-style="solid" border-width="thin" padding-top="1mm"><fo:block>D</fo:block></fo:table-cell>
+								<fo:table-cell text-align="center" font-family="Carrois" border-style="solid" border-width="thin" padding-top="1mm"><fo:block><xsl:value-of select="$short.feat"/></fo:block></fo:table-cell>
 								<fo:table-cell padding-left="2mm" padding-right="2mm" border-style="solid" border-width="thin" padding-top="1mm"><fo:block><xsl:value-of select="."/></fo:block></fo:table-cell>
 							</fo:table-row>
 	   				    </xsl:for-each>
 					 	<xsl:for-each select="traits/trait">	
 							<fo:table-row height="4mm" font-size="8pt" display-align="center">
-								<fo:table-cell text-align="center" font-family="Carrois" border-style="solid" border-width="thin" padding-top="1mm"><fo:block>T</fo:block></fo:table-cell>
+								<fo:table-cell text-align="center" font-family="Carrois" border-style="solid" border-width="thin" padding-top="1mm"><fo:block><xsl:value-of select="$short.trait"/></fo:block></fo:table-cell>
 								<fo:table-cell padding-left="2mm" padding-right="2mm" border-style="solid" border-width="thin" padding-top="1mm"><fo:block><xsl:value-of select="."/></fo:block></fo:table-cell>
 							</fo:table-row>
 	   				    </xsl:for-each>
 					 	<xsl:for-each select="specialAbilities/specialAbility">	
 							<fo:table-row height="4mm" font-size="8pt" display-align="center">
-								<fo:table-cell text-align="center" font-family="Carrois" border-style="solid" border-width="thin" padding-top="1mm"><fo:block>S</fo:block></fo:table-cell>
+								<fo:table-cell text-align="center" font-family="Carrois" border-style="solid" border-width="thin" padding-top="1mm"><fo:block><xsl:value-of select="$short.specialAbility"/></fo:block></fo:table-cell>
 								<fo:table-cell padding-left="2mm" padding-right="2mm" border-style="solid" border-width="thin" padding-top="1mm"><fo:block><xsl:value-of select="."/></fo:block></fo:table-cell>
 							</fo:table-row>
 	   				    </xsl:for-each>

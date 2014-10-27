@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import fr.neyrick.karax.model.FixedNumericFeature;
 import fr.neyrick.karax.model.GameCharacter;
+import fr.neyrick.karax.model.SimpleBonus;
 import fr.neyrick.karax.model.SimpleVariable;
 import fr.neyrick.karax.model.StaticFeaturesCollection;
 import fr.neyrick.karax.model.StringFeature;
@@ -26,7 +27,7 @@ public class PathfinderCharacter extends GameCharacter {
 	public static final String KEY_INT = "INT";
 	public static final String KEY_CHA = "CHA";
 	
-	private StringFeature size;
+	private FixedNumericFeature size;
 
 	private StringFeature height;
 
@@ -58,6 +59,18 @@ public class PathfinderCharacter extends GameCharacter {
 	
 	private Initiative initiative;
 	
+	private SimpleBonus baseAttackBonus;
+	
+	private SimpleBonus maneuverAttack;
+	
+	private SimpleVariable maneuverDefense;
+	
+	private WeaponCollection weapons;
+	
+	private Load load;
+
+	private StaticFeaturesCollection<Armor> armors;
+
 	private StaticFeaturesCollection<StringFeature> favoredClasses;
 
 	private StaticFeaturesCollection<StringFeature> feats;
@@ -68,7 +81,7 @@ public class PathfinderCharacter extends GameCharacter {
 
 	private StaticFeaturesCollection<StringFeature> languages;
 
-	private StaticFeaturesCollection<StringFeature> gear;
+	private StaticFeaturesCollection<FixedNumericFeature> gear;
 
 	private StaticFeaturesCollection<StringFeature> knownSpells;
 	
@@ -88,11 +101,11 @@ public class PathfinderCharacter extends GameCharacter {
 
 
 	@XmlElement
-	public StringFeature getSize() {
+	public FixedNumericFeature getSize() {
 		return size;
 	}
 
-	public void setSize(StringFeature size) {
+	public void setSize(FixedNumericFeature size) {
 		this.size = size;
 	}
 
@@ -214,6 +227,33 @@ public class PathfinderCharacter extends GameCharacter {
 	}
 
 	@XmlElement
+	public SimpleBonus getBaseAttackBonus() {
+		return baseAttackBonus;
+	}
+
+	public void setBaseAttackBonus(SimpleBonus baseAttackBonus) {
+		this.baseAttackBonus = baseAttackBonus;
+	}
+
+	@XmlElement
+	public SimpleBonus getManeuverAttack() {
+		return maneuverAttack;
+	}
+
+	public void setManeuverAttack(SimpleBonus maneuverAttack) {
+		this.maneuverAttack = maneuverAttack;
+	}
+
+	@XmlElement
+	public SimpleVariable getManeuverDefense() {
+		return maneuverDefense;
+	}
+
+	public void setManeuverDefense(SimpleVariable maneuverDefense) {
+		this.maneuverDefense = maneuverDefense;
+	}
+
+	@XmlElement
 	public ArmorClass getArmorclass() {
 		return armorclass;
 	}
@@ -229,6 +269,15 @@ public class PathfinderCharacter extends GameCharacter {
 
 	public void setInitiative(Initiative initiative) {
 		this.initiative = initiative;
+	}
+
+	@XmlElement
+	public Load getLoad() {
+		return load;
+	}
+
+	public void setLoad(Load load) {
+		this.load = load;
 	}
 
 	@XmlElementWrapper(name="favoredclasses")
@@ -260,6 +309,26 @@ public class PathfinderCharacter extends GameCharacter {
 
 	public void setRaceTraits(StaticFeaturesCollection<StringFeature> raceTraits) {
 		this.raceTraits = raceTraits;
+	}
+
+	@XmlElementWrapper(name="weapons")
+	@XmlElement(name="weapon")
+	public Collection<Weapon> getWeapons() {
+		return weapons.getActualSubFeatures();
+	}
+
+	public void setWeapons(WeaponCollection weapons) {
+		this.weapons = weapons;
+	}
+
+	@XmlElementWrapper(name="armors")
+	@XmlElement(name="armor")
+	public Collection<Armor> getArmors() {
+		return armors.getActualSubFeatures();
+	}
+
+	public void setArmors(StaticFeaturesCollection<Armor> armors) {
+		this.armors = armors;
 	}
 
 	@XmlElementWrapper(name="languages")
@@ -314,11 +383,11 @@ public class PathfinderCharacter extends GameCharacter {
 
 	@XmlElementWrapper(name="gear")
 	@XmlElement(name="item")
-	public Collection<StringFeature> getGear() {
+	public Collection<FixedNumericFeature> getGear() {
 		return gear.getActualSubFeatures();
 	}
 
-	public void setGear(StaticFeaturesCollection<StringFeature> gear) {
+	public void setGear(StaticFeaturesCollection<FixedNumericFeature> gear) {
 		this.gear = gear;
 	}
 	

@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import fr.neyrick.karax.model.BonusFormat;
 import fr.neyrick.karax.model.FeatureCalculator;
 import fr.neyrick.karax.model.FeaturesCollection;
 import fr.neyrick.karax.model.VariableNumericFeature;
@@ -34,12 +35,13 @@ public class Ability extends VariableNumericFeature {
 	}
 
 	@XmlAttribute
-	public String getBonus() {
-		return signFormat.format((this.getNumericValue().intValue() / 2)-5);
+	public int getBonus() {
+		return (this.getNumericValue().intValue() / 2)-5;
 	}
 
-	public int getBonusValue() {
-		return (this.getNumericValue().intValue() / 2)-5;
+	@XmlAttribute
+	public String getSignedBonus() {
+		return signFormat.format((this.getNumericValue().intValue() / 2)-5);
 	}
 
 	public Ability() {

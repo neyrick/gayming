@@ -103,11 +103,11 @@ public class Aptitude extends VariableNumericFeature {
 	}
 
 	public Aptitude(FeaturesCollection container, String key,
-			FeatureCalculator calculator) {
+			FeatureCalculator<Aptitude> calculator) {
 		super(container, key, calculator);
 	}
 
-	public Aptitude(String key, FeatureCalculator calculator) {
+	public Aptitude(String key, FeatureCalculator<Aptitude> calculator) {
 		super(key, calculator);
 	}
 

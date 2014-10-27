@@ -14,6 +14,7 @@ import fr.neyrick.karax.model.CharacterFactory;
 import fr.neyrick.karax.model.FixedNumericFeature;
 import fr.neyrick.karax.model.GameCharacter;
 import fr.neyrick.karax.model.Ruleset;
+import fr.neyrick.karax.model.SimpleBonus;
 import fr.neyrick.karax.model.SimpleVariable;
 import fr.neyrick.karax.model.StaticFeaturesCollection;
 import fr.neyrick.karax.model.StringFeature;
@@ -44,7 +45,8 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		
 		character.setHeight(registerListener(new StringFeature("HEIGHT")));
 		character.setWeight(registerListener(new StringFeature("WEIGHT")));
-		character.setSize(registerListener(new StringFeature("SIZE")));
+		FixedNumericFeature size = new FixedNumericFeature("SIZE");
+		character.setSize(registerListener(size));
 		character.setHair(registerListener(new StringFeature("HAIR")));
 		character.setEyes(registerListener(new StringFeature("EYES")));
 		character.setRace(registerListener(new StringFeature("RACE")));
@@ -122,7 +124,11 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		saves.addFeature(new Save("WIL", new SaveCalculator(abilitiesMap.get("WIS"))));
 		
 		// Misc
+		SimpleBonus bab = new SimpleBonus("BAB");
 		
+		character.setBaseAttackBonus(registerListener(bab));
+		character.setManeuverAttack(registerListener(new SimpleBonus("CMB", new ManeuverAttackCalculator(bab, abilitiesMap.get("STR"), size))));
+		character.setManeuverDefense(registerListener(new SimpleVariable("CMD", new ManeuverDefenseCalculator(bab, abilitiesMap.get("STR"), abilitiesMap.get("DEX"), size))));
 		character.setArmorclass(registerListener(new ArmorClass("AC", new ArmorClassCalculator(abilitiesMap.get("DEX")))));
 		character.setInitiative(registerListener(new Initiative("INITIATIVE", new InitiativeCalculator((abilitiesMap.get("DEX"))))));
 		character.setHitpoints(registerListener(new SimpleVariable("HP", new HitPointCalculator(abilitiesMap.get("CON"), levels))));
@@ -143,8 +149,12 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		
 		// Gear
 		
-		character.setGear(registerListener(new StaticFeaturesCollection<StringFeature>("GEAR", StringFeature.class)));
-		
+		StaticFeaturesCollection<FixedNumericFeature> gear = new StaticFeaturesCollection<>("GEAR", FixedNumericFeature.class);
+		character.setGear(registerListener(gear));
+		character.setLoad(registerListener(new Load("LOAD", new LoadCalculator(abilitiesMap.get("STR"), gear))));
+		character.setWeapons(registerListener(new WeaponCollection("WEAPON", bab, abilitiesMap)));
+		character.setArmors(registerListener(new StaticFeaturesCollection<Armor>("ARMOR", Armor.class)));
+
 		
 		return character;
 	}
