@@ -1,11 +1,17 @@
 package fr.neyrick.karax.model;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 
 public class SimpleBonus extends SimpleVariable {
 
 	private static final BonusFormat bonusFormat = new BonusFormat();
 	
-
+	@XmlAttribute
+	protected int getRaw() {
+		return super.getNumericValue().intValue();
+	}
+	
 	@Override
 	protected String format(Number value) {
 		return bonusFormat.format(value);

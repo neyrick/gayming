@@ -59,8 +59,8 @@
   <xsl:variable name="label.abilityLongWIS" select="'SAGESSE'"/>
   <xsl:variable name="label.abilityLongCHA" select="'CHARISME'"/>
   <xsl:variable name="label.ACarmor" select="'Armure'"/>
-  <xsl:variable name="label.ACshield" select="'Bouclier'"/>
-  <xsl:variable name="label.ACnatural" select="'Naturelle'"/>
+  <xsl:variable name="label.ACshield" select="'Boucl.'"/>
+  <xsl:variable name="label.ACnatural" select="'Natur.'"/>
   <xsl:variable name="label.ACdeflection" select="'Parade'"/>
   <xsl:variable name="label.ACflatfooted" select="'Dèpourvu'"/>
   <xsl:variable name="label.ACtouch" select="'Contact'"/>
@@ -76,6 +76,7 @@
   <xsl:variable name="label.ammo" select="'Munitions'"/>
   <xsl:variable name="label.damage" select="'Dégâts'"/>
   <xsl:variable name="label.armor" select="'Protections'"/>
+  <xsl:variable name="label.maxDex" select="'Dex max'"/>
   <xsl:variable name="label.spellfailure" select="'Échec sorts'"/>
   <xsl:variable name="label.languages" select="'Langues'"/>
   <xsl:variable name="label.totalweight" select="'Poids total'"/>

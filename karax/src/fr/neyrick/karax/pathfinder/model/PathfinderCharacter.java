@@ -51,8 +51,8 @@ public class PathfinderCharacter extends GameCharacter {
 
 	private FixedNumericFeature age;
 
-	private SimpleVariable armorpenalty;
-	
+	private SimpleVariable speed;
+
 	private SimpleVariable hitpoints;
 	
 	private ArmorClass armorclass;
@@ -209,12 +209,12 @@ public class PathfinderCharacter extends GameCharacter {
 	}	
 	
 	@XmlElement
-	public SimpleVariable getArmorpenalty() {
-		return armorpenalty;
+	public SimpleVariable getSpeed() {
+		return speed;
 	}
 
-	public void setArmorpenalty(SimpleVariable armorpenalty) {
-		this.armorpenalty = armorpenalty;
+	public void setSpeed(SimpleVariable speed) {
+		this.speed = speed;
 	}
 
 	@XmlElement

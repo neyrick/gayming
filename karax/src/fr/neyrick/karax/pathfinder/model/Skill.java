@@ -22,7 +22,7 @@ public class Skill extends VariableNumericFeature {
 	
 	private boolean nodefault = false;
 	
-	private boolean armorpenalty = false;
+	private boolean useArmorPenalty = false;
 	
 	private int ranks = 0;
 
@@ -30,7 +30,7 @@ public class Skill extends VariableNumericFeature {
 
 	private int abilityBonus = 0;
 	
-	
+	private int armorPenalty = 0;
 	
 	@Override
 	@XmlValue
@@ -48,6 +48,15 @@ public class Skill extends VariableNumericFeature {
 		else {
 			return tryTranslation(getKey());
 		}
+	}
+
+	@XmlAttribute
+	public int getArmorPenalty() {
+		return armorPenalty;
+	}
+
+	public void setArmorPenalty(int armorPenalty) {
+		this.armorPenalty = armorPenalty;
 	}
 
 	@XmlAttribute
@@ -106,19 +115,19 @@ public class Skill extends VariableNumericFeature {
 	}
 
 	@XmlAttribute
-	public boolean isArmorpenalty() {
-		return armorpenalty;
+	public boolean isUseArmorpenalty() {
+		return useArmorPenalty;
 	}
 
 	public Skill() {
 		this(null, null, null, false, false);
 	}
 
-	public Skill(String key, String linkedAbility, SkillCalculator calculator, boolean isNoDefault, boolean armorpenalty) {
+	public Skill(String key, String linkedAbility, SkillCalculator calculator, boolean isNoDefault, boolean useArmorPenalty) {
 		super(key, calculator);
 		this.linkedAbility = linkedAbility;
 		this.nodefault = isNoDefault;
-		this.armorpenalty = armorpenalty;
+		this.useArmorPenalty = useArmorPenalty;
 	}
 
 	

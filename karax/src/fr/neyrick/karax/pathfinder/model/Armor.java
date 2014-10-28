@@ -2,6 +2,7 @@ package fr.neyrick.karax.pathfinder.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -33,6 +34,11 @@ public class Armor extends ComplexFeatureCollection {
 
 	private FixedNumericFeature spellFailure;
 	
+	@XmlAttribute
+	public String getType() {
+		return acBonus.getType();
+	}
+
 	@XmlElement
 	public StringFeature getName() {
 		return name;

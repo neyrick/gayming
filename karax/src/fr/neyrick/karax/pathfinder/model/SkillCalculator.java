@@ -1,12 +1,11 @@
 package fr.neyrick.karax.pathfinder.model;
 
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
-import fr.neyrick.karax.model.SimpleVariable;
 
 public class SkillCalculator extends AbstractNumericFeatureCalculator<Skill>{
 
 	private Ability baseAbility;
-	private SimpleVariable armorpenalty;
+	private Load load;
 	
 	@Override
 	public Number calculateFeature(Skill feature) {
@@ -29,8 +28,9 @@ public class SkillCalculator extends AbstractNumericFeatureCalculator<Skill>{
 		result += baseAbility.getBonus();
 		feature.setAbilityBonus(abilityBonus);
 		
-		if (feature.isArmorpenalty()) {
-			result += this.armorpenalty.getNumericValue().intValue();
+		if (feature.isUseArmorpenalty()) {
+			result += load.getPenalty();
+			feature.setArmorPenalty(load.getPenalty());
 		}
 		
 		miscBonus += feature.getModifier();
@@ -40,10 +40,10 @@ public class SkillCalculator extends AbstractNumericFeatureCalculator<Skill>{
 		return result;
 	}
 
-	public SkillCalculator(Ability baseAbility, SimpleVariable armorpenalty) {
+	public SkillCalculator(Ability baseAbility, Load load) {
 		super();
 		this.baseAbility = baseAbility;
-		this.armorpenalty = armorpenalty;
+		this.load = load;
 	}
 
 }

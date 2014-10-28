@@ -4,6 +4,8 @@ import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
 
 public class AbilityCalculator extends AbstractNumericFeatureCalculator<Ability>{
 
+	private AbilityCapper capper = null;
+	
 	private int getValueFromCost(int cost) {
 		switch(cost) {
 			case -4: return 7;
@@ -35,7 +37,22 @@ public class AbilityCalculator extends AbstractNumericFeatureCalculator<Ability>
 		result += feature.getExperienceCost();
 		result += feature.getCost("MAGIC");
 
+		int bonus = (result / 2) - 5;
+		if ((capper != null) && (capper.getCap() < bonus)) {
+			bonus = capper.getCap();
+		}
+		feature.setBonus(bonus);
+		
 		return result;
+	}
+
+	public AbilityCalculator(AbilityCapper capper) {
+		super();
+		this.capper = capper;
+	}
+
+	public AbilityCalculator() {
+		super();
 	}
 
 }

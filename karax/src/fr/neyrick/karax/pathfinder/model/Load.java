@@ -10,7 +10,7 @@ import fr.neyrick.karax.model.SimpleVariable;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class Load extends SimpleVariable {
+public class Load extends SimpleVariable implements AbilityCapper {
 
 	public static final String LOAD_LIGHT = "LIGHT";
 	public static final String LOAD_MEDIUM = "MEDIUM";
@@ -58,12 +58,19 @@ public class Load extends SimpleVariable {
 		return maxDex;
 	}
 
+	@Override
+	public int getCap() {
+		refresh();
+		return maxDex;
+	}
+
 	public void setMaxDex(int maxDex) {
 		this.maxDex = maxDex;
 	}
 
 	@XmlAttribute
 	public String getState() {
+		refresh();
 		return state;
 	}	
 

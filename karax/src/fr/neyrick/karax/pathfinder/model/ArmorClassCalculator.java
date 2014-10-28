@@ -1,23 +1,35 @@
 package fr.neyrick.karax.pathfinder.model;
 
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
+import fr.neyrick.karax.model.StaticFeaturesCollection;
 
 public class ArmorClassCalculator extends AbstractNumericFeatureCalculator<ArmorClass>{
 
 	private Ability dexterity;
+	private StaticFeaturesCollection<Armor> armors;
 	
 	@Override
 	public Number calculateFeature(ArmorClass feature) {
-		
-		int result = 0;
-		result += super.calculateFromTotalCost(feature);
 		
 		int armorBonus = feature.getCost("ARMOR");
 		int naturalArmorBonus = feature.getCost("NATURAL_ARMOR");
 		int shieldBonus = feature.getCost("SHIELD");
 		int sizeBonus = feature.getCost("SIZE");
 		int deflectionBonus = feature.getCost("DEFLECTION");
-		int miscBonus = result - armorBonus - naturalArmorBonus - shieldBonus - sizeBonus - deflectionBonus;
+		int miscBonus = feature.getCost("MISC");
+		
+		int tempInt;
+		for (Armor armor : armors.getActualSubFeatures()) {
+			tempInt = armor.getAcBonus().getAmount();
+			switch(armor.getType()) {
+				case "ARMOR": if (armorBonus < tempInt) armorBonus = tempInt; break; 
+				case "NATURAL_ARMOR": if (naturalArmorBonus < tempInt) naturalArmorBonus = tempInt; break; 
+				case "SHIELD": if (shieldBonus < tempInt) shieldBonus = tempInt;  break;
+				case "DEFLECTION": if (deflectionBonus < tempInt) deflectionBonus = tempInt;  break;
+				case "MISC": if (miscBonus < tempInt) miscBonus = tempInt;  break;
+				default:  break;
+			}
+		}
 		
 		feature.setArmor(armorBonus);
 		feature.setShield(shieldBonus);
@@ -26,20 +38,34 @@ public class ArmorClassCalculator extends AbstractNumericFeatureCalculator<Armor
 		feature.setDeflection(deflectionBonus);
 		feature.setMisc(miscBonus);
 		
-		result += 10;
-				
-		feature.setFlatfooted(result);
+		int result = 10;
+		result += armorBonus;
+		result += shieldBonus;
+		result += naturalArmorBonus;
+		result += deflectionBonus;
+		result += sizeBonus;
+		result += miscBonus;
 		
-		result += dexterity.getBonus();
+		tempInt = dexterity.getBonus();
 		
-		feature.setTouch(result - armorBonus - naturalArmorBonus);
+		if (tempInt > 0) {
+			feature.setFlatfooted(result);
+			result += dexterity.getBonus();			
+		}
+		else {
+			result += dexterity.getBonus();			
+			feature.setFlatfooted(result);
+		}
+		
+		feature.setTouch(result - armorBonus - naturalArmorBonus - shieldBonus);
 				
 		return result;
 	}
 
-	public ArmorClassCalculator(Ability dexterity) {
+	public ArmorClassCalculator(Ability dexterity, StaticFeaturesCollection<Armor> armors) {
 		super();
 		this.dexterity = dexterity;
+		this.armors = armors;
 	}
 
 }

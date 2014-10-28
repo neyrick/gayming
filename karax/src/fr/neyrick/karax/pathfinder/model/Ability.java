@@ -16,7 +16,9 @@ import fr.neyrick.karax.model.VariableNumericFeature;
 public class Ability extends VariableNumericFeature {
 
 	private static final BonusFormat signFormat = new BonusFormat();
-
+ 
+	private int bonus;
+	
 	@XmlAttribute
 	public String getDisplay() {
 		return tryTranslation(getKey());
@@ -36,12 +38,18 @@ public class Ability extends VariableNumericFeature {
 
 	@XmlAttribute
 	public int getBonus() {
-		return (this.getNumericValue().intValue() / 2)-5;
+		refresh();
+		return bonus;
 	}
 
 	@XmlAttribute
 	public String getSignedBonus() {
-		return signFormat.format((this.getNumericValue().intValue() / 2)-5);
+		refresh();
+		return signFormat.format(bonus);
+	}
+	
+	public void setBonus(int bonus) {
+		this.bonus = bonus;
 	}
 
 	public Ability() {

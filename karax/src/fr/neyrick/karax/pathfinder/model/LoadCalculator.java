@@ -14,6 +14,8 @@ public class LoadCalculator extends AbstractNumericFeatureCalculator<Load>{
 	private Ability strength;
 	
 	private StaticFeaturesCollection<FixedNumericFeature> gear;
+	
+	private StaticFeaturesCollection<Armor> armors; 
 
 	private static int getLightCapacity(int strength) {
 		if (strength > 29) return getLightCapacity(20 + strength % 10) * 4 * ((strength / 10) -2);
@@ -51,12 +53,6 @@ public class LoadCalculator extends AbstractNumericFeatureCalculator<Load>{
 		}
 	}
 	
-	private static void setLoadLevel(Load load, String state, int penalty, int maxDex) {
-		load.setState(state);
-		load.setPenalty(penalty);
-		load.setMaxDex(maxDex);		
-	}
-	
 	@Override
 	public Number calculateFeature(Load feature) {
 		
@@ -70,23 +66,51 @@ public class LoadCalculator extends AbstractNumericFeatureCalculator<Load>{
 		float maxLight = capacity / 2f;
 		float maxMedium = capacity;
 		float maxHeavy = capacity * 1.5f;
+		int maxDex = 100;
+		int penalty = 0;		
 		
 		feature.setMaxLight(maxLight);
 		feature.setMaxMedium(maxMedium);
 		feature.setMaxHeavy(maxHeavy);
 
-		if (result < maxLight) setLoadLevel(feature, LOAD_LIGHT, 0, 100);
-		else if (result < maxMedium) setLoadLevel(feature, LOAD_MEDIUM, -3, 3);
-		else if (result < maxHeavy) setLoadLevel(feature, LOAD_HEAVY, -6, 1);
-		else setLoadLevel(feature, LOAD_OVER, -20, -20);
+		if (result <= maxLight) {
+			feature.setState(LOAD_LIGHT);
+		}
+		else if (result <= maxMedium) {
+			feature.setState(LOAD_MEDIUM);
+			maxDex = 3;
+			penalty = -3;
+		}
+		else if (result <= maxHeavy) {
+			feature.setState(LOAD_HEAVY);
+			maxDex = 1;
+			penalty = -6;
+		}
+		else {
+			feature.setState(LOAD_OVER);
+			maxDex = -20;
+			penalty = -20;
+		}
+		
+		int tempInt;
+		for(Armor armor : armors.getActualSubFeatures()) {
+			tempInt = armor.getMaxDex().getNumericValue();
+			if (tempInt < maxDex) maxDex = tempInt;
+			tempInt = armor.getPenalty().getNumericValue();
+			if (tempInt < penalty) penalty = tempInt;
+		}
+
+		feature.setPenalty(penalty);
+		feature.setMaxDex(maxDex);		
 		
 		return result;
 	}
 
-	public LoadCalculator(Ability strength, StaticFeaturesCollection<FixedNumericFeature> gear) {
+	public LoadCalculator(Ability strength, StaticFeaturesCollection<FixedNumericFeature> gear, StaticFeaturesCollection<Armor> armors) {
 		super();
 		this.strength = strength;
 		this.gear = gear;
+		this.armors = armors;
 	}
 
 }

@@ -56,64 +56,76 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		character.setHomeland(registerListener(new StringFeature("HOMELAND")));
 		character.setSex(registerListener(new StringFeature("SEX")));
 		character.setAge(registerListener(new FixedNumericFeature("AGE")));
-		
+
 		VariableFeaturesCollection<SimpleVariable> levels = new VariableFeaturesCollection<>("LEVEL", SimpleVariable.class);
 	    character.setLevels(registerListener(levels));
 	    character.setSpecialAbilities(registerListener(registerListener(new StaticFeaturesCollection<StringFeature>("SP_ABILITY", StringFeature.class))));
-		SimpleVariable armorPenaltyVariable = new SimpleVariable("ARMOR_PENALTY");
 		
 
 		// Abilities
 
+		StaticFeaturesCollection<FixedNumericFeature> gear = new StaticFeaturesCollection<>("GEAR", FixedNumericFeature.class);
+		StaticFeaturesCollection<Armor> armors = new StaticFeaturesCollection<>("ARMOR", Armor.class);
+		Load load = null;
 		AbilityCalculator abilityCalculator = new AbilityCalculator();
 		VariableFeaturesCollection<Ability> abilities = registerListener(new VariableFeaturesCollection<Ability>("ABILITY", Ability.class));
 		Map<String, Ability> abilitiesMap = new HashMap<String, Ability>(ABILITIES.length);
 		Map<String, SkillCalculator> skillCalculatorsMap = new HashMap<String, SkillCalculator>(ABILITIES.length);
 		Ability tempAbility;
 		for(String ability : ABILITIES) {
-			tempAbility = new Ability(ability, abilityCalculator);
+			if ("DEX".equals(ability)) {
+				AbilityCalculator dexCalculator = new AbilityCalculator(load);
+				tempAbility = new Ability(ability, dexCalculator);
+			}
+			else {
+				tempAbility = new Ability(ability, abilityCalculator);
+			}
+			if ("STR".equals(ability)) {
+				load = new Load("LOAD", new LoadCalculator(tempAbility, gear, armors));
+			}
 			abilities.addFeature(tempAbility);
 			abilitiesMap.put(ability, tempAbility);
-			skillCalculatorsMap.put(ability, new SkillCalculator(tempAbility, armorPenaltyVariable));
+			skillCalculatorsMap.put(ability, new SkillCalculator(tempAbility, load));
 		}		
 		character.setAbilities(abilities);
+		character.setSpeed(registerListener(new SimpleVariable("SPEED", new SpeedCalculator(load))));
 
 		// Skills
 		
 		PathfinderSkillList skills = registerListener(new PathfinderSkillList("SKILL", skillCalculatorsMap));
         character.setSkills(skills)	;	
 		skills.addSkill("ACROBATICS", "DEX", false, true);
-		skills.addSkill("APPRAISE", "INT", false, true);
-		skills.addSkill("BLUFF", "CHA", false, true);
+		skills.addSkill("APPRAISE", "INT", false, false);
+		skills.addSkill("BLUFF", "CHA", false, false);
 		skills.addSkill("CLIMB", "STR", false, true);
-		skills.addSkill("DIPLOMACY", "CHA", false, true);
-		skills.addSkill("DISABLE_DEVICE", "DEX", false, true);
-		skills.addSkill("DISGUISE", "CHA", false, true);
+		skills.addSkill("DIPLOMACY", "CHA", false, false);
+		skills.addSkill("DISABLE_DEVICE", "DEX", true, true);
+		skills.addSkill("DISGUISE", "CHA", false, false);
 		skills.addSkill("ESCAPE_ARTIST", "DEX", false, true);
 		skills.addSkill("FLY", "DEX", false, true);
-		skills.addSkill("HANDLE_ANIMAL", "DEX", false, true);
-		skills.addSkill("HEAL", "WIS", false, true);
-		skills.addSkill("INTIMIDATE", "CHA", false, true);
-		skills.addSkill("KN_ARCANA", "INT", false, true);
-		skills.addSkill("KN_DUNGEONEERING", "INT", false, true);
-		skills.addSkill("KN_ENGINEERING", "INT", false, true);
-		skills.addSkill("KN_GEOGRAPHY", "INT", false, true);
-		skills.addSkill("KN_HISTORY", "INT", false, true);
-		skills.addSkill("KN_LOCAL", "INT", false, true);
-		skills.addSkill("KN_NATURE", "INT", false, true);
-		skills.addSkill("KN_NOBILITY", "INT", false, true);
-		skills.addSkill("KN_PLANES", "INT", false, true);
-		skills.addSkill("KN_RELIGION", "INT", false, true);
-		skills.addSkill("LINGUISTICS", "INT", false, true);
-		skills.addSkill("PERCEPTION", "WIS", false, true);
+		skills.addSkill("HANDLE_ANIMAL", "DEX", true, false);
+		skills.addSkill("HEAL", "WIS", false, false);
+		skills.addSkill("INTIMIDATE", "CHA", false, false);
+		skills.addSkill("KN_ARCANA", "INT", true, false);
+		skills.addSkill("KN_DUNGEONEERING", "INT", true, false);
+		skills.addSkill("KN_ENGINEERING", "INT", true, false);
+		skills.addSkill("KN_GEOGRAPHY", "INT", true, false);
+		skills.addSkill("KN_HISTORY", "INT", true, false);
+		skills.addSkill("KN_LOCAL", "INT", true, false);
+		skills.addSkill("KN_NATURE", "INT", true, false);
+		skills.addSkill("KN_NOBILITY", "INT", true, false);
+		skills.addSkill("KN_PLANES", "INT", true, false);
+		skills.addSkill("KN_RELIGION", "INT", true, false);
+		skills.addSkill("LINGUISTICS", "INT", true, false);
+		skills.addSkill("PERCEPTION", "WIS", false, false);
 		skills.addSkill("RIDE", "DEX", false, true);
-		skills.addSkill("SENSE_MOTIVE", "WIS", false, true);
-		skills.addSkill("SLEIGHT_OF_HAND", "DEX", false, true);
-		skills.addSkill("SPELLCRAFT", "INT", false, true);
+		skills.addSkill("SENSE_MOTIVE", "WIS", false, false);
+		skills.addSkill("SLEIGHT_OF_HAND", "DEX", true, true);
+		skills.addSkill("SPELLCRAFT", "INT", true, false);
 		skills.addSkill("STEALTH", "DEX", false, true);
-		skills.addSkill("SURVIVAL", "WIS", false, true);
+		skills.addSkill("SURVIVAL", "WIS", false, false);
 		skills.addSkill("SWIM", "STR", false, true);
-		skills.addSkill("USE_MAGIC_DEVICE", "CHA", false, true);
+		skills.addSkill("USE_MAGIC_DEVICE", "CHA", true, false);
 		
 		// Saves
 		
@@ -129,10 +141,9 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		character.setBaseAttackBonus(registerListener(bab));
 		character.setManeuverAttack(registerListener(new SimpleBonus("CMB", new ManeuverAttackCalculator(bab, abilitiesMap.get("STR"), size))));
 		character.setManeuverDefense(registerListener(new SimpleVariable("CMD", new ManeuverDefenseCalculator(bab, abilitiesMap.get("STR"), abilitiesMap.get("DEX"), size))));
-		character.setArmorclass(registerListener(new ArmorClass("AC", new ArmorClassCalculator(abilitiesMap.get("DEX")))));
+		character.setArmorclass(registerListener(new ArmorClass("AC", new ArmorClassCalculator(abilitiesMap.get("DEX"), armors))));
 		character.setInitiative(registerListener(new Initiative("INITIATIVE", new InitiativeCalculator((abilitiesMap.get("DEX"))))));
 		character.setHitpoints(registerListener(new SimpleVariable("HP", new HitPointCalculator(abilitiesMap.get("CON"), levels))));
-		character.setArmorpenalty(registerListener(armorPenaltyVariable));
 		character.setFavoredClasses(registerListener(new StaticFeaturesCollection<StringFeature>("FAVORED_CLASS", StringFeature.class)));
 		character.setFeats(registerListener(new StaticFeaturesCollection<StringFeature>("FEAT", StringFeature.class)));
 		character.setTraits(registerListener(new StaticFeaturesCollection<StringFeature>("TRAIT", StringFeature.class)));
@@ -149,11 +160,10 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		
 		// Gear
 		
-		StaticFeaturesCollection<FixedNumericFeature> gear = new StaticFeaturesCollection<>("GEAR", FixedNumericFeature.class);
 		character.setGear(registerListener(gear));
-		character.setLoad(registerListener(new Load("LOAD", new LoadCalculator(abilitiesMap.get("STR"), gear))));
+		character.setLoad(registerListener(load));
 		character.setWeapons(registerListener(new WeaponCollection("WEAPON", bab, abilitiesMap)));
-		character.setArmors(registerListener(new StaticFeaturesCollection<Armor>("ARMOR", Armor.class)));
+		character.setArmors(registerListener(armors));
 
 		
 		return character;
