@@ -83,12 +83,6 @@ public class PathfinderCharacter extends GameCharacter {
 
 	private StaticFeaturesCollection<FixedNumericFeature> gear;
 
-	private StaticFeaturesCollection<StringFeature> knownSpells;
-	
-	private StaticFeaturesCollection<StringFeature> domains;
-	
-	private SpellSlotsMap spellSlots;
-
 	private VariableFeaturesCollection<Ability> abilities;
 	
 	private VariableFeaturesCollection<Skill> skills;
@@ -99,7 +93,8 @@ public class PathfinderCharacter extends GameCharacter {
 
 	private VariableFeaturesCollection<Save> saves;
 
-
+	private SpellcastingCollection spellcastings;
+	
 	@XmlElement
 	public FixedNumericFeature getSize() {
 		return size;
@@ -341,24 +336,14 @@ public class PathfinderCharacter extends GameCharacter {
 		this.languages = languages;
 	}
 
-	@XmlElementWrapper(name="knownspells")
-	@XmlElement(name="knownspell")
-	public Collection<StringFeature> getKnownSpells() {
-		return knownSpells.getActualSubFeatures();
+	@XmlElementWrapper(name="spellcastings")
+	@XmlElement(name="spellcasting")
+	public Collection<Spellcasting> getSpellcastings() {
+		return spellcastings.getActualSubFeatures();
 	}
 
-	public void setKnownSpells(StaticFeaturesCollection<StringFeature> knownSpells) {
-		this.knownSpells = knownSpells;
-	}
-
-	@XmlElementWrapper(name="domains")
-	@XmlElement(name="domain")
-	public Collection<StringFeature> getDomains() {
-		return domains.getActualSubFeatures();
-	}
-
-	public void setDomains(StaticFeaturesCollection<StringFeature> domains) {
-		this.domains = domains;
+	public void setSpellcastings(SpellcastingCollection spellcastings) {
+		this.spellcastings = spellcastings;
 	}
 
 	@XmlElementWrapper(name="skills")
@@ -399,16 +384,6 @@ public class PathfinderCharacter extends GameCharacter {
 
 	public void setAbilities(VariableFeaturesCollection<Ability> abilities) {
 		this.abilities = abilities;
-	}
-
-	@XmlElementWrapper(name="spellSlots")
-	@XmlElement(name="slots")
-	public Collection<SpellSlotsArray> getSpellSlots() {
-		return spellSlots.getActualSubFeatures();
-	}
-
-	public void setSpellSlots(SpellSlotsMap spellSlots) {
-		this.spellSlots = spellSlots;
 	}
 
 	@XmlElementWrapper(name="levels")

@@ -149,14 +149,10 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		character.setTraits(registerListener(new StaticFeaturesCollection<StringFeature>("TRAIT", StringFeature.class)));
 		character.setRaceTraits(registerListener(new StaticFeaturesCollection<StringFeature>("RACE_TRAIT", StringFeature.class)));
 		character.setLanguages(registerListener(new StaticFeaturesCollection<StringFeature>("LANGUAGE", StringFeature.class)));
-		character.setKnownSpells(registerListener(new StaticFeaturesCollection<StringFeature>("KNOWN_SPELL", StringFeature.class)));
 
-		// Spell slots
-		SpellSlotsMap spellSlots = registerListener(new SpellSlotsMap("SPELL_SLOT"));
-		character.setSpellSlots(spellSlots);
-		
-		character.setDomains(registerListener(new StaticFeaturesCollection<StringFeature>("DOMAIN", StringFeature.class)));
-		
+		// Spell casting
+		character.setSpellcastings(registerListener(new SpellcastingCollection("SPELLCASTING", abilitiesMap)));
+				
 		
 		// Gear
 		

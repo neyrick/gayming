@@ -31,12 +31,12 @@ public class StaticFeaturesCollection<T extends AbstractFeature> extends Feature
 		throw new UnsupportedOperationException("Dummy constructor");
 	}
 	
-	public CharacterFeature addFeature(String subItemKey) {
+	public T addFeature(String subItemKey) {
 		return this.addFeature(subItemKey, null);
 	}
 
 	@Override
-	public CharacterFeature addFeature(String subItemKey, CharacterEdit edit) {
+	public T addFeature(String subItemKey, CharacterEdit edit) {
 	    T feature;
 		try {
 			feature = featureClass.newInstance();
@@ -47,14 +47,14 @@ public class StaticFeaturesCollection<T extends AbstractFeature> extends Feature
 	    return addFeature(feature);
 	}
 
-	public CharacterFeature addFeature(T feature) {
+	public T addFeature(T feature) {
 	    feature.setContainer(this);
 	    featuresMap.put(feature.getKey(), feature);
 	    return feature;
 	}
 
 	@Override
-	public CharacterFeature getSubFeature(String key) {
+	public T getSubFeature(String key) {
 		return featuresMap.get(key);
 	}
 

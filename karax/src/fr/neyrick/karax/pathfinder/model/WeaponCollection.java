@@ -3,7 +3,6 @@ package fr.neyrick.karax.pathfinder.model;
 import java.util.Map;
 
 import fr.neyrick.karax.entities.generic.CharacterEdit;
-import fr.neyrick.karax.model.CharacterFeature;
 import fr.neyrick.karax.model.FeaturesCollection;
 import fr.neyrick.karax.model.SimpleVariable;
 import fr.neyrick.karax.model.StaticFeaturesCollection;
@@ -14,7 +13,7 @@ public class WeaponCollection extends StaticFeaturesCollection<Weapon> {
 	private Map<String, Ability> abilitiesMap;
 
 	@Override
-	public CharacterFeature addFeature(String subItemKey, CharacterEdit edit) {
+	public Weapon addFeature(String subItemKey, CharacterEdit edit) {
 	    Weapon weapon = new Weapon(subItemKey, baseAttackBonus, abilitiesMap);
 	    return addFeature(weapon);
 	}

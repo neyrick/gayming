@@ -706,7 +706,7 @@
           
           <!-- Dons, traits et capacités -->
           
-          <fo:block-container absolute-position="absolute" top="30mm" left="90mm">
+          <fo:block-container absolute-position="absolute" top="170mm" left="19mm">
             <fo:block font-size="12pt" padding-left="1mm" padding-top="1mm">
 				<fo:table table-layout="fixed" width="94mm" text-align="left">
 					<fo:table-column column-width="4mm" />
@@ -762,63 +762,66 @@
 			</fo:block>
 		  </fo:block-container>
           
- 		   <fo:block  page-break-after="always"/>
-
           <!-- Bloc de lanceur de sorts -->
 
-          <fo:block-container absolute-position="absolute" top="30mm" left="15mm" width="30mm">
+          <fo:block-container absolute-position="absolute" top="30mm" left="130mm" width="60mm">
+            <xsl:for-each select="spellcastings/spellcasting">
+            <xsl:variable name="currentClass" select="@casterClass"/>
+            <xsl:variable name="casterAbility" select="@abilityKey"/>
+            <fo:block font-size="12pt" color="white" background-color="black" text-align="center" padding-top="1mm" padding-left="2mm"><xsl:value-of select="$label.spells"/>: <xsl:value-of select="@casterClass"/></fo:block>
+            <fo:block text-align="center" padding-top="1mm" padding-left="2mm" font-size="10pt"><xsl:value-of select="$label.domains"/></fo:block>
+            <fo:block text-align="left" padding-top="1mm" padding-left="2mm" font-size="10pt">
+								<xsl:for-each select="domains/domain"><xsl:if test="position() > 1">, </xsl:if> <xsl:value-of select="."/></xsl:for-each>
+			</fo:block>
             <fo:block font-size="12pt" padding-left="1mm" padding-top="1mm">
-				<fo:table table-layout="fixed" width="70mm" text-align="left">
-					<fo:table-column column-width="12mm" />
-					<fo:table-column column-width="12mm" />
-					<fo:table-column column-width="12mm" />
-					<fo:table-column column-width="12mm" />
-					<fo:table-column column-width="12mm" />
+				<fo:table table-layout="fixed" width="60mm" text-align="left" border-bottom-style="solid" border-top-style="solid">
+					<fo:table-column column-width="15mm" />
+					<fo:table-column column-width="15mm" />
+					<fo:table-column column-width="15mm" />
+					<fo:table-column column-width="15mm" />
 					<fo:table-header>
-						<fo:table-row height="5mm" display-align="center" color="white" background-color="black">
-							<fo:table-cell number-columns-spanned="5" text-align="center" padding-top="1mm" padding-left="2mm" font-size="10pt"><fo:block><xsl:value-of select="$label.spells"/></fo:block></fo:table-cell>
+						<fo:table-row height="5mm" font-size="8pt" display-align="center">
+							<fo:table-cell padding-top="2mm" text-align="center" ><fo:block><xsl:value-of select="$label.level"/></fo:block></fo:table-cell>
+							<fo:table-cell padding-top="2mm" text-align="center" ><fo:block><xsl:value-of select="$label.spellsPerDay"/></fo:block></fo:table-cell>
+							<fo:table-cell padding-top="2mm" text-align="center" ><fo:block><xsl:value-of select="$label.spellDR"/></fo:block></fo:table-cell>
+							<fo:table-cell padding-top="2mm" text-align="center" ><fo:block><xsl:value-of select="$label.knownSpells"/></fo:block></fo:table-cell>
 						</fo:table-row>
 					</fo:table-header>
 					<fo:table-body>
-						<fo:table-row height="5mm" font-size="8pt" display-align="center">
-							<fo:table-cell number-columns-spanned="5" text-align="center"><fo:block><xsl:value-of select="$label.domains"/></fo:block></fo:table-cell>
-						</fo:table-row>
-						<fo:table-row height="4mm" font-size="8pt" display-align="center">
-							<fo:table-cell number-columns-spanned="5" text-align="center" border-width="thin" border-bottom-style="solid"><fo:block>
-								<xsl:for-each select="domains/domain"><xsl:if test="position() > 1">, </xsl:if> <xsl:value-of select="."/></xsl:for-each>
-							</fo:block></fo:table-cell>
-						</fo:table-row>
-						<fo:table-row height="5mm" font-size="8pt" display-align="center">
-							<fo:table-cell padding-top="2mm" text-align="center" ><fo:block><xsl:value-of select="$label.knownSpells"/></fo:block></fo:table-cell>
-							<fo:table-cell padding-top="2mm" text-align="center" ><fo:block><xsl:value-of select="$label.spellDR"/></fo:block></fo:table-cell>
-							<fo:table-cell padding-top="2mm" text-align="center" ><fo:block><xsl:value-of select="$label.level"/></fo:block></fo:table-cell>
-							<fo:table-cell padding-top="2mm" text-align="center" ><fo:block><xsl:value-of select="$label.spellsPerDay"/></fo:block></fo:table-cell>
-							<fo:table-cell padding-top="2mm" text-align="center" ><fo:block><xsl:value-of select="$label.bonusSpells"/></fo:block></fo:table-cell>
-						</fo:table-row>
-						<fo:table-row height="5mm" font-size="8pt" display-align="center">
-							<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block border-style="solid" border-width="thin">-</fo:block></fo:table-cell>
-							<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block border-style="solid" border-width="thin">-</fo:block></fo:table-cell>
-							<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block>0</fo:block></fo:table-cell>
-							<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block border-style="solid" border-width="thin">-</fo:block></fo:table-cell>
-							<fo:table-cell text-align="center" font-family="Carrois"><fo:block>-</fo:block></fo:table-cell>
-						</fo:table-row>
-						<fo:table-row height="5mm" font-size="8pt" display-align="center">
-							<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block border-style="solid" border-width="thin">-</fo:block></fo:table-cell>
-							<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block border-style="solid" border-width="thin">-</fo:block></fo:table-cell>
-							<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block>1</fo:block></fo:table-cell>
-							<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block border-style="solid" border-width="thin">-</fo:block></fo:table-cell>
-							<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block border-style="solid" border-width="thin">-</fo:block></fo:table-cell>
-						</fo:table-row>
-						<fo:table-row height="3mm" font-size="6pt" display-align="center">
-							<fo:table-cell text-align="center" font-family="Carrois"><fo:block>0</fo:block></fo:table-cell>
-							<fo:table-cell number-columns-spanned="4" font-family="Glyphicons"><fo:block>&#xE157;&#xE157;&#xE157;&#xE157;&#xE157;&#xE157;&#xE157;&#xE157;&#xE157;&#xE157;&#xE157;</fo:block></fo:table-cell>
-						</fo:table-row>
-						<fo:table-row height="3mm" font-size="6pt" display-align="center">
-							<fo:table-cell number-columns-spanned="5" font-family="Carrois"><fo:block><xsl:for-each select="knownspells/knownspell[@level = '0']"><xsl:if test="position() > 1">, </xsl:if> <xsl:value-of select="."/></xsl:for-each></fo:block></fo:table-cell>
-						</fo:table-row>
+						<xsl:for-each select="spellslots/level">
+							<xsl:variable name="currentlevel" select="@key"/>
+							<fo:table-row height="5mm" font-size="8pt" display-align="center">
+								<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block><xsl:value-of select="@key"/></fo:block></fo:table-cell>
+								<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block border-style="solid" border-width="thin"><xsl:value-of select="."/></fo:block></fo:table-cell>
+								<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block border-style="solid" border-width="thin"><xsl:value-of select="10 + $currentlevel + //abilities/ability[@key=$casterAbility]/@bonus"/></fo:block></fo:table-cell>
+								<fo:table-cell text-align="center" font-family="Carrois" padding-top="1mm" padding-bottom="1mm" padding-left="2mm" padding-right="2mm"><fo:block border-style="solid" border-width="thin"><xsl:value-of select="//spellcasting[@casterClass=$currentClass]/knownspellscount/level[@key=$currentlevel]"/></fo:block></fo:table-cell>
+							</fo:table-row>
+						</xsl:for-each>
+					</fo:table-body>
+				</fo:table>
+				<fo:table table-layout="fixed" width="60mm" text-align="left">
+					<fo:table-column column-width="10mm" />
+					<fo:table-column column-width="50mm" />
+					<fo:table-body>
+						<xsl:for-each select="spellslots/level">
+							<xsl:variable name="currentlevel" select="@key"/>
+							<fo:table-row height="3mm" font-size="6pt" display-align="center">
+								<fo:table-cell text-align="center" font-family="Carrois"><fo:block><xsl:value-of select="@key"/> </fo:block></fo:table-cell>
+								<fo:table-cell font-family="Glyphicons" padding-top="2mm"><fo:block>
+								    <xsl:call-template name="repeat">
+								      <xsl:with-param name="output" select="'&#xE157;'" />
+								      <xsl:with-param name="count" select="." />
+								    </xsl:call-template>
+								</fo:block></fo:table-cell>
+							</fo:table-row>
+							<fo:table-row height="3mm" font-size="6pt" display-align="center">
+								<fo:table-cell number-columns-spanned="2" font-family="Carrois"><fo:block><xsl:for-each select="//spellcasting[@casterClass=$currentClass]/knownspells/knownspell[@amount = $currentlevel]"><xsl:if test="position() > 1">, </xsl:if> <xsl:value-of select="."/></xsl:for-each></fo:block></fo:table-cell>
+							</fo:table-row>
+						</xsl:for-each>
 					</fo:table-body>
 				</fo:table>
 			</fo:block>
+			</xsl:for-each>
 		</fo:block-container>
 
          </fo:flow>
@@ -826,6 +829,17 @@
     </fo:root>
   </xsl:template>
   
+	<xsl:template name="repeat">
+	  <xsl:param name="output" />
+	  <xsl:param name="count" />
+	  <xsl:value-of select="$output" />
+	  <xsl:if test="$count &gt; 1">
+	    <xsl:call-template name="repeat">
+	      <xsl:with-param name="output" select="$output" />
+	      <xsl:with-param name="count" select="$count - 1" />
+	    </xsl:call-template>
+	  </xsl:if>
+	</xsl:template>
 
   
 </xsl:stylesheet>
