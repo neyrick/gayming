@@ -21,7 +21,7 @@
   <xsl:variable name="label.domains" select="'Domaines'"/>
   <xsl:variable name="label.eyes" select="'Yeux'"/>
   <xsl:variable name="label.favoredclasses" select="'Prédilection'"/>
-  <xsl:variable name="label.speed" select="'Dèplacement'"/>
+  <xsl:variable name="label.speed" select="'Déplacement'"/>
   <xsl:variable name="label.feats" select="'Dons'"/>
   <xsl:variable name="label.gear" select="'Équipement'"/>
   <xsl:variable name="label.sex" select="'Sexe'"/>
@@ -35,13 +35,13 @@
   <xsl:variable name="label.racetraits" select="'Traits de race'"/>
   <xsl:variable name="label.savingthrows" select="'Jets de Sauvegarde'"/>
   <xsl:variable name="label.saveFOR" select="'Vigueur'"/>
-  <xsl:variable name="label.saveWIL" select="'Volontè'"/>
-  <xsl:variable name="label.saveREF" select="'Rèflexes'"/>
+  <xsl:variable name="label.saveWIL" select="'Volonté'"/>
+  <xsl:variable name="label.saveREF" select="'Réflexes'"/>
   <xsl:variable name="label.saveBase" select="'Base'"/>
   <xsl:variable name="label.saveAbility" select="'Carac'"/>
   <xsl:variable name="label.saveMagic" select="'Magie'"/>
   <xsl:variable name="label.size" select="'Gabarit'"/>
-  <xsl:variable name="label.skills" select="'Compètences'"/>
+  <xsl:variable name="label.skills" select="'Compétences'"/>
   <xsl:variable name="label.skillAbility" select="'Carac'"/>
   <xsl:variable name="label.skillRanks" select="'Rangs'"/>
   <xsl:variable name="label.subrace" select="'Sous-race'"/>
@@ -62,11 +62,11 @@
   <xsl:variable name="label.ACshield" select="'Boucl.'"/>
   <xsl:variable name="label.ACnatural" select="'Natur.'"/>
   <xsl:variable name="label.ACdeflection" select="'Parade'"/>
-  <xsl:variable name="label.ACflatfooted" select="'Dèpourvu'"/>
+  <xsl:variable name="label.ACflatfooted" select="'Dépourvu'"/>
   <xsl:variable name="label.ACtouch" select="'Contact'"/>
   <xsl:variable name="label.bab" select="'Bonus d´Attaque'"/>
   <xsl:variable name="label.cmb" select="'Bonus de Manœuvre'"/>
-  <xsl:variable name="label.cmd" select="'Dèf de Manœuvre'"/>
+  <xsl:variable name="label.cmd" select="'Déf de Manœuvre'"/>
   <xsl:variable name="label.babBonus" select="'Attaque'"/>
   <xsl:variable name="label.weapon" select="'Arme'"/>
   <xsl:variable name="label.attack" select="'Attaque'"/>
@@ -80,9 +80,9 @@
   <xsl:variable name="label.spellfailure" select="'Échec sorts'"/>
   <xsl:variable name="label.languages" select="'Langues'"/>
   <xsl:variable name="label.totalweight" select="'Poids total'"/>
-  <xsl:variable name="label.traits" select="'Dons, traits et capacitès'"/>
+  <xsl:variable name="label.traits" select="'Dons, traits et capacités'"/>
   <xsl:variable name="label.load" select="'Charge'"/>
-  <xsl:variable name="label.loadLight" select="'Lègére'"/>
+  <xsl:variable name="label.loadLight" select="'Légère'"/>
   <xsl:variable name="label.loadMedium" select="'Intermédiaire'"/>
   <xsl:variable name="label.loadHeavy" select="'Lourde'"/>
   <xsl:variable name="label.treasure" select="'Richesses'"/>

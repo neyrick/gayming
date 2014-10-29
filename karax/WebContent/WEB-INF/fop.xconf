@@ -94,8 +94,12 @@ the location of this file.
           <font-triplet name="Electrolize" style="normal" weight="normal"/>
         </font>
 
-        <font kerning="yes" embed-url="GriffosSCapsFont.ttf">
-          <font-triplet name="Griffos" style="normal" weight="normal"/>
+        <font kerning="yes" embed-url="Play-Regular.ttf">
+          <font-triplet name="Play" style="normal" weight="normal"/>
+        </font>
+
+        <font kerning="yes" embed-url="Play-Bold.ttf">
+          <font-triplet name="Play" style="normal" weight="bold"/>
         </font>
 
         <font kerning="yes" embed-url="CarroisGothicSC-Regular.ttf">
