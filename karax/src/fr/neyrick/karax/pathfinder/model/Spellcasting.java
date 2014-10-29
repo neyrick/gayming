@@ -25,7 +25,8 @@ import fr.neyrick.karax.model.VariableFeaturesCollection;
 public class Spellcasting extends ComplexFeatureCollection {
 
 	public static final String SUBKEY_LEVEL="LEVEL";
-	public static final String SUBKEY_DOMAINS="DOMAIN";
+	public static final String SUBKEY_SUBCLASS="SUBCLASS";
+	public static final String SUBKEY_SUBCLASSNAME="SUBCLASSNAME";
 	public static final String SUBKEY_KNOWNSPELLSCOUNT="KNOWNSPELLSCOUNT";
 	public static final String SUBKEY_KNOWNSPELLS="KNOWNSPELL";
 	public static final String SUBKEY_ABILITYKEY="ABILITY";
@@ -35,9 +36,11 @@ public class Spellcasting extends ComplexFeatureCollection {
 
 	private StringFeature abilityKey;
 
+	private StringFeature subclassName;
+
 	private Map<String, Ability> abilitiesMap;
 	
-	private StaticFeaturesCollection<StringFeature> domains;
+	private StaticFeaturesCollection<StringFeature> subclasses;
 
 	private VariableFeaturesCollection<SimpleVariable> knownSpellsCount;
 	
@@ -61,10 +64,15 @@ public class Spellcasting extends ComplexFeatureCollection {
 		return abilityKey.getValue();
 	}
 
-	@XmlElementWrapper(name="domains")
-	@XmlElement(name="domain")
-	public Collection<StringFeature> getDomains() {
-		return domains.getActualSubFeatures();
+	@XmlAttribute
+	public String getSubclassName() {
+		return subclassName.getValue();
+	}
+
+	@XmlElementWrapper(name="subclasses")
+	@XmlElement(name="subclass")
+	public Collection<StringFeature> getSubclasses() {
+		return subclasses.getActualSubFeatures();
 	}
 
 	@XmlElementWrapper(name="knownspellscount")
@@ -88,7 +96,8 @@ public class Spellcasting extends ComplexFeatureCollection {
 	private void initFields() {
 		level = new SimpleVariable(this, SUBKEY_LEVEL);
 		abilityKey = new StringFeature(this,  SUBKEY_ABILITYKEY);
-		domains = new StaticFeaturesCollection<>(this, SUBKEY_DOMAINS, StringFeature.class);
+		subclassName = new StringFeature(this,  SUBKEY_SUBCLASSNAME);
+		subclasses = new StaticFeaturesCollection<>(this, SUBKEY_SUBCLASS, StringFeature.class);
 		knownSpellsCount = new VariableFeaturesCollection<>(this, SUBKEY_KNOWNSPELLSCOUNT, SimpleVariable.class);
 		knownSpells = new StaticFeaturesCollection<>(this,  SUBKEY_KNOWNSPELLS, FixedNumericFeature.class);
 		spellSlots = new VariableFeaturesCollection<SimpleVariable>(this, SUBKEY_SPELLSLOT, SimpleVariable.class, new SpellSlotsCalculator(abilityKey, abilitiesMap));
@@ -121,7 +130,8 @@ public class Spellcasting extends ComplexFeatureCollection {
 	protected CharacterFeature createSubFeature(String subItemKey, CharacterEdit edit) {
 		switch(subItemKey) {
 			case SUBKEY_LEVEL:return level;
-			case SUBKEY_DOMAINS:return domains;
+			case SUBKEY_SUBCLASS:return subclasses;
+			case SUBKEY_SUBCLASSNAME:return subclassName;
 			case SUBKEY_KNOWNSPELLSCOUNT:return knownSpellsCount;
 			case SUBKEY_KNOWNSPELLS:return knownSpells;
 			case SUBKEY_ABILITYKEY:return abilityKey;

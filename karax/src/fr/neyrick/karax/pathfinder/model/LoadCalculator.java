@@ -93,13 +93,14 @@ public class LoadCalculator extends AbstractNumericFeatureCalculator<Load>{
 		}
 		
 		int tempInt;
+		int armorpenalty = 0;
 		for(Armor armor : armors.getActualSubFeatures()) {
 			tempInt = armor.getMaxDex().getNumericValue();
 			if (tempInt < maxDex) maxDex = tempInt;
-			tempInt = armor.getPenalty().getNumericValue();
-			if (tempInt < penalty) penalty = tempInt;
+			armorpenalty += armor.getPenalty().getNumericValue();
 		}
-
+		if (armorpenalty < penalty) penalty = armorpenalty;
+		
 		feature.setPenalty(penalty);
 		feature.setMaxDex(maxDex);		
 		

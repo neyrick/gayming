@@ -64,7 +64,7 @@ public class Weapon extends ComplexFeatureCollection {
 	public String getDamage() {
 		int bonus = damageBonus.getNumericValue().intValue();
 		if (bonus == 0) return damageBase.getValue();
-		else return damageBase.getValue() + " + " + damageBonus.getValue();
+		else return damageBase.getValue() + damageBonus.getValue();
 	}
 
 	public StringFeature getDamageBase() {

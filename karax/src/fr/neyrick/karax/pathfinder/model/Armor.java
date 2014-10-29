@@ -68,6 +68,7 @@ public class Armor extends ComplexFeatureCollection {
 		name = new StringFeature(this, SUBKEY_NAME);
 		acBonus = new FixedBonus(this, SUBKEY_ACBONUS);
 		maxDex = new FixedBonus(this, SUBKEY_MAXDEX);
+		maxDex.setAmount(100);
 		penalty = new FixedBonus(this, SUBKEY_PENALTY);
 		spellFailure = new FixedNumericFeature(this, SUBKEY_SPELLFAILURE);
 	}
