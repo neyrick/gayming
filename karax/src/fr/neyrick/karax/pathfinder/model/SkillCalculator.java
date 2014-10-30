@@ -10,6 +10,7 @@ public class SkillCalculator extends AbstractNumericFeatureCalculator<Skill>{
 	@Override
 	public Number calculateFeature(Skill feature) {
 		int result = feature.getExperienceCost();
+		result += feature.getFavoredCost();
 		
 		feature.setRanks(result);
 		

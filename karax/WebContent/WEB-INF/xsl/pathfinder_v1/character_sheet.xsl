@@ -763,6 +763,7 @@
 
           <!-- Bloc de lanceur de sorts -->
 
+		<xsl:if test="spellcastings/spellcasting">
           <fo:block-container absolute-position="absolute" top="50mm" left="125mm" width="66mm">
             <xsl:for-each select="spellcastings/spellcasting">
             <xsl:variable name="currentClass" select="@casterClass"/>
@@ -828,7 +829,7 @@
 			</fo:block>
 			</xsl:for-each>
 		</fo:block-container>
-
+	</xsl:if>
          </fo:flow>
       </fo:page-sequence>
     </fo:root>

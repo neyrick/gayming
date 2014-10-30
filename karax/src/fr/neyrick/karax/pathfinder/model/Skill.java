@@ -15,6 +15,7 @@ public class Skill extends VariableNumericFeature {
 
 	private static final BonusFormat signFormat = new BonusFormat();
 
+	private static final String FAVORED_COST="FAVORED";
 	private static final String CUSTOM_SKILL_SEPARATOR = ":";
 	private static final String CUSTOM_SKILL_PREFIX = "CS_";
 
@@ -32,6 +33,11 @@ public class Skill extends VariableNumericFeature {
 	
 	private int armorPenalty = 0;
 	
+	
+	public int getFavoredCost() {
+		return getCost(FAVORED_COST);
+	}
+		
 	@Override
 	@XmlValue
 	public String getValue() {
