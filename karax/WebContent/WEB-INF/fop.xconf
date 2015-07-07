@@ -93,13 +93,22 @@ the location of this file.
         <font kerning="yes" embed-url="electrolize-regular.ttf">
           <font-triplet name="Electrolize" style="normal" weight="normal"/>
         </font>
-
+<!--
         <font kerning="yes" embed-url="Play-Regular.ttf">
           <font-triplet name="Play" style="normal" weight="normal"/>
         </font>
 
         <font kerning="yes" embed-url="Play-Bold.ttf">
           <font-triplet name="Play" style="normal" weight="bold"/>
+        </font>
+-->
+
+        <font metrics-url="CreditValley.xml" kerning="yes" embed-url="CreditValley.ttf">
+          <font-triplet name="CreditValley" style="normal" weight="normal"/>
+        </font>
+
+        <font metrics-url="CreditValleybold.xml" kerning="yes" embed-url="CreditValleybold.ttf">
+          <font-triplet name="CreditValley" style="normal" weight="bold"/>
         </font>
 
         <font kerning="yes" embed-url="CarroisGothicSC-Regular.ttf">
