@@ -11,6 +11,7 @@ import fr.neyrick.karax.entities.generic.CharacterEdit;
 import fr.neyrick.karax.model.CharacterFeature;
 import fr.neyrick.karax.model.ComplexFeatureCollection;
 import fr.neyrick.karax.model.FeaturesCollection;
+import fr.neyrick.karax.model.FixedNumericFeature;
 import fr.neyrick.karax.model.SimpleBonus;
 import fr.neyrick.karax.model.SimpleVariable;
 import fr.neyrick.karax.model.StringFeature;
@@ -31,6 +32,8 @@ public class Weapon extends ComplexFeatureCollection {
 	public static final String SUBKEY_AMMO="AMMO";
 	
 	private SimpleVariable baseAttackBonus;
+	
+	private FixedNumericFeature size;
 	
 	private Map<String, Ability> abilitiesMap;
 	
@@ -106,24 +109,26 @@ public class Weapon extends ComplexFeatureCollection {
 		damageAbilityKey = new StringFeature(this, SUBKEY_DAMAGEABILITY);
 		damageBase = new StringFeature(this, SUBKEY_DAMAGEBASE);
 		damageBonus = new SimpleBonus(this, SUBKEY_DAMAGEBONUS, new WeaponDamageCalculator(abilitiesMap, damageAbilityKey));
-		attackBonus = new SimpleBonus(this, SUBKEY_ATTACKBONUS, new WeaponAttackCalculator(abilitiesMap, baseAttackBonus, attackAbilityKey));
+		attackBonus = new SimpleBonus(this, SUBKEY_ATTACKBONUS, new WeaponAttackCalculator(abilitiesMap, baseAttackBonus, attackAbilityKey, size));
 		critical = new StringFeature(this, SUBKEY_CRITICAL);
 		type = new StringFeature(this, SUBKEY_TYPE);
 		range = new StringFeature(this, SUBKEY_RANGE);
 		ammo = new StringFeature(this, SUBKEY_AMMO);
 	}
 	
-	public Weapon(FeaturesCollection parent, String key, SimpleVariable baseAttackBonus, Map<String, Ability> abilitiesMap) {
+	public Weapon(FeaturesCollection parent, String key, SimpleVariable baseAttackBonus, Map<String, Ability> abilitiesMap, FixedNumericFeature size) {
 		super(parent, key);
 		this.abilitiesMap = abilitiesMap;
 		this.baseAttackBonus = baseAttackBonus;
+		this.size = size;
 		initFields();
 	}
 
-	public Weapon(String key, SimpleVariable baseAttackBonus, Map<String, Ability> abilitiesMap) {
+	public Weapon(String key, SimpleVariable baseAttackBonus, Map<String, Ability> abilitiesMap, FixedNumericFeature size) {
 		super(key);
 		this.abilitiesMap = abilitiesMap;
 		this.baseAttackBonus = baseAttackBonus;
+		this.size = size;
 		initFields();
 	}
 

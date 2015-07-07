@@ -65,9 +65,9 @@ public class Save extends VariableNumericFeature {
 	}
 
 	@XmlAttribute
-	public String getMagicBonus() {
+	public int getMagicBonus() {
 		refresh();
-		return signFormat.format(magicBonus);
+		return magicBonus;
 	}
 
 	public void setMagicBonus(int magicBonus) {

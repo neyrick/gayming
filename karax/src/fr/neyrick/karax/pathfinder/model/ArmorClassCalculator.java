@@ -1,12 +1,14 @@
 package fr.neyrick.karax.pathfinder.model;
 
 import fr.neyrick.karax.model.AbstractNumericFeatureCalculator;
+import fr.neyrick.karax.model.FixedNumericFeature;
 import fr.neyrick.karax.model.StaticFeaturesCollection;
 
 public class ArmorClassCalculator extends AbstractNumericFeatureCalculator<ArmorClass>{
 
 	private Ability dexterity;
 	private StaticFeaturesCollection<Armor> armors;
+	private FixedNumericFeature size;
 	
 	@Override
 	public Number calculateFeature(ArmorClass feature) {
@@ -14,7 +16,7 @@ public class ArmorClassCalculator extends AbstractNumericFeatureCalculator<Armor
 		int armorBonus = feature.getCost("ARMOR");
 		int naturalArmorBonus = feature.getCost("NATURAL_ARMOR");
 		int shieldBonus = feature.getCost("SHIELD");
-		int sizeBonus = feature.getCost("SIZE");
+		int sizeBonus = -size.getAmount();
 		int deflectionBonus = feature.getCost("DEFLECTION");
 		int miscBonus = feature.getCost("MISC");
 		
@@ -62,10 +64,11 @@ public class ArmorClassCalculator extends AbstractNumericFeatureCalculator<Armor
 		return result;
 	}
 
-	public ArmorClassCalculator(Ability dexterity, StaticFeaturesCollection<Armor> armors) {
+	public ArmorClassCalculator(Ability dexterity, StaticFeaturesCollection<Armor> armors, FixedNumericFeature size) {
 		super();
 		this.dexterity = dexterity;
 		this.armors = armors;
+		this.size = size;
 	}
 
 }

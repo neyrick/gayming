@@ -103,7 +103,7 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		skills.addSkill("DISGUISE", "CHA", false, false);
 		skills.addSkill("ESCAPE_ARTIST", "DEX", false, true);
 		skills.addSkill("FLY", "DEX", false, true);
-		skills.addSkill("HANDLE_ANIMAL", "DEX", true, false);
+		skills.addSkill("HANDLE_ANIMAL", "CHA", false, false);
 		skills.addSkill("HEAL", "WIS", false, false);
 		skills.addSkill("INTIMIDATE", "CHA", false, false);
 		skills.addSkill("KN_ARCANA", "INT", true, false);
@@ -141,7 +141,7 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		character.setBaseAttackBonus(registerListener(bab));
 		character.setManeuverAttack(registerListener(new SimpleBonus("CMB", new ManeuverAttackCalculator(bab, abilitiesMap.get("STR"), size))));
 		character.setManeuverDefense(registerListener(new SimpleVariable("CMD", new ManeuverDefenseCalculator(bab, abilitiesMap.get("STR"), abilitiesMap.get("DEX"), size))));
-		character.setArmorclass(registerListener(new ArmorClass("AC", new ArmorClassCalculator(abilitiesMap.get("DEX"), armors))));
+		character.setArmorclass(registerListener(new ArmorClass("AC", new ArmorClassCalculator(abilitiesMap.get("DEX"), armors, size))));
 		character.setInitiative(registerListener(new Initiative("INITIATIVE", new InitiativeCalculator((abilitiesMap.get("DEX"))))));
 		character.setHitpoints(registerListener(new SimpleVariable("HP", new HitPointCalculator(abilitiesMap.get("CON"), levels))));
 		character.setFavoredClasses(registerListener(new StaticFeaturesCollection<StringFeature>("FAVORED_CLASS", StringFeature.class)));
@@ -158,7 +158,7 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 		
 		character.setGear(registerListener(gear));
 		character.setLoad(registerListener(load));
-		character.setWeapons(registerListener(new WeaponCollection("WEAPON", bab, abilitiesMap)));
+		character.setWeapons(registerListener(new WeaponCollection("WEAPON", bab, abilitiesMap, size)));
 		character.setArmors(registerListener(armors));
 
 		
