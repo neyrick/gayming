@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 
 import fr.neyrick.karax.eclipsephase.entities.MorphDefinition;
 import fr.neyrick.karax.entities.generic.MetaCharacter;
@@ -28,8 +26,8 @@ public class EclipsePhaseCharacterFactory extends CharacterFactory {
 
 	public static final String FILTER_MORPH = "MORPH";
 	
-	@Inject
-	private FacesContext facesContext;
+//	@Inject
+//	private FacesContext facesContext;
 	
 	private ResourceBundle resourceBundle;
 	

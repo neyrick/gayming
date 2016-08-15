@@ -10,8 +10,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 @Entity
 @Table(name="expgains")
 @XmlRootElement
@@ -22,7 +20,6 @@ public class ExperienceGain {
 	private Long id;
 	
 	@XmlTransient
-	@JsonIgnore
 	@ManyToOne
 	private MetaCharacter character;
 	

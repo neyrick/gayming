@@ -103,11 +103,11 @@ the location of this file.
         </font>
 -->
 
-        <font metrics-url="CreditValley.xml" kerning="yes" embed-url="CreditValley.ttf">
+        <font kerning="yes" embed-url="CreditValley.ttf">
           <font-triplet name="CreditValley" style="normal" weight="normal"/>
         </font>
 
-        <font metrics-url="CreditValleybold.xml" kerning="yes" embed-url="CreditValleybold.ttf">
+        <font kerning="yes" embed-url="CreditValleybold.ttf">
           <font-triplet name="CreditValley" style="normal" weight="bold"/>
         </font>
 

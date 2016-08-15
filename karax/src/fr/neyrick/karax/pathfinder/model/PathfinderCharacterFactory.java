@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 
 import fr.neyrick.karax.entities.generic.MetaCharacter;
 import fr.neyrick.karax.model.CharacterFactory;
@@ -26,8 +24,8 @@ public class PathfinderCharacterFactory extends CharacterFactory {
 
 	public static final String[] ABILITIES = { "STR", "DEX", "CON", "INT", "WIS", "CHA"};
 	
-	@Inject
-	private FacesContext facesContext;
+//	@Inject
+//	private FacesContext facesContext;
 	
 	private ResourceBundle resourceBundle;
 	

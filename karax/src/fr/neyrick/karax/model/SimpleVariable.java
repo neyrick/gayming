@@ -1,14 +1,19 @@
 package fr.neyrick.karax.model;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementRefs;
+import javax.xml.bind.annotation.XmlMixed;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
-import com.sun.xml.internal.txw2.annotation.XmlElement;
+
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
@@ -32,17 +37,32 @@ public class SimpleVariable extends VariableNumericFeature {
 	}
 
 	@Override
-	@XmlValue
 	public String getValue() {
-		return super.getValue();
+		for (Object child : content) {
+			if (child instanceof String) {
+				child.toString();
+			}
+		}
+		return null;
 	}
 	
 	@Override
-	@XmlElement("extra")
 	public Set<String> getExtraInfo() {
-		return super.getExtraInfo();
+		Set<String> result = new HashSet<String>();
+		for (Object child : content) {
+			if (child instanceof ExtraInfo) {
+				result.add(((ExtraInfo)child).getValue());
+			}
+		}
+		return result;
 	}
 
+    @XmlMixed 
+    @XmlElementRefs({
+            @XmlElementRef(name="extra", type=ExtraInfo.class)
+    })
+    List<?> content;
+    
 	public SimpleVariable(FeaturesCollection container, String key,
 			FeatureCalculator<? extends SimpleVariable> calculator) {
 		super(container, key, calculator);

@@ -1,0 +1,1 @@
+data-source add --name=KaraxDS --connection-url=jdbc:postgresql://jafar:5432/karax --driver-name=postgresql-9.1-902.jdbc4.jar --jndi-name=java:jboss/datasources/KaraxDS --enabled=true --user-name=devel --password=devel  
